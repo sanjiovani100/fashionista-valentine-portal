@@ -1,11 +1,12 @@
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import './styles.css';
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-maroon to-black text-white overflow-hidden">
-      <div className="absolute inset-0 bg-black/40 z-10"></div>
-      <div className="container mx-auto px-4 z-20 text-center animate-fadeIn">
+    <section className="relative min-h-screen flex items-center justify-center hero-gradient text-white overflow-hidden">
+      <div className="absolute inset-0 hero-overlay z-10"></div>
+      <div className="container mx-auto px-4 z-20 text-center hero-content">
         <h1 className="font-montserrat text-5xl md:text-7xl font-bold mb-6">
           Fashionistas
           <span className="block text-blush mt-2">Valentine's Event</span>

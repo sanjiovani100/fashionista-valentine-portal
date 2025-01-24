@@ -1,0 +1,20 @@
+/* Event details section specific styles */
+.event-details-gradient {
+  background: linear-gradient(to bottom, var(--black) 0%, var(--maroon) 100%);
+}
+
+.feature-card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  transition: color 0.2s ease-in-out;
+}
+
+.feature-card:hover .feature-icon {
+  color: var(--blush);
+}

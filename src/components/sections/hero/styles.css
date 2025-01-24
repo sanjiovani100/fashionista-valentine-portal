@@ -1,0 +1,23 @@
+/* Hero section specific styles */
+.hero-gradient {
+  background: linear-gradient(to bottom, var(--maroon) 0%, var(--black) 100%);
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
