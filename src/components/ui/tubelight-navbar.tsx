@@ -2,65 +2,33 @@
 
 import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { LucideIcon, Home, Calendar, Ticket, Users, Heart, Briefcase, MessageSquare, Globe, ChevronDown } from "lucide-react"
+import { Globe } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 interface NavItem {
   name: string
   url: string
-  icon: LucideIcon
-  children?: { name: string; url: string }[]
-}
-
-interface NavBarProps {
-  items?: NavItem[]
-  className?: string
 }
 
 const defaultItems: NavItem[] = [
-  { name: 'Home', url: '#home', icon: Home },
-  { 
-    name: 'Event Details', 
-    url: '#about', 
-    icon: Calendar,
-    children: [
-      { name: 'Schedule', url: '#schedule' },
-      { name: 'Venue', url: '#venue' },
-      { name: 'FAQ', url: '#faq' }
-    ]
-  },
-  { name: 'Tickets', url: '#tickets', icon: Ticket },
-  { 
-    name: 'Designers & Models', 
-    url: '#team', 
-    icon: Users,
-    children: [
-      { name: 'Featured Designers', url: '#designers' },
-      { name: 'Model Lineup', url: '#models' },
-      { name: 'Apply', url: '#apply' }
-    ]
-  },
-  { name: 'Sponsors', url: '#sponsors', icon: Briefcase },
-  { name: 'Contact', url: '#contact', icon: MessageSquare }
+  { name: 'Home', url: '#home' },
+  { name: 'Fashion', url: '#fashion' },
+  { name: 'Tickets', url: '#tickets' },
+  { name: 'Event', url: '#event' },
+  { name: 'Contact Us', url: '#contact' }
 ]
 
-export function NavBar({ items = defaultItems, className }: NavBarProps) {
-  const [activeTab, setActiveTab] = useState(items[0].name)
+export function NavBar() {
+  const [activeTab, setActiveTab] = useState(defaultItems[0].name)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50)
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    
     handleResize()
     handleScroll()
     
@@ -77,8 +45,7 @@ export function NavBar({ items = defaultItems, className }: NavBarProps) {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "h-16 bg-black/95" : "h-20 bg-transparent",
-        className
+        isScrolled ? "h-16 bg-black/95" : "h-20 bg-transparent"
       )}
     >
       <div className="container h-full mx-auto px-4 flex items-center justify-between">
@@ -96,83 +63,41 @@ export function NavBar({ items = defaultItems, className }: NavBarProps) {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-3 bg-white/5 backdrop-blur-lg py-1 px-1 rounded-full">
-          {items.map((item) => {
-            const Icon = item.icon
-            const isActive = activeTab === item.name
-            const hasDropdown = item.children && item.children.length > 0
-
-            return (
-              <div
-                key={item.name}
-                className="relative group"
-                onMouseEnter={() => hasDropdown && setOpenDropdown(item.name)}
-                onMouseLeave={() => hasDropdown && setOpenDropdown(null)}
-              >
-                <a
-                  href={item.url}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setActiveTab(item.name)
-                    const element = document.querySelector(item.url)
-                    element?.scrollIntoView({ behavior: 'smooth' })
+        <div className="hidden lg:flex items-center gap-2 bg-white/5 backdrop-blur-lg py-1 px-1 rounded-full">
+          {defaultItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.url}
+              onClick={(e) => {
+                e.preventDefault()
+                setActiveTab(item.name)
+                const element = document.querySelector(item.url)
+                element?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className={cn(
+                "relative px-3 py-1.5 rounded-full transition-colors text-sm font-montserrat",
+                "text-white/80 hover:text-fashion-pink",
+                activeTab === item.name && "text-fashion-pink"
+              )}
+            >
+              {item.name}
+              {activeTab === item.name && (
+                <motion.div
+                  layoutId="lamp"
+                  className="absolute inset-0 bg-fashion-pink/5 rounded-full -z-10"
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
                   }}
-                  className={cn(
-                    "relative cursor-pointer text-sm font-montserrat font-semibold px-6 py-2 rounded-full transition-colors flex items-center gap-1",
-                    "text-white/80 hover:text-fashion-pink",
-                    isActive && "text-fashion-pink"
-                  )}
-                >
-                  <span className="hidden md:inline">{item.name}</span>
-                  {hasDropdown && <ChevronDown className="w-4 h-4" />}
-                  <span className="md:hidden">
-                    <Icon size={18} strokeWidth={2.5} />
-                  </span>
-                  {isActive && (
-                    <motion.div
-                      layoutId="lamp"
-                      className="absolute inset-0 w-full bg-fashion-pink/5 rounded-full -z-10"
-                      initial={false}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 30,
-                      }}
-                    >
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-fashion-pink rounded-t-full">
-                        <div className="absolute w-12 h-6 bg-fashion-pink/20 rounded-full blur-md -top-2 -left-2" />
-                        <div className="absolute w-8 h-6 bg-fashion-pink/20 rounded-full blur-md -top-1" />
-                        <div className="absolute w-4 h-4 bg-fashion-pink/20 rounded-full blur-sm top-0 left-2" />
-                      </div>
-                    </motion.div>
-                  )}
-                </a>
-                {hasDropdown && openDropdown === item.name && (
-                  <div className="absolute top-full left-0 mt-2 w-48 py-2 bg-black/95 backdrop-blur-lg rounded-lg shadow-xl">
-                    {item.children?.map((child) => (
-                      <a
-                        key={child.name}
-                        href={child.url}
-                        className="block px-4 py-2 text-sm text-white/80 hover:text-fashion-pink hover:bg-white/5"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          const element = document.querySelector(child.url)
-                          element?.scrollIntoView({ behavior: 'smooth' })
-                          setOpenDropdown(null)
-                        }}
-                      >
-                        {child.name}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )
-          })}
+                />
+              )}
+            </a>
+          ))}
         </div>
 
         {/* Right Side Actions */}
-        <div className="hidden lg:flex items-center space-x-6">
+        <div className="hidden lg:flex items-center gap-4">
           <button 
             className="text-white/90 hover:text-white transition-colors"
             aria-label="Change Language"
@@ -207,45 +132,18 @@ export function NavBar({ items = defaultItems, className }: NavBarProps) {
           transition={{ duration: 0.3 }}
           className={`fixed inset-0 top-16 bg-black/95 backdrop-blur-md lg:hidden ${isMenuOpen ? 'block' : 'hidden'}`}
         >
-          <div className="container px-4 py-8 flex flex-col space-y-6">
-            {items.map((item, index) => (
-              <motion.div
+          <div className="container px-4 py-8 flex flex-col space-y-4">
+            {defaultItems.map((item) => (
+              <a
                 key={item.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex flex-col"
+                href={item.url}
+                className="text-white/90 hover:text-white font-montserrat text-lg"
+                onClick={() => setIsMenuOpen(false)}
               >
-                <a
-                  href={item.url}
-                  className="text-white/90 hover:text-white font-montserrat text-lg flex items-center gap-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.name}
-                </a>
-                {item.children && (
-                  <div className="ml-7 mt-2 flex flex-col gap-2">
-                    {item.children.map((child) => (
-                      <a
-                        key={child.name}
-                        href={child.url}
-                        className="text-white/70 hover:text-white text-base"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {child.name}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
+                {item.name}
+              </a>
             ))}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: items.length * 0.1 }}
-              className="pt-4 flex items-center justify-between"
-            >
+            <div className="pt-4 flex items-center justify-between">
               <button className="text-white/90 hover:text-white transition-colors">
                 <Globe className="w-5 h-5" />
               </button>
@@ -255,18 +153,9 @@ export function NavBar({ items = defaultItems, className }: NavBarProps) {
               >
                 Get Tickets
               </Button>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
-
-        {/* Scroll Progress */}
-        <div 
-          className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-fashion-pink to-deep-purple"
-          style={{ 
-            width: `${(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%`,
-            transition: 'width 0.1s ease-out'
-          }}
-        />
       </div>
     </nav>
   )
