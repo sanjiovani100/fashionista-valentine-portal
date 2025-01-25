@@ -82,24 +82,24 @@ const CountdownTimer = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center space-y-4 mb-12">
-      <h1 className="text-4xl md:text-5xl font-playfair text-white mb-4 text-center">
+    <div className="flex flex-col items-center space-y-8 mb-16">
+      <h1 className="text-5xl md:text-[48px] font-playfair text-white mb-6 text-center transition-all">
         Choose Your Perfect Ticket
       </h1>
-      <p className="text-xl text-blush mb-2 text-center">
+      <p className="text-xl md:text-2xl text-blush mb-4 text-center font-montserrat">
         Reserve your spot for Medellín's most glamorous night!
       </p>
-      <p className="text-lg text-gray-300 mb-8 text-center">
+      <p className="text-lg text-gray-300 mb-8 text-center font-montserrat">
         Join 100+ attendees who've already secured their tickets
       </p>
       <div className="flex gap-6 text-center">
         {Object.entries(timeLeft).map(([unit, value]) => (
           <div key={unit} className="flex items-center">
-            <div className="flex flex-col items-center">
-              <div className="text-4xl md:text-5xl font-bold text-romantic mb-2 bg-black/30 px-4 py-2 rounded-lg backdrop-blur-sm">
+            <div className="flex flex-col items-center transition-all duration-300 hover:transform hover:scale-105">
+              <div className="text-4xl md:text-5xl font-bold text-romantic mb-2 bg-white/5 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/10">
                 {value.toString().padStart(2, '0')}
               </div>
-              <div className="text-sm text-gray-300 uppercase">{unit}</div>
+              <div className="text-sm uppercase tracking-wider text-gray-300 font-montserrat">{unit}</div>
             </div>
             {unit !== 'seconds' && (
               <div className="text-4xl text-gray-500 mx-2">:</div>
@@ -107,7 +107,7 @@ const CountdownTimer = () => {
           </div>
         ))}
       </div>
-      <p className="text-blush text-lg animate-pulse mt-4">
+      <p className="text-blush text-lg animate-pulse mt-6 font-montserrat">
         Don't miss out on Medellín's most glamorous event!
       </p>
     </div>
@@ -115,15 +115,15 @@ const CountdownTimer = () => {
 };
 
 const TrustSignals = () => (
-  <div className="mt-12 border-t border-gray-800 pt-8">
+  <div className="mt-16 border-t border-white/10 pt-8">
     <div className="flex flex-col items-center space-y-6">
-      <p className="text-romantic font-semibold text-lg">
+      <p className="text-romantic font-semibold text-xl font-montserrat">
         Limited Tickets Remaining
       </p>
-      <p className="text-gray-300">
+      <p className="text-gray-300 font-montserrat">
         Only 20 VIP Tickets Left
       </p>
-      <div className="flex gap-4 items-center text-gray-400">
+      <div className="flex gap-4 items-center text-gray-400 font-montserrat">
         <Shield className="w-5 h-5" />
         <span>Secure Checkout</span>
         <span>•</span>
@@ -138,7 +138,7 @@ export const TicketSelection = () => {
   const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
 
   return (
-    <section className="py-20 px-4 relative overflow-hidden bg-gradient-to-b from-black to-[#333399]">
+    <section className="py-20 md:py-[80px] px-4 relative overflow-hidden bg-gradient-to-br from-romantic to-[#333399]">
       {/* Floating Hearts Background */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute animate-float-1 top-1/4 left-1/4">
@@ -155,45 +155,45 @@ export const TicketSelection = () => {
       <div className="container mx-auto relative z-10 max-w-7xl">
         <CountdownTimer />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
           {tickets.map((ticket) => (
             <Card
               key={ticket.title}
-              className={`bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-glow ${
+              className={`bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:scale-105 hover:shadow-glow ${
                 selectedTicket === ticket.title
                   ? "border-romantic"
-                  : "hover:border-gray-700"
+                  : "hover:border-white/20"
               }`}
               onClick={() => setSelectedTicket(ticket.title)}
             >
               <CardHeader>
-                <CardTitle className="text-2xl font-playfair text-white">
+                <CardTitle className="text-2xl md:text-[24px] font-playfair text-white">
                   {ticket.title}
                 </CardTitle>
-                <CardDescription className="text-gray-300">
+                <CardDescription className="text-gray-300 font-montserrat">
                   {ticket.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-romantic mb-6">
+                <div className="text-[36px] font-bold font-montserrat text-romantic mb-8">
                   {ticket.price}
                   <span className="text-lg text-gray-400">/person</span>
                 </div>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   {ticket.perks.map((perk) => (
-                    <li key={perk} className="flex items-center gap-2 text-gray-300">
-                      <Check className="w-4 h-4 text-romantic" />
+                    <li key={perk} className="flex items-center gap-3 text-gray-300 font-montserrat">
+                      <Check className="w-5 h-5 text-romantic" />
                       {perk}
                     </li>
                   ))}
                 </ul>
-                <p className="text-sm text-gray-400 mt-4">
+                <p className="text-sm text-gray-400 mt-6 font-montserrat">
                   Secure payment with Stripe
                 </p>
               </CardContent>
               <CardFooter>
                 <Button
-                  className="w-full bg-gradient-to-r from-romantic to-passion hover:opacity-90 text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full h-[48px] bg-gradient-to-r from-romantic to-passion hover:opacity-90 text-white transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg font-montserrat"
                   size="lg"
                 >
                   Select Ticket
