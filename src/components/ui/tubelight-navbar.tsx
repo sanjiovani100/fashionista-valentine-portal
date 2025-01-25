@@ -49,10 +49,10 @@ export function NavBar() {
       )}
     >
       <div className="container h-full mx-auto px-4 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo with updated dimensions */}
         <a 
           href="#" 
-          className="relative w-12 h-12 hover:brightness-125 transition-all"
+          className="relative lg:w-36 w-32 h-auto px-4 hover:opacity-90 transition-opacity duration-300"
           aria-label="Fashionistas Home"
         >
           <img 
@@ -62,8 +62,8 @@ export function NavBar() {
           />
         </a>
 
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-1 bg-white/5 backdrop-blur-lg py-1 px-1 rounded-full">
+        {/* Desktop Navigation with adjusted spacing */}
+        <div className="hidden lg:flex items-center gap-0.5 bg-white/5 backdrop-blur-lg py-1 px-1 rounded-full">
           {defaultItems.map((item) => (
             <a
               key={item.name}
@@ -75,7 +75,7 @@ export function NavBar() {
                 element?.scrollIntoView({ behavior: 'smooth' })
               }}
               className={cn(
-                "relative px-2 py-1.5 rounded-full transition-colors text-sm font-montserrat",
+                "relative px-3 py-1.5 rounded-full transition-colors text-sm font-montserrat",
                 "text-white/80 hover:text-fashion-pink",
                 activeTab === item.name && "text-fashion-pink"
               )}
@@ -96,8 +96,8 @@ export function NavBar() {
           ))}
         </div>
 
-        {/* Right Side Actions */}
-        <div className="hidden lg:flex items-center gap-2">
+        {/* Right Side Actions with adjusted spacing */}
+        <div className="hidden lg:flex items-center gap-3">
           <button 
             className="text-white/90 hover:text-white transition-colors"
             aria-label="Change Language"
