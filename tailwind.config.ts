@@ -19,6 +19,11 @@ export default {
     },
     extend: {
       colors: {
+        border: "rgba(255, 255, 255, 0.1)",
+        input: "rgba(255, 255, 255, 0.1)",
+        ring: "#FF00CC",
+        background: "#000000",
+        foreground: "#FFFFFF",
         // Primary Colors
         "fashion-pink": "#FF00CC",
         "deep-purple": "#333399",
