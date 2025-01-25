@@ -30,6 +30,12 @@
   animation: float-4 28s ease-in-out infinite;
 }
 
+/* Button hover glow effect */
+.hover\:shadow-glow:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Floating animations */
 @keyframes float-1 {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
   25% { transform: translate(10px, -15px) rotate(5deg); }
@@ -58,6 +64,7 @@
   75% { transform: translate(-5px, 15px) rotate(-3deg); }
 }
 
+/* Gradient animation */
 @keyframes gradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

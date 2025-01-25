@@ -24,38 +24,40 @@ export const Hero = () => {
         {/* Main Content with Staggered Animation */}
         <div className="space-y-8 stagger-fade-in">
           {/* Headline */}
-          <h1 className="font-playfair text-5xl md:text-7xl font-bold text-white 
-                         drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+          <h1 className="font-montserrat text-5xl md:text-7xl font-bold text-white 
+                         tracking-tight leading-tight">
             Fashionistas
-            <span className="block text-fashion-pink mt-2">Valentine's Event</span>
+            <span className="block text-white mt-2">Valentine's Event</span>
           </h1>
 
           {/* Tagline */}
-          <p className="font-montserrat text-xl md:text-2xl text-fashion-pink/90 max-w-2xl mx-auto">
+          <p className="font-montserrat text-xl md:text-2xl text-white/90 max-w-2xl mx-auto 
+                       tracking-normal leading-relaxed">
             Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-            {/* Primary CTA */}
+            {/* Primary CTA - White Button */}
             <Button 
               size="lg" 
-              className="bg-[#C00000] hover:bg-[#C00000]/90 text-white 
-                         transform transition-all duration-300 hover:scale-105
-                         hover:shadow-[0_0_15px_rgba(192,0,0,0.5)]
-                         min-w-[200px]"
+              className="bg-white text-black h-[48px] px-8
+                         hover:scale-105 hover:shadow-glow
+                         transition-all duration-300 ease-in-out
+                         min-w-[200px] rounded-lg font-medium"
             >
               Get Tickets
             </Button>
 
-            {/* Secondary CTA */}
+            {/* Secondary CTA - Black Button */}
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-2 border-fashion-pink text-fashion-pink 
-                         hover:bg-fashion-pink/10 transition-all duration-300
-                         hover:shadow-[0_0_15px_rgba(255,193,193,0.3)]
-                         min-w-[200px]"
+              className="bg-black text-white h-[48px] px-8
+                         hover:bg-black/90 hover:scale-105
+                         transition-all duration-300 ease-in-out
+                         min-w-[200px] rounded-lg font-medium
+                         border-2 border-white/20"
             >
               <Calendar className="mr-2 h-5 w-5" />
               February 14, 2024
