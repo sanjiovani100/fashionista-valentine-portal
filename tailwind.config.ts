@@ -82,6 +82,9 @@ export default {
         "float-2": "float2 8s ease-in-out infinite",
         "float-3": "float3 7s ease-in-out infinite",
       },
+      boxShadow: {
+        glow: "0 0 15px rgba(255, 193, 193, 0.5)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
