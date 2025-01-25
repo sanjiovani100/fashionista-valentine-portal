@@ -3,10 +3,11 @@
 /* Hero section specific styles */
 .heart {
   position: absolute;
-  color: rgba(255, 193, 193, 0.1);
+  color: rgba(255, 193, 193, 0.15);
   font-size: 4rem;
   pointer-events: none;
   will-change: transform;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
 .heart-1 {
@@ -73,5 +74,5 @@
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
