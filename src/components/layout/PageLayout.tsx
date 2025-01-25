@@ -4,6 +4,7 @@ import { Footerdemo } from "@/components/ui/footer-section";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { initScrollReveal } from "@/utils/scrollReveal";
 import { useParallaxScroll } from "@/hooks/useParallaxScroll";
+import { Navbar } from "./Navbar";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -33,8 +34,9 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
           '--scroll-progress': scrollYProgress,
         } as React.CSSProperties}
       >
+        <Navbar />
         <ScrollProgress />
-        <div className="scroll-snap-container">
+        <div className="scroll-snap-container pt-20">
           {children}
         </div>
         <Footerdemo />
