@@ -1,10 +1,10 @@
+import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { useEventDetails } from "@/features/events/hooks/useEventDetails";
 import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
 import './styles.css';
 
-export const EventDetails = () => {
+export const EventDetails: React.FC = () => {
   const { eventDetails } = useEventDetails();
   const { ref, inView } = useInView({
     triggerOnce: true,
