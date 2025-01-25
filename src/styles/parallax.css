@@ -1,0 +1,56 @@
+@layer utilities {
+  .parallax-section {
+    @apply relative overflow-hidden;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  .parallax-bg {
+    @apply absolute inset-0;
+    background-attachment: fixed;
+    transform: translateY(calc(var(--scroll-y, 0) * var(--parallax-speed, 0.5)));
+    will-change: transform;
+  }
+
+  .parallax-content {
+    @apply relative z-10;
+    transform: translateY(calc(var(--scroll-y, 0) * var(--content-speed, 0.3)));
+  }
+
+  .section-transition {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .section-transition.in-view {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .parallax-bg,
+    .parallax-content,
+    .section-transition {
+      transform: none !important;
+      transition: opacity 0.5s ease-in-out !important;
+    }
+  }
+}
+
+.gradient-morph {
+  background: linear-gradient(45deg, 
+    var(--gradient-color-1, rgba(255, 0, 204, 0.2)) 0%,
+    var(--gradient-color-2, rgba(51, 51, 153, 0.2)) 100%
+  );
+  transition: --gradient-color-1 0.5s, --gradient-color-2 0.5s;
+}
+
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-3d:hover {
+  transform: rotateX(5deg) rotateY(5deg);
+}

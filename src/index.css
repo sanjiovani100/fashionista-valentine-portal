@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './styles/parallax.css';
+
 @layer base {
   :root {
     --background: 0 0% 0%;
@@ -43,5 +45,6 @@
   
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
   }
 }
