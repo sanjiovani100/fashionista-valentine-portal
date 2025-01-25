@@ -56,14 +56,14 @@ export function NavBar() {
           aria-label="Fashionistas Home"
         >
           <img 
-            src="/fashionistas-logo.png" 
+            src="/lovable-uploads/780caef1-834f-4fa7-a143-60c38ed8afe1.png"
             alt="Fashionistas Logo"
             className="w-full h-full object-contain"
           />
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-2 bg-white/5 backdrop-blur-lg py-1 px-1 rounded-full">
+        <div className="hidden lg:flex items-center gap-1 bg-white/5 backdrop-blur-lg py-1 px-1 rounded-full">
           {defaultItems.map((item) => (
             <a
               key={item.name}
@@ -75,7 +75,7 @@ export function NavBar() {
                 element?.scrollIntoView({ behavior: 'smooth' })
               }}
               className={cn(
-                "relative px-3 py-1.5 rounded-full transition-colors text-sm font-montserrat",
+                "relative px-2 py-1.5 rounded-full transition-colors text-sm font-montserrat",
                 "text-white/80 hover:text-fashion-pink",
                 activeTab === item.name && "text-fashion-pink"
               )}
@@ -97,7 +97,7 @@ export function NavBar() {
         </div>
 
         {/* Right Side Actions */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-2">
           <button 
             className="text-white/90 hover:text-white transition-colors"
             aria-label="Change Language"
