@@ -1,23 +1,33 @@
 /* Hero section specific styles */
-.hero-gradient {
-  background: linear-gradient(to bottom, var(--maroon) 0%, var(--black) 100%);
+.heart-1, .heart-2, .heart-3 {
+  position: absolute;
+  color: rgba(255, 193, 193, 0.1);
+  font-size: 4rem;
+  pointer-events: none;
 }
 
-.hero-overlay {
-  background: rgba(0, 0, 0, 0.4);
+.heart-1 {
+  top: 20%;
+  left: 15%;
 }
 
-.hero-content {
-  animation: fadeIn 0.5s ease-out forwards;
+.heart-2 {
+  top: 40%;
+  right: 20%;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.heart-3 {
+  bottom: 30%;
+  left: 30%;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
 }

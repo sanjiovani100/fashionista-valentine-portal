@@ -16,6 +16,9 @@ export default {
       colors: {
         maroon: "#800000",
         blush: "#FFC1C1",
+        burgundy: "#2B0000",
+        passion: "#C00000",
+        romantic: "#FF66CC",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
