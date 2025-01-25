@@ -53,15 +53,31 @@ export default {
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],
         inter: ["Inter", "sans-serif"],
+        playfair: ["Playfair Display", "serif"],
       },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        float1: {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(20px, -20px)" },
+        },
+        float2: {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(-20px, -30px)" },
+        },
+        float3: {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(15px, -25px)" },
+        },
       },
       animation: {
-        fadeIn: "fadeIn 0.5s ease-out forwards",
+        "fade-in": "fadeIn 0.5s ease-out forwards",
+        "float-1": "float1 6s ease-in-out infinite",
+        "float-2": "float2 8s ease-in-out infinite",
+        "float-3": "float3 7s ease-in-out infinite",
       },
     },
   },
