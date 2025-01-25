@@ -18,7 +18,7 @@ export default {
         blush: "#FFC1C1",
         burgundy: "#2B0000",
         passion: "#C00000",
-        romantic: "#FF66CC",
+        romantic: "#FF00CC",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -83,7 +83,7 @@ export default {
         "float-3": "float3 7s ease-in-out infinite",
       },
       boxShadow: {
-        glow: "0 0 15px rgba(255, 193, 193, 0.5)",
+        glow: "0 0 20px rgba(255, 0, 204, 0.2)",
       },
     },
   },
