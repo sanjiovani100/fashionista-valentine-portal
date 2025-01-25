@@ -87,6 +87,10 @@ export default {
       animation: {
         "fade-in": "fadeIn 200ms ease-out",
         "slide-in": "slideIn 300ms ease-out",
+        "float-slow": "float 6s ease-in-out infinite",
+        "float-medium": "float 5s ease-in-out infinite",
+        "float-fast": "float 4s ease-in-out infinite",
+        "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {
         fadeIn: {
@@ -96,6 +100,14 @@ export default {
         slideIn: {
           "0%": { transform: "translateY(10px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0) rotate(0deg)" },
+          "50%": { transform: "translateY(-20px) rotate(5deg)" },
+        },
+        pulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
         },
       },
       transitionDuration: {
