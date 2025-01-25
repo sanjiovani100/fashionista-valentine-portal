@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useInView } from "react-intersection-observer";
 import {
   Carousel,
   CarouselContent,
@@ -47,9 +48,13 @@ const showcaseItems = [
 ];
 
 export const LingerieShowcase = () => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1
+  });
+
   return (
-    <section className="relative py-16 bg-black min-h-screen">
-      {/* Floating hearts background */}
+    <section className="relative py-16 bg-black min-h-screen" ref={ref}>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute h-8 w-8 text-romantic opacity-20 animate-float-1 left-1/4 top-1/4">❤</div>
         <div className="absolute h-8 w-8 text-blush opacity-20 animate-float-2 left-2/3 top-1/3">❤</div>
@@ -57,16 +62,16 @@ export const LingerieShowcase = () => {
       </div>
 
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold font-montserrat text-white text-center mb-12">
+        <h2 className={`text-3xl md:text-4xl font-bold font-montserrat text-white text-center mb-12 fade-up ${inView ? 'in-view' : ''}`}>
           Luxury Lingerie Showcase
         </h2>
 
-        <Carousel className="w-full max-w-5xl mx-auto">
+        <Carousel className={`w-full max-w-5xl mx-auto fade-up ${inView ? 'in-view' : ''}`}>
           <CarouselContent>
-            {showcaseItems.map((item) => (
+            {showcaseItems.map((item, index) => (
               <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
                 <div className="p-2">
-                  <Card className="bg-black border-gray-800 overflow-hidden group">
+                  <Card className="showcase-item bg-black border-gray-800 overflow-hidden group">
                     <CardContent className="p-0">
                       <div className="relative aspect-[3/4] overflow-hidden">
                         <img

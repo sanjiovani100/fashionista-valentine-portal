@@ -4,15 +4,15 @@
   50% { transform: translate(0, 20px); }
 }
 
-@keyframes parallax-float {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(5px, 15px, 20px); }
+@keyframes tilt {
+  0%, 100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
+  50% { transform: perspective(1000px) rotateX(2deg) rotateY(2deg); }
 }
 
-@keyframes fade-up {
+@keyframes fadeSlideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -20,10 +20,10 @@
   }
 }
 
-@keyframes scale-in {
+@keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -31,63 +31,52 @@
   }
 }
 
-/* Scroll-triggered animations */
-.reveal {
+/* Section-specific animations */
+.event-card {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.reveal.active {
+.event-card.animate {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Parallax effects */
-.parallax {
-  transform-style: preserve-3d;
-  perspective: 1000px;
-}
-
-.parallax-layer {
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* Hover animations */
-.hover-scale {
+.showcase-item {
   transition: transform 0.3s ease-out;
 }
 
-.hover-scale:hover {
+.showcase-item:hover {
   transform: scale(1.05);
 }
 
-.hover-glow {
-  transition: box-shadow 0.3s ease-out;
+.ticket-card {
+  transition: transform 0.3s ease-out;
 }
 
-.hover-glow:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+.ticket-card:hover {
+  transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
 }
 
-/* Card animations */
-.card-hover {
-  transition: all 0.3s ease-out;
+/* Scroll animations */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+.fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Smooth scroll snap */
-.scroll-snap-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
-}
-
-.scroll-snap-section {
-  scroll-snap-align: start;
-  height: 100vh;
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
