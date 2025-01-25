@@ -6,13 +6,14 @@ export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Gradient Background with Animation */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-maroon to-black animate-gradient" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#C00000] via-[#800000] to-black animate-gradient" />
       
       {/* Floating Hearts Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="heart-1 animate-float-1">❤</div>
-        <div className="heart-2 animate-float-2">❤</div>
-        <div className="heart-3 animate-float-3">❤</div>
+        <div className="heart-1">❤</div>
+        <div className="heart-2">❤</div>
+        <div className="heart-3">❤</div>
+        <div className="heart-4">❤</div>
       </div>
 
       {/* Semi-transparent Overlay */}
@@ -21,16 +22,16 @@ export const Hero = () => {
       {/* Content Container */}
       <div className="container mx-auto px-4 z-20 text-center">
         {/* Main Content with Staggered Animation */}
-        <div className="space-y-8 animate-fade-in">
+        <div className="space-y-8 stagger-fade-in">
           {/* Headline */}
           <h1 className="font-playfair text-5xl md:text-7xl font-bold text-white 
                          drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
             Fashionistas
-            <span className="block text-blush mt-2">Valentine's Event</span>
+            <span className="block text-fashion-pink mt-2">Valentine's Event</span>
           </h1>
 
           {/* Tagline */}
-          <p className="font-montserrat text-xl md:text-2xl text-blush/90 max-w-2xl mx-auto">
+          <p className="font-montserrat text-xl md:text-2xl text-fashion-pink/90 max-w-2xl mx-auto">
             Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show
           </p>
 
@@ -51,8 +52,8 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-2 border-blush text-blush 
-                         hover:bg-blush/10 transition-all duration-300
+              className="border-2 border-fashion-pink text-fashion-pink 
+                         hover:bg-fashion-pink/10 transition-all duration-300
                          hover:shadow-[0_0_15px_rgba(255,193,193,0.3)]
                          min-w-[200px]"
             >
