@@ -1,20 +1,61 @@
-/* Event details section specific styles */
 .event-details-gradient {
   background: linear-gradient(to bottom, var(--black) 0%, var(--maroon) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.floating-particle {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.1;
+  animation: floatParticle 15s linear infinite;
 }
 
 .feature-card {
-  transition: transform 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.feature-card.animate {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.02);
 }
 
 .feature-icon {
-  transition: color 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .feature-card:hover .feature-icon {
-  color: var(--blush);
+  transform: scale(1.1) rotate(5deg);
+  color: var(--fashion-pink);
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(100px, -100px) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+.gradient-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(255, 0, 204, 0.1), rgba(51, 51, 153, 0.1));
+  animation: gradientMove 15s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

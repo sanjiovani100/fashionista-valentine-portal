@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useInView } from "react-intersection-observer";
@@ -8,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import './styles.css';
 
 const showcaseItems = [
   {
@@ -52,40 +54,53 @@ export const LingerieShowcase = () => {
     triggerOnce: true,
     threshold: 0.1
   });
+  const parallaxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (parallaxRef.current) {
+        const scrolled = window.scrollY;
+        const rate = scrolled * 0.3;
+        parallaxRef.current.style.setProperty('--scroll-offset', `${rate}px`);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <section className="relative py-16 bg-black min-h-screen" ref={ref}>
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute h-8 w-8 text-romantic opacity-20 animate-float-1 left-1/4 top-1/4">❤</div>
-        <div className="absolute h-8 w-8 text-blush opacity-20 animate-float-2 left-2/3 top-1/3">❤</div>
-        <div className="absolute h-8 w-8 text-passion opacity-20 animate-float-3 left-1/2 top-2/3">❤</div>
-      </div>
+    <section className="relative py-16 bg-black min-h-screen showcase-section" ref={ref}>
+      <div className="showcase-pattern" />
+      <div className="parallax-bg" ref={parallaxRef} />
 
-      <div className="container mx-auto px-4">
-        <h2 className={`text-3xl md:text-4xl font-bold font-montserrat text-white text-center mb-12 fade-up ${inView ? 'in-view' : ''}`}>
+      <div className="container mx-auto px-4 relative">
+        <h2 className={`text-3xl md:text-4xl font-bold font-montserrat text-white text-center mb-12 transition-all duration-700 ${
+          inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}>
           Luxury Lingerie Showcase
         </h2>
 
-        <Carousel className={`w-full max-w-5xl mx-auto fade-up ${inView ? 'in-view' : ''}`}>
+        <Carousel className="w-full max-w-5xl mx-auto">
           <CarouselContent>
             {showcaseItems.map((item, index) => (
               <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
                 <div className="p-2">
-                  <Card className="showcase-item bg-black border-gray-800 overflow-hidden group">
+                  <Card className="showcase-item bg-black border-gray-800 overflow-hidden">
                     <CardContent className="p-0">
                       <div className="relative aspect-[3/4] overflow-hidden">
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                          className="showcase-image object-cover w-full h-full"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <div className="showcase-content absolute bottom-0 left-0 right-0 p-6 text-white">
                           <h3 className="text-xl font-montserrat font-bold mb-2">{item.title}</h3>
                           <p className="text-sm font-inter text-gray-300 mb-4">{item.description}</p>
-                          <p className="text-blush font-montserrat mb-4">By {item.designer}</p>
+                          <p className="text-fashion-pink font-montserrat mb-4">By {item.designer}</p>
                           <Button 
-                            className="w-full bg-passion hover:bg-passion/90 text-white transition-all duration-300 hover:shadow-glow"
+                            className="w-full bg-fashion-pink hover:bg-fashion-pink/90 text-white transition-all duration-300 hover:shadow-glow"
                           >
                             Explore Collection
                           </Button>
@@ -97,8 +112,8 @@ export const LingerieShowcase = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="hidden md:flex bg-gray-800/50 hover:bg-passion text-white border-none" />
-          <CarouselNext className="hidden md:flex bg-gray-800/50 hover:bg-passion text-white border-none" />
+          <CarouselPrevious className="hidden md:flex bg-gray-800/50 hover:bg-fashion-pink text-white border-none" />
+          <CarouselNext className="hidden md:flex bg-gray-800/50 hover:bg-fashion-pink text-white border-none" />
         </Carousel>
       </div>
     </section>
