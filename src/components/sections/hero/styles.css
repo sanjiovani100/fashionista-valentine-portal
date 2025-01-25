@@ -6,39 +6,27 @@
   pointer-events: none;
   will-change: transform;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  transition: transform 0.3s ease-out;
 }
 
 .heart-1 {
   top: 20%;
   left: 15%;
-  animation: float 20s ease-in-out infinite;
 }
 
 .heart-2 {
   top: 40%;
   right: 20%;
-  animation: float 25s ease-in-out infinite;
 }
 
 .heart-3 {
   bottom: 30%;
   left: 30%;
-  animation: float 22s ease-in-out infinite;
 }
 
 .heart-4 {
   bottom: 40%;
   right: 25%;
-  animation: float 28s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
 }
 
 /* Animation classes */
@@ -58,10 +46,13 @@
   }
 }
 
-.delay-200 {
-  animation-delay: 200ms;
+/* Add smooth transitions for all interactive elements */
+button {
+  transition: all 0.3s ease-out;
 }
 
-.delay-300 {
-  animation-delay: 300ms;
+/* Enhance heart visibility on hover */
+.heart:hover {
+  color: rgba(255, 193, 193, 0.5);
+  transform: scale(1.1);
 }
