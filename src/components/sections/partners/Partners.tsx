@@ -31,8 +31,8 @@ const roleCards: RoleCard[] = [
       "International exposure",
       "Professional training sessions"
     ],
-    ctaText: "Register as Model",
-    path: "/register?role=model",
+    ctaText: "Join as Model",
+    path: "/register/model",
     testimonial: {
       id: 1,
       name: "Sofia Martinez",
@@ -51,7 +51,7 @@ const roleCards: RoleCard[] = [
       "Marketing support"
     ],
     ctaText: "Join as Designer",
-    path: "/register?role=designer",
+    path: "/register/designer",
     testimonial: {
       id: 2,
       name: "Carlos Rivera",
@@ -70,7 +70,7 @@ const roleCards: RoleCard[] = [
       "Premium positioning"
     ],
     ctaText: "Become a Sponsor",
-    path: "/register?role=sponsor",
+    path: "/register/sponsor",
     testimonial: {
       id: 3,
       name: "Luxury Brand Co",
