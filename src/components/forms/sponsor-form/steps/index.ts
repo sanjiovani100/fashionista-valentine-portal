@@ -1,6 +1,8 @@
 import { CompanyInformationStep } from './CompanyInformationStep';
 import { SponsorshipDetailsStep } from './SponsorshipDetailsStep';
 import { AdditionalRequirementsStep } from './AdditionalRequirementsStep';
+import { stepValidationSchemas } from '../schema';
+import type { FormStep } from '../types';
 
 export { 
   CompanyInformationStep as CompanyInformation,
@@ -8,7 +10,7 @@ export {
   AdditionalRequirementsStep as AdditionalRequirements 
 };
 
-export const steps = [
+export const steps: FormStep[] = [
   {
     id: 1,
     title: "Company Information",
