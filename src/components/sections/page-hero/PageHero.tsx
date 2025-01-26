@@ -10,6 +10,10 @@ interface PageHeroProps {
 }
 
 export const PageHero = ({ headline, subheading, role, className }: PageHeroProps) => {
+  const backgroundImage = role === "sponsor" 
+    ? "/lovable-uploads/30ae724b-7186-449a-ba71-b9438b79458f.png"
+    : "/fashionistas-logo.png";
+
   return (
     <section 
       className={cn(
@@ -22,11 +26,13 @@ export const PageHero = ({ headline, subheading, role, className }: PageHeroProp
     >
       {/* Background Image with Gradient Overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url("/fashionistas-logo.png")' }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[20s]
+                   hover:scale-110"
+        style={{ backgroundImage: `url("${backgroundImage}")` }}
       />
       <div 
-        className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/70 to-black/90"
+        className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/70 to-black/90
+                   backdrop-blur-sm"
         aria-hidden="true"
       />
       
