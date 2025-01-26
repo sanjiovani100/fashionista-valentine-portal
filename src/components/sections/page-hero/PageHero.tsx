@@ -11,20 +11,27 @@ interface PageHeroProps {
 
 export const PageHero = ({ headline, subheading, role, className }: PageHeroProps) => {
   return (
-    <section className={cn(
-      "relative min-h-screen flex items-center justify-center overflow-hidden",
-      "bg-gradient-to-b from-pure-black to-deep-purple",
-      className
-    )}>
+    <section 
+      className={cn(
+        "relative min-h-screen flex items-center justify-center overflow-hidden",
+        "bg-gradient-to-b from-pure-black to-deep-purple",
+        className
+      )}
+      role="banner"
+      aria-labelledby="hero-title"
+    >
       {/* Background Image with Gradient Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: 'url("/fashionistas-logo.png")' }}
       />
-      <div className="absolute inset-0 bg-overlay-gradient opacity-80" />
+      <div 
+        className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/70 to-black/90"
+        aria-hidden="true"
+      />
       
       {/* Animated Background Elements */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" aria-hidden="true">
         <motion.div 
           className="absolute top-1/4 left-1/4 w-64 h-64 bg-fashion-pink/20 rounded-full blur-3xl"
           animate={{
@@ -53,10 +60,11 @@ export const PageHero = ({ headline, subheading, role, className }: PageHeroProp
 
       {/* Content Container */}
       <div className="container relative z-20 max-w-[800px] mx-auto px-4 py-16">
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-8">
           {/* Heading */}
           <motion.h1 
-            className="font-poppins text-hero font-bold mb-6 tracking-tight"
+            id="hero-title"
+            className="font-poppins text-hero font-bold tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -80,22 +88,27 @@ export const PageHero = ({ headline, subheading, role, className }: PageHeroProp
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
+            role="group"
+            aria-label="Sponsorship actions"
           >
             <Button 
               size="lg"
               className="bg-primary-gradient hover:bg-hover-gradient active:bg-active-gradient
+                       backdrop-blur-sm border border-white/10
                        min-w-[200px] h-[48px] px-8 font-medium
-                       transition-all duration-300 ease-out transform hover:scale-105"
+                       transition-all duration-300 ease-out transform hover:scale-105
+                       hover:shadow-[0_0_20px_rgba(255,0,204,0.3)]"
             >
               Become a Sponsor
             </Button>
             <Button 
               variant="outline"
               size="lg"
-              className="bg-black/20 backdrop-blur-sm border-2 border-white/10
+              className="bg-black/20 backdrop-blur-sm border border-white/10
                        min-w-[200px] h-[48px] px-8 font-medium
                        transition-all duration-300 hover:bg-black/40
-                       transform hover:scale-105"
+                       transform hover:scale-105
+                       hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
             >
               Learn More
             </Button>
