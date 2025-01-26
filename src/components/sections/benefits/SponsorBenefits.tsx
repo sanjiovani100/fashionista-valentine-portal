@@ -106,8 +106,8 @@ export const SponsorBenefits = () => {
           >
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
               <img
-                src="/lovable-uploads/a57efa58-209f-4d52-993f-474234e69609.png"
-                alt="Fashion model representing our exclusive event, showcasing elegance and sophistication in a professional setting"
+                src="/lovable-uploads/252b7b0b-6130-4274-b1dc-f368cd218a9d.png"
+                alt="Fashion model in an elegant black dress with cutout detail, showcasing high-end fashion design against a neutral background"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div 
