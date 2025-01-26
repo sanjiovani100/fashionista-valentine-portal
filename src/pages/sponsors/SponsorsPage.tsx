@@ -3,6 +3,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/sections/page-hero/PageHero";
 import { BenefitsGrid } from "@/components/sections/benefits/BenefitsGrid";
 import { Feature } from "@/components/ui/feature";
+import { SponsorshipLevels } from "@/components/sections/sponsorship-levels/SponsorshipLevels";
 import { Building2, Target, Briefcase } from "lucide-react";
 
 const SponsorsPage = () => {
@@ -32,6 +33,7 @@ const SponsorsPage = () => {
         role="sponsor"
       />
       <Feature />
+      <SponsorshipLevels />
       <BenefitsGrid
         benefits={benefits}
         className="py-20"
