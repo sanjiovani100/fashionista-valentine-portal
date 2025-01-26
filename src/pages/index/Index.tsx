@@ -1,18 +1,21 @@
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Hero } from "@/components/sections/hero/Hero";
-import { EventDetails } from "@/components/sections/event-details/EventDetails";
+import { EventHighlights } from "@/components/sections/event-highlights/EventHighlights";
 import { LingerieShowcase } from "@/components/sections/lingerie-showcase/LingerieShowcase";
 import { TicketSelection } from "@/components/sections/ticket-selection/TicketSelection";
-import { EventHighlights } from "@/components/sections/event-highlights/EventHighlights";
+import { Partners } from "@/components/sections/partners/Partners";
+import { Sponsors } from "@/components/sections/sponsors/Sponsors";
+import { Cta } from "@/components/sections/cta/Cta";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import "@/styles/parallax.css";
 
 const Index = () => {
   const [heroRef, heroInView] = useInView({ threshold: 0.3 });
-  const [detailsRef, detailsInView] = useInView({ threshold: 0.3 });
+  const [highlightsRef, highlightsInView] = useInView({ threshold: 0.3 });
   const [showcaseRef, showcaseInView] = useInView({ threshold: 0.3 });
   const [ticketsRef, ticketsInView] = useInView({ threshold: 0.3 });
+  const [partnersRef, partnersInView] = useInView({ threshold: 0.3 });
 
   return (
     <PageLayout>
@@ -21,11 +24,11 @@ const Index = () => {
       </motion.div>
 
       <motion.div 
-        ref={detailsRef}
-        className={`parallax-section section-transition ${detailsInView ? 'in-view' : ''}`}
+        ref={highlightsRef}
+        className={`parallax-section section-transition ${highlightsInView ? 'in-view' : ''}`}
         style={{ '--parallax-speed': '0.2' } as React.CSSProperties}
       >
-        <EventDetails />
+        <EventHighlights />
       </motion.div>
 
       <motion.div 
@@ -44,8 +47,20 @@ const Index = () => {
         <TicketSelection />
       </motion.div>
 
+      <motion.div 
+        ref={partnersRef}
+        className={`parallax-section section-transition ${partnersInView ? 'in-view' : ''}`}
+        style={{ '--parallax-speed': '0.3' } as React.CSSProperties}
+      >
+        <Partners />
+      </motion.div>
+
       <motion.div className="parallax-section">
-        <EventHighlights />
+        <Sponsors />
+      </motion.div>
+
+      <motion.div className="parallax-section">
+        <Cta />
       </motion.div>
     </PageLayout>
   );
