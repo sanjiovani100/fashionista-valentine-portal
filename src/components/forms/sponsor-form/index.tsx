@@ -9,8 +9,8 @@ import { FormNavigation } from '@/components/ui/form-navigation';
 import { FormProvider, useFormContext } from './context';
 import { FormErrorBoundary } from './components/FormErrorBoundary';
 import { sponsorFormSchema } from './schema';
-import type { SponsorFormData } from './types';
 import { CompanyInformation, SponsorshipDetails, AdditionalRequirements } from './steps';
+import type { SponsorFormData } from './types';
 import { supabase } from '@/integrations/supabase/client';
 
 const SponsorRegistrationForm = () => {
