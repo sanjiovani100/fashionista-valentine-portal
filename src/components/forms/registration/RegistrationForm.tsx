@@ -1,75 +1,23 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { ModelForm } from './ModelForm';
 import { DesignerForm } from './DesignerForm';
 import { SponsorForm } from './SponsorForm';
 import { RoleSelector } from './RoleSelector';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import type { Database } from '@/integrations/supabase/types';
-
-type Tables = Database['public']['Tables'];
-type ApplicationInsert = Tables['applications']['Insert'];
-type ModelApplicationInsert = Tables['model_applications']['Insert'];
-type DesignerApplicationInsert = Tables['designer_applications']['Insert'];
-type SponsorApplicationInsert = Tables['sponsor_applications']['Insert'];
-
-// Define role-specific schemas
-const modelSchema = z.object({
-  height: z.number().min(100).max(250),
-  bust: z.number().min(50).max(150),
-  waist: z.number().min(50).max(150),
-  portfolioLink: z.string().url().optional().nullable(),
-  instagramHandle: z.string().optional().nullable()
-});
-
-const designerSchema = z.object({
-  brandName: z.string().min(2),
-  website: z.string().url().optional().nullable(),
-  collectionDescription: z.string().min(10),
-  numberOfPieces: z.number().min(1),
-  spaceRequirements: z.string().min(2)
-});
-
-const sponsorSchema = z.object({
-  companyName: z.string().min(2),
-  industry: z.string().min(2),
-  companyDescription: z.string().min(10),
-  marketingGoals: z.string().min(10),
-  partnershipPreferences: z.string().min(10)
-});
-
-// Common schema for all roles
-const commonSchema = z.object({
-  firstName: z.string().min(2, 'First name is required'),
-  lastName: z.string().min(2, 'Last name is required'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().min(10, 'Valid phone number is required'),
-  experience: z.string().min(10, 'Please describe your experience'),
-  references: z.string().optional()
-});
-
-type FormSchema = z.infer<typeof commonSchema> & 
-  Partial<z.infer<typeof modelSchema>> & 
-  Partial<z.infer<typeof designerSchema>> & 
-  Partial<z.infer<typeof sponsorSchema>>;
+import { CommonFields } from './components/CommonFields';
+import { useFormSubmission } from './hooks/useFormSubmission';
+import { commonSchema, modelSchema, designerSchema, sponsorSchema, type FormSchema } from './schemas/formSchemas';
 
 export const RegistrationForm = () => {
   const [searchParams] = useSearchParams();
   const [selectedRole, setSelectedRole] = React.useState(searchParams.get('role') || 'model');
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const { submitForm, isSubmitting } = useFormSubmission();
 
-  // Get the appropriate schema based on role
   const getSchemaForRole = () => {
     switch (selectedRole) {
       case 'model':
@@ -96,100 +44,7 @@ export const RegistrationForm = () => {
   });
 
   const onSubmit = async (data: FormSchema) => {
-    setIsSubmitting(true);
-    try {
-      // Insert main application
-      const applicationData: ApplicationInsert = {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        experience: data.experience,
-        reference_info: data.references,
-        role: selectedRole,
-        status: 'pending'
-      };
-
-      const { data: application, error: applicationError } = await supabase
-        .from('applications')
-        .insert(applicationData)
-        .select()
-        .single();
-
-      if (applicationError) throw applicationError;
-
-      // Handle role-specific data
-      switch (selectedRole) {
-        case 'model': {
-          const modelData: ModelApplicationInsert = {
-            application_id: application.id,
-            height: data.height!,
-            bust: data.bust!,
-            waist: data.waist!,
-            portfolio_link: data.portfolioLink,
-            instagram_handle: data.instagramHandle
-          };
-          
-          const { error: roleError } = await supabase
-            .from('model_applications')
-            .insert(modelData);
-            
-          if (roleError) throw roleError;
-          break;
-        }
-        case 'designer': {
-          const designerData: DesignerApplicationInsert = {
-            application_id: application.id,
-            brand_name: data.brandName!,
-            website: data.website,
-            collection_description: data.collectionDescription!,
-            number_of_pieces: data.numberOfPieces!,
-            space_requirements: data.spaceRequirements!
-          };
-          
-          const { error: roleError } = await supabase
-            .from('designer_applications')
-            .insert(designerData);
-            
-          if (roleError) throw roleError;
-          break;
-        }
-        case 'sponsor': {
-          const sponsorData: SponsorApplicationInsert = {
-            application_id: application.id,
-            company_name: data.companyName!,
-            industry: data.industry!,
-            company_description: data.companyDescription!,
-            marketing_goals: data.marketingGoals!,
-            partnership_preferences: data.partnershipPreferences!
-          };
-          
-          const { error: roleError } = await supabase
-            .from('sponsor_applications')
-            .insert(sponsorData);
-            
-          if (roleError) throw roleError;
-          break;
-        }
-      }
-
-      toast({
-        title: "Application Submitted Successfully!",
-        description: "We'll review your application and get back to you soon.",
-      });
-
-      // Navigate to confirmation page
-      navigate(`/confirmation?role=${selectedRole}&id=${application.id}`);
-
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error Submitting Application",
-        description: error.message || "Please try again later.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    await submitForm(data, selectedRole);
   };
 
   return (
@@ -198,101 +53,7 @@ export const RegistrationForm = () => {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your first name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your last name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="Enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone</FormLabel>
-                  <FormControl>
-                    <Input type="tel" placeholder="Enter your phone number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <FormField
-            control={form.control}
-            name="experience"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Experience</FormLabel>
-                <FormControl>
-                  <Textarea 
-                    placeholder="Tell us about your relevant experience"
-                    className="min-h-[100px]"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="references"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>References (Optional)</FormLabel>
-                <FormControl>
-                  <Textarea 
-                    placeholder="List any professional references"
-                    className="min-h-[100px]"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <CommonFields form={form} />
 
           {selectedRole === 'model' && <ModelForm />}
           {selectedRole === 'designer' && <DesignerForm />}
