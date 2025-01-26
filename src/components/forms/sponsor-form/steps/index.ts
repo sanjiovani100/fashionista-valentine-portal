@@ -1,6 +1,6 @@
-import { CompanyInformation } from './company-information/CompanyInformation';
-import { SponsorshipDetails } from './sponsorship-details/SponsorshipDetails';
-import { AdditionalRequirements } from './additional-requirements/AdditionalRequirements';
+import { CompanyInformation } from './company-information';
+import { SponsorshipDetails } from './sponsorship-details';
+import { AdditionalRequirements } from './additional-requirements';
 import { FormStep } from '../types';
 import { stepValidationSchemas } from '../schema';
 
