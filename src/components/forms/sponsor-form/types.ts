@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { UseFormReturn } from 'react-hook-form';
-import { sponsorFormSchema } from './schema';
+import { sponsorFormSchema } from './schemas/validationSchemas';
 
 export type SponsorFormData = z.infer<typeof sponsorFormSchema>;
 
@@ -12,28 +12,34 @@ export interface FormStep {
   validationSchema: z.ZodObject<any>;
 }
 
+export interface FormState {
+  isDirty: boolean;
+  isValid: boolean;
+  errors: Record<string, any>;
+}
+
+export interface FormNavigation {
+  canGoNext: boolean;
+  canGoPrev: boolean;
+  isFirstStep: boolean;
+  isLastStep: boolean;
+}
+
+export interface FormActions {
+  nextStep: () => Promise<void>;
+  prevStep: () => void;
+  setStep: (step: number) => void;
+  resetForm: () => void;
+  saveProgress: () => void;
+}
+
 export interface FormContextType {
   form: UseFormReturn<SponsorFormData>;
   currentStep: number;
   isSubmitting: boolean;
   progress: number;
   steps: FormStep[];
-  formState: {
-    isDirty: boolean;
-    isValid: boolean;
-    errors: Record<string, any>;
-  };
-  actions: {
-    nextStep: () => void;
-    prevStep: () => void;
-    setStep: (step: number) => void;
-    resetForm: () => void;
-    saveProgress: () => void;
-  };
-  navigation: {
-    canGoNext: boolean;
-    canGoPrev: boolean;
-    isFirstStep: boolean;
-    isLastStep: boolean;
-  };
+  formState: FormState;
+  actions: FormActions;
+  navigation: FormNavigation;
 }

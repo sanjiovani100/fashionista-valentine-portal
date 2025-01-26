@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { useFormStorage } from '../hooks/use-form-storage';
-import { FormContextType, SponsorFormData } from './types';
+import { useFormStorage } from '../hooks/useFormStorage';
+import { FormContextType, SponsorFormData } from '../types';
 import { steps } from './steps';
-import { useFormActions } from './useFormActions';
+import { useFormStep } from '../hooks/useFormStep';
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
@@ -11,43 +11,17 @@ export const FormProvider: React.FC<{
   children: React.ReactNode;
   form: UseFormReturn<SponsorFormData>;
 }> = ({ children, form }) => {
-  const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { clearStorage } = useFormStorage(form);
-
-  const currentStepData = steps[currentStep - 1];
-  const progress = (currentStep / steps.length) * 100;
-
-  const validateCurrentStep = async () => {
-    const currentFields = currentStepData.fields;
-    const currentValues = form.getValues();
-    const stepData = Object.fromEntries(
-      currentFields.map(field => [field, currentValues[field]])
-    );
-
-    try {
-      await currentStepData.validationSchema.parseAsync(stepData);
-      return true;
-    } catch (error) {
-      const zodError = error as any;
-      zodError.errors.forEach((err: any) => {
-        form.setError(err.path[0] as any, {
-          type: 'manual',
-          message: err.message
-        });
-      });
-      return false;
-    }
-  };
-
-  const actions = useFormActions(
-    form,
-    currentStep,
+  const { 
+    currentStep, 
     setCurrentStep,
-    validateCurrentStep,
-    clearStorage,
-    steps.length
-  );
+    nextStep,
+    prevStep,
+    validateCurrentStep 
+  } = useFormStep(form, steps.length);
+
+  const progress = (currentStep / steps.length) * 100;
 
   const contextValue: FormContextType = {
     form,
@@ -60,7 +34,23 @@ export const FormProvider: React.FC<{
       isValid: form.formState.isValid,
       errors: form.formState.errors,
     },
-    actions,
+    actions: {
+      nextStep,
+      prevStep,
+      setStep: (step: number) => {
+        if (step >= 1 && step <= steps.length) {
+          setCurrentStep(step);
+        }
+      },
+      resetForm: () => {
+        form.reset();
+        setCurrentStep(1);
+        clearStorage();
+      },
+      saveProgress: () => {
+        // Auto-save is handled by useFormStorage
+      }
+    },
     navigation: {
       canGoNext: currentStep < steps.length,
       canGoPrev: currentStep > 1,
