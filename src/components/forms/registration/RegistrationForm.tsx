@@ -15,6 +15,32 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 
+// Define role-specific schemas
+const modelSchema = z.object({
+  height: z.number().min(100).max(250),
+  bust: z.number().min(50).max(150),
+  waist: z.number().min(50).max(150),
+  portfolioLink: z.string().url().optional().nullable(),
+  instagramHandle: z.string().optional().nullable()
+});
+
+const designerSchema = z.object({
+  brandName: z.string().min(2),
+  website: z.string().url().optional().nullable(),
+  collectionDescription: z.string().min(10),
+  numberOfPieces: z.number().min(1),
+  spaceRequirements: z.string().min(2)
+});
+
+const sponsorSchema = z.object({
+  companyName: z.string().min(2),
+  industry: z.string().min(2),
+  companyDescription: z.string().min(10),
+  marketingGoals: z.string().min(10),
+  partnershipPreferences: z.string().min(10)
+});
+
+// Common schema for all roles
 const commonSchema = z.object({
   firstName: z.string().min(2, 'First name is required'),
   lastName: z.string().min(2, 'Last name is required'),
@@ -24,6 +50,11 @@ const commonSchema = z.object({
   references: z.string().optional()
 });
 
+type FormSchema = z.infer<typeof commonSchema> & 
+  Partial<z.infer<typeof modelSchema>> & 
+  Partial<z.infer<typeof designerSchema>> & 
+  Partial<z.infer<typeof sponsorSchema>>;
+
 export const RegistrationForm = () => {
   const [searchParams] = useSearchParams();
   const [selectedRole, setSelectedRole] = React.useState(searchParams.get('role') || 'model');
@@ -31,8 +62,22 @@ export const RegistrationForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const form = useForm({
-    resolver: zodResolver(commonSchema),
+  // Get the appropriate schema based on role
+  const getSchemaForRole = () => {
+    switch (selectedRole) {
+      case 'model':
+        return commonSchema.merge(modelSchema);
+      case 'designer':
+        return commonSchema.merge(designerSchema);
+      case 'sponsor':
+        return commonSchema.merge(sponsorSchema);
+      default:
+        return commonSchema;
+    }
+  };
+
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(getSchemaForRole()),
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -43,7 +88,7 @@ export const RegistrationForm = () => {
     }
   });
 
-  const onSubmit = async (data: z.infer<typeof commonSchema>) => {
+  const onSubmit = async (data: FormSchema) => {
     setIsSubmitting(true);
     try {
       // Insert main application
@@ -65,44 +110,45 @@ export const RegistrationForm = () => {
       if (applicationError) throw applicationError;
 
       // Handle role-specific data
-      const roleSpecificData = form.getValues();
-      let roleTableName = '';
-      let roleData = {};
+      let roleTableName: 'model_applications' | 'designer_applications' | 'sponsor_applications';
+      let roleData: Record<string, any> = {};
 
       switch (selectedRole) {
         case 'model':
           roleTableName = 'model_applications';
           roleData = {
             application_id: application.id,
-            height: roleSpecificData.height,
-            bust: roleSpecificData.bust,
-            waist: roleSpecificData.waist,
-            portfolio_link: roleSpecificData.portfolioLink,
-            instagram_handle: roleSpecificData.instagramHandle
+            height: data.height,
+            bust: data.bust,
+            waist: data.waist,
+            portfolio_link: data.portfolioLink,
+            instagram_handle: data.instagramHandle
           };
           break;
         case 'designer':
           roleTableName = 'designer_applications';
           roleData = {
             application_id: application.id,
-            brand_name: roleSpecificData.brandName,
-            website: roleSpecificData.website,
-            collection_description: roleSpecificData.collectionDescription,
-            number_of_pieces: roleSpecificData.numberOfPieces,
-            space_requirements: roleSpecificData.spaceRequirements
+            brand_name: data.brandName,
+            website: data.website,
+            collection_description: data.collectionDescription,
+            number_of_pieces: data.numberOfPieces,
+            space_requirements: data.spaceRequirements
           };
           break;
         case 'sponsor':
           roleTableName = 'sponsor_applications';
           roleData = {
             application_id: application.id,
-            company_name: roleSpecificData.companyName,
-            industry: roleSpecificData.industry,
-            company_description: roleSpecificData.companyDescription,
-            marketing_goals: roleSpecificData.marketingGoals,
-            partnership_preferences: roleSpecificData.partnershipPreferences
+            company_name: data.companyName,
+            industry: data.industry,
+            company_description: data.companyDescription,
+            marketing_goals: data.marketingGoals,
+            partnership_preferences: data.partnershipPreferences
           };
           break;
+        default:
+          throw new Error('Invalid role selected');
       }
 
       const { error: roleError } = await supabase
