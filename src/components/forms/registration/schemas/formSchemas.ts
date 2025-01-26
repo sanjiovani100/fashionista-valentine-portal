@@ -5,7 +5,8 @@ export const modelSchema = z.object({
   bust: z.number().min(50).max(150),
   waist: z.number().min(50).max(150),
   portfolioLink: z.string().url().optional().nullable(),
-  instagramHandle: z.string().optional().nullable()
+  instagramHandle: z.string().optional().nullable(),
+  portfolioFiles: z.array(z.string()).optional().default([])
 });
 
 export const designerSchema = z.object({
@@ -13,7 +14,8 @@ export const designerSchema = z.object({
   website: z.string().url().optional().nullable(),
   collectionDescription: z.string().min(10),
   numberOfPieces: z.number().min(1),
-  spaceRequirements: z.string().min(2)
+  spaceRequirements: z.string().min(2),
+  collectionFiles: z.array(z.string()).optional().default([])
 });
 
 export const sponsorSchema = z.object({
@@ -21,7 +23,8 @@ export const sponsorSchema = z.object({
   industry: z.string().min(2),
   companyDescription: z.string().min(10),
   marketingGoals: z.string().min(10),
-  partnershipPreferences: z.string().min(10)
+  partnershipPreferences: z.string().min(10),
+  companyFiles: z.array(z.string()).optional().default([])
 });
 
 export const commonSchema = z.object({

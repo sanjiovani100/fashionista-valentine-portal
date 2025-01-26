@@ -58,6 +58,8 @@ export type Database = {
           collection_description: string
           collection_files: Json | null
           id: string
+          max_collection_files: number | null
+          max_file_size_mb: number | null
           number_of_pieces: number
           space_requirements: string
           website: string | null
@@ -68,6 +70,8 @@ export type Database = {
           collection_description: string
           collection_files?: Json | null
           id?: string
+          max_collection_files?: number | null
+          max_file_size_mb?: number | null
           number_of_pieces: number
           space_requirements: string
           website?: string | null
@@ -78,6 +82,8 @@ export type Database = {
           collection_description?: string
           collection_files?: Json | null
           id?: string
+          max_collection_files?: number | null
+          max_file_size_mb?: number | null
           number_of_pieces?: number
           space_requirements?: string
           website?: string | null
@@ -99,6 +105,8 @@ export type Database = {
           height: number
           id: string
           instagram_handle: string | null
+          max_file_size_mb: number | null
+          max_portfolio_files: number | null
           portfolio_files: Json | null
           portfolio_link: string | null
           waist: number
@@ -109,6 +117,8 @@ export type Database = {
           height: number
           id?: string
           instagram_handle?: string | null
+          max_file_size_mb?: number | null
+          max_portfolio_files?: number | null
           portfolio_files?: Json | null
           portfolio_link?: string | null
           waist: number
@@ -119,6 +129,8 @@ export type Database = {
           height?: number
           id?: string
           instagram_handle?: string | null
+          max_file_size_mb?: number | null
+          max_portfolio_files?: number | null
           portfolio_files?: Json | null
           portfolio_link?: string | null
           waist?: number
@@ -142,6 +154,8 @@ export type Database = {
           id: string
           industry: string
           marketing_goals: string
+          max_company_files: number | null
+          max_file_size_mb: number | null
           partnership_preferences: string
         }
         Insert: {
@@ -152,6 +166,8 @@ export type Database = {
           id?: string
           industry: string
           marketing_goals: string
+          max_company_files?: number | null
+          max_file_size_mb?: number | null
           partnership_preferences: string
         }
         Update: {
@@ -162,6 +178,8 @@ export type Database = {
           id?: string
           industry?: string
           marketing_goals?: string
+          max_company_files?: number | null
+          max_file_size_mb?: number | null
           partnership_preferences?: string
         }
         Relationships: [

@@ -3,9 +3,14 @@ import { Input } from '@/components/ui/input';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { useFormContext } from 'react-hook-form';
 import type { FormSchema } from './schemas/formSchemas';
+import { FileUpload } from './components/FileUpload';
 
 export const ModelForm = () => {
-  const { control } = useFormContext<FormSchema>();
+  const { control, setValue } = useFormContext<FormSchema>();
+
+  const handleFileUpload = (urls: string[]) => {
+    setValue('portfolioFiles', urls);
+  };
 
   return (
     <div className="space-y-6 border-t border-fashion-pink/20 pt-6">
@@ -84,6 +89,26 @@ export const ModelForm = () => {
           )}
         />
       </div>
+
+      <FormField
+        control={control}
+        name="portfolioFiles"
+        render={() => (
+          <FormItem>
+            <FormLabel>Portfolio Images</FormLabel>
+            <FormControl>
+              <FileUpload
+                role="model"
+                maxFiles={5}
+                maxSizeMB={10}
+                onUploadComplete={handleFileUpload}
+                acceptedFileTypes={['image/*']}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 };
