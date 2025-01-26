@@ -1,10 +1,14 @@
+import { CompanyInformation } from './company-information/CompanyInformation';
+import { SponsorshipDetails } from './sponsorship-details/SponsorshipDetails';
+import { AdditionalRequirements } from './additional-requirements/AdditionalRequirements';
 import { FormStep } from '../types';
 import { stepValidationSchemas } from '../schema';
-import { CompanyInformation } from './company-information/CompanyDetails';
-import { SponsorshipDetails } from './sponsorship-details/SponsorshipLevel';
-import { AdditionalRequirements } from './additional-requirements/FileUploads';
 
-export { CompanyInformation, SponsorshipDetails, AdditionalRequirements };
+export { 
+  CompanyInformation,
+  SponsorshipDetails,
+  AdditionalRequirements
+};
 
 export const steps: FormStep[] = [
   {
