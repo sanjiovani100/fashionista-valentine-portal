@@ -2,7 +2,7 @@ import React from 'react';
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/sections/page-hero/PageHero";
 import { BenefitsGrid } from "@/components/sections/benefits/BenefitsGrid";
-import { SponsorBenefits } from "@/components/sections/benefits/SponsorBenefits";
+import { Feature } from "@/components/ui/feature";
 import { Building2, Target, Briefcase } from "lucide-react";
 
 const SponsorsPage = () => {
@@ -31,7 +31,7 @@ const SponsorsPage = () => {
         subheading="Showcase your brand to an exclusive audience of fashion industry leaders"
         role="sponsor"
       />
-      <SponsorBenefits />
+      <Feature />
       <BenefitsGrid
         benefits={benefits}
         className="py-20"
