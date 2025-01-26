@@ -1,37 +1,19 @@
 import { useState, useCallback } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { SponsorFormData } from '../types';
-import { stepValidationSchemas } from '../schemas/validationSchemas';
+import { useFormValidation } from './useFormValidation';
 
 export const useFormStep = (form: UseFormReturn<SponsorFormData>, totalSteps: number) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const validateCurrentStep = async () => {
-    const currentSchema = stepValidationSchemas[currentStep];
-    const currentValues = form.getValues();
-
-    try {
-      await currentSchema.parseAsync(currentValues);
-      return true;
-    } catch (error: any) {
-      error.errors?.forEach((err: any) => {
-        form.setError(err.path[0] as any, {
-          type: 'manual',
-          message: err.message,
-        });
-      });
-      return false;
-    }
-  };
+  const { validateStep } = useFormValidation(form);
 
   const nextStep = useCallback(async () => {
-    const isValid = await validateCurrentStep();
+    const { isValid } = await validateStep(currentStep);
     if (isValid && currentStep < totalSteps) {
       setCurrentStep(prev => prev + 1);
       document.getElementById('form-top')?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [currentStep, totalSteps, validateCurrentStep]);
+  }, [currentStep, totalSteps, validateStep]);
 
   const prevStep = useCallback(() => {
     if (currentStep > 1) {
@@ -43,10 +25,9 @@ export const useFormStep = (form: UseFormReturn<SponsorFormData>, totalSteps: nu
   return {
     currentStep,
     setCurrentStep,
-    isSubmitting,
-    setIsSubmitting,
     nextStep,
     prevStep,
-    validateCurrentStep,
+    isFirstStep: currentStep === 1,
+    isLastStep: currentStep === totalSteps,
   };
 };
