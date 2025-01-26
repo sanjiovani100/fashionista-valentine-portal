@@ -1,48 +1,26 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { FormFieldWrapper } from '../../components/FormFieldWrapper';
-import { FileUpload } from '@/components/forms/registration/components/FileUpload';
+import { FormSection } from '../../components/FormSection';
+import { FileUploads as FileUploadsComponent } from './components/FileUploads';
+import { PaymentDetails } from './components/PaymentDetails';
 
-export const FileUploads = () => {
-  const { control, setValue } = useFormContext();
-
-  const handleLogoUpload = (urls: string[]) => {
-    setValue('logoUrl', urls[0]);
-  };
-
-  const handleGuidelinesUpload = (urls: string[]) => {
-    setValue('brandGuidelinesUrl', urls[0]);
-  };
-
+export const AdditionalRequirements = () => {
   return (
-    <div className="space-y-6">
-      <FormFieldWrapper
-        name="logoUrl"
-        label="Company Logo"
-        control={control}
+    <div className="space-y-8">
+      <h2 className="text-3xl font-playfair mb-6">Additional Requirements</h2>
+      
+      <FormSection
+        title="Brand Assets"
+        description="Upload your company logo and brand guidelines"
       >
-        <FileUpload
-          role="sponsor"
-          maxFiles={1}
-          maxSizeMB={5}
-          onUploadComplete={handleLogoUpload}
-          acceptedFileTypes={['image/*']}
-        />
-      </FormFieldWrapper>
+        <FileUploadsComponent />
+      </FormSection>
 
-      <FormFieldWrapper
-        name="brandGuidelinesUrl"
-        label="Brand Guidelines"
-        control={control}
+      <FormSection
+        title="Payment and Special Requirements"
+        description="Specify your payment preferences and any special requirements"
       >
-        <FileUpload
-          role="sponsor"
-          maxFiles={1}
-          maxSizeMB={10}
-          onUploadComplete={handleGuidelinesUpload}
-          acceptedFileTypes={['application/pdf']}
-        />
-      </FormFieldWrapper>
+        <PaymentDetails />
+      </FormSection>
     </div>
   );
 };
