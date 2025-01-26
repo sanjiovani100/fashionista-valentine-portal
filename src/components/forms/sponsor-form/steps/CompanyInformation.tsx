@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormSection } from '../components/FormSection';
-import CompanyDetails from './company-information/CompanyDetails';
-import ContactDetails from './company-information/ContactDetails';
+import { CompanyDetails } from './company-information/CompanyDetails';
+import { ContactDetails } from './company-information/ContactDetails';
 
 export const CompanyInformation = () => {
   return (

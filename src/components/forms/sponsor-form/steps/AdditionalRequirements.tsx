@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormSection } from '../components/FormSection';
-import FileUploads from './additional-requirements/FileUploads';
-import PaymentDetails from './additional-requirements/PaymentDetails';
+import { FileUploads } from './additional-requirements/FileUploads';
+import { PaymentDetails } from './additional-requirements/PaymentDetails';
 
 export const AdditionalRequirements = () => {
   return (
