@@ -20,7 +20,7 @@ export const steps: FormStep[] = [
     id: 3,
     title: "Additional Requirements",
     description: "Upload your brand assets",
-    fields: ['logoFile', 'brandGuidelinesFile', 'specialRequirements', 'paymentMethod'],
+    fields: ['logoUrl', 'brandGuidelinesUrl', 'specialRequirements', 'paymentMethod'],
     validationSchema: stepValidationSchemas[3]
   }
 ];
