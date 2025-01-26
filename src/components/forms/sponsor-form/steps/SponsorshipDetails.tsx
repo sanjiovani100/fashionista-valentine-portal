@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormSection } from '../components/FormSection';
-import { SponsorshipLevel } from './sponsorship-details/SponsorshipLevel';
-import { MarketingDetails } from './sponsorship-details/MarketingDetails';
+import SponsorshipLevel from './sponsorship-details/SponsorshipLevel';
+import MarketingDetails from './sponsorship-details/MarketingDetails';
 
 export const SponsorshipDetails = () => {
   return (

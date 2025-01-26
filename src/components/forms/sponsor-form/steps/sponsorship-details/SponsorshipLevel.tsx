@@ -1,26 +1,37 @@
 import React from 'react';
-import { FormSection } from '../../components/FormSection';
-import { SponsorshipLevel as SponsorshipLevelComponent } from './components/SponsorshipLevel';
-import { MarketingDetails } from './components/MarketingDetails';
+import { useFormContext } from 'react-hook-form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { FormFieldWrapper } from '../../components/FormFieldWrapper';
 
-export const SponsorshipDetails = () => {
+const sponsorshipLevels = [
+  { value: 'gold', label: 'Gold Sponsor' },
+  { value: 'silver', label: 'Silver Sponsor' },
+  { value: 'bronze', label: 'Bronze Sponsor' },
+];
+
+export const SponsorshipLevel = () => {
+  const { control } = useFormContext();
+
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-playfair mb-6">Sponsorship Details</h2>
-      
-      <FormSection
-        title="Sponsorship Level"
-        description="Choose your preferred sponsorship package"
-      >
-        <SponsorshipLevelComponent />
-      </FormSection>
-
-      <FormSection
-        title="Marketing Information"
-        description="Tell us about your marketing objectives and target audience"
-      >
-        <MarketingDetails />
-      </FormSection>
-    </div>
+    <FormFieldWrapper
+      name="sponsorshipLevel"
+      label="Preferred Sponsorship Level"
+      control={control}
+    >
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Select sponsorship level" />
+        </SelectTrigger>
+        <SelectContent>
+          {sponsorshipLevels.map((level) => (
+            <SelectItem key={level.value} value={level.value}>
+              {level.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </FormFieldWrapper>
   );
 };
+
+export default SponsorshipLevel;

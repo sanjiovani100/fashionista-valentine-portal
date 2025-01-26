@@ -1,26 +1,30 @@
 import React from 'react';
-import { FormSection } from '../../components/FormSection';
-import { FileUploads as FileUploadsComponent } from './components/FileUploads';
-import { PaymentDetails } from './components/PaymentDetails';
+import { useFormContext } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { FormFieldWrapper } from '../../components/FormFieldWrapper';
 
-export const AdditionalRequirements = () => {
+export const FileUploads = () => {
+  const { control } = useFormContext();
+
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-playfair mb-6">Additional Requirements</h2>
-      
-      <FormSection
-        title="Brand Assets"
-        description="Upload your company logo and brand guidelines"
+    <div className="space-y-6">
+      <FormFieldWrapper
+        name="logoUrl"
+        label="Company Logo"
+        control={control}
       >
-        <FileUploadsComponent />
-      </FormSection>
+        <Input type="file" accept="image/*" />
+      </FormFieldWrapper>
 
-      <FormSection
-        title="Payment and Special Requirements"
-        description="Specify your payment preferences and any special requirements"
+      <FormFieldWrapper
+        name="brandGuidelinesUrl"
+        label="Brand Guidelines"
+        control={control}
       >
-        <PaymentDetails />
-      </FormSection>
+        <Input type="file" accept=".pdf" />
+      </FormFieldWrapper>
     </div>
   );
 };
+
+export default FileUploads;
