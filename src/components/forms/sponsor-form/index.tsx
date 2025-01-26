@@ -6,7 +6,7 @@ import { toast } from '@/components/ui/use-toast';
 import { Form } from '@/components/ui/form';
 import { FormProgress } from '@/components/ui/form-progress';
 import { FormNavigation } from '@/components/ui/form-navigation';
-import { FormProvider, useFormContext } from './context/FormContext';
+import { FormProvider } from './context/FormContext';
 import { FormErrorBoundary } from './components/FormErrorBoundary';
 import { sponsorFormSchema } from './schema';
 import type { SponsorFormData } from './types';
