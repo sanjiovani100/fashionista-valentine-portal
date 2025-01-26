@@ -9,7 +9,162 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          created_at: string | null
+          email: string
+          experience: string
+          first_name: string
+          id: string
+          last_name: string
+          phone: string
+          reference_info: string | null
+          role: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          experience: string
+          first_name: string
+          id?: string
+          last_name: string
+          phone: string
+          reference_info?: string | null
+          role: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          experience?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string
+          reference_info?: string | null
+          role?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      designer_applications: {
+        Row: {
+          application_id: string
+          brand_name: string
+          collection_description: string
+          id: string
+          number_of_pieces: number
+          space_requirements: string
+          website: string | null
+        }
+        Insert: {
+          application_id: string
+          brand_name: string
+          collection_description: string
+          id?: string
+          number_of_pieces: number
+          space_requirements: string
+          website?: string | null
+        }
+        Update: {
+          application_id?: string
+          brand_name?: string
+          collection_description?: string
+          id?: string
+          number_of_pieces?: number
+          space_requirements?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "designer_applications_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      model_applications: {
+        Row: {
+          application_id: string
+          bust: number
+          height: number
+          id: string
+          instagram_handle: string | null
+          portfolio_link: string | null
+          waist: number
+        }
+        Insert: {
+          application_id: string
+          bust: number
+          height: number
+          id?: string
+          instagram_handle?: string | null
+          portfolio_link?: string | null
+          waist: number
+        }
+        Update: {
+          application_id?: string
+          bust?: number
+          height?: number
+          id?: string
+          instagram_handle?: string | null
+          portfolio_link?: string | null
+          waist?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "model_applications_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsor_applications: {
+        Row: {
+          application_id: string
+          company_description: string
+          company_name: string
+          id: string
+          industry: string
+          marketing_goals: string
+          partnership_preferences: string
+        }
+        Insert: {
+          application_id: string
+          company_description: string
+          company_name: string
+          id?: string
+          industry: string
+          marketing_goals: string
+          partnership_preferences: string
+        }
+        Update: {
+          application_id?: string
+          company_description?: string
+          company_name?: string
+          id?: string
+          industry?: string
+          marketing_goals?: string
+          partnership_preferences?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_applications_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
