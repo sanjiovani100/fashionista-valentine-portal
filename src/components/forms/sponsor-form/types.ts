@@ -25,6 +25,11 @@ export interface FormNavigation {
   isLastStep: boolean;
 }
 
+export interface FormValidation {
+  validateCurrentStep: () => Promise<{ isValid: boolean; errors?: any }>;
+  validateStep: (step: number) => Promise<{ isValid: boolean; errors?: any }>;
+}
+
 export interface FormActions {
   nextStep: () => Promise<void>;
   prevStep: () => void;
@@ -42,4 +47,5 @@ export interface FormContextType {
   formState: FormState;
   actions: FormActions;
   navigation: FormNavigation;
+  validation: FormValidation;
 }

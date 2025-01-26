@@ -18,7 +18,8 @@ export const FormProvider: React.FC<{
     setCurrentStep,
     nextStep,
     prevStep,
-    validateCurrentStep 
+    validateCurrentStep,
+    validateStep
   } = useFormStep(form, steps.length);
 
   const progress = (currentStep / steps.length) * 100;
@@ -56,6 +57,10 @@ export const FormProvider: React.FC<{
       canGoPrev: currentStep > 1,
       isFirstStep: currentStep === 1,
       isLastStep: currentStep === steps.length
+    },
+    validation: {
+      validateCurrentStep,
+      validateStep
     }
   };
 

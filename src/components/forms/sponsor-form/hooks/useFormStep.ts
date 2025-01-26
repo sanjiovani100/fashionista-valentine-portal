@@ -33,6 +33,7 @@ export const useFormStep = (form: UseFormReturn<SponsorFormData>, totalSteps: nu
     nextStep,
     prevStep,
     validateCurrentStep,
+    validateStep,
     isFirstStep: currentStep === 1,
     isLastStep: currentStep === totalSteps,
   };
