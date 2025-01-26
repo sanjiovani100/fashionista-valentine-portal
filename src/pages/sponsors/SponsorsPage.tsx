@@ -5,7 +5,7 @@ import { RequirementsSection } from "@/components/sections/requirements/Requirem
 import { OpportunitiesSection } from "@/components/sections/opportunities/OpportunitiesSection";
 import { BenefitsGrid } from "@/components/sections/benefits/BenefitsGrid";
 import { RegistrationForm } from "@/components/forms/registration/RegistrationForm";
-import { Building2, Target, Briefcase, Heart } from "lucide-react";
+import { Building2, Target, Briefcase, Heart, Globe, TrendingUp } from "lucide-react";
 
 const SponsorsPage = () => {
   const requirements = [
@@ -41,6 +41,24 @@ const SponsorsPage = () => {
     }
   ];
 
+  const benefits = [
+    {
+      icon: Building2,
+      title: "Brand Visibility",
+      description: "Showcase your brand to our exclusive audience of fashion enthusiasts"
+    },
+    {
+      icon: Target,
+      title: "Target Marketing",
+      description: "Reach your ideal demographic through our focused events"
+    },
+    {
+      icon: Briefcase,
+      title: "Business Network",
+      description: "Connect with industry leaders and potential business partners"
+    }
+  ];
+
   return (
     <PageLayout>
       <PageHero 
@@ -59,7 +77,7 @@ const SponsorsPage = () => {
         opportunities={opportunities}
       />
       <BenefitsGrid
-        benefits={roleContent.sponsor.benefits}
+        benefits={benefits}
         className="py-20"
       />
       <section className="py-20 bg-black/40 backdrop-blur-sm">
