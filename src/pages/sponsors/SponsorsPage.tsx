@@ -5,7 +5,6 @@ import { RequirementsSection } from "@/components/sections/requirements/Requirem
 import { OpportunitiesSection } from "@/components/sections/opportunities/OpportunitiesSection";
 import { BenefitsGrid } from "@/components/sections/benefits/BenefitsGrid";
 import { RegistrationForm } from "@/components/forms/registration/RegistrationForm";
-import { roleContent } from "@/constants/role-content";
 import { Building2, Target, Briefcase, Heart } from "lucide-react";
 
 const SponsorsPage = () => {
@@ -45,8 +44,8 @@ const SponsorsPage = () => {
   return (
     <PageLayout>
       <PageHero 
-        headline={roleContent.sponsor.hero.title}
-        subheading={roleContent.sponsor.hero.subtitle}
+        headline="Partner with Us for an Unforgettable Fashion Experience"
+        subheading="Showcase your brand to an exclusive audience"
         role="sponsor"
       />
       <RequirementsSection

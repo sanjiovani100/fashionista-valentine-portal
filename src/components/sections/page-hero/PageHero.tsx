@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface PageHeroProps {
   headline: string;
@@ -11,12 +12,16 @@ interface PageHeroProps {
 export const PageHero = ({ headline, subheading, role, className }: PageHeroProps) => {
   return (
     <section className={cn(
-      "relative min-h-[80vh] flex items-center justify-center overflow-hidden",
+      "relative min-h-screen flex items-center justify-center overflow-hidden",
       "bg-gradient-to-b from-pure-black to-deep-purple",
       className
     )}>
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-black/40 z-10" />
+      {/* Background Image with Gradient Overlay */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url("/fashionistas-logo.png")' }}
+      />
+      <div className="absolute inset-0 bg-overlay-gradient opacity-80" />
       
       {/* Animated Background Elements */}
       <div className="absolute inset-0 z-0">
@@ -46,25 +51,56 @@ export const PageHero = ({ headline, subheading, role, className }: PageHeroProp
         />
       </div>
 
-      {/* Content */}
-      <div className="container relative z-20 text-center px-4">
-        <motion.h1 
-          className="font-playfair text-hero font-bold mb-6 tracking-tight"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          {headline}
-        </motion.h1>
-        
-        <motion.p 
-          className="font-montserrat text-h3 text-gray-300 max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {subheading}
-        </motion.p>
+      {/* Content Container */}
+      <div className="container relative z-20 max-w-[800px] mx-auto px-4 py-16">
+        <div className="text-center space-y-6">
+          {/* Heading */}
+          <motion.h1 
+            className="font-poppins text-hero font-bold mb-6 tracking-tight"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {headline}
+          </motion.h1>
+          
+          {/* Subheading */}
+          <motion.p 
+            className="font-montserrat text-body-large text-gray-300 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {subheading}
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <Button 
+              size="lg"
+              className="bg-primary-gradient hover:bg-hover-gradient active:bg-active-gradient
+                       min-w-[200px] h-[48px] px-8 font-medium
+                       transition-all duration-300 ease-out transform hover:scale-105"
+            >
+              Become a Sponsor
+            </Button>
+            <Button 
+              variant="outline"
+              size="lg"
+              className="bg-black/20 backdrop-blur-sm border-2 border-white/10
+                       min-w-[200px] h-[48px] px-8 font-medium
+                       transition-all duration-300 hover:bg-black/40
+                       transform hover:scale-105"
+            >
+              Learn More
+            </Button>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
