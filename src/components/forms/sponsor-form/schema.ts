@@ -23,22 +23,8 @@ export const sponsorFormSchema = z.object({
   previousExperience: z.string().optional(),
 
   // Additional Requirements
-  logoFile: z
-    .any()
-    .refine((file) => file?.size <= MAX_FILE_SIZE, 'Max file size is 5MB')
-    .refine(
-      (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
-      'Only .jpg, .png, and .pdf files are accepted'
-    )
-    .optional(),
-  brandGuidelinesFile: z
-    .any()
-    .refine((file) => file?.size <= MAX_FILE_SIZE, 'Max file size is 5MB')
-    .refine(
-      (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
-      'Only .jpg, .png, and .pdf files are accepted'
-    )
-    .optional(),
+  logoUrl: z.string().optional(),
+  brandGuidelinesUrl: z.string().optional(),
   specialRequirements: z.string().optional(),
   paymentMethod: z.string().min(2, 'Please select a payment method'),
 });
@@ -61,8 +47,8 @@ export const stepValidationSchemas = {
     previousExperience: sponsorFormSchema.shape.previousExperience,
   }),
   3: z.object({
-    logoFile: sponsorFormSchema.shape.logoFile,
-    brandGuidelinesFile: sponsorFormSchema.shape.brandGuidelinesFile,
+    logoUrl: sponsorFormSchema.shape.logoUrl,
+    brandGuidelinesUrl: sponsorFormSchema.shape.brandGuidelinesUrl,
     specialRequirements: sponsorFormSchema.shape.specialRequirements,
     paymentMethod: sponsorFormSchema.shape.paymentMethod,
   }),

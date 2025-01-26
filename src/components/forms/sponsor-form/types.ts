@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { UseFormReturn } from 'react-hook-form';
-import { sponsorFormSchema } from './schemas/validationSchemas';
+import { sponsorFormSchema } from './schema';
 
 export type SponsorFormData = z.infer<typeof sponsorFormSchema>;
 
