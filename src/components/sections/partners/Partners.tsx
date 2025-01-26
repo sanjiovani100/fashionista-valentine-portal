@@ -1,65 +1,160 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 interface Partner {
   id: number;
   name: string;
   role: string;
+  testimonial: string;
   image: string;
 }
 
-const partners = {
-  models: [
-    { id: 1, name: "Sofia Martinez", role: "Lead Model", image: "/placeholder.svg" },
-    { id: 2, name: "Isabella Rodriguez", role: "Fashion Model", image: "/placeholder.svg" },
-  ],
-  designers: [
-    { id: 1, name: "Carlos Rivera", role: "Lead Designer", image: "/placeholder.svg" },
-    { id: 2, name: "Maria Garcia", role: "Fashion Designer", image: "/placeholder.svg" },
-  ],
-  sponsors: [
-    { id: 1, name: "Luxury Brand Co", role: "Platinum Sponsor", image: "/placeholder.svg" },
-    { id: 2, name: "Fashion House", role: "Gold Sponsor", image: "/placeholder.svg" },
-  ],
-};
+interface RoleCard {
+  title: string;
+  subtitle: string;
+  benefits: string[];
+  ctaText: string;
+  path: string;
+  testimonial: Partner;
+}
+
+const roleCards: RoleCard[] = [
+  {
+    title: "Walk the Runway",
+    subtitle: "Join our exclusive modeling team",
+    benefits: [
+      "Professional portfolio opportunities",
+      "Network with top designers",
+      "International exposure",
+      "Professional training sessions"
+    ],
+    ctaText: "Register as Model",
+    path: "/register?role=model",
+    testimonial: {
+      id: 1,
+      name: "Sofia Martinez",
+      role: "Lead Model",
+      testimonial: "Being part of Fashionistas opened doors I never imagined possible.",
+      image: "/placeholder.svg"
+    }
+  },
+  {
+    title: "Showcase Your Collection",
+    subtitle: "Present your designs to the world",
+    benefits: [
+      "Media exposure",
+      "Industry connections",
+      "Dedicated showcase space",
+      "Marketing support"
+    ],
+    ctaText: "Join as Designer",
+    path: "/register?role=designer",
+    testimonial: {
+      id: 2,
+      name: "Carlos Rivera",
+      role: "Fashion Designer",
+      testimonial: "The platform gave my collection the visibility it deserved.",
+      image: "/placeholder.svg"
+    }
+  },
+  {
+    title: "Partner With Us",
+    subtitle: "Elevate your brand presence",
+    benefits: [
+      "Brand visibility",
+      "VIP access",
+      "Networking opportunities",
+      "Premium positioning"
+    ],
+    ctaText: "Become a Sponsor",
+    path: "/register?role=sponsor",
+    testimonial: {
+      id: 3,
+      name: "Luxury Brand Co",
+      role: "Premium Sponsor",
+      testimonial: "Our partnership with Fashionistas exceeded all expectations.",
+      image: "/placeholder.svg"
+    }
+  }
+];
 
 export const Partners = () => {
-  const renderPartnerCategory = (title: string, items: Partner[]) => (
-    <div className="mb-12">
-      <h3 className="text-2xl font-playfair mb-6 text-center">{title}</h3>
-      <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory">
-        {items.map((partner) => (
-          <motion.div
-            key={partner.id}
-            className="snap-center shrink-0"
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="w-[300px] bg-black/40 border-fashion-pink/20">
-              <CardContent className="p-6">
-                <img
-                  src={partner.image}
-                  alt={partner.name}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
-                <h4 className="text-xl font-montserrat mb-2">{partner.name}</h4>
-                <p className="text-gray-400 font-inter">{partner.role}</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
+  const navigate = useNavigate();
+
+  const handleRegistration = (path: string) => {
+    navigate(path);
+  };
 
   return (
     <section className="py-20 bg-gradient-to-br from-black to-deep-purple">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-playfair text-center mb-16">Our Partners</h2>
-        {renderPartnerCategory("Featured Models", partners.models)}
-        {renderPartnerCategory("Elite Designers", partners.designers)}
-        {renderPartnerCategory("Valued Sponsors", partners.sponsors)}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-playfair mb-4">Join the Experience</h2>
+          <p className="text-xl text-gray-300 font-montserrat">Choose your role in this extraordinary event</p>
+        </div>
+
+        <div className="flex overflow-x-auto gap-8 pb-8 snap-x snap-mandatory">
+          {roleCards.map((card, index) => (
+            <motion.div
+              key={index}
+              className="snap-center shrink-0 w-full md:w-[400px]"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <Card className="bg-black/40 border-fashion-pink/20 h-full">
+                <CardContent className="p-6">
+                  <h3 className="text-2xl font-playfair mb-2">{card.title}</h3>
+                  <p className="text-gray-400 font-montserrat mb-6">{card.subtitle}</p>
+                  
+                  <div className="space-y-4 mb-8">
+                    {card.benefits.map((benefit, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <Badge variant="secondary" className="bg-fashion-pink/10">
+                          ✦
+                        </Badge>
+                        <span className="text-gray-300">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="bg-white/5 rounded-lg p-4 mb-6">
+                    <div className="flex items-center gap-4 mb-3">
+                      <img
+                        src={card.testimonial.image}
+                        alt={card.testimonial.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <div>
+                        <h4 className="font-montserrat font-medium">{card.testimonial.name}</h4>
+                        <p className="text-sm text-gray-400">{card.testimonial.role}</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 italic">"{card.testimonial.testimonial}"</p>
+                  </div>
+                </CardContent>
+                
+                <CardFooter>
+                  <Button 
+                    onClick={() => handleRegistration(card.path)}
+                    className="w-full bg-gradient-to-r from-fashion-pink to-deep-purple hover:opacity-90"
+                  >
+                    {card.ctaText}
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <p className="text-gray-400 font-montserrat">
+            Limited spots available. Register now to secure your place.
+          </p>
+        </div>
       </div>
     </section>
   );
