@@ -1,1 +1,0 @@
-export { CompanyInformation } from './CompanyInformation';

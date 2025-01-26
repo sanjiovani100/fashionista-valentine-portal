@@ -1,1 +1,0 @@
-export { SponsorshipDetails } from './SponsorshipDetails';

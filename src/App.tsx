@@ -14,26 +14,28 @@ const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <BrowserRouter>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
           <Toaster />
           <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/models" element={<ModelsPage />} />
-            <Route path="/designers" element={<DesignersPage />} />
-            <Route path="/sponsors" element={<SponsorsPage />} />
-            <Route path="/confirmation" element={<Confirmation />} />
-            {/* Redirect old registration routes to new paths */}
-            <Route path="/register/model" element={<Navigate to="/models" replace />} />
-            <Route path="/register/designer" element={<Navigate to="/designers" replace />} />
-            <Route path="/register/sponsor" element={<Navigate to="/sponsors" replace />} />
-            <Route path="/register/*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/models" element={<ModelsPage />} />
+              <Route path="/designers" element={<DesignersPage />} />
+              <Route path="/sponsors" element={<SponsorsPage />} />
+              <Route path="/confirmation" element={<Confirmation />} />
+              {/* Redirect old registration routes to new paths */}
+              <Route path="/register/model" element={<Navigate to="/models" replace />} />
+              <Route path="/register/designer" element={<Navigate to="/designers" replace />} />
+              <Route path="/register/sponsor" element={<Navigate to="/sponsors" replace />} />
+              <Route path="/register/*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 };
 
