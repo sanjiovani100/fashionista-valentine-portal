@@ -53,8 +53,8 @@ export const FormProvider: React.FC<{
       await currentStepData.validationSchema.parseAsync(stepData);
       return true;
     } catch (error) {
-      const zodError = error as z.ZodError;
-      zodError.errors.forEach(err => {
+      const zodError = error as any;
+      zodError.errors.forEach((err: any) => {
         form.setError(err.path[0] as any, {
           type: 'manual',
           message: err.message
@@ -100,7 +100,6 @@ export const FormProvider: React.FC<{
         clearStorage();
       },
       saveProgress: () => {
-        // Progress is automatically saved by useFormStorage
         toast({
           title: 'Progress Saved',
           description: 'Your form progress has been saved automatically.'

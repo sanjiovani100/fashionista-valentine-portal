@@ -28,6 +28,7 @@ const SponsorRegistrationForm = () => {
           last_name: data.contactName.split(' ').slice(1).join(' '),
           email: data.contactEmail,
           phone: data.contactPhone,
+          experience: data.previousExperience || '',
           role: 'sponsor',
           status: 'pending'
         })
@@ -60,7 +61,6 @@ const SponsorRegistrationForm = () => {
         description: "We'll review your application and get back to you soon.",
       });
 
-      // Clear form and storage after successful submission
       form.reset();
       localStorage.removeItem('sponsor_form_data');
     } catch (error: any) {

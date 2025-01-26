@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { UseFormReturn } from 'react-hook-form';
 import { sponsorFormSchema } from './schema';
 
 export type SponsorFormData = z.infer<typeof sponsorFormSchema>;
