@@ -1,68 +1,31 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { toast } from '@/components/ui/use-toast';
 import { useFormStorage } from './hooks/use-form-storage';
-import { FormContextType, SponsorFormData, FormStep } from './types';
-import { stepValidationSchemas } from './schema';
+import { FormContextType, SponsorFormData } from './types';
+import { steps } from './steps';
+import { useFormStep } from './hooks/useFormStep';
+import { useFormValidation } from './hooks/useFormValidation';
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
-
-export const steps: FormStep[] = [
-  {
-    id: 1,
-    title: "Company Information",
-    description: "Tell us about your company",
-    fields: ['companyName', 'industry', 'website', 'companySize', 'contactName', 'contactPosition', 'contactEmail', 'contactPhone'],
-    validationSchema: stepValidationSchemas[1]
-  },
-  {
-    id: 2,
-    title: "Sponsorship Details",
-    description: "Choose your sponsorship package",
-    fields: ['sponsorshipLevel', 'marketingGoals', 'targetAudience', 'previousExperience'],
-    validationSchema: stepValidationSchemas[2]
-  },
-  {
-    id: 3,
-    title: "Additional Requirements",
-    description: "Upload your brand assets",
-    fields: ['logoUrl', 'brandGuidelinesUrl', 'specialRequirements', 'paymentMethod'],
-    validationSchema: stepValidationSchemas[3]
-  }
-];
 
 export const FormProvider: React.FC<{
   children: React.ReactNode;
   form: UseFormReturn<SponsorFormData>;
 }> = ({ children, form }) => {
-  const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { clearStorage } = useFormStorage(form);
+  const { validateStep } = useFormValidation(form);
+  
+  const { 
+    currentStep, 
+    setCurrentStep,
+    nextStep,
+    prevStep,
+    validateCurrentStep,
+  } = useFormStep(form, steps.length);
 
-  const currentStepData = steps[currentStep - 1];
   const progress = (currentStep / steps.length) * 100;
-
-  const validateCurrentStep = async () => {
-    const currentFields = currentStepData.fields;
-    const currentValues = form.getValues();
-    const stepData = Object.fromEntries(
-      currentFields.map(field => [field, currentValues[field]])
-    );
-
-    try {
-      await currentStepData.validationSchema.parseAsync(stepData);
-      return true;
-    } catch (error) {
-      const zodError = error as any;
-      zodError.errors.forEach((err: any) => {
-        form.setError(err.path[0] as any, {
-          type: 'manual',
-          message: err.message
-        });
-      });
-      return false;
-    }
-  };
 
   const contextValue: FormContextType = {
     form,
@@ -76,19 +39,8 @@ export const FormProvider: React.FC<{
       errors: form.formState.errors,
     },
     actions: {
-      nextStep: async () => {
-        const isValid = await validateCurrentStep();
-        if (isValid && currentStep < steps.length) {
-          setCurrentStep(prev => prev + 1);
-          document.getElementById('form-top')?.scrollIntoView({ behavior: 'smooth' });
-        }
-      },
-      prevStep: () => {
-        if (currentStep > 1) {
-          setCurrentStep(prev => prev - 1);
-          document.getElementById('form-top')?.scrollIntoView({ behavior: 'smooth' });
-        }
-      },
+      nextStep,
+      prevStep,
       setStep: (step: number) => {
         if (step >= 1 && step <= steps.length) {
           setCurrentStep(step);
@@ -101,8 +53,8 @@ export const FormProvider: React.FC<{
       },
       saveProgress: () => {
         toast({
-          title: 'Progress Saved',
-          description: 'Your form progress has been saved automatically.'
+          title: "Progress Saved",
+          description: "Your form progress has been saved automatically."
         });
       }
     },
@@ -111,6 +63,10 @@ export const FormProvider: React.FC<{
       canGoPrev: currentStep > 1,
       isFirstStep: currentStep === 1,
       isLastStep: currentStep === steps.length
+    },
+    validation: {
+      validateCurrentStep,
+      validateStep
     }
   };
 
