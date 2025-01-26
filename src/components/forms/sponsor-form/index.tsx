@@ -7,6 +7,7 @@ import { Form } from '@/components/ui/form';
 import { FormProgress } from '@/components/ui/form-progress';
 import { FormNavigation } from '@/components/ui/form-navigation';
 import { FormProvider, useFormContext } from './context';
+import { FormErrorBoundary } from './components/FormErrorBoundary';
 import { sponsorFormSchema } from './schema';
 import type { SponsorFormData } from './types';
 import { CompanyInformation, SponsorshipDetails, AdditionalRequirements } from './steps';
@@ -74,17 +75,19 @@ const SponsorRegistrationForm = () => {
 
   return (
     <FormProvider form={form}>
-      <FormContent onSubmit={onSubmit} />
+      <FormErrorBoundary>
+        <FormContent onSubmit={onSubmit} />
+      </FormErrorBoundary>
     </FormProvider>
   );
 };
 
 const FormContent = ({ onSubmit }: { onSubmit: (data: SponsorFormData) => void }) => {
-  const { form, currentStep, isSubmitting, progress } = useFormContext();
+  const { form, currentStep, isSubmitting, steps } = useFormContext();
 
   return (
     <div className="max-w-2xl mx-auto p-6" id="form-top">
-      <FormProgress progress={progress} />
+      <FormProgress steps={steps} currentStep={currentStep} />
 
       <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
         <Form {...form}>
@@ -95,9 +98,7 @@ const FormContent = ({ onSubmit }: { onSubmit: (data: SponsorFormData) => void }
               {currentStep === 3 && <AdditionalRequirements />}
             </AnimatePresence>
 
-            <FormNavigation
-              isSubmitting={isSubmitting}
-            />
+            <FormNavigation isSubmitting={isSubmitting} />
           </form>
         </Form>
       </div>
