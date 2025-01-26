@@ -4,8 +4,10 @@ import { AdditionalRequirements } from './additional-requirements/AdditionalRequ
 import { FormStep } from '../types';
 import { stepValidationSchemas } from '../schema';
 
+// Export the step components
 export { CompanyInformation, SponsorshipDetails, AdditionalRequirements };
 
+// Export the steps configuration
 export const steps: FormStep[] = [
   {
     id: 1,
