@@ -13,14 +13,14 @@ export const useFormActions = (
   const nextStep = async () => {
     const isValid = await validateCurrentStep();
     if (isValid && currentStep < totalSteps) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep(currentStep + 1);
       document.getElementById('form-top')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const prevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep(currentStep - 1);
       document.getElementById('form-top')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
