@@ -39,7 +39,7 @@ export const SponsorBenefits = () => {
         padding: 'clamp(3rem, 8vw, 6rem) 0'
       }}
     >
-      <div className="container">
+      <div className="container mx-auto px-4 md:px-8 max-w-[1200px]">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Text Column - 5/12 (approximately 40%) */}
           <motion.div 
@@ -109,6 +109,10 @@ export const SponsorBenefits = () => {
                 src="/lovable-uploads/a57efa58-209f-4d52-993f-474234e69609.png"
                 alt="Fashion model representing our exclusive event, showcasing elegance and sophistication in a professional setting"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div 
+                className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                aria-hidden="true"
               />
             </div>
           </motion.div>
