@@ -6,11 +6,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ModelForm } from './ModelForm';
 import { DesignerForm } from './DesignerForm';
 import { SponsorForm } from './SponsorForm';
 import { RoleSelector } from './RoleSelector';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const commonSchema = z.object({
   firstName: z.string().min(2, 'First name is required'),
@@ -24,6 +27,9 @@ const commonSchema = z.object({
 export const RegistrationForm = () => {
   const [searchParams] = useSearchParams();
   const [selectedRole, setSelectedRole] = React.useState(searchParams.get('role') || 'model');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(commonSchema),
@@ -38,8 +44,90 @@ export const RegistrationForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof commonSchema>) => {
-    console.log('Form submitted:', { ...data, role: selectedRole });
-    // TODO: Implement form submission logic
+    setIsSubmitting(true);
+    try {
+      // Insert main application
+      const { data: application, error: applicationError } = await supabase
+        .from('applications')
+        .insert({
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          experience: data.experience,
+          reference_info: data.references,
+          role: selectedRole,
+          status: 'pending'
+        })
+        .select()
+        .single();
+
+      if (applicationError) throw applicationError;
+
+      // Handle role-specific data
+      const roleSpecificData = form.getValues();
+      let roleTableName = '';
+      let roleData = {};
+
+      switch (selectedRole) {
+        case 'model':
+          roleTableName = 'model_applications';
+          roleData = {
+            application_id: application.id,
+            height: roleSpecificData.height,
+            bust: roleSpecificData.bust,
+            waist: roleSpecificData.waist,
+            portfolio_link: roleSpecificData.portfolioLink,
+            instagram_handle: roleSpecificData.instagramHandle
+          };
+          break;
+        case 'designer':
+          roleTableName = 'designer_applications';
+          roleData = {
+            application_id: application.id,
+            brand_name: roleSpecificData.brandName,
+            website: roleSpecificData.website,
+            collection_description: roleSpecificData.collectionDescription,
+            number_of_pieces: roleSpecificData.numberOfPieces,
+            space_requirements: roleSpecificData.spaceRequirements
+          };
+          break;
+        case 'sponsor':
+          roleTableName = 'sponsor_applications';
+          roleData = {
+            application_id: application.id,
+            company_name: roleSpecificData.companyName,
+            industry: roleSpecificData.industry,
+            company_description: roleSpecificData.companyDescription,
+            marketing_goals: roleSpecificData.marketingGoals,
+            partnership_preferences: roleSpecificData.partnershipPreferences
+          };
+          break;
+      }
+
+      const { error: roleError } = await supabase
+        .from(roleTableName)
+        .insert(roleData);
+
+      if (roleError) throw roleError;
+
+      toast({
+        title: "Application Submitted Successfully!",
+        description: "We'll review your application and get back to you soon.",
+      });
+
+      // Navigate to confirmation page
+      navigate(`/confirmation?role=${selectedRole}&id=${application.id}`);
+
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error Submitting Application",
+        description: error.message || "Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -151,8 +239,16 @@ export const RegistrationForm = () => {
           <Button 
             type="submit" 
             className="w-full bg-gradient-to-r from-fashion-pink to-deep-purple hover:opacity-90"
+            disabled={isSubmitting}
           >
-            Submit Application
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              'Submit Application'
+            )}
           </Button>
         </form>
       </Form>

@@ -56,6 +56,7 @@ export type Database = {
           application_id: string
           brand_name: string
           collection_description: string
+          collection_files: Json | null
           id: string
           number_of_pieces: number
           space_requirements: string
@@ -65,6 +66,7 @@ export type Database = {
           application_id: string
           brand_name: string
           collection_description: string
+          collection_files?: Json | null
           id?: string
           number_of_pieces: number
           space_requirements: string
@@ -74,6 +76,7 @@ export type Database = {
           application_id?: string
           brand_name?: string
           collection_description?: string
+          collection_files?: Json | null
           id?: string
           number_of_pieces?: number
           space_requirements?: string
@@ -96,6 +99,7 @@ export type Database = {
           height: number
           id: string
           instagram_handle: string | null
+          portfolio_files: Json | null
           portfolio_link: string | null
           waist: number
         }
@@ -105,6 +109,7 @@ export type Database = {
           height: number
           id?: string
           instagram_handle?: string | null
+          portfolio_files?: Json | null
           portfolio_link?: string | null
           waist: number
         }
@@ -114,6 +119,7 @@ export type Database = {
           height?: number
           id?: string
           instagram_handle?: string | null
+          portfolio_files?: Json | null
           portfolio_link?: string | null
           waist?: number
         }
@@ -131,6 +137,7 @@ export type Database = {
         Row: {
           application_id: string
           company_description: string
+          company_files: Json | null
           company_name: string
           id: string
           industry: string
@@ -140,6 +147,7 @@ export type Database = {
         Insert: {
           application_id: string
           company_description: string
+          company_files?: Json | null
           company_name: string
           id?: string
           industry: string
@@ -149,6 +157,7 @@ export type Database = {
         Update: {
           application_id?: string
           company_description?: string
+          company_files?: Json | null
           company_name?: string
           id?: string
           industry?: string

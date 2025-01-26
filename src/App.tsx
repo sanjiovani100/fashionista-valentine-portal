@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/index/Index";
 import Register from "./pages/register/Register";
+import Confirmation from "./pages/confirmation/Confirmation";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/confirmation" element={<Confirmation />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
