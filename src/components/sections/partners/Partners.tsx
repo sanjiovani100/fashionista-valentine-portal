@@ -89,11 +89,11 @@ export const Partners = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-black to-deep-purple">
+    <section className="py-20 bg-pure-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-playfair mb-4">Join the Experience</h2>
-          <p className="text-xl text-gray-300 font-montserrat">Choose your role in this extraordinary event</p>
+          <h2 className="text-4xl md:text-5xl font-poppins text-pure-black mb-4">Join the Experience</h2>
+          <p className="text-xl text-gray-400 font-montserrat">Choose your role in this extraordinary event</p>
         </div>
 
         <div className="flex overflow-x-auto gap-8 pb-8 snap-x snap-mandatory">
@@ -105,23 +105,23 @@ export const Partners = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="bg-black/40 border-fashion-pink/20 h-full">
+              <Card className="bg-pure-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                 <CardContent className="p-6">
-                  <h3 className="text-2xl font-playfair mb-2">{card.title}</h3>
+                  <h3 className="text-2xl font-poppins text-pure-black mb-2">{card.title}</h3>
                   <p className="text-gray-400 font-montserrat mb-6">{card.subtitle}</p>
                   
                   <div className="space-y-4 mb-8">
                     {card.benefits.map((benefit, idx) => (
                       <div key={idx} className="flex items-center gap-2">
-                        <Badge variant="secondary" className="bg-fashion-pink/10">
+                        <Badge variant="secondary" className="bg-red-soft/10 text-red-deep">
                           ✦
                         </Badge>
-                        <span className="text-gray-300">{benefit}</span>
+                        <span className="text-gray-400">{benefit}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="bg-white/5 rounded-lg p-4 mb-6">
+                  <div className="bg-gray-100 rounded-lg p-4 mb-6">
                     <div className="flex items-center gap-4 mb-3">
                       <img
                         src={card.testimonial.image}
@@ -129,18 +129,18 @@ export const Partners = () => {
                         className="w-12 h-12 rounded-full object-cover"
                       />
                       <div>
-                        <h4 className="font-montserrat font-medium">{card.testimonial.name}</h4>
+                        <h4 className="font-montserrat font-medium text-pure-black">{card.testimonial.name}</h4>
                         <p className="text-sm text-gray-400">{card.testimonial.role}</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 italic">"{card.testimonial.testimonial}"</p>
+                    <p className="text-gray-400 italic">{card.testimonial.testimonial}</p>
                   </div>
                 </CardContent>
                 
                 <CardFooter>
                   <Button 
                     onClick={() => handleRegistration(card.path)}
-                    className="w-full bg-gradient-to-r from-fashion-pink to-deep-purple hover:opacity-90"
+                    className="w-full bg-red-deep hover:bg-red-dark text-pure-white transition-colors"
                   >
                     {card.ctaText}
                   </Button>

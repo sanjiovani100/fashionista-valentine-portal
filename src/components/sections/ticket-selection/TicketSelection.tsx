@@ -47,18 +47,18 @@ export const TicketSelection = () => {
 
   return (
     <section 
-      className="py-20 md:py-[80px] px-4 relative overflow-hidden bg-gradient-to-br from-romantic to-[#333399]" 
+      className="py-20 md:py-[80px] px-4 relative overflow-hidden bg-pure-black" 
       ref={ref}
     >
       <div className="absolute inset-0 opacity-5">
         <div className="absolute animate-float-slow top-1/4 left-1/4">
-          <Heart className="w-24 h-24 text-romantic animate-pulse" />
+          <Heart className="w-24 h-24 text-red-soft animate-pulse" />
         </div>
         <div className="absolute animate-float-medium top-1/2 right-1/4">
-          <Heart className="w-16 h-16 text-romantic animate-pulse" />
+          <Heart className="w-16 h-16 text-red-soft animate-pulse" />
         </div>
         <div className="absolute animate-float-fast bottom-1/4 left-1/2">
-          <Heart className="w-20 h-20 text-romantic animate-pulse" />
+          <Heart className="w-20 h-20 text-red-soft animate-pulse" />
         </div>
       </div>
       

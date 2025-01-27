@@ -34,13 +34,13 @@ export const TicketCard = ({
       transition={springConfig}
     >
       <Card
-        className={`bg-white/5 backdrop-blur-sm border transition-all duration-300 ${
-          isSelected ? "border-romantic shadow-glow" : "border-white/10 hover:border-white/20"
+        className={`bg-gray-500/5 backdrop-blur-sm border transition-all duration-300 ${
+          isSelected ? "border-red-deep shadow-glow" : "border-white/10 hover:border-white/20"
         }`}
         onClick={() => onSelect(title)}
       >
         <CardHeader>
-          <CardTitle className="text-2xl md:text-[24px] font-playfair text-white">
+          <CardTitle className="text-2xl md:text-[24px] font-poppins text-pure-white">
             {title}
           </CardTitle>
           <CardDescription className="text-gray-300 font-montserrat">
@@ -49,13 +49,13 @@ export const TicketCard = ({
         </CardHeader>
         <CardContent>
           <motion.div 
-            className="text-[36px] font-bold font-montserrat text-romantic mb-8"
+            className="text-[36px] font-bold font-montserrat text-red-soft mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
             {price}
-            <span className="text-lg text-gray-400">/person</span>
+            <span className="text-lg text-gray-300">/person</span>
           </motion.div>
           <ul className="space-y-4">
             {perks.map((perk, index) => (
@@ -66,18 +66,18 @@ export const TicketCard = ({
                 transition={{ delay: 0.1 * (index + 1) }}
                 className="flex items-center gap-3 text-gray-300 font-montserrat"
               >
-                <Check className="w-5 h-5 text-romantic" />
+                <Check className="w-5 h-5 text-red-soft" />
                 {perk}
               </motion.li>
             ))}
           </ul>
-          <p className="text-sm text-gray-400 mt-6 font-montserrat">
+          <p className="text-sm text-gray-300 mt-6 font-montserrat">
             Secure payment with Stripe
           </p>
         </CardContent>
         <CardFooter>
           <Button
-            className="w-full h-[48px] bg-gradient-to-r from-romantic to-passion hover:opacity-90 text-white transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg font-montserrat"
+            className="w-full h-[48px] bg-gradient-to-r from-red-deep to-red-dark hover:opacity-90 text-pure-white transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg font-montserrat"
             size="lg"
           >
             Select Ticket
