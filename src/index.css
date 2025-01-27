@@ -2,37 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './styles/parallax.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
 @layer base {
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
     
-    --card: 0 0% 100%;
+    --card: 0 0% 13%;
     --card-foreground: 0 0% 100%;
     
     --popover: 0 0% 0%;
     --popover-foreground: 0 0% 100%;
     
-    --primary: 315 100% 50%;
+    --primary: 0 100% 25%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 240 50% 45%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 24% 93%;
+    --secondary-foreground: 0 0% 0%;
     
-    --muted: 0 0% 64%;
+    --muted: 0 0% 53%;
     --muted-foreground: 0 0% 100%;
     
-    --accent: 315 100% 50%;
+    --accent: 0 100% 25%;
     --accent-foreground: 0 0% 100%;
     
-    --destructive: 0 100% 61%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
     --border: 0 0% 100%;
     --input: 0 0% 100%;
-    --ring: 315 100% 50%;
+    --ring: 0 100% 25%;
     
     --radius: 0.5rem;
   }
@@ -40,11 +40,56 @@
 
 @layer base {
   * {
-    @apply border-white/10;
+    @apply border-border;
   }
   
   body {
-    @apply bg-background text-foreground;
-    overflow-x: hidden;
+    @apply bg-background text-foreground font-montserrat;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-poppins font-bold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-pure-white text-pure-black hover:bg-gray-100 
+           transition-colors duration-300 ease-out;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border border-white/20 text-pure-white 
+           hover:bg-white/30 transition-colors duration-300 ease-out;
+  }
+
+  .btn-cta {
+    @apply bg-red-deep text-pure-white hover:bg-red-dark 
+           transition-colors duration-300 ease-out;
+  }
+
+  .card-base {
+    @apply bg-gray-500 border border-white/10 text-pure-white
+           transition-all duration-300 ease-out;
+  }
+
+  .card-hover {
+    @apply hover:border-white/20 hover:scale-102 
+           hover:shadow-lg hover:shadow-black/30;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-[80px];
+  }
+
+  .container-padding {
+    @apply px-4 md:px-8;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-primary-gradient;
   }
 }
