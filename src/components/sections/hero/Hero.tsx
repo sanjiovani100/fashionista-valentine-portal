@@ -15,7 +15,7 @@ export const Hero = () => {
       hearts.forEach((heart, index) => {
         const speed = 1 + index * 0.2;
         const yPos = -(scrolled * speed) / 5;
-        const rotation = Math.sin(scrolled * 0.002 + index) * 5; // Add rotation
+        const rotation = Math.sin(scrolled * 0.002 + index) * 5;
         (heart as HTMLElement).style.transform = `translate3d(0, ${yPos}px, 0) rotate(${rotation}deg)`;
       });
     };
@@ -31,7 +31,7 @@ export const Hero = () => {
     >
       {/* Base gradient background with pulse animation */}
       <div 
-        className="absolute inset-0 bg-gradient-to-b from-[#C00000] via-[#800000] to-black z-0 gradient-pulse" 
+        className="absolute inset-0 bg-gradient-to-b from-red-deep via-red-dark to-pure-black z-0 gradient-pulse" 
       />
       
       {/* Floating hearts with varied speeds */}
@@ -43,18 +43,16 @@ export const Hero = () => {
       </div>
 
       {/* Semi-transparent overlay */}
-      <div 
-        className="absolute inset-0 bg-black/30 z-20" 
-      />
+      <div className="absolute inset-0 bg-black/40 z-20" />
 
       {/* Content container with staggered animations */}
       <div className="relative container mx-auto px-4 z-30">
         <div className="text-center space-y-8">
-          <h1 className="font-montserrat text-5xl md:text-7xl font-bold text-white 
+          <h1 className="font-montserrat text-5xl md:text-7xl font-bold text-pure-white 
                        tracking-tight leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]
                        animate-fade-in-up">
             Fashionistas
-            <span className="block text-white mt-2 animate-fade-in-up delay-200">Valentine's Event</span>
+            <span className="block text-pure-white mt-2 animate-fade-in-up delay-200">Valentine's Event</span>
           </h1>
 
           <p className="font-montserrat text-xl md:text-2xl text-white/90 max-w-2xl mx-auto 
@@ -66,8 +64,7 @@ export const Hero = () => {
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center animate-fade-in-up delay-600">
             <Button 
               size="lg" 
-              className="bg-white text-black hover:bg-white/90
-                       h-[48px] px-8 min-w-[200px] rounded-lg font-medium
+              className="btn-primary h-[48px] px-8 min-w-[200px] rounded-lg font-medium
                        transition-all duration-300 ease-out transform hover:scale-105
                        shadow-[0_4px_14px_0_rgba(0,0,0,0.25)]"
             >
@@ -77,9 +74,8 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="bg-black/80 text-white hover:bg-black
-                       h-[48px] px-8 min-w-[200px] rounded-lg font-medium
-                       border-2 border-white/20 transition-all duration-300 transform hover:scale-105
+              className="btn-secondary h-[48px] px-8 min-w-[200px] rounded-lg font-medium
+                       transition-all duration-300 transform hover:scale-105
                        shadow-[0_4px_14px_0_rgba(0,0,0,0.25)]"
             >
               <Calendar className="mr-2 h-5 w-5" />
