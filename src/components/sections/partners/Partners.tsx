@@ -96,16 +96,16 @@ export const Partners = () => {
           <p className="text-xl text-gray-400 font-montserrat">Choose your role in this extraordinary event</p>
         </div>
 
-        <div className="flex overflow-x-auto gap-8 pb-8 snap-x snap-mandatory">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {roleCards.map((card, index) => (
             <motion.div
               key={index}
-              className="snap-center shrink-0 w-full md:w-[400px]"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              className="w-full"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="bg-pure-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+              <Card className="h-full bg-pure-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-poppins text-pure-black mb-2">{card.title}</h3>
                   <p className="text-gray-400 font-montserrat mb-6">{card.subtitle}</p>
