@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { useEventDetails } from "@/features/events/hooks/useEventDetails";
 import { useInView } from "react-intersection-observer";
 import './styles.css';
+import type { EventContent } from "@/types/event.types";
 
-export const EventDetails: React.FC = () => {
-  const { eventDetails } = useEventDetails();
+interface EventDetailsProps {
+  features: EventContent[];
+}
+
+export const EventDetails = ({ features }: EventDetailsProps) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.2
@@ -37,7 +40,7 @@ export const EventDetails: React.FC = () => {
           The Ultimate Fashion Experience
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {eventDetails.features.map((feature, index) => (
+          {features.map((feature, index) => (
             <Card 
               key={feature.title} 
               className={`feature-card bg-black/40 border-fashion-pink/20 text-white`}

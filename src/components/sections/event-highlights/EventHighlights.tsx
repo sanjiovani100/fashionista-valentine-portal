@@ -1,26 +1,14 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import type { EventContent, FashionImage } from "@/types/event.types";
 
-const highlights = [
-  {
-    title: "Runway Highlights",
-    description: "Experience the glamour of high fashion with our exclusive runway shows",
-    image: "/placeholder.svg"
-  },
-  {
-    title: "Live Performances",
-    description: "Immerse yourself in captivating musical performances throughout the evening",
-    image: "/placeholder.svg"
-  },
-  {
-    title: "VIP Experience",
-    description: "Indulge in luxury with our carefully curated VIP packages",
-    image: "/placeholder.svg"
-  }
-];
+interface EventHighlightsProps {
+  highlights: EventContent[];
+  images: FashionImage[];
+}
 
-export const EventHighlights = () => {
+export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
   return (
     <section className="py-20 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden">
       {/* Floating hearts background effect */}

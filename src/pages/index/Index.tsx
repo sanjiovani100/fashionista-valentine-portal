@@ -14,7 +14,6 @@ import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { EventHighlightsProps, EventDetailsProps, LingerieShowcaseProps, TicketSelectionProps, CtaProps } from "@/types/event.types";
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useQuery({
@@ -64,12 +63,11 @@ const Index = () => {
     );
   }
 
-  // Extract features from event content
+  // Filter content by type
   const features = eventData.event_content?.filter(
     content => content.content_type === 'feature'
   ) || [];
 
-  // Extract highlights from event content
   const highlights = eventData.event_content?.filter(
     content => content.content_type === 'highlight'
   ) || [];
@@ -90,7 +88,9 @@ const Index = () => {
             role="model"
           />
 
-          <EventDetails features={features} />
+          <EventDetails 
+            features={features}
+          />
 
           <EventsSection />
 

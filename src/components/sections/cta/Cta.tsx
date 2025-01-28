@@ -2,7 +2,13 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 
-export const Cta = () => {
+interface CtaProps {
+  title: string;
+  description: string;
+  eventDate: string;
+}
+
+export const Cta = ({ title, description, eventDate }: CtaProps) => {
   return (
     <section className="py-20 bg-gradient-to-b from-black to-fashion-pink relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-20" />
@@ -16,10 +22,10 @@ export const Cta = () => {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-4xl md:text-6xl font-playfair mb-6">
-            Join Us This Valentine's
+            {title}
           </h2>
           <p className="text-xl md:text-2xl font-montserrat mb-8 text-gray-200">
-            Experience the most exclusive fashion event of the year
+            {description}
           </p>
           
           <div className="flex flex-col md:flex-row gap-4 justify-center">
@@ -35,7 +41,7 @@ export const Cta = () => {
               className="border-white text-white hover:bg-white/10 text-lg px-8"
             >
               <Calendar className="mr-2" />
-              Save The Date
+              {eventDate}
             </Button>
           </div>
         </motion.div>

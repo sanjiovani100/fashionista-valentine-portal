@@ -5,9 +5,14 @@ import { motion, useAnimation } from "framer-motion";
 import { CountdownTimer } from "./components/CountdownTimer";
 import { TrustSignals } from "./components/TrustSignals";
 import { TicketCard } from "./components/TicketCard";
-import { tickets } from "./data/tickets";
+import type { EventTicket } from "@/types/event.types";
 
-export const TicketSelection = () => {
+interface TicketSelectionProps {
+  tickets: EventTicket[];
+  eventDate: string;
+}
+
+export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) => {
   const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
   const controls = useAnimation();
   const { ref, inView } = useInView({
