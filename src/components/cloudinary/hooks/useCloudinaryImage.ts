@@ -22,7 +22,9 @@ export const useCloudinaryImage = (
       console.log('Processing image:', {
         publicId,
         isFullUrl,
-        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+        dimensions: { width, height },
+        timestamp: new Date().toISOString()
       });
 
       let imageUrl: string;
@@ -40,14 +42,20 @@ export const useCloudinaryImage = (
         imageUrl = myImage.toURL();
       }
 
-      console.log('Generated image URL:', imageUrl);
+      console.log('Generated image URL:', {
+        originalId: publicId,
+        generatedUrl: imageUrl,
+        isTransformed: !isFullUrl
+      });
+      
       setState(prev => ({ ...prev, imageUrl, isLoading: false }));
       
     } catch (error) {
       console.error('Error processing image:', {
         publicId,
         error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined
+        stack: error instanceof Error ? error.stack : undefined,
+        timestamp: new Date().toISOString()
       });
       setState(prev => ({ ...prev, hasError: true, isLoading: false }));
     }

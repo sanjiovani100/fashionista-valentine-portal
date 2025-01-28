@@ -15,12 +15,13 @@ export const transformEventData = (eventData: FashionEvent) => {
   const highlights = (eventData.event_content || [])
     .filter(content => content.content_type === 'highlight')
     .map((highlight): EventContent & { image: string } => {
-      // Use the first media URL from the array if available
+      // Get the first media URL if available, otherwise use fallback
       const imageUrl = highlight.media_urls?.[0] || FALLBACK_IMAGE;
       
       console.log(`Processing highlight: ${highlight.title}`, { 
         hasMediaUrls: !!highlight.media_urls?.length,
-        selectedUrl: imageUrl 
+        selectedUrl: imageUrl,
+        allUrls: highlight.media_urls 
       });
 
       return {
@@ -69,7 +70,8 @@ export const transformEventData = (eventData: FashionEvent) => {
   console.log("Transformation complete:", {
     highlightsCount: highlights.length,
     collectionsCount: collectionsWithImages.length,
-    hasHeroImage: heroImage !== FALLBACK_IMAGE
+    hasHeroImage: heroImage !== FALLBACK_IMAGE,
+    highlights: highlights.map(h => ({ title: h.title, image: h.image }))
   });
 
   return {

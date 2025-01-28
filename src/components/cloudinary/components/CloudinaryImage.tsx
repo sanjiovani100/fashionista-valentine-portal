@@ -4,8 +4,8 @@ import { CloudinaryImage as CloudinaryImageType } from '@cloudinary/url-gen';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CloudinaryImageError } from './CloudinaryImageError';
-import { useCloudinaryImage } from '../hooks/useCloudinaryImage';
 import { ImageErrorBoundary } from './ImageErrorBoundary';
+import { useCloudinaryImage } from '../hooks/useCloudinaryImage';
 import type { CloudinaryImageProps } from '../types/cloudinary.types';
 
 const aspectRatioClasses = {
@@ -16,8 +16,8 @@ const aspectRatioClasses = {
   auto: 'aspect-auto'
 } as const;
 
-// Default fallback image from Supabase storage
-const FALLBACK_IMAGE = "https://dssddsgypklubzkshkxo.supabase.co/storage/v1/object/public/fashion_images/placeholder.jpg";
+// Default fallback image from Cloudinary
+const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041736/placeholder_kgzjk4.jpg";
 
 export const OptimizedImage = ({
   publicId,
@@ -35,16 +35,25 @@ export const OptimizedImage = ({
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0];
       if (imagePerf) {
-        console.log(`Image loaded in ${imagePerf.duration}ms`, {
+        console.log(`Image loaded successfully:`, {
           publicId,
-          url: imageUrl
+          url: imageUrl,
+          loadTime: `${imagePerf.duration}ms`,
+          size: imagePerf.transferSize,
+          type: isFullUrl ? 'full_url' : 'cloudinary_id'
         });
       }
     }
   };
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error(`Failed to load image: ${publicId}`);
+    console.error('Image loading failed:', {
+      publicId,
+      url: imageUrl,
+      error: e.type,
+      timestamp: new Date().toISOString()
+    });
+
     if (e.currentTarget.src !== FALLBACK_IMAGE) {
       e.currentTarget.src = FALLBACK_IMAGE;
     }
@@ -84,7 +93,11 @@ export const OptimizedImage = ({
               ]}
               onLoad={handleLoad}
               onError={() => {
-                console.error(`Failed to load image: ${publicId}`);
+                console.error('Cloudinary image loading failed:', {
+                  publicId,
+                  cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+                  timestamp: new Date().toISOString()
+                });
               }}
               className={cn(
                 'w-full h-full object-cover',
