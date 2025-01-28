@@ -78,7 +78,7 @@ const Index = () => {
   }
 
   // Get hero image with fallback
-  const heroImage = eventData?.fashion_images?.find(img => img.category === 'hero')?.url || 'hero-red-bg_spclrx';
+  const heroImage = eventData?.fashion_images?.find(img => img.category === 'event_hero')?.url || 'hero-red-bg_spclrx';
   console.log("Hero image:", heroImage);
 
   // Transform event_content to include image property
