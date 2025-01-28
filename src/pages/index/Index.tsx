@@ -14,7 +14,7 @@ import { Loader2, Heart, Star, Award } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { EventContent, FashionCollection } from "@/types/event.types";
+import type { Feature, Highlight, CollectionDisplay, TicketDisplay } from "@/types/event.types";
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useQuery({
@@ -65,7 +65,7 @@ const Index = () => {
   }
 
   // Transform event content into the required format for each section
-  const features = eventData.event_content
+  const features: Feature[] = eventData.event_content
     ?.filter(content => content.content_type === 'feature')
     .map(feature => ({
       icon: feature.title.includes('Exclusive') ? Heart :
@@ -74,7 +74,7 @@ const Index = () => {
       description: feature.content
     })) || [];
 
-  const highlights = eventData.event_content
+  const highlights: Highlight[] = eventData.event_content
     ?.filter(content => content.content_type === 'highlight')
     .map(highlight => ({
       title: highlight.title,
@@ -82,14 +82,15 @@ const Index = () => {
       image: highlight.media_urls?.[0] || '/placeholder.svg'
     })) || [];
 
-  const collections = eventData.fashion_collections?.map(collection => ({
+  const collections: CollectionDisplay[] = eventData.fashion_collections?.map(collection => ({
     ...collection,
     image: eventData.fashion_images?.find(
-      img => img.metadata?.collection_id === collection.id
+      img => img.metadata && typeof img.metadata === 'object' && 'collection_id' in img.metadata && 
+      img.metadata.collection_id === collection.id
     )?.url || '/placeholder.svg'
   })) || [];
 
-  const tickets = eventData.event_tickets?.map(ticket => ({
+  const tickets: TicketDisplay[] = eventData.event_tickets?.map(ticket => ({
     title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     price: `$${ticket.price}`,
