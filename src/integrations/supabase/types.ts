@@ -501,6 +501,45 @@ export type Database = {
         }
         Relationships: []
       }
+      fashion_images_backup_verify: {
+        Row: {
+          alt_text: string | null
+          category: Database["public"]["Enums"]["image_category"] | null
+          created_at: string | null
+          credits: string | null
+          event_id: string | null
+          id: string | null
+          metadata: Json | null
+          thumbnail_url: string | null
+          updated_at: string | null
+          url: string | null
+        }
+        Insert: {
+          alt_text?: string | null
+          category?: Database["public"]["Enums"]["image_category"] | null
+          created_at?: string | null
+          credits?: string | null
+          event_id?: string | null
+          id?: string | null
+          metadata?: Json | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Update: {
+          alt_text?: string | null
+          category?: Database["public"]["Enums"]["image_category"] | null
+          created_at?: string | null
+          credits?: string | null
+          event_id?: string | null
+          id?: string | null
+          metadata?: Json | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       model_applications: {
         Row: {
           application_id: string
