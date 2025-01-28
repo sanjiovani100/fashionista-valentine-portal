@@ -1,3 +1,10 @@
+import React, { useEffect } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Loader2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Hero } from "@/components/sections/hero/Hero";
 import { EventsSection } from "@/components/sections/events/EventsSection";
@@ -7,12 +14,6 @@ import { TicketSelection } from "@/components/sections/ticket-selection/TicketSe
 import { Partners } from "@/components/sections/partners/Partners";
 import { Sponsors } from "@/components/sections/sponsors/Sponsors";
 import { CTASection } from "@/components/blocks/cta-with-rectangle";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Loader2, AlertCircle } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { motion, AnimatePresence } from "framer-motion";
-import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { toast } = useToast();
@@ -60,7 +61,7 @@ const Index = () => {
   });
 
   // Handle error state with toast outside of the query options
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       toast({
         title: "Error loading event",
