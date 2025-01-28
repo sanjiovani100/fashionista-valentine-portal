@@ -35,7 +35,7 @@ const Index = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="space-y-20 overflow-hidden"
+          className="space-y-16 overflow-hidden"
         >
           <Hero 
             headline={eventData?.title || "Fashionistas Valentine's Event"}
