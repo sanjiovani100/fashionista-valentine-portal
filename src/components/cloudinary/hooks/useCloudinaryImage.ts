@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Cloudinary } from '@cloudinary/url-gen';
 import { format, quality } from '@cloudinary/url-gen/actions/delivery';
 import { scale } from '@cloudinary/url-gen/actions/resize';
 import { cld } from '@/integrations/cloudinary/config';
@@ -18,6 +17,7 @@ export const useCloudinaryImage = (
 
   useEffect(() => {
     try {
+      console.log('useCloudinaryImage: Generating URL for publicId:', publicId);
       const myImage = cld.image(publicId);
       
       // Apply optimizations
@@ -27,7 +27,10 @@ export const useCloudinaryImage = (
       if (width) myImage.resize(scale().width(width));
       if (height) myImage.resize(scale().height(height));
 
-      setState(prev => ({ ...prev, imageUrl: myImage.toURL() }));
+      const url = myImage.toURL();
+      console.log('useCloudinaryImage: Generated URL:', url);
+      
+      setState(prev => ({ ...prev, imageUrl: url }));
     } catch (error) {
       console.error('Error generating Cloudinary URL:', error);
       setState(prev => ({ ...prev, hasError: true }));

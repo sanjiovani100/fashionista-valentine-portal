@@ -83,12 +83,20 @@ const Index = () => {
 
   // Transform event_content to include image property and map to Cloudinary IDs
   const highlightImages = ['valentine_mxwzop', 'valentine-011_sgwnbj', 'valentine-013_axosyk'];
+  console.log("Available highlight images:", highlightImages);
+  
   const highlights = eventData.event_content
     .filter(content => content.content_type === 'highlight')
-    .map((highlight, index) => ({
-      ...highlight,
-      image: highlightImages[index] || 'placeholder'
-    }));
+    .map((highlight, index) => {
+      const mappedHighlight = {
+        ...highlight,
+        image: highlightImages[index] || 'placeholder'
+      };
+      console.log(`Mapped highlight ${index}:`, mappedHighlight);
+      return mappedHighlight;
+    });
+
+  console.log("Final highlights array:", highlights);
 
   // Create features array for EventDetails component
   const features = [

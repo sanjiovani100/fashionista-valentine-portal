@@ -11,6 +11,7 @@ interface EventHighlightsProps {
 }
 
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
+  console.log("EventHighlights received props:", { highlights, images });
   const [imageLoadErrors, setImageLoadErrors] = useState<Record<string, boolean>>({});
 
   return (
@@ -29,62 +30,70 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
 
         {/* Desktop view */}
         <div className="hidden md:grid md:grid-cols-3 gap-6">
-          {highlights.map((highlight, index) => (
-            <Card key={index} className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
-              <div className="relative h-[300px] overflow-hidden rounded-t-lg">
-                <OptimizedImage
-                  publicId={highlight.image}
-                  alt={highlight.title}
-                  aspectRatio="portrait"
-                  className="w-full h-full transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              </div>
-              <CardHeader>
-                <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
-                <CardDescription className="text-gray-300 font-montserrat">
-                  {highlight.content}
-                </CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Button className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors">
-                  Learn More
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+          {highlights.map((highlight, index) => {
+            console.log(`Rendering highlight ${index}:`, highlight);
+            console.log(`Image public ID for highlight ${index}:`, highlight.image);
+            
+            return (
+              <Card key={index} className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
+                <div className="relative h-[300px] overflow-hidden rounded-t-lg">
+                  <OptimizedImage
+                    publicId={highlight.image}
+                    alt={highlight.title}
+                    aspectRatio="portrait"
+                    className="w-full h-full transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                </div>
+                <CardHeader>
+                  <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
+                  <CardDescription className="text-gray-300 font-montserrat">
+                    {highlight.content}
+                  </CardDescription>
+                </CardHeader>
+                <CardFooter>
+                  <Button className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors">
+                    Learn More
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
         </div>
 
         {/* Mobile view with carousel */}
         <div className="md:hidden">
           <Carousel className="w-full">
             <CarouselContent>
-              {highlights.map((highlight, index) => (
-                <CarouselItem key={index}>
-                  <Card className="bg-black/60 border-none text-white">
-                    <div className="relative h-[300px] overflow-hidden rounded-t-lg">
-                      <OptimizedImage
-                        publicId={highlight.image}
-                        alt={highlight.title}
-                        aspectRatio="portrait"
-                        className="w-full h-full"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
-                      <CardDescription className="text-gray-300 font-montserrat">
-                        {highlight.content}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardFooter>
-                      <Button className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors">
-                        Learn More
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </CarouselItem>
-              ))}
+              {highlights.map((highlight, index) => {
+                console.log(`Rendering mobile highlight ${index}:`, highlight);
+                return (
+                  <CarouselItem key={index}>
+                    <Card className="bg-black/60 border-none text-white">
+                      <div className="relative h-[300px] overflow-hidden rounded-t-lg">
+                        <OptimizedImage
+                          publicId={highlight.image}
+                          alt={highlight.title}
+                          aspectRatio="portrait"
+                          className="w-full h-full"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
+                        <CardDescription className="text-gray-300 font-montserrat">
+                          {highlight.content}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardFooter>
+                        <Button className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors">
+                          Learn More
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </CarouselItem>
+                );
+              })}
             </CarouselContent>
             <CarouselPrevious className="text-white border-white" />
             <CarouselNext className="text-white border-white" />
