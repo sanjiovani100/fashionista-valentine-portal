@@ -26,10 +26,8 @@ export default {
         foreground: "#FFFFFF",
         brand: "hsl(var(--brand))",
         "brand-foreground": "hsl(var(--brand-foreground))",
-        // Core Colors
         "pure-white": "#FFFFFF",
         "pure-black": "#000000",
-        // Grays
         gray: {
           100: "#F1F1F1",
           200: "#DDDDDD",
@@ -37,7 +35,6 @@ export default {
           400: "#555555",
           500: "#222222",
         },
-        // Reds
         red: {
           deep: "#800000",
           soft: "#FFC1C1",

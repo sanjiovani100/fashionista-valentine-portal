@@ -38,11 +38,6 @@
     
     --radius: 0.5rem;
   }
-  
-  .dark {
-    --brand: 31 97% 72%;
-    --brand-foreground: 27 96% 61%;
-  }
 }
 
 @layer base {
