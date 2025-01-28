@@ -2,19 +2,17 @@ import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import type { EventTicket } from "@/types/event.types";
 
-interface TicketCardProps {
-  title: string;
-  subtitle: string;
-  price: string;
-  perks: string[];
-  limited?: boolean;
+interface TicketCardProps extends EventTicket {
   isSelected: boolean;
-  onSelect: (title: string) => void;
+  onSelect: (ticketType: string) => void;
+  subtitle: string;
+  perks: string[];
 }
 
 export const TicketCard = ({
-  title,
+  ticket_type,
   subtitle,
   price,
   perks,
@@ -37,11 +35,11 @@ export const TicketCard = ({
         className={`bg-gray-500/5 backdrop-blur-sm border transition-all duration-300 ${
           isSelected ? "border-red-deep shadow-glow" : "border-white/10 hover:border-white/20"
         }`}
-        onClick={() => onSelect(title)}
+        onClick={() => onSelect(ticket_type)}
       >
         <CardHeader>
           <CardTitle className="text-2xl md:text-[24px] font-poppins text-pure-white">
-            {title}
+            {ticket_type}
           </CardTitle>
           <CardDescription className="text-gray-300 font-montserrat">
             {subtitle}
@@ -54,7 +52,7 @@ export const TicketCard = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            {price}
+            ${price}
             <span className="text-lg text-gray-300">/person</span>
           </motion.div>
           <ul className="space-y-4">

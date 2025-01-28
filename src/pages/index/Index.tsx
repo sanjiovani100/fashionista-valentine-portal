@@ -71,7 +71,7 @@ const Index = () => {
       ...feature,
       icon: feature.title.includes('Exclusive') ? Heart :
            feature.title.includes('Top') ? Star : Award,
-    })) as Feature[];
+    }));
 
   // Transform event content into highlights
   const highlights = (eventData.event_content as EventContent[] || [])
@@ -79,7 +79,7 @@ const Index = () => {
     .map(highlight => ({
       ...highlight,
       image: highlight.media_urls?.[0] || '/placeholder.svg'
-    })) as Highlight[];
+    }));
 
   // Transform collections with images
   const collections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => ({
@@ -89,14 +89,14 @@ const Index = () => {
       'collection_id' in img.metadata && 
       img.metadata.collection_id === collection.id
     )?.url || '/placeholder.svg'
-  })) as CollectionDisplay[];
+  }));
 
   // Transform tickets
   const tickets = ((eventData.event_tickets as EventTicket[]) || []).map(ticket => ({
     ...ticket,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     perks: ticket.benefits || []
-  })) as TicketDisplay[];
+  }));
 
   return (
     <PageLayout>

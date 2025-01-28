@@ -4,7 +4,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import type { EventContent, FashionImage } from "@/types/event.types";
 
 interface EventHighlightsProps {
-  highlights: EventContent[];
+  highlights: (EventContent & { image: string })[];
   images: FashionImage[];
 }
 
@@ -38,7 +38,7 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
               <CardHeader>
                 <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
                 <CardDescription className="text-gray-300 font-montserrat">
-                  {highlight.description}
+                  {highlight.content}
                 </CardDescription>
               </CardHeader>
               <CardFooter>
@@ -68,7 +68,7 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
                     <CardHeader>
                       <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
                       <CardDescription className="text-gray-300 font-montserrat">
-                        {highlight.description}
+                        {highlight.content}
                       </CardDescription>
                     </CardHeader>
                     <CardFooter>

@@ -5,7 +5,7 @@ import './styles.css';
 import type { EventContent } from "@/types/event.types";
 
 interface EventDetailsProps {
-  features: EventContent[];
+  features: (EventContent & { icon: any })[];
 }
 
 export const EventDetails = ({ features }: EventDetailsProps) => {
@@ -40,18 +40,15 @@ export const EventDetails = ({ features }: EventDetailsProps) => {
           The Ultimate Fashion Experience
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <Card 
               key={feature.title} 
-              className={`feature-card bg-black/40 border-fashion-pink/20 text-white`}
-              style={{ 
-                transitionDelay: `${index * 200}ms`,
-              }}
+              className="feature-card bg-black/40 border-fashion-pink/20 text-white"
             >
               <CardContent className="p-6 text-center">
                 <feature.icon className="feature-icon w-12 h-12 mx-auto mb-4 text-fashion-pink" />
                 <h3 className="font-montserrat text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="font-inter text-gray-300">{feature.description}</p>
+                <p className="font-inter text-gray-300">{feature.content}</p>
               </CardContent>
             </Card>
           ))}
