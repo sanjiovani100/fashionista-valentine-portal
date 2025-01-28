@@ -26,6 +26,14 @@ export const useCloudinaryImage = (
 
   useEffect(() => {
     try {
+      // Debug: Log the incoming publicId
+      console.log('[Cloudinary Debug] Processing image:', {
+        publicId,
+        width,
+        height,
+        cloudName: cld.cloudinaryConfig.cloud.cloudName
+      });
+
       if (!validateDimensions(width) || !validateDimensions(height)) {
         throw new Error('Invalid dimensions provided');
       }
@@ -35,6 +43,7 @@ export const useCloudinaryImage = (
 
       if (isFullUrl) {
         imageUrl = publicId;
+        console.log('[Cloudinary Debug] Using full URL:', imageUrl);
       } else {
         // Extract Cloudinary ID if it's a full Cloudinary URL
         const cloudinaryId = publicId.includes('cloudinary.com') 
@@ -42,6 +51,10 @@ export const useCloudinaryImage = (
           : publicId;
 
         if (!isValidCloudinaryId(cloudinaryId)) {
+          console.error('[Cloudinary Error] Invalid ID format:', {
+            originalId: publicId,
+            extractedId: cloudinaryId
+          });
           throw new Error('Invalid Cloudinary ID format');
         }
 
@@ -53,18 +66,21 @@ export const useCloudinaryImage = (
         if (height) myImage.resize(scale().height(height));
         
         imageUrl = myImage.toURL();
+        console.log('[Cloudinary Debug] Generated URL:', {
+          cloudinaryId,
+          finalUrl: imageUrl
+        });
       }
 
       setState(prev => ({ ...prev, imageUrl, isLoading: false }));
       
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('[Cloudinary Error]', {
-          message: error instanceof Error ? error.message : 'Unknown error',
-          publicId,
-          timestamp: new Date().toISOString()
-        });
-      }
+      console.error('[Cloudinary Error]', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        publicId,
+        timestamp: new Date().toISOString(),
+        cloudName: cld.cloudinaryConfig.cloud.cloudName
+      });
       setState(prev => ({ ...prev, hasError: true, isLoading: false }));
     }
   }, [publicId, width, height]);
