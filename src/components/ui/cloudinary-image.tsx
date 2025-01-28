@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
 import { Cloudinary, CloudinaryImage } from '@cloudinary/url-gen';
-import { format, quality } from '@cloudinary/url-gen/actions/delivery';
-import { auto } from '@cloudinary/url-gen/qualifiers/format';
-import { auto as autoQuality } from '@cloudinary/url-gen/qualifiers/quality';
+import { format } from '@cloudinary/url-gen/actions/delivery';
+import { auto } from '@cloudinary/url-gen/qualifiers/quality';
 import { scale } from '@cloudinary/url-gen/actions/resize';
 import { Skeleton } from './skeleton';
 import { Alert, AlertDescription } from './alert';
@@ -50,8 +49,8 @@ export const OptimizedImage = ({
 
     try {
       const myImage = cld.image(publicId)
-        .format(auto())
-        .quality(autoQuality());
+        .delivery(format('auto'))
+        .delivery(auto());
 
       if (width) myImage.resize(scale().width(width));
       if (height) myImage.resize(scale().height(height));
@@ -67,7 +66,6 @@ export const OptimizedImage = ({
     setIsLoading(false);
     setHasError(false);
 
-    // Report loading performance
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0];
       if (imagePerf) {

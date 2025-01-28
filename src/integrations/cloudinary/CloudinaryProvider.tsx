@@ -1,11 +1,10 @@
 import React from 'react';
-import { CloudinaryContext } from '@cloudinary/react';
-import { cld } from './config';
+import { CloudinaryProvider as Provider } from '@cloudinary/url-gen/url-gen';
 
 export const CloudinaryProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <CloudinaryContext cloudName={cld.config.cloud.cloudName}>
+    <Provider cloudName={import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}>
       {children}
-    </CloudinaryContext>
+    </Provider>
   );
 };
