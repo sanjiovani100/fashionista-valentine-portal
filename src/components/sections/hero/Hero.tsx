@@ -4,7 +4,13 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import './styles.css';
 
-export const Hero = () => {
+interface HeroProps {
+  headline: string;
+  subheading: string;
+  role: "model" | "designer" | "sponsor";
+}
+
+export const Hero = ({ headline, subheading, role }: HeroProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,7 +62,7 @@ export const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Fashionistas
+            {headline}
             <span className="block text-pure-white mt-2 animate-fade-in-up delay-200">Valentine's Event</span>
           </motion.h1>
 
@@ -68,7 +74,7 @@ export const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show
+            {subheading}
           </motion.p>
 
           <motion.div 
