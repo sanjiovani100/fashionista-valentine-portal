@@ -8,9 +8,10 @@ interface HeroProps {
   headline: string;
   subheading: string;
   role: "model" | "designer" | "sponsor";
+  backgroundImage?: string;
 }
 
-export const Hero = ({ headline, subheading, role }: HeroProps) => {
+export const Hero = ({ headline, subheading, role, backgroundImage }: HeroProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,9 +36,17 @@ export const Hero = ({ headline, subheading, role }: HeroProps) => {
       ref={heroRef} 
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
+      {/* Background image with gradient overlay */}
+      {backgroundImage && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+        />
+      )}
+      
       {/* Base gradient background with pulse animation */}
       <div 
-        className="absolute inset-0 bg-gradient-to-b from-red-deep via-red-dark to-pure-black z-0 gradient-pulse" 
+        className="absolute inset-0 bg-gradient-to-b from-red-deep via-red-dark to-pure-black z-0 gradient-pulse opacity-90" 
       />
       
       {/* Floating hearts with varied speeds */}

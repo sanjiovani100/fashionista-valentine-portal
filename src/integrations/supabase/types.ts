@@ -600,7 +600,7 @@ export type Database = {
           p_bucket_id: string
           p_file_path: string
           p_event_id: string
-          p_category: Database["public"]["Enums"]["event_image_category"]
+          p_category: Database["public"]["Enums"]["image_category"]
           p_alt_text?: string
           p_credits?: string
         }

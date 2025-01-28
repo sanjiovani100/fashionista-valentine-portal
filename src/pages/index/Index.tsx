@@ -73,12 +73,13 @@ const Index = () => {
            feature.title.includes('Top') ? Star : Award,
     }));
 
-  // Transform event content into highlights
+  // Transform event content into highlights with images
   const highlights = (eventData.event_content as EventContent[] || [])
     .filter(content => content.content_type === 'highlight')
     .map(highlight => ({
       ...highlight,
-      image: highlight.media_urls?.[0] || '/placeholder.svg'
+      image: (eventData.fashion_images as FashionImage[] || [])
+        .find(img => img.category === 'event_gallery')?.url || '/placeholder.svg'
     }));
 
   // Transform collections with images
@@ -95,6 +96,10 @@ const Index = () => {
     };
   });
 
+  // Get hero image
+  const heroImage = (eventData.fashion_images as FashionImage[] || [])
+    .find(img => img.category === 'event_hero')?.url;
+
   return (
     <PageLayout>
       <AnimatePresence mode="wait">
@@ -109,6 +114,7 @@ const Index = () => {
             headline={eventData.title}
             subheading={eventData.description}
             role="model"
+            backgroundImage={heroImage}
           />
 
           <EventDetails features={features} />
