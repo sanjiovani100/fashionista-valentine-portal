@@ -6,8 +6,8 @@ import { LingerieShowcase } from "@/components/sections/lingerie-showcase/Linger
 import { TicketSelection } from "@/components/sections/ticket-selection/TicketSelection";
 import { Partners } from "@/components/sections/partners/Partners";
 import { Sponsors } from "@/components/sections/sponsors/Sponsors";
-import { Cta } from "@/components/sections/cta/Cta";
 import { EventDetails } from "@/components/sections/event-details/EventDetails";
+import { CTASection } from "@/components/blocks/cta-with-rectangle";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, AlertCircle, Heart, Star, Award } from "lucide-react";
@@ -127,29 +127,30 @@ const Index = () => {
           />
 
           <EventDetails features={features} />
-
           <EventsSection />
-
           <EventHighlights 
             highlights={highlights}
             images={eventData.fashion_images || []}
           />
-
           <LingerieShowcase collections={eventData.fashion_collections} />
-
           <TicketSelection 
             tickets={eventData.event_tickets || []}
             eventDate={eventData.start_time}
           />
-
           <Partners />
-
           <Sponsors />
-
-          <Cta 
-            title="Join Us This Valentine's"
-            description="Experience the most exclusive fashion event of the year"
-            eventDate={eventData.start_time}
+          
+          <CTASection
+            badge={{
+              text: "Join Us This Valentine's"
+            }}
+            title="Experience the most exclusive fashion event of the year"
+            action={{
+              text: "Get Your Tickets Now",
+              href: "#tickets",
+              variant: "default"
+            }}
+            withGlow={true}
           />
         </motion.div>
       </AnimatePresence>

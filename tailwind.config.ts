@@ -24,6 +24,8 @@ export default {
         ring: "#800000",
         background: "#000000",
         foreground: "#FFFFFF",
+        brand: "hsl(var(--brand))",
+        "brand-foreground": "hsl(var(--brand-foreground))",
         // Core Colors
         "pure-white": "#FFFFFF",
         "pure-black": "#000000",
@@ -42,6 +44,12 @@ export default {
           dark: "#4A0404",    // Dark Red
           light: "#FFE6E6",   // Light Red
         },
+      },
+      maxWidth: {
+        container: "80rem",
+      },
+      boxShadow: {
+        glow: "0 -16px 128px 0 hsla(var(--brand-foreground) / 0.5) inset, 0 -16px 32px 0 hsla(var(--brand) / 0.5) inset",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
@@ -68,12 +76,35 @@ export default {
         "primary-gradient": "linear-gradient(to right, #800000, #4A0404)",
         "overlay-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8))",
       },
-      animation: {
-        "fade-up": "fadeUp 600ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "scale-up": "scaleUp 300ms ease-out",
-        "slide-up": "slideUp 300ms ease-out",
-      },
       keyframes: {
+        "fade-in-up": {
+          "0%": { 
+            opacity: "0",
+            transform: "translateY(10px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)"
+          }
+        },
+        "fade-in": {
+          "0%": {
+            opacity: "0"
+          },
+          "100%": {
+            opacity: "1"
+          }
+        },
+        "scale-in": {
+          "0%": {
+            opacity: "0",
+            transform: "scale(0.95)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1)"
+          }
+        },
         fadeUp: {
           "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
@@ -86,6 +117,14 @@ export default {
           "0%": { transform: "translateY(20px)" },
           "100%": { transform: "translateY(0)" },
         },
+      },
+      animation: {
+        "fade-in-up": "fade-in-up 0.5s ease-out forwards",
+        "fade-in": "fade-in 0.5s ease-out forwards",
+        "scale-in": "scale-in 0.5s ease-out forwards",
+        "fade-up": "fadeUp 600ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "scale-up": "scaleUp 300ms ease-out",
+        "slide-up": "slideUp 300ms ease-out",
       },
     },
   },
