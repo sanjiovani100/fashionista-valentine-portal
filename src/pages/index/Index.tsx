@@ -18,7 +18,6 @@ import { useToast } from "@/components/ui/use-toast";
 const Index = () => {
   const { toast } = useToast();
 
-  // Improved query with better error handling and logging
   const { data: eventData, isLoading, error } = useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
@@ -36,7 +35,7 @@ const Index = () => {
           fashion_images(*)
         `)
         .eq('name', 'valentines_fashion_show')
-        .maybeSingle(); // Changed from single() to handle no results case
+        .maybeSingle();
 
       if (eventError) {
         console.error("Error fetching event data:", eventError);
@@ -47,36 +46,13 @@ const Index = () => {
         console.error("No event data found");
         return null;
       }
-      
-      // Detailed logging for debugging
+
+      // Debug logging for image data
       console.log("Event data fetched successfully:", eventData);
       console.log("Fashion images:", eventData?.fashion_images);
-      console.log("Event content:", eventData?.event_content);
-      console.log("Fashion collections:", eventData?.fashion_collections);
-
-      // Verify image URLs are correctly formatted
-      eventData?.fashion_images?.forEach((img, index) => {
-        console.log(`Image ${index + 1} URL:`, img.url);
-        console.log(`Image ${index + 1} metadata:`, img.metadata);
-        
-        // Test image loading
-        const testImage = new Image();
-        testImage.onload = () => console.log(`Image ${index + 1} loaded successfully`);
-        testImage.onerror = () => {
-          console.error(`Failed to load image ${index + 1}`);
-          toast({
-            title: "Image Load Error",
-            description: `Failed to load image: ${img.url}`,
-            variant: "destructive",
-          });
-        };
-        testImage.src = img.url;
-      });
-
+      
       return eventData;
     },
-    retry: 2, // Add retry logic
-    retryDelay: 1000, // Retry after 1 second
   });
 
   if (isLoading) {
@@ -104,39 +80,9 @@ const Index = () => {
     );
   }
 
-  // Get hero image with fallback
-  const heroImage = (eventData.fashion_images || [])
-    .find(img => img.category === 'event_hero')?.url || '/placeholder.svg';
-
-  // Transform event content into highlights with images and fallbacks
-  const highlights = (eventData.event_content || [])
-    .filter(content => content.content_type === 'highlight')
-    .map((highlight, index) => {
-      const galleryImages = (eventData.fashion_images || [])
-        .filter(img => img.category === 'event_gallery');
-      
-      const imageIndex = index % galleryImages.length;
-      
-      return {
-        ...highlight,
-        image: galleryImages[imageIndex]?.url || '/placeholder.svg'
-      };
-    });
-
-  // Transform collections with images and fallbacks
-  const collections = (eventData.fashion_collections || []).map(collection => {
-    const collectionImage = (eventData.fashion_images || []).find(
-      img => img.metadata && 
-           typeof img.metadata === 'object' && 
-           'collection_id' in img.metadata && 
-           img.metadata.collection_id === collection.id
-    );
-    
-    return {
-      ...collection,
-      image: collectionImage?.url || '/placeholder.svg'
-    };
-  });
+  // Get hero image with fallback and debug logging
+  const heroImage = eventData?.fashion_images?.find(img => img.category === 'event_hero')?.url;
+  console.log("Hero image URL:", heroImage);
 
   // Create features array for EventDetails component
   const features = [
@@ -168,8 +114,8 @@ const Index = () => {
           className="space-y-20 overflow-hidden"
         >
           <Hero 
-            headline={eventData.title}
-            subheading={eventData.description}
+            headline={eventData?.title || "Fashionistas Valentine's Event"}
+            subheading={eventData?.description || "Join us for an exclusive celebration of fashion, creativity, and empowerment"}
             backgroundImage={heroImage}
           />
 
@@ -178,11 +124,11 @@ const Index = () => {
           <EventsSection />
 
           <EventHighlights 
-            highlights={highlights}
+            highlights={eventData.event_content.filter(content => content.content_type === 'highlight')}
             images={eventData.fashion_images || []}
           />
 
-          <LingerieShowcase collections={collections} />
+          <LingerieShowcase collections={eventData.fashion_collections} />
 
           <TicketSelection 
             tickets={eventData.event_tickets || []}
