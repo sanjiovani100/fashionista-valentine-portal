@@ -18,6 +18,7 @@ export default {
       },
     },
     extend: {
+      // Colors
       colors: {
         border: "rgba(255, 255, 255, 0.1)",
         input: "rgba(255, 255, 255, 0.1)",
@@ -42,12 +43,18 @@ export default {
           light: "#FFE6E6",
         },
       },
+
+      // Layout
       maxWidth: {
         container: "80rem",
       },
+
+      // Effects
       boxShadow: {
         glow: "0 -16px 128px 0 hsla(var(--brand-foreground) / 0.5) inset, 0 -16px 32px 0 hsla(var(--brand) / 0.5) inset",
       },
+
+      // Typography
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
@@ -61,18 +68,24 @@ export default {
         body: ["1rem", { lineHeight: "1.5" }],
         small: ["0.875rem", { lineHeight: "1.5" }],
       },
+
+      // Spacing
       spacing: {
         section: "5rem",
         component: "2rem",
         text: "1rem",
         "button-padding": "1rem 2rem",
       },
+
+      // Backgrounds
       backgroundImage: {
         "hero-gradient": "linear-gradient(to bottom, transparent, rgba(0,0,0,0.8))",
         "card-hover": "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
         "primary-gradient": "linear-gradient(to right, #800000, #4A0404)",
         "overlay-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8))",
       },
+
+      // Animations
       keyframes: {
         "fade-in-up": {
           "0%": { 
