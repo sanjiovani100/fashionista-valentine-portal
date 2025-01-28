@@ -14,9 +14,9 @@ import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { EventHighlightsProps, EventDetailsProps, LingerieShowcaseProps, TicketSelectionProps, CtaProps } from "@/types/event.types";
 
 const Index = () => {
-  // Fetch active event data
   const { data: eventData, isLoading, error } = useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
@@ -40,7 +40,6 @@ const Index = () => {
     },
   });
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
@@ -49,7 +48,6 @@ const Index = () => {
     );
   }
 
-  // Error state
   if (error || !eventData) {
     return (
       <PageLayout>
@@ -92,21 +90,33 @@ const Index = () => {
             role="model"
           />
 
-          <EventDetails />
+          <EventDetails features={features} />
 
           <EventsSection />
 
-          <EventHighlights />
+          <EventHighlights 
+            highlights={highlights}
+            images={eventData.fashion_images}
+          />
 
-          <LingerieShowcase />
+          <LingerieShowcase 
+            collections={eventData.fashion_collections}
+          />
 
-          <TicketSelection />
+          <TicketSelection 
+            tickets={eventData.event_tickets}
+            eventDate={eventData.start_time}
+          />
 
           <Partners />
 
           <Sponsors />
 
-          <Cta />
+          <Cta 
+            title="Join Us This Valentine's"
+            description="Experience the most exclusive fashion event of the year"
+            eventDate={eventData.start_time}
+          />
         </motion.div>
       </AnimatePresence>
     </PageLayout>
