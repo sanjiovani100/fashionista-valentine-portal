@@ -42,7 +42,7 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                <Button className="w-full bg-blush hover:bg-gray-500 text-black hover:text-white transition-colors">
+                <Button className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors">
                   Learn More
                 </Button>
               </CardFooter>
@@ -72,7 +72,7 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
                       </CardDescription>
                     </CardHeader>
                     <CardFooter>
-                      <Button className="w-full bg-blush hover:bg-gray-500 text-black hover:text-white transition-colors">
+                      <Button className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors">
                         Learn More
                       </Button>
                     </CardFooter>

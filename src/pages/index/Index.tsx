@@ -10,11 +10,9 @@ import { Cta } from "@/components/sections/cta/Cta";
 import { EventDetails } from "@/components/sections/event-details/EventDetails";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Heart, Star, Award } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { Feature, Highlight, CollectionDisplay, TicketDisplay, EventContent, FashionImage, FashionCollection, EventTicket } from "@/types/event.types";
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useQuery({
@@ -64,30 +62,34 @@ const Index = () => {
     );
   }
 
-  // Transform event content into features
-  const features = (eventData.event_content as EventContent[] || [])
-    .filter(content => content.content_type === 'feature')
-    .map(feature => ({
-      ...feature,
-      icon: feature.title.includes('Exclusive') ? Heart :
-           feature.title.includes('Top') ? Star : Award,
-    }));
+  // Get hero image
+  const heroImage = (eventData.fashion_images || [])
+    .find(img => img.category === 'event_hero')?.url;
 
   // Transform event content into highlights with images
-  const highlights = (eventData.event_content as EventContent[] || [])
+  const highlights = (eventData.event_content || [])
     .filter(content => content.content_type === 'highlight')
-    .map(highlight => ({
-      ...highlight,
-      image: (eventData.fashion_images as FashionImage[] || [])
-        .find(img => img.category === 'event_gallery')?.url || '/placeholder.svg'
-    }));
+    .map((highlight, index) => {
+      // Get a unique gallery image for each highlight
+      const galleryImages = (eventData.fashion_images || [])
+        .filter(img => img.category === 'event_gallery');
+      
+      // Use modulo to cycle through available images if we have fewer images than highlights
+      const imageIndex = index % galleryImages.length;
+      
+      return {
+        ...highlight,
+        image: galleryImages[imageIndex]?.url || '/placeholder.svg'
+      };
+    });
 
   // Transform collections with images
-  const collections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => {
-    const collectionImage = (eventData.fashion_images as FashionImage[] || []).find(
-      img => img.metadata && typeof img.metadata === 'object' && 
-      'collection_id' in img.metadata && 
-      img.metadata.collection_id === collection.id
+  const collections = (eventData.fashion_collections || []).map(collection => {
+    const collectionImage = (eventData.fashion_images || []).find(
+      img => img.metadata && 
+           typeof img.metadata === 'object' && 
+           'collection_id' in img.metadata && 
+           img.metadata.collection_id === collection.id
     );
     
     return {
@@ -95,10 +97,6 @@ const Index = () => {
       image: collectionImage?.url || '/placeholder.svg'
     };
   });
-
-  // Get hero image
-  const heroImage = (eventData.fashion_images as FashionImage[] || [])
-    .find(img => img.category === 'event_hero')?.url;
 
   return (
     <PageLayout>
@@ -113,23 +111,22 @@ const Index = () => {
           <Hero 
             headline={eventData.title}
             subheading={eventData.description}
-            role="model"
             backgroundImage={heroImage}
           />
 
-          <EventDetails features={features} />
+          <EventDetails features={eventData.features || []} />
 
           <EventsSection />
 
           <EventHighlights 
             highlights={highlights}
-            images={eventData.fashion_images as FashionImage[] || []}
+            images={eventData.fashion_images || []}
           />
 
           <LingerieShowcase collections={collections} />
 
           <TicketSelection 
-            tickets={eventData.event_tickets as EventTicket[]}
+            tickets={eventData.event_tickets || []}
             eventDate={eventData.start_time}
           />
 
