@@ -18,6 +18,7 @@ const Index = () => {
   const { data: eventData, isLoading, error } = useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
+      console.log("Fetching event data...");
       const { data: eventData, error: eventError } = await supabase
         .from('fashion_events')
         .select(`
@@ -33,7 +34,12 @@ const Index = () => {
         .eq('name', 'valentines_fashion_show')
         .single();
 
-      if (eventError) throw eventError;
+      if (eventError) {
+        console.error("Error fetching event data:", eventError);
+        throw eventError;
+      }
+      
+      console.log("Fetched event data:", eventData);
       return eventData;
     },
   });
@@ -70,7 +76,7 @@ const Index = () => {
   const highlights = (eventData.event_content || [])
     .filter(content => content.content_type === 'highlight')
     .map((highlight, index) => {
-      // Get a unique gallery image for each highlight
+      // Get gallery images for highlights
       const galleryImages = (eventData.fashion_images || [])
         .filter(img => img.category === 'event_gallery');
       
