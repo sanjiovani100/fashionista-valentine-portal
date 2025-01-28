@@ -9,15 +9,11 @@ export type EventTicket = Database["public"]["Tables"]["event_tickets"]["Row"];
 export type DesignerProfile = Database["public"]["Tables"]["designer_profiles"]["Row"];
 
 // Transformed types for components
-export interface Feature {
+export interface Feature extends EventContent {
   icon: LucideIcon;
-  title: string;
-  description: string;
 }
 
-export interface Highlight {
-  title: string;
-  description: string;
+export interface Highlight extends EventContent {
   image: string;
 }
 
@@ -26,12 +22,9 @@ export interface CollectionDisplay extends Omit<FashionCollection, 'image'> {
   designer_profiles?: DesignerProfile;
 }
 
-export interface TicketDisplay {
-  title: string;
+export interface TicketDisplay extends EventTicket {
   subtitle: string;
-  price: string;
   perks: string[];
-  limited?: boolean;
 }
 
 // Component Props Types

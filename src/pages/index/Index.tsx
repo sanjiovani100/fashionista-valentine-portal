@@ -68,20 +68,18 @@ const Index = () => {
   const features = (eventData.event_content as EventContent[] || [])
     .filter(content => content.content_type === 'feature')
     .map(feature => ({
+      ...feature,
       icon: feature.title.includes('Exclusive') ? Heart :
            feature.title.includes('Top') ? Star : Award,
-      title: feature.title,
-      description: feature.content
-    })) satisfies Feature[];
+    })) as Feature[];
 
   // Transform event content into highlights
   const highlights = (eventData.event_content as EventContent[] || [])
     .filter(content => content.content_type === 'highlight')
     .map(highlight => ({
-      title: highlight.title,
-      description: highlight.content,
+      ...highlight,
       image: highlight.media_urls?.[0] || '/placeholder.svg'
-    })) satisfies Highlight[];
+    })) as Highlight[];
 
   // Transform collections with images
   const collections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => ({
@@ -91,16 +89,14 @@ const Index = () => {
       'collection_id' in img.metadata && 
       img.metadata.collection_id === collection.id
     )?.url || '/placeholder.svg'
-  })) satisfies CollectionDisplay[];
+  })) as CollectionDisplay[];
 
   // Transform tickets
   const tickets = ((eventData.event_tickets as EventTicket[]) || []).map(ticket => ({
-    title: ticket.ticket_type,
+    ...ticket,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
-    price: `$${ticket.price}`,
-    perks: ticket.benefits || [],
-    limited: ticket.quantity_available < 10
-  })) satisfies TicketDisplay[];
+    perks: ticket.benefits || []
+  })) as TicketDisplay[];
 
   return (
     <PageLayout>
