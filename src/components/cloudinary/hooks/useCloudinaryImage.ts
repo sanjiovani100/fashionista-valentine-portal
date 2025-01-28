@@ -17,32 +17,39 @@ export const useCloudinaryImage = (
 
   useEffect(() => {
     try {
-      console.log('useCloudinaryImage: Processing image:', {
+      const isFullUrl = publicId.startsWith('http');
+      
+      console.log('Processing image:', {
         publicId,
-        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-        isConfigured: !!import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        isFullUrl,
+        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
       });
 
-      // Handle full URLs (e.g., from Supabase) differently
-      const isFullUrl = publicId.startsWith('http');
-      const cloudinaryId = isFullUrl ? publicId : publicId.split('/').pop() || publicId;
-      
-      const myImage = cld.image(cloudinaryId);
-      
-      // Apply optimizations
-      myImage.delivery(format('auto'));
-      myImage.delivery(quality('auto'));
+      let imageUrl: string;
 
-      if (width) myImage.resize(scale().width(width));
-      if (height) myImage.resize(scale().height(height));
+      if (isFullUrl) {
+        imageUrl = publicId;
+      } else {
+        const myImage = cld.image(publicId);
+        myImage.delivery(format('auto'));
+        myImage.delivery(quality('auto'));
+        
+        if (width) myImage.resize(scale().width(width));
+        if (height) myImage.resize(scale().height(height));
+        
+        imageUrl = myImage.toURL();
+      }
 
-      const url = myImage.toURL();
-      console.log('useCloudinaryImage: Generated URL:', url);
+      console.log('Generated image URL:', imageUrl);
+      setState(prev => ({ ...prev, imageUrl, isLoading: false }));
       
-      setState(prev => ({ ...prev, imageUrl: url }));
     } catch (error) {
-      console.error('Error generating Cloudinary URL:', error);
-      setState(prev => ({ ...prev, hasError: true }));
+      console.error('Error processing image:', {
+        publicId,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
+      setState(prev => ({ ...prev, hasError: true, isLoading: false }));
     }
   }, [publicId, width, height]);
 

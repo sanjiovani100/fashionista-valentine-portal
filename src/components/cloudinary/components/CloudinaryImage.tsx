@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CloudinaryImageError } from './CloudinaryImageError';
 import { useCloudinaryImage } from '../hooks/useCloudinaryImage';
+import { ImageErrorBoundary } from './ImageErrorBoundary';
 import type { CloudinaryImageProps } from '../types/cloudinary.types';
-import { cld } from '@/integrations/cloudinary/config';
 
 const aspectRatioClasses = {
   square: 'aspect-square',
@@ -28,6 +28,7 @@ export const OptimizedImage = ({
   priority = false
 }: CloudinaryImageProps) => {
   const { isLoading, hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
+  const isFullUrl = publicId.startsWith('http');
 
   const handleLoad = () => {
     if (window.performance && window.performance.getEntriesByName) {
@@ -41,44 +42,54 @@ export const OptimizedImage = ({
     }
   };
 
-  // If the image is a full URL (e.g., from Supabase), use it directly
-  const isFullUrl = publicId.startsWith('http');
-  const cloudinaryId = isFullUrl ? publicId : publicId.split('/').pop() || publicId;
-
   return (
-    <div className={cn('relative', aspectRatioClasses[aspectRatio], className)}>
-      {isLoading && (
-        <Skeleton className="absolute inset-0 bg-gray-200 animate-pulse" />
-      )}
-      
-      {hasError && <CloudinaryImageError />}
-      
-      {imageUrl && (
-        <AdvancedImage
-          cldImg={new CloudinaryImageType(cloudinaryId, { 
-            cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME 
-          })}
-          plugins={[
-            lazyload({ rootMargin: '10px 20px 10px 30px', threshold: 0.05 }),
-            placeholder({ mode: 'blur' })
-          ]}
-          onLoad={handleLoad}
-          onError={() => {
-            console.error(`Failed to load image: ${publicId}`);
-            // Fallback to placeholder if available
-            if (imageUrl !== FALLBACK_IMAGE) {
-              const img = document.createElement('img');
-              img.src = FALLBACK_IMAGE;
-              img.alt = alt;
-            }
-          }}
-          className={cn(
-            'w-full h-full object-cover',
-            isLoading && 'opacity-0',
-            hasError && 'opacity-0'
-          )}
-        />
-      )}
-    </div>
+    <ImageErrorBoundary>
+      <div className={cn('relative', aspectRatioClasses[aspectRatio], className)}>
+        {isLoading && (
+          <Skeleton className="absolute inset-0 bg-gray-200 animate-pulse" />
+        )}
+        
+        {hasError && <CloudinaryImageError />}
+        
+        {imageUrl && (
+          isFullUrl ? (
+            <img 
+              src={imageUrl}
+              alt={alt}
+              loading={priority ? "eager" : "lazy"}
+              className={cn(
+                'w-full h-full object-cover',
+                isLoading && 'opacity-0',
+                hasError && 'opacity-0'
+              )}
+              onLoad={handleLoad}
+              onError={(e) => {
+                console.error(`Failed to load image: ${publicId}`);
+                e.currentTarget.src = FALLBACK_IMAGE;
+              }}
+            />
+          ) : (
+            <AdvancedImage
+              cldImg={new CloudinaryImageType(publicId, { 
+                cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME 
+              })}
+              plugins={[
+                lazyload({ rootMargin: '10px 20px 10px 30px', threshold: 0.05 }),
+                placeholder({ mode: 'blur' })
+              ]}
+              onLoad={handleLoad}
+              onError={() => {
+                console.error(`Failed to load image: ${publicId}`);
+              }}
+              className={cn(
+                'w-full h-full object-cover',
+                isLoading && 'opacity-0',
+                hasError && 'opacity-0'
+              )}
+            />
+          )
+        )}
+      </div>
+    </ImageErrorBoundary>
   );
 };
