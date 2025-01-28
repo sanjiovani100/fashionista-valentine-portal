@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { format, quality } from '@cloudinary/url-gen/actions/delivery';
 import { scale } from '@cloudinary/url-gen/actions/resize';
-import { cld } from '@/integrations/cloudinary/config';
+import { cld, CLOUDINARY_CONFIG } from '@/integrations/cloudinary/config';
 import type { ImageLoadingState } from '../types/cloudinary.types';
 
 const validateDimensions = (value?: number): boolean => {
@@ -31,8 +31,7 @@ export const useCloudinaryImage = (
         publicId,
         width,
         height,
-        // Access cloud name through the configuration
-        cloudName: cld.config?.cloud?.cloudName || 'demo'
+        cloudName: CLOUDINARY_CONFIG.cloudName || 'demo'
       });
 
       if (!validateDimensions(width) || !validateDimensions(height)) {
@@ -80,8 +79,7 @@ export const useCloudinaryImage = (
         message: error instanceof Error ? error.message : 'Unknown error',
         publicId,
         timestamp: new Date().toISOString(),
-        // Access cloud name through the configuration
-        cloudName: cld.config?.cloud?.cloudName || 'demo'
+        cloudName: CLOUDINARY_CONFIG.cloudName || 'demo'
       });
       setState(prev => ({ ...prev, hasError: true, isLoading: false }));
     }
