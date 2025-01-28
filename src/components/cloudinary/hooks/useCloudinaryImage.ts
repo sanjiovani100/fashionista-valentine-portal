@@ -31,7 +31,7 @@ export const useCloudinaryImage = (
         publicId,
         width,
         height,
-        cloudName: cld.cloudinaryConfig.cloud.cloudName
+        cloudName: cld.config.cloud.cloudName // Using the public config getter
       });
 
       if (!validateDimensions(width) || !validateDimensions(height)) {
@@ -79,7 +79,7 @@ export const useCloudinaryImage = (
         message: error instanceof Error ? error.message : 'Unknown error',
         publicId,
         timestamp: new Date().toISOString(),
-        cloudName: cld.cloudinaryConfig.cloud.cloudName
+        cloudName: cld.config.cloud.cloudName // Using the public config getter
       });
       setState(prev => ({ ...prev, hasError: true, isLoading: false }));
     }
