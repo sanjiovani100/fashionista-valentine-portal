@@ -4,15 +4,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import type { EventTicket } from "@/types/event.types";
 
-interface TicketCardProps extends EventTicket {
+interface TicketCardProps extends Omit<EventTicket, 'benefits'> {
   isSelected: boolean;
   onSelect: (ticketType: string) => void;
   subtitle: string;
   perks: string[];
+  title: string;
 }
 
 export const TicketCard = ({
-  ticket_type,
+  title,
   subtitle,
   price,
   perks,
@@ -35,11 +36,11 @@ export const TicketCard = ({
         className={`bg-gray-500/5 backdrop-blur-sm border transition-all duration-300 ${
           isSelected ? "border-red-deep shadow-glow" : "border-white/10 hover:border-white/20"
         }`}
-        onClick={() => onSelect(ticket_type)}
+        onClick={() => onSelect(title)}
       >
         <CardHeader>
           <CardTitle className="text-2xl md:text-[24px] font-poppins text-pure-white">
-            {ticket_type}
+            {title}
           </CardTitle>
           <CardDescription className="text-gray-300 font-montserrat">
             {subtitle}

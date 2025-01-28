@@ -64,23 +64,6 @@ const Index = () => {
     );
   }
 
-  // Transform event content into features
-  const features = (eventData.event_content as EventContent[] || [])
-    .filter(content => content.content_type === 'feature')
-    .map(feature => ({
-      ...feature,
-      icon: feature.title.includes('Exclusive') ? Heart :
-           feature.title.includes('Top') ? Star : Award,
-    }));
-
-  // Transform event content into highlights
-  const highlights = (eventData.event_content as EventContent[] || [])
-    .filter(content => content.content_type === 'highlight')
-    .map(highlight => ({
-      ...highlight,
-      image: highlight.media_urls?.[0] || '/placeholder.svg'
-    }));
-
   // Transform collections with images
   const collections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => ({
     ...collection,
@@ -91,9 +74,10 @@ const Index = () => {
     )?.url || '/placeholder.svg'
   }));
 
-  // Transform tickets
+  // Transform tickets with additional required properties
   const tickets = ((eventData.event_tickets as EventTicket[]) || []).map(ticket => ({
     ...ticket,
+    title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     perks: ticket.benefits || []
   }));
@@ -114,12 +98,12 @@ const Index = () => {
             role="model"
           />
 
-          <EventDetails features={features} />
+          <EventDetails features={eventData.event_content} />
 
           <EventsSection />
 
           <EventHighlights 
-            highlights={highlights}
+            highlights={eventData.event_content}
             images={eventData.fashion_images as FashionImage[] || []}
           />
 
