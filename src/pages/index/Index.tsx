@@ -42,8 +42,6 @@ const Index = () => {
             subheading={eventData?.description || "Join us for an exclusive celebration of fashion, creativity, and empowerment"}
             backgroundImage={heroImage}
           />
-          
-          <EventsSection />
           <EventHighlights 
             highlights={highlights}
             images={eventData.fashion_images || []}
@@ -55,7 +53,7 @@ const Index = () => {
           />
           <Partners />
           <Sponsors />
-          
+          <EventsSection />
           <CTASection
             badge={{
               text: "Join Us This Valentine's"
