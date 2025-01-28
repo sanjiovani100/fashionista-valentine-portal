@@ -26,7 +26,8 @@ export const OptimizedImage = ({
   aspectRatio = 'auto',
   priority = false
 }: CloudinaryImageProps) => {
-  const { isLoading, hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
+  const { hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
+  const [isLoading, setIsLoading] = useState(true);
   const [loadTime, setLoadTime] = useState<number>(0);
 
   console.log('[CloudinaryImage] Rendering image:', {
