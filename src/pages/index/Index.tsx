@@ -56,17 +56,19 @@ const Index = () => {
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     meta: {
       errorMessage: "There was a problem loading the event data. Please try again later."
-    },
-    onSettled: (data, error) => {
-      if (error) {
-        toast({
-          title: "Error loading event",
-          description: "There was a problem loading the event data. Please try again later.",
-          variant: "destructive",
-        });
-      }
     }
   });
+
+  // Handle error state with toast outside of the query options
+  React.useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error loading event",
+        description: "There was a problem loading the event data. Please try again later.",
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
 
   if (isLoading) {
     return (
