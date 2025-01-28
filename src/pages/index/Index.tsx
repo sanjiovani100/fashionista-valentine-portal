@@ -96,7 +96,8 @@ const Index = () => {
     ...ticket,
     title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
-    perks: ticket.benefits || []
+    perks: ticket.benefits || [],
+    price: ticket.price.toString()
   }));
 
   return (
