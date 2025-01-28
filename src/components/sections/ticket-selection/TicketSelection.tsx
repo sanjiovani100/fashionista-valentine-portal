@@ -55,7 +55,7 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
     title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     perks: ticket.benefits || [],
-    price: ticket.price.toString()
+    price: Number(ticket.price) // Convert price to number
   }));
 
   return (
