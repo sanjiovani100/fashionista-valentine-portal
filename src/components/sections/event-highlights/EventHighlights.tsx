@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { CoreImage } from "@/components/ui/core-image";
+import { OptimizedImage } from "@/components/cloudinary";
 import { useState } from "react";
 import type { EventContent, FashionImage } from "@/types/event.types";
 
@@ -32,8 +32,8 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
           {highlights.map((highlight, index) => (
             <Card key={index} className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
               <div className="relative h-[300px] overflow-hidden rounded-t-lg">
-                <CoreImage
-                  src={highlight.image}
+                <OptimizedImage
+                  publicId={highlight.image}
                   alt={highlight.title}
                   aspectRatio="portrait"
                   className="w-full h-full transition-transform duration-300 group-hover:scale-110"
@@ -63,8 +63,8 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
                 <CarouselItem key={index}>
                   <Card className="bg-black/60 border-none text-white">
                     <div className="relative h-[300px] overflow-hidden rounded-t-lg">
-                      <CoreImage
-                        src={highlight.image}
+                      <OptimizedImage
+                        publicId={highlight.image}
                         alt={highlight.title}
                         aspectRatio="portrait"
                         className="w-full h-full"

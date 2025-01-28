@@ -81,12 +81,13 @@ const Index = () => {
   const heroImage = eventData?.fashion_images?.find(img => img.category === 'event_hero')?.url || 'hero-red-bg_spclrx';
   console.log("Hero image:", heroImage);
 
-  // Transform event_content to include image property
+  // Transform event_content to include image property and map to Cloudinary IDs
+  const highlightImages = ['valentine_mxwzop', 'valentine-011_sgwnbj', 'valentine-013_axosyk'];
   const highlights = eventData.event_content
     .filter(content => content.content_type === 'highlight')
-    .map(highlight => ({
+    .map((highlight, index) => ({
       ...highlight,
-      image: highlight.media_urls?.[0] || '/placeholder.svg'
+      image: highlightImages[index] || 'placeholder'
     }));
 
   // Create features array for EventDetails component
@@ -121,7 +122,7 @@ const Index = () => {
           <Hero 
             headline={eventData?.title || "Fashionistas Valentine's Event"}
             subheading={eventData?.description || "Join us for an exclusive celebration of fashion, creativity, and empowerment"}
-            backgroundImage="hero-red-bg_spclrx"
+            backgroundImage={heroImage}
           />
 
           <EventDetails features={features} />
