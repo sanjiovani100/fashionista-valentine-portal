@@ -10,6 +10,8 @@ import { Cta } from "@/components/sections/cta/Cta";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const Index = () => {
   const { data: activeEvent, isLoading } = useQuery({
@@ -18,7 +20,7 @@ const Index = () => {
       const { data, error } = await supabase
         .from('active_fashion_events')
         .select('*')
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       return data;
@@ -30,6 +32,22 @@ const Index = () => {
       <div className="min-h-screen flex items-center justify-center bg-black">
         <Loader2 className="w-8 h-8 animate-spin text-fashion-pink" />
       </div>
+    );
+  }
+
+  if (!activeEvent) {
+    return (
+      <PageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>No Active Event</AlertTitle>
+            <AlertDescription>
+              There are currently no active fashion events. Please check back later.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </PageLayout>
     );
   }
 
