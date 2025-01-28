@@ -6,7 +6,7 @@ import type { FashionCollection } from "@/types/event.types";
 import './styles.css';
 
 interface LingerieShowcaseProps {
-  collections: FashionCollection[];
+  collections: (FashionCollection & { image?: string })[];
 }
 
 export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
@@ -47,7 +47,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
               <CardContent className="p-0">
                 <div className="relative aspect-[3/4] overflow-hidden">
                   <img
-                    src={collection.image}
+                    src={collection.image || '/placeholder.svg'}
                     alt={collection.collection_name}
                     className="showcase-image object-cover w-full h-full"
                   />

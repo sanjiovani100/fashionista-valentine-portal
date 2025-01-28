@@ -50,6 +50,14 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
     }
   };
 
+  const transformedTickets = tickets.map(ticket => ({
+    ...ticket,
+    title: ticket.ticket_type,
+    subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
+    perks: ticket.benefits || [],
+    price: ticket.price.toString()
+  }));
+
   return (
     <section 
       className="py-20 md:py-[80px] px-4 relative overflow-hidden bg-pure-black" 
@@ -76,9 +84,9 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
         <CountdownTimer />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
-          {tickets.map((ticket, index) => (
+          {transformedTickets.map((ticket, index) => (
             <motion.div
-              key={ticket.title}
+              key={ticket.id}
               variants={cardVariants}
               className="transform transition-all duration-300"
             >

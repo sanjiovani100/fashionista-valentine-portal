@@ -82,23 +82,18 @@ const Index = () => {
     }));
 
   // Transform collections with images
-  const collections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => ({
-    ...collection,
-    image: (eventData.fashion_images as FashionImage[] || []).find(
+  const collections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => {
+    const collectionImage = (eventData.fashion_images as FashionImage[] || []).find(
       img => img.metadata && typeof img.metadata === 'object' && 
       'collection_id' in img.metadata && 
       img.metadata.collection_id === collection.id
-    )?.url || '/placeholder.svg'
-  }));
-
-  // Transform tickets with additional required properties
-  const tickets = ((eventData.event_tickets as EventTicket[]) || []).map(ticket => ({
-    ...ticket,
-    title: ticket.ticket_type,
-    subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
-    perks: ticket.benefits || [],
-    price: ticket.price.toString()
-  }));
+    );
+    
+    return {
+      ...collection,
+      image: collectionImage?.url || '/placeholder.svg'
+    };
+  });
 
   return (
     <PageLayout>
@@ -128,7 +123,7 @@ const Index = () => {
           <LingerieShowcase collections={collections} />
 
           <TicketSelection 
-            tickets={tickets}
+            tickets={eventData.event_tickets as EventTicket[]}
             eventDate={eventData.start_time}
           />
 
