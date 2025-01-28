@@ -19,6 +19,13 @@ const aspectRatioClasses = {
 // Updated fallback image with correct version
 const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1706436856/placeholder_kgzjk4.jpg";
 
+// Add environment check on component mount
+console.log('Cloudinary Configuration:', {
+  cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+  isConfigured: !!import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+  environment: import.meta.env.MODE
+});
+
 export const OptimizedImage = ({
   publicId,
   alt,
@@ -59,7 +66,11 @@ export const OptimizedImage = ({
       publicId,
       url: imageUrl,
       error: e.type,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      cloudinaryConfig: {
+        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+        isConfigured: !!import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+      }
     });
 
     if (e.currentTarget.src !== FALLBACK_IMAGE) {

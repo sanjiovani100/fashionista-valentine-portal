@@ -2,18 +2,25 @@ import type { FashionEvent } from "@/types/database";
 import type { EventContent, FashionCollection } from "@/types/event.types";
 
 // Default Cloudinary fallback image
-const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041736/placeholder_kgzjk4.jpg";
+const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1706436856/placeholder_kgzjk4.jpg";
 
 export const transformEventData = (eventData: FashionEvent) => {
-  console.log("Starting event data transformation:", { 
+  console.log("Raw event data:", {
     contentCount: eventData.event_content?.length,
-    collectionsCount: eventData.fashion_collections?.length,
-    imagesCount: eventData.fashion_images?.length 
+    content: eventData.event_content,
+    images: eventData.fashion_images
   });
 
   // Transform highlights data with required fields
   const highlights = (eventData.event_content || [])
-    .filter(content => content.content_type === 'highlight')
+    .filter(content => {
+      console.log("Processing content item:", {
+        type: content.content_type,
+        title: content.title,
+        mediaUrls: content.media_urls
+      });
+      return content.content_type === 'highlight';
+    })
     .map((highlight): EventContent & { image: string } => {
       // Get the first media URL if available, otherwise use fallback
       const imageUrl = highlight.media_urls?.[0] || FALLBACK_IMAGE;
@@ -21,8 +28,7 @@ export const transformEventData = (eventData: FashionEvent) => {
       console.log("Processing highlight:", {
         title: highlight.title,
         mediaUrls: highlight.media_urls,
-        selectedUrl: imageUrl,
-        allUrls: highlight.media_urls 
+        selectedUrl: imageUrl
       });
 
       return {
@@ -36,30 +42,17 @@ export const transformEventData = (eventData: FashionEvent) => {
     })
     .slice(0, 3);
 
-  console.log("Processing highlights:", {
-    rawHighlights: eventData.event_content,
-    transformedHighlights: highlights.map(h => ({
-      title: h.title,
-      mediaUrls: h.media_urls,
-      imageUrl: h.image
-    }))
-  });
+  console.log("Transformed highlights:", highlights);
 
-  // Transform collections data with proper image mapping and required fields
+  // Transform collections data with proper image mapping
   const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection): FashionCollection & { image: string } => {
-      // Find matching image for this collection
       const collectionImage = eventData.fashion_images?.find(img => 
         typeof img.metadata === 'object' && 
         img.metadata !== null && 
         'collection_id' in img.metadata && 
         img.metadata.collection_id === collection.id
       )?.url || FALLBACK_IMAGE;
-      
-      console.log(`Processing collection: ${collection.collection_name}`, {
-        hasImage: collectionImage !== FALLBACK_IMAGE,
-        imageUrl: collectionImage
-      });
 
       return {
         ...collection,
@@ -76,13 +69,6 @@ export const transformEventData = (eventData: FashionEvent) => {
   const heroImage = eventData.fashion_images?.find(img => 
     img.category === 'event_hero'
   )?.url || FALLBACK_IMAGE;
-
-  console.log("Transformation complete:", {
-    highlightsCount: highlights.length,
-    collectionsCount: collectionsWithImages.length,
-    hasHeroImage: heroImage !== FALLBACK_IMAGE,
-    highlights: highlights.map(h => ({ title: h.title, image: h.image }))
-  });
 
   return {
     highlights,
