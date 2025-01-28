@@ -10,10 +10,11 @@ import { Cta } from "@/components/sections/cta/Cta";
 import { EventDetails } from "@/components/sections/event-details/EventDetails";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
+import { Loader2, Heart, Star, Award } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { EventContent, FashionCollection } from "@/types/event.types";
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useQuery({
@@ -63,14 +64,38 @@ const Index = () => {
     );
   }
 
-  // Filter content by type
-  const features = eventData.event_content?.filter(
-    content => content.content_type === 'feature'
-  ) || [];
+  // Transform event content into the required format for each section
+  const features = eventData.event_content
+    ?.filter(content => content.content_type === 'feature')
+    .map(feature => ({
+      icon: feature.title.includes('Exclusive') ? Heart :
+           feature.title.includes('Top') ? Star : Award,
+      title: feature.title,
+      description: feature.content
+    })) || [];
 
-  const highlights = eventData.event_content?.filter(
-    content => content.content_type === 'highlight'
-  ) || [];
+  const highlights = eventData.event_content
+    ?.filter(content => content.content_type === 'highlight')
+    .map(highlight => ({
+      title: highlight.title,
+      description: highlight.content,
+      image: highlight.media_urls?.[0] || '/placeholder.svg'
+    })) || [];
+
+  const collections = eventData.fashion_collections?.map(collection => ({
+    ...collection,
+    image: eventData.fashion_images?.find(
+      img => img.metadata?.collection_id === collection.id
+    )?.url || '/placeholder.svg'
+  })) || [];
+
+  const tickets = eventData.event_tickets?.map(ticket => ({
+    title: ticket.ticket_type,
+    subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
+    price: `$${ticket.price}`,
+    perks: ticket.benefits || [],
+    limited: ticket.quantity_available < 10
+  })) || [];
 
   return (
     <PageLayout>
@@ -100,11 +125,11 @@ const Index = () => {
           />
 
           <LingerieShowcase 
-            collections={eventData.fashion_collections}
+            collections={collections}
           />
 
           <TicketSelection 
-            tickets={eventData.event_tickets}
+            tickets={tickets}
             eventDate={eventData.start_time}
           />
 
