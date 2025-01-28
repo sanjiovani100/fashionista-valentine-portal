@@ -19,12 +19,15 @@ export const CloudinaryProvider = ({ children }: { children: React.ReactNode }) 
     // Verify Cloudinary configuration on mount
     console.log('Cloudinary Configuration:', {
       cloudName: cloudName || 'demo (fallback)',
-      isConfigured: !!cloudName
+      isConfigured: !!cloudName,
+      environment: import.meta.env.MODE
     });
 
     if (!cloudName) {
       console.error('Cloudinary cloud name not configured!');
       toast.error('Image optimization service not properly configured');
+    } else {
+      console.log('Cloudinary successfully configured with cloud name:', cloudName);
     }
   }, []);
 
