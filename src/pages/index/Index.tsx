@@ -16,6 +16,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
   const { toast } = useToast();
+  console.log("Rendering Index component");
 
   const { data: eventData, isLoading, error } = useQuery({
     queryKey: ['active-fashion-event'],
@@ -34,6 +35,8 @@ const Index = () => {
           fashion_images(*)
         `)
         .eq('name', 'valentines_fashion_show')
+        .order('created_at', { ascending: false })
+        .limit(1)
         .maybeSingle();
 
       if (eventError) {
@@ -49,6 +52,15 @@ const Index = () => {
       console.log("Event data fetched successfully:", eventData);
       return eventData;
     },
+    retry: 2,
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    onError: (error) => {
+      toast({
+        title: "Error loading event",
+        description: "There was a problem loading the event data. Please try again later.",
+        variant: "destructive",
+      });
+    }
   });
 
   if (isLoading) {
