@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { CoreImage } from "@/components/ui/core-image";
 
 interface Logo {
   id: number;
@@ -53,11 +54,13 @@ function LogoColumn({ logos, columnIndex, currentTime }: LogoColumnProps) {
             transition: { duration: 0.3 },
           }}
         >
-          <img
+          <CoreImage
             src={currentLogo.src}
             alt={currentLogo.name}
             className="h-auto w-auto max-h-[80%] max-w-[80%] object-contain"
-            loading="lazy"
+            showLoadingState={true}
+            showErrorState={true}
+            aspectRatio="auto"
           />
         </motion.div>
       </AnimatePresence>
