@@ -65,42 +65,42 @@ const Index = () => {
   }
 
   // Transform event content into features
-  const eventFeatures = (eventData.event_content as EventContent[] || [])
+  const features = (eventData.event_content as EventContent[] || [])
     .filter(content => content.content_type === 'feature')
     .map(feature => ({
       icon: feature.title.includes('Exclusive') ? Heart :
            feature.title.includes('Top') ? Star : Award,
       title: feature.title,
       description: feature.content
-    })) as Feature[];
+    })) satisfies Feature[];
 
   // Transform event content into highlights
-  const eventHighlights = (eventData.event_content as EventContent[] || [])
+  const highlights = (eventData.event_content as EventContent[] || [])
     .filter(content => content.content_type === 'highlight')
     .map(highlight => ({
       title: highlight.title,
       description: highlight.content,
       image: highlight.media_urls?.[0] || '/placeholder.svg'
-    })) as Highlight[];
+    })) satisfies Highlight[];
 
   // Transform collections with images
-  const eventCollections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => ({
+  const collections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => ({
     ...collection,
     image: (eventData.fashion_images as FashionImage[] || []).find(
       img => img.metadata && typeof img.metadata === 'object' && 
       'collection_id' in img.metadata && 
       img.metadata.collection_id === collection.id
     )?.url || '/placeholder.svg'
-  })) as CollectionDisplay[];
+  })) satisfies CollectionDisplay[];
 
   // Transform tickets
-  const eventTickets = ((eventData.event_tickets as EventTicket[]) || []).map(ticket => ({
+  const tickets = ((eventData.event_tickets as EventTicket[]) || []).map(ticket => ({
     title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     price: `$${ticket.price}`,
     perks: ticket.benefits || [],
     limited: ticket.quantity_available < 10
-  })) as TicketDisplay[];
+  })) satisfies TicketDisplay[];
 
   return (
     <PageLayout>
@@ -118,19 +118,19 @@ const Index = () => {
             role="model"
           />
 
-          <EventDetails features={eventFeatures} />
+          <EventDetails features={features} />
 
           <EventsSection />
 
           <EventHighlights 
-            highlights={eventHighlights}
+            highlights={highlights}
             images={eventData.fashion_images as FashionImage[] || []}
           />
 
-          <LingerieShowcase collections={eventCollections} />
+          <LingerieShowcase collections={collections} />
 
           <TicketSelection 
-            tickets={eventTickets}
+            tickets={tickets}
             eventDate={eventData.start_time}
           />
 
