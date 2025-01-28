@@ -32,7 +32,7 @@ const Index = () => {
           ),
           fashion_images(*)
         `)
-        .eq('name', 'valentines_2024')
+        .eq('name', 'valentines_fashion_show')
         .single();
 
       if (eventError) throw eventError;
@@ -66,7 +66,16 @@ const Index = () => {
     );
   }
 
-  // Content sections with proper data passing
+  // Extract features from event content
+  const features = eventData.event_content?.filter(
+    content => content.content_type === 'feature'
+  ) || [];
+
+  // Extract highlights from event content
+  const highlights = eventData.event_content?.filter(
+    content => content.content_type === 'highlight'
+  ) || [];
+
   return (
     <PageLayout>
       <AnimatePresence mode="wait">
@@ -78,49 +87,26 @@ const Index = () => {
           className="space-y-20 overflow-hidden"
         >
           <Hero 
-            title={eventData.title}
-            description={eventData.description}
-            date={eventData.start_time}
+            headline={eventData.title}
+            subheading={eventData.description}
+            role="model"
           />
 
-          <EventDetails 
-            features={eventData.event_content?.filter(
-              content => content.content_type === 'feature'
-            )}
-          />
+          <EventDetails />
 
-          <EventsSection 
-            events={[eventData]}
-          />
+          <EventsSection />
 
-          <EventHighlights 
-            images={eventData.fashion_images}
-            content={eventData.event_content?.filter(
-              content => content.content_type === 'highlight'
-            )}
-          />
+          <EventHighlights />
 
-          <LingerieShowcase 
-            collections={eventData.fashion_collections}
-            designers={eventData.fashion_collections?.map(
-              collection => collection.designer_profiles
-            )}
-          />
+          <LingerieShowcase />
 
-          <TicketSelection 
-            tickets={eventData.event_tickets}
-            eventDate={eventData.start_time}
-          />
+          <TicketSelection />
 
           <Partners />
 
           <Sponsors />
 
-          <Cta 
-            title="Join Us This Valentine's"
-            description="Experience the most exclusive fashion event of the year"
-            eventDate={eventData.start_time}
-          />
+          <Cta />
         </motion.div>
       </AnimatePresence>
     </PageLayout>
