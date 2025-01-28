@@ -1,8 +1,6 @@
+import { CLOUDINARY_CONFIG, getFirstValidMediaUrl, isValidCloudinaryUrl } from '@/integrations/cloudinary/config';
 import type { FashionEvent } from "@/types/database";
 import type { EventContent, FashionCollection } from "@/types/event.types";
-
-// Default Cloudinary fallback image
-const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1706436856/placeholder_kgzjk4.jpg";
 
 export const transformEventData = (eventData: FashionEvent) => {
   console.log("Raw event data:", {
@@ -11,7 +9,7 @@ export const transformEventData = (eventData: FashionEvent) => {
     images: eventData.fashion_images
   });
 
-  // Transform highlights data with required fields
+  // Transform highlights with proper image URL handling
   const highlights = (eventData.event_content || [])
     .filter(content => {
       console.log("Processing content item:", {
@@ -22,8 +20,7 @@ export const transformEventData = (eventData: FashionEvent) => {
       return content.content_type === 'highlight';
     })
     .map((highlight): EventContent & { image: string } => {
-      // Get the first media URL if available, otherwise use fallback
-      const imageUrl = highlight.media_urls?.[0] || FALLBACK_IMAGE;
+      const imageUrl = getFirstValidMediaUrl(highlight.media_urls);
       
       console.log("Processing highlight:", {
         title: highlight.title,
@@ -37,14 +34,16 @@ export const transformEventData = (eventData: FashionEvent) => {
         media_urls: highlight.media_urls || [],
         publish_date: highlight.publish_date || new Date().toISOString(),
         engagement_metrics: highlight.engagement_metrics || {},
-        image: imageUrl
+        image: imageUrl && isValidCloudinaryUrl(imageUrl) 
+          ? imageUrl 
+          : CLOUDINARY_CONFIG.defaultPlaceholder
       };
     })
     .slice(0, 3);
 
   console.log("Transformed highlights:", highlights);
 
-  // Transform collections data with proper image mapping
+  // Transform collections with proper image handling
   const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection): FashionCollection & { image: string } => {
       const collectionImage = eventData.fashion_images?.find(img => 
@@ -52,7 +51,13 @@ export const transformEventData = (eventData: FashionEvent) => {
         img.metadata !== null && 
         'collection_id' in img.metadata && 
         img.metadata.collection_id === collection.id
-      )?.url || FALLBACK_IMAGE;
+      );
+
+      console.log("Processing collection:", {
+        name: collection.collection_name,
+        hasImage: !!collectionImage,
+        imageUrl: collectionImage?.url
+      });
 
       return {
         ...collection,
@@ -60,15 +65,17 @@ export const transformEventData = (eventData: FashionEvent) => {
         event_id: collection.event_id || '',
         technical_requirements: collection.technical_requirements || '',
         sustainability_info: collection.sustainability_info || '',
-        image: collectionImage
+        image: collectionImage && isValidCloudinaryUrl(collectionImage.url)
+          ? collectionImage.url
+          : CLOUDINARY_CONFIG.defaultPlaceholder
       };
     })
     .slice(0, 3);
 
-  // Get hero image
+  // Get hero image with proper fallback
   const heroImage = eventData.fashion_images?.find(img => 
     img.category === 'event_hero'
-  )?.url || FALLBACK_IMAGE;
+  )?.url || CLOUDINARY_CONFIG.defaultPlaceholder;
 
   return {
     highlights,

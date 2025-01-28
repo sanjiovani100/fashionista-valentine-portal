@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CloudinaryImageError } from './CloudinaryImageError';
 import { ImageErrorBoundary } from './ImageErrorBoundary';
 import { useCloudinaryImage } from '../hooks/useCloudinaryImage';
+import { CLOUDINARY_CONFIG, isValidCloudinaryUrl } from '@/integrations/cloudinary/config';
 import type { CloudinaryImageProps } from '../types/cloudinary.types';
 
 const aspectRatioClasses = {
@@ -15,16 +16,6 @@ const aspectRatioClasses = {
   landscape: 'aspect-[4/3]',
   auto: 'aspect-auto'
 } as const;
-
-// Updated fallback image with correct version
-const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1706436856/placeholder_kgzjk4.jpg";
-
-// Add environment check on component mount
-console.log('Cloudinary Configuration:', {
-  cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-  isConfigured: !!import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-  environment: import.meta.env.MODE
-});
 
 export const OptimizedImage = ({
   publicId,
@@ -68,21 +59,14 @@ export const OptimizedImage = ({
       error: e.type,
       timestamp: new Date().toISOString(),
       cloudinaryConfig: {
-        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-        isConfigured: !!import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        cloudName: CLOUDINARY_CONFIG.cloudName,
+        isConfigured: !!CLOUDINARY_CONFIG.cloudName
       }
     });
 
-    if (e.currentTarget.src !== FALLBACK_IMAGE) {
-      e.currentTarget.src = FALLBACK_IMAGE;
+    if (e.currentTarget.src !== CLOUDINARY_CONFIG.defaultPlaceholder) {
+      e.currentTarget.src = CLOUDINARY_CONFIG.defaultPlaceholder;
     }
-  };
-
-  // Extract Cloudinary ID from URL if it's a full URL
-  const getCloudinaryId = (url: string) => {
-    if (!url.includes('cloudinary.com')) return url;
-    const matches = url.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
-    return matches ? matches[1] : url;
   };
 
   return (
@@ -110,8 +94,8 @@ export const OptimizedImage = ({
             />
           ) : (
             <AdvancedImage
-              cldImg={new CloudinaryImageType(getCloudinaryId(publicId), { 
-                cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME 
+              cldImg={new CloudinaryImageType(publicId, { 
+                cloudName: CLOUDINARY_CONFIG.cloudName 
               })}
               plugins={[
                 lazyload({ rootMargin: '10px 20px 10px 30px', threshold: 0.05 }),
