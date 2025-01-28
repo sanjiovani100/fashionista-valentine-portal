@@ -1,10 +1,12 @@
 import { LucideIcon } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
+import type { Json } from "@/types/database";
 
 // Base Supabase types
 export type EventContent = Database["public"]["Tables"]["event_content"]["Row"] & {
   image?: string;
 };
+
 export type FashionImage = Database["public"]["Tables"]["fashion_images"]["Row"];
 export type FashionCollection = Database["public"]["Tables"]["fashion_collections"]["Row"] & {
   image?: string;
@@ -29,15 +31,32 @@ export interface EventDetails {
 // Extended types for components
 export interface Highlight extends Omit<EventContent, 'image'> {
   image: string;
+  engagement_metrics?: Json | null;
+  media_urls?: string[] | null;
+  publish_date?: string | null;
+  event_id?: string | null;
 }
 
 export interface CollectionDisplay extends FashionCollection {
   designer_profiles?: DesignerProfile;
+  designer_id?: string | null;
+  event_id?: string | null;
+  technical_requirements?: string | null;
+  sustainability_info?: string | null;
 }
 
-export interface TicketDisplay extends EventTicket {
+export interface TicketDisplay extends Partial<EventTicket> {
+  id: string;
+  ticket_type: string;
+  price: number;
+  quantity_available: number;
   subtitle?: string;
   perks?: string[];
+  benefits?: string[] | null;
+  early_bird_deadline?: string | null;
+  early_bird_price?: number | null;
+  group_discount_threshold?: number | null;
+  group_discount_percentage?: number | null;
 }
 
 // Component Props Types
