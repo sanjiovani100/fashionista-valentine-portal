@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
 import { CloudinaryImage as CloudinaryImageType } from '@cloudinary/url-gen';
 import { cn } from '@/lib/utils';
@@ -16,7 +16,7 @@ const aspectRatioClasses = {
   auto: 'aspect-auto'
 } as const;
 
-// Default fallback image from Cloudinary
+// Updated fallback image with correct version
 const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1706436856/placeholder_kgzjk4.jpg";
 
 export const OptimizedImage = ({

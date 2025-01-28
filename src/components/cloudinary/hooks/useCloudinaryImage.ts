@@ -4,6 +4,10 @@ import { scale } from '@cloudinary/url-gen/actions/resize';
 import { cld } from '@/integrations/cloudinary/config';
 import type { ImageLoadingState } from '../types/cloudinary.types';
 
+const validateDimensions = (value?: number): boolean => {
+  return typeof value === 'undefined' || (typeof value === 'number' && value > 0);
+};
+
 export const useCloudinaryImage = (
   publicId: string,
   width?: number,
@@ -26,6 +30,10 @@ export const useCloudinaryImage = (
         dimensions: { width, height },
         timestamp: new Date().toISOString()
       });
+
+      if (!validateDimensions(width) || !validateDimensions(height)) {
+        throw new Error('Invalid dimensions provided');
+      }
 
       let imageUrl: string;
 
