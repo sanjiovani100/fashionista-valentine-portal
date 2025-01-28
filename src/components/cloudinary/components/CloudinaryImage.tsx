@@ -33,7 +33,7 @@ export const OptimizedImage = ({
 
   const handleLoad = () => {
     if (window.performance && window.performance.getEntriesByName) {
-      const imagePerf = performance.getEntriesByName(imageUrl)[0];
+      const imagePerf = performance.getEntriesByName(imageUrl)[0] as PerformanceResourceTiming;
       if (imagePerf) {
         console.log(`Image loaded successfully:`, {
           publicId,
