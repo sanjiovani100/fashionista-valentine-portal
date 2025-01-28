@@ -29,30 +29,38 @@ export const OptimizedImage = ({
   const { isLoading, hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
   const [loadTime, setLoadTime] = useState<number>(0);
 
+  console.log('[CloudinaryImage] Rendering image:', {
+    publicId,
+    imageUrl,
+    isLoading,
+    hasError,
+    aspectRatio
+  });
+
   const handleLoad = () => {
+    setIsLoading(false);
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0] as PerformanceResourceTiming;
       if (imagePerf) {
         const loadTimeMs = imagePerf.duration;
         setLoadTime(loadTimeMs);
-        // Only log performance metrics in development
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`[Image Performance] Load time: ${loadTimeMs}ms`, {
-            url: imageUrl,
-            size: imagePerf.transferSize,
-          });
-        }
+        console.log(`[Image Performance] Successfully loaded image:`, {
+          url: imageUrl,
+          loadTime: loadTimeMs,
+          size: imagePerf.transferSize,
+        });
       }
     }
   };
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    // Only log errors in development or if they're critical
-    console.error('[Image Error]', {
+    console.error('[Image Error] Failed to load image:', {
       type: e.type,
       url: imageUrl,
+      publicId,
       timestamp: new Date().toISOString(),
-      isCloudinaryConfigured: !!CLOUDINARY_CONFIG.cloudName
+      isCloudinaryConfigured: !!CLOUDINARY_CONFIG.cloudName,
+      error: e
     });
 
     if (e.currentTarget.src !== CLOUDINARY_CONFIG.defaultPlaceholder) {
