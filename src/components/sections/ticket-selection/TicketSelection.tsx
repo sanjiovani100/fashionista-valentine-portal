@@ -60,7 +60,7 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
 
   return (
     <section 
-      className="py-20 md:py-[80px] px-4 relative overflow-hidden bg-pure-black" 
+      className="pt-8 pb-20 md:pb-[80px] px-4 relative overflow-hidden bg-pure-black" 
       ref={ref}
     >
       <div className="absolute inset-0 opacity-5">

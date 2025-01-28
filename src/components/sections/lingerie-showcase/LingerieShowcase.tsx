@@ -33,7 +33,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
   console.log("LingerieShowcase received collections:", collections);
 
   return (
-    <section className="relative py-16 bg-black min-h-screen showcase-section" ref={ref}>
+    <section className="relative pt-16 pb-8 bg-black min-h-screen showcase-section" ref={ref}>
       <div className="showcase-pattern" />
       <div className="parallax-bg" ref={parallaxRef} />
 
