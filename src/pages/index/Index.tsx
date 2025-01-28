@@ -100,24 +100,27 @@ const Index = () => {
   const heroImage = eventData?.fashion_images?.find(img => img.category === 'event_hero')?.url || 'hero-red-bg_spclrx';
   console.log("Hero image:", heroImage);
 
-  // Transform event_content to include image property and map to Cloudinary IDs
+  // Transform event_content to include image property and map to Cloudinary IDs - limit to 3 items
   const highlightImages = ['valentine_mxwzop', 'valentine-011_sgwnbj', 'valentine-013_axosyk'];
   const highlights = eventData.event_content
     .filter(content => content.content_type === 'highlight')
     .map((highlight, index) => ({
       ...highlight,
       image: highlightImages[index] || 'placeholder'
-    }));
+    }))
+    .slice(0, 3); // Limit to first 3 highlights
 
-  // Map Cloudinary image IDs to collections
-  const collectionsWithImages = eventData.fashion_collections.map((collection, index) => {
-    const cloudinaryIds = ['valentine-012_nbzfkf', 'valentine-011_uebnxo', 'valentine-010_ktl7ko'];
-    console.log(`Mapping collection ${collection.collection_name} with image: ${cloudinaryIds[index]}`);
-    return {
-      ...collection,
-      image: cloudinaryIds[index]
-    };
-  });
+  // Map Cloudinary image IDs to collections - limit to 3 items
+  const collectionsWithImages = eventData.fashion_collections
+    .map((collection, index) => {
+      const cloudinaryIds = ['valentine-012_nbzfkf', 'valentine-011_uebnxo', 'valentine-010_ktl7ko'];
+      console.log(`Mapping collection ${collection.collection_name} with image: ${cloudinaryIds[index]}`);
+      return {
+        ...collection,
+        image: cloudinaryIds[index]
+      };
+    })
+    .slice(0, 3); // Limit to first 3 collections
 
   return (
     <PageLayout>
@@ -142,7 +145,7 @@ const Index = () => {
           />
           <LingerieShowcase collections={collectionsWithImages} />
           <TicketSelection 
-            tickets={eventData.event_tickets || []}
+            tickets={eventData.event_tickets?.slice(0, 3) || []} // Limit to first 3 tickets
             eventDate={eventData.start_time}
           />
           <Partners />
