@@ -1,38 +1,21 @@
-"use client";
+"use client"
 
-import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { CoreImage } from "@/components/ui/core-image";
+import { useCallback, useEffect, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 
-interface Logo {
-  id: number;
-  name: string;
-  src: string;
-}
-
-interface LogoColumnProps {
-  logos: Logo[];
-  columnIndex: number;
-  currentTime: number;
-}
-
-function LogoColumn({ logos, columnIndex, currentTime }: LogoColumnProps) {
-  const CYCLE_DURATION = 2000;
-  const columnDelay = columnIndex * 200;
-  const adjustedTime = (currentTime + columnDelay) % (CYCLE_DURATION * logos.length);
-  const currentIndex = Math.floor(adjustedTime / CYCLE_DURATION);
-  const currentLogo = logos[currentIndex];
+function LogoColumn({ logos, columnIndex, currentTime }) {
+  const CYCLE_DURATION = 2000
+  const columnDelay = columnIndex * 200
+  const adjustedTime = (currentTime + columnDelay) % (CYCLE_DURATION * logos.length)
+  const currentIndex = Math.floor(adjustedTime / CYCLE_DURATION)
+  const currentLogo = logos[currentIndex]
 
   return (
     <motion.div
       className="relative h-14 w-24 overflow-hidden md:h-24 md:w-48"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{
-        delay: columnIndex * 0.1,
-        duration: 0.5,
-        ease: "easeOut",
-      }}
+      transition={{ delay: columnIndex * 0.1, duration: 0.5, ease: "easeOut" }}
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -54,60 +37,53 @@ function LogoColumn({ logos, columnIndex, currentTime }: LogoColumnProps) {
             transition: { duration: 0.3 },
           }}
         >
-          <CoreImage
+          <img
             src={currentLogo.src}
             alt={currentLogo.name}
             className="h-auto w-auto max-h-[80%] max-w-[80%] object-contain"
-            showLoadingState={true}
-            showErrorState={true}
-            aspectRatio="auto"
+            loading="lazy"
           />
         </motion.div>
       </AnimatePresence>
     </motion.div>
-  );
+  )
 }
 
-interface LogoCarouselProps {
-  columns?: number;
-  logos: Logo[];
-}
-
-export function LogoCarousel({ columns = 2, logos }: LogoCarouselProps) {
-  const [logoColumns, setLogoColumns] = useState<Logo[][]>([]);
-  const [time, setTime] = useState(0);
+export function LogoCarousel({ columns = 2, logos }) {
+  const [logoColumns, setLogoColumns] = useState([])
+  const [time, setTime] = useState(0)
 
   const distributeLogos = useCallback(
-    (logos: Logo[]) => {
-      const shuffled = [...logos].sort(() => Math.random() - 0.5);
-      const result: Logo[][] = Array.from({ length: columns }, () => []);
+    (logos) => {
+      const shuffled = [...logos].sort(() => Math.random() - 0.5)
+      const result = Array.from({ length: columns }, () => [])
 
       shuffled.forEach((logo, index) => {
-        result[index % columns].push(logo);
-      });
+        result[index % columns].push(logo)
+      })
 
-      const maxLength = Math.max(...result.map((col) => col.length));
+      const maxLength = Math.max(...result.map((col) => col.length))
       result.forEach((col) => {
         while (col.length < maxLength) {
-          col.push(shuffled[Math.floor(Math.random() * shuffled.length)]);
+          col.push(shuffled[Math.floor(Math.random() * shuffled.length)])
         }
-      });
+      })
 
-      return result;
+      return result
     },
     [columns]
-  );
+  )
 
   useEffect(() => {
-    setLogoColumns(distributeLogos(logos));
-  }, [logos, distributeLogos]);
+    setLogoColumns(distributeLogos(logos))
+  }, [logos, distributeLogos])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime((prev) => prev + 100);
-    }, 100);
-    return () => clearInterval(interval);
-  }, []);
+      setTime((prev) => prev + 100)
+    }, 100)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="flex justify-center gap-4 py-8">
@@ -120,5 +96,5 @@ export function LogoCarousel({ columns = 2, logos }: LogoCarouselProps) {
         />
       ))}
     </div>
-  );
+  )
 }
