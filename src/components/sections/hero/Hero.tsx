@@ -1,6 +1,7 @@
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { OptimizedImage } from "@/components/cloudinary/components/CloudinaryImage";
 
 interface HeroProps {
   headline: string;
@@ -8,23 +9,19 @@ interface HeroProps {
   backgroundImage?: string;
 }
 
-export const Hero = ({ headline, subheading, backgroundImage }: HeroProps) => {
-  // Add console logging for debugging
-  console.log("Hero component rendering with background:", backgroundImage);
-
+export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spclrx" }: HeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
-      {/* Background image with gradient overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[20s]"
-        style={{ 
-          backgroundImage: backgroundImage 
-            ? `url('${backgroundImage}')`
-            : 'linear-gradient(to bottom, #800000, #000000)',
-        }}
-        onLoad={() => console.log("Background image loaded successfully")}
-        onError={(e) => console.error("Error loading background image:", e)}
-      />
+      {/* Background image with Cloudinary optimization */}
+      <div className="absolute inset-0">
+        <OptimizedImage
+          publicId={backgroundImage}
+          alt="Valentine's Fashion Event Background"
+          className="w-full h-full object-cover"
+          aspectRatio="video"
+          priority={true} // Load this image first as it's above the fold
+        />
+      </div>
       
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/80 backdrop-blur-[2px]" />

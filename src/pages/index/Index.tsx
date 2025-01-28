@@ -48,8 +48,6 @@ const Index = () => {
       }
 
       console.log("Event data fetched successfully:", eventData);
-      console.log("Fashion images:", eventData?.fashion_images);
-      
       return eventData;
     },
   });
@@ -79,16 +77,16 @@ const Index = () => {
     );
   }
 
-  // Get hero image with fallback and debug logging
-  const heroImage = eventData?.fashion_images?.find(img => img.category === 'event_hero')?.url;
-  console.log("Hero image URL:", heroImage);
+  // Get hero image with fallback
+  const heroImage = eventData?.fashion_images?.find(img => img.category === 'hero')?.url || 'hero-red-bg_spclrx';
+  console.log("Hero image:", heroImage);
 
   // Transform event_content to include image property
   const highlights = eventData.event_content
     .filter(content => content.content_type === 'highlight')
     .map(highlight => ({
       ...highlight,
-      image: highlight.media_urls?.[0] || '/placeholder.svg' // Use first media URL or fallback
+      image: highlight.media_urls?.[0] || '/placeholder.svg'
     }));
 
   // Create features array for EventDetails component
@@ -123,7 +121,7 @@ const Index = () => {
           <Hero 
             headline={eventData?.title || "Fashionistas Valentine's Event"}
             subheading={eventData?.description || "Join us for an exclusive celebration of fashion, creativity, and empowerment"}
-            backgroundImage={heroImage}
+            backgroundImage="hero-red-bg_spclrx"
           />
 
           <EventDetails features={features} />
