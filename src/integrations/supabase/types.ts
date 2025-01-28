@@ -194,6 +194,45 @@ export type Database = {
           },
         ]
       }
+      event_content_backup_20240128: {
+        Row: {
+          content: string | null
+          content_type: string | null
+          created_at: string | null
+          engagement_metrics: Json | null
+          event_id: string | null
+          id: string | null
+          media_urls: string[] | null
+          publish_date: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string | null
+          content_type?: string | null
+          created_at?: string | null
+          engagement_metrics?: Json | null
+          event_id?: string | null
+          id?: string | null
+          media_urls?: string[] | null
+          publish_date?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string | null
+          content_type?: string | null
+          created_at?: string | null
+          engagement_metrics?: Json | null
+          event_id?: string | null
+          id?: string | null
+          media_urls?: string[] | null
+          publish_date?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       event_tickets: {
         Row: {
           benefits: string[] | null
@@ -422,6 +461,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      fashion_images_backup_20240128: {
+        Row: {
+          alt_text: string | null
+          category: Database["public"]["Enums"]["image_category"] | null
+          created_at: string | null
+          credits: string | null
+          event_id: string | null
+          id: string | null
+          metadata: Json | null
+          thumbnail_url: string | null
+          updated_at: string | null
+          url: string | null
+        }
+        Insert: {
+          alt_text?: string | null
+          category?: Database["public"]["Enums"]["image_category"] | null
+          created_at?: string | null
+          credits?: string | null
+          event_id?: string | null
+          id?: string | null
+          metadata?: Json | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Update: {
+          alt_text?: string | null
+          category?: Database["public"]["Enums"]["image_category"] | null
+          created_at?: string | null
+          credits?: string | null
+          event_id?: string | null
+          id?: string | null
+          metadata?: Json | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: []
       }
       model_applications: {
         Row: {
