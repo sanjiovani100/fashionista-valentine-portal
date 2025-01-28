@@ -32,7 +32,12 @@ export const useCloudinaryImage = (
       if (isFullUrl) {
         imageUrl = publicId;
       } else {
-        const myImage = cld.image(publicId);
+        // Extract Cloudinary ID if it's a full Cloudinary URL
+        const cloudinaryId = publicId.includes('cloudinary.com') 
+          ? publicId.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/)?.[1] || publicId
+          : publicId;
+
+        const myImage = cld.image(cloudinaryId);
         myImage.delivery(format('auto'));
         myImage.delivery(quality('auto'));
         

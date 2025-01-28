@@ -17,7 +17,7 @@ const aspectRatioClasses = {
 } as const;
 
 // Default fallback image from Cloudinary
-const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041736/placeholder_kgzjk4.jpg";
+const FALLBACK_IMAGE = "https://res.cloudinary.com/dzqy2ixl0/image/upload/v1706436856/placeholder_kgzjk4.jpg";
 
 export const OptimizedImage = ({
   publicId,
@@ -67,6 +67,13 @@ export const OptimizedImage = ({
     }
   };
 
+  // Extract Cloudinary ID from URL if it's a full URL
+  const getCloudinaryId = (url: string) => {
+    if (!url.includes('cloudinary.com')) return url;
+    const matches = url.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+    return matches ? matches[1] : url;
+  };
+
   return (
     <ImageErrorBoundary>
       <div className={cn('relative', aspectRatioClasses[aspectRatio], className)}>
@@ -92,7 +99,7 @@ export const OptimizedImage = ({
             />
           ) : (
             <AdvancedImage
-              cldImg={new CloudinaryImageType(publicId, { 
+              cldImg={new CloudinaryImageType(getCloudinaryId(publicId), { 
                 cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME 
               })}
               plugins={[
@@ -100,13 +107,7 @@ export const OptimizedImage = ({
                 placeholder({ mode: 'blur' })
               ]}
               onLoad={handleLoad}
-              onError={() => {
-                console.error('Cloudinary image loading failed:', {
-                  publicId,
-                  cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-                  timestamp: new Date().toISOString()
-                });
-              }}
+              onError={handleError}
               className={cn(
                 'w-full h-full object-cover',
                 isLoading && 'opacity-0',
