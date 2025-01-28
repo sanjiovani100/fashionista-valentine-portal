@@ -16,7 +16,8 @@ const aspectRatioClasses = {
   auto: 'aspect-auto'
 } as const;
 
-const FALLBACK_IMAGE = '/placeholder.svg';
+// Default fallback image from Supabase storage
+const FALLBACK_IMAGE = "https://dssddsgypklubzkshkxo.supabase.co/storage/v1/object/public/fashion_images/placeholder.jpg";
 
 export const OptimizedImage = ({
   publicId,
@@ -42,6 +43,13 @@ export const OptimizedImage = ({
     }
   };
 
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error(`Failed to load image: ${publicId}`);
+    if (e.currentTarget.src !== FALLBACK_IMAGE) {
+      e.currentTarget.src = FALLBACK_IMAGE;
+    }
+  };
+
   return (
     <ImageErrorBoundary>
       <div className={cn('relative', aspectRatioClasses[aspectRatio], className)}>
@@ -63,10 +71,7 @@ export const OptimizedImage = ({
                 hasError && 'opacity-0'
               )}
               onLoad={handleLoad}
-              onError={(e) => {
-                console.error(`Failed to load image: ${publicId}`);
-                e.currentTarget.src = FALLBACK_IMAGE;
-              }}
+              onError={handleError}
             />
           ) : (
             <AdvancedImage
