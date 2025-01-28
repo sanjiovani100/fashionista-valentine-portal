@@ -13,7 +13,11 @@ interface EventHighlightsProps {
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
   console.log("EventHighlights received props:", { 
     highlightsCount: highlights.length,
-    imagesCount: images.length 
+    imagesCount: images.length,
+    highlights: highlights.map(h => ({
+      title: h.title,
+      image: h.image
+    }))
   });
 
   return (

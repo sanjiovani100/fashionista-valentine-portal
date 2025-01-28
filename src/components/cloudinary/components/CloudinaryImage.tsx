@@ -31,6 +31,14 @@ export const OptimizedImage = ({
   const { isLoading, hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
   const isFullUrl = publicId.startsWith('http');
 
+  console.log("CloudinaryImage received props:", {
+    publicId,
+    isFullUrl,
+    imageUrl,
+    isLoading,
+    hasError
+  });
+
   const handleLoad = () => {
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0] as PerformanceResourceTiming;

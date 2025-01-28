@@ -18,8 +18,9 @@ export const transformEventData = (eventData: FashionEvent) => {
       // Get the first media URL if available, otherwise use fallback
       const imageUrl = highlight.media_urls?.[0] || FALLBACK_IMAGE;
       
-      console.log(`Processing highlight: ${highlight.title}`, { 
-        hasMediaUrls: !!highlight.media_urls?.length,
+      console.log("Processing highlight:", {
+        title: highlight.title,
+        mediaUrls: highlight.media_urls,
         selectedUrl: imageUrl,
         allUrls: highlight.media_urls 
       });
@@ -34,6 +35,15 @@ export const transformEventData = (eventData: FashionEvent) => {
       };
     })
     .slice(0, 3);
+
+  console.log("Processing highlights:", {
+    rawHighlights: eventData.event_content,
+    transformedHighlights: highlights.map(h => ({
+      title: h.title,
+      mediaUrls: h.media_urls,
+      imageUrl: h.image
+    }))
+  });
 
   // Transform collections data with proper image mapping and required fields
   const collectionsWithImages = (eventData.fashion_collections || [])
