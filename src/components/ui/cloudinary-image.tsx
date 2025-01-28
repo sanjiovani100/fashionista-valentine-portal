@@ -43,14 +43,16 @@ export const OptimizedImage = ({
   useEffect(() => {
     const cld = new Cloudinary({
       cloud: {
-        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'demo'
       }
     });
 
     try {
-      const myImage = cld.image(publicId)
-        .delivery(format('auto'))
-        .delivery(auto());
+      const myImage = cld.image(publicId);
+      
+      // Apply transformations
+      myImage.format('auto');
+      myImage.quality('auto');
 
       if (width) myImage.resize(scale().width(width));
       if (height) myImage.resize(scale().height(height));
