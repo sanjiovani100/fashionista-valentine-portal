@@ -1,7 +1,4 @@
 import { Cloudinary } from '@cloudinary/url-gen';
 
-export const cld = new Cloudinary({
-  cloud: {
-    cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'demo'
-  }
-});
+// We'll use the instance from CloudinaryProvider instead
+export { cld } from './CloudinaryProvider';

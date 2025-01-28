@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
 import { Cloudinary, CloudinaryImage } from '@cloudinary/url-gen';
-import { format } from '@cloudinary/url-gen/actions/delivery';
-import { auto } from '@cloudinary/url-gen/qualifiers/quality';
+import { format, quality } from '@cloudinary/url-gen/actions/delivery';
 import { scale } from '@cloudinary/url-gen/actions/resize';
 import { Skeleton } from './skeleton';
 import { Alert, AlertDescription } from './alert';
@@ -50,9 +49,9 @@ export const OptimizedImage = ({
     try {
       const myImage = cld.image(publicId);
       
-      // Apply transformations
+      // Apply transformations using the correct action builders
       myImage.delivery(format('auto'));
-      myImage.delivery(auto());
+      myImage.delivery(quality('auto'));
 
       if (width) myImage.resize(scale().width(width));
       if (height) myImage.resize(scale().height(height));
