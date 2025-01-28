@@ -4,7 +4,7 @@ import type { EventContent, FashionCollection } from "@/types/event.types";
 export const transformEventData = (eventData: FashionEvent) => {
   // Transform highlights data
   const highlightImages = ['valentine_mxwzop', 'valentine-011_sgwnbj', 'valentine-013_axosyk'];
-  const highlights = eventData.event_content
+  const highlights = (eventData.event_content || [])
     .filter(content => content.content_type === 'highlight')
     .map((highlight, index) => ({
       ...highlight,
@@ -14,7 +14,7 @@ export const transformEventData = (eventData: FashionEvent) => {
 
   // Transform collections data
   const cloudinaryIds = ['valentine-012_nbzfkf', 'valentine-011_uebnxo', 'valentine-010_ktl7ko'];
-  const collectionsWithImages = eventData.fashion_collections
+  const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection, index) => ({
       ...collection,
       image: cloudinaryIds[index]
@@ -24,6 +24,6 @@ export const transformEventData = (eventData: FashionEvent) => {
   return {
     highlights,
     collectionsWithImages,
-    heroImage: eventData?.fashion_images?.find(img => img.category === 'event_hero')?.url || 'hero-red-bg_spclrx',
+    heroImage: eventData.fashion_images?.find(img => img.category === 'event_hero')?.url || 'hero-red-bg_spclrx',
   };
 };

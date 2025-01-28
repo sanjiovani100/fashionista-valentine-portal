@@ -11,7 +11,13 @@ export const EventList = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('fashion_events')
-        .select('*')
+        .select(`
+          *,
+          event_content(*),
+          fashion_collections(*),
+          fashion_images(*),
+          event_tickets(*)
+        `)
         .order('start_time', { ascending: true });
 
       if (error) throw error;
