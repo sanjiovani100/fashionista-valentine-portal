@@ -11,10 +11,10 @@ export const transformEventData = (eventData: FashionEvent) => {
     imagesCount: eventData.fashion_images?.length 
   });
 
-  // Transform highlights data
+  // Transform highlights data with required fields
   const highlights = (eventData.event_content || [])
     .filter(content => content.content_type === 'highlight')
-    .map((highlight) => {
+    .map((highlight): EventContent & { image: string } => {
       // Use the first media URL from the array if available
       const imageUrl = highlight.media_urls?.[0] || FALLBACK_IMAGE;
       
@@ -25,17 +25,24 @@ export const transformEventData = (eventData: FashionEvent) => {
 
       return {
         ...highlight,
+        event_id: highlight.event_id || '',
+        media_urls: highlight.media_urls || [],
+        publish_date: highlight.publish_date || new Date().toISOString(),
+        engagement_metrics: highlight.engagement_metrics || {},
         image: imageUrl
       };
     })
     .slice(0, 3);
 
-  // Transform collections data with proper image mapping
+  // Transform collections data with proper image mapping and required fields
   const collectionsWithImages = (eventData.fashion_collections || [])
-    .map((collection) => {
+    .map((collection): FashionCollection & { image: string } => {
       // Find matching image for this collection
       const collectionImage = eventData.fashion_images?.find(img => 
-        img.metadata?.collection_id === collection.id
+        typeof img.metadata === 'object' && 
+        img.metadata !== null && 
+        'collection_id' in img.metadata && 
+        img.metadata.collection_id === collection.id
       )?.url || FALLBACK_IMAGE;
       
       console.log(`Processing collection: ${collection.collection_name}`, {
@@ -45,6 +52,10 @@ export const transformEventData = (eventData: FashionEvent) => {
 
       return {
         ...collection,
+        designer_id: collection.designer_id || '',
+        event_id: collection.event_id || '',
+        technical_requirements: collection.technical_requirements || '',
+        sustainability_info: collection.sustainability_info || '',
         image: collectionImage
       };
     })

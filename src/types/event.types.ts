@@ -4,7 +4,10 @@ import type { Json } from "@/types/database";
 
 // Base Supabase types
 export type EventContent = Database["public"]["Tables"]["event_content"]["Row"] & {
-  image?: string;
+  event_id: string;
+  media_urls: string[];
+  publish_date: string;
+  engagement_metrics: Json;
 };
 
 export type FashionImage = {
@@ -22,7 +25,13 @@ export type FashionImage = {
   formats?: Json | null;
 };
 
-export type FashionCollection = Database["public"]["Tables"]["fashion_collections"]["Row"];
+export type FashionCollection = Database["public"]["Tables"]["fashion_collections"]["Row"] & {
+  designer_id: string;
+  event_id: string;
+  technical_requirements: string;
+  sustainability_info: string;
+};
+
 export type EventTicket = {
   id: string;
   event_id: string | null;
