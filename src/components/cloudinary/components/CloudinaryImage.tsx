@@ -28,25 +28,30 @@ export const OptimizedImage = ({
 }: CloudinaryImageProps) => {
   const { isLoading, hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
   const isFullUrl = publicId.startsWith('http');
+  const [loadTime, setLoadTime] = useState<number>(0);
 
   console.log("CloudinaryImage received props:", {
     publicId,
     isFullUrl,
     imageUrl,
     isLoading,
-    hasError
+    hasError,
+    loadTime
   });
 
   const handleLoad = () => {
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0] as PerformanceResourceTiming;
       if (imagePerf) {
+        const loadTimeMs = imagePerf.duration;
+        setLoadTime(loadTimeMs);
         console.log(`Image loaded successfully:`, {
           publicId,
           url: imageUrl,
-          loadTime: `${imagePerf.duration}ms`,
+          loadTime: `${loadTimeMs}ms`,
           size: imagePerf.transferSize,
-          type: isFullUrl ? 'full_url' : 'cloudinary_id'
+          type: isFullUrl ? 'full_url' : 'cloudinary_id',
+          renderTime: Date.now()
         });
       }
     }
@@ -61,6 +66,13 @@ export const OptimizedImage = ({
       cloudinaryConfig: {
         cloudName: CLOUDINARY_CONFIG.cloudName,
         isConfigured: !!CLOUDINARY_CONFIG.cloudName
+      },
+      browserInfo: {
+        userAgent: navigator.userAgent,
+        viewport: {
+          width: window.innerWidth,
+          height: window.innerHeight
+        }
       }
     });
 
@@ -85,7 +97,7 @@ export const OptimizedImage = ({
               alt={alt}
               loading={priority ? "eager" : "lazy"}
               className={cn(
-                'w-full h-full object-cover',
+                'w-full h-full object-cover transition-opacity duration-200',
                 isLoading && 'opacity-0',
                 hasError && 'opacity-0'
               )}
@@ -104,7 +116,7 @@ export const OptimizedImage = ({
               onLoad={handleLoad}
               onError={handleError}
               className={cn(
-                'w-full h-full object-cover',
+                'w-full h-full object-cover transition-opacity duration-200',
                 isLoading && 'opacity-0',
                 hasError && 'opacity-0'
               )}
