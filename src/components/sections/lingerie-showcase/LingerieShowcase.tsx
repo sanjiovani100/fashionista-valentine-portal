@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useInView } from "react-intersection-observer";
+import { CoreImage } from "@/components/ui/core-image";
 import type { FashionCollection } from "@/types/event.types";
 import './styles.css';
 
@@ -46,9 +47,10 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
             <Card key={collection.id} className="bg-black border-gray-800 overflow-hidden">
               <CardContent className="p-0">
                 <div className="relative aspect-[3/4] overflow-hidden">
-                  <img
+                  <CoreImage
                     src={collection.image || '/placeholder.svg'}
                     alt={collection.collection_name}
+                    aspectRatio="portrait"
                     className="showcase-image object-cover w-full h-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { CoreImage } from "@/components/ui/core-image";
 import { useState } from "react";
 import type { EventContent, FashionImage } from "@/types/event.types";
 
@@ -11,11 +12,6 @@ interface EventHighlightsProps {
 
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
   const [imageLoadErrors, setImageLoadErrors] = useState<Record<string, boolean>>({});
-
-  const handleImageError = (imageUrl: string) => {
-    console.error(`Failed to load image: ${imageUrl}`);
-    setImageLoadErrors(prev => ({ ...prev, [imageUrl]: true }));
-  };
 
   return (
     <section className="py-20 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden">
@@ -36,12 +32,11 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
           {highlights.map((highlight, index) => (
             <Card key={index} className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
               <div className="relative h-[300px] overflow-hidden rounded-t-lg">
-                <img
-                  src={imageLoadErrors[highlight.image] ? '/placeholder.svg' : highlight.image}
+                <CoreImage
+                  src={highlight.image}
                   alt={highlight.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  onError={() => handleImageError(highlight.image)}
-                  loading="lazy"
+                  aspectRatio="portrait"
+                  className="w-full h-full transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
               </div>
@@ -68,12 +63,11 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
                 <CarouselItem key={index}>
                   <Card className="bg-black/60 border-none text-white">
                     <div className="relative h-[300px] overflow-hidden rounded-t-lg">
-                      <img
-                        src={imageLoadErrors[highlight.image] ? '/placeholder.svg' : highlight.image}
+                      <CoreImage
+                        src={highlight.image}
                         alt={highlight.title}
-                        className="w-full h-full object-cover"
-                        onError={() => handleImageError(highlight.image)}
-                        loading="lazy"
+                        aspectRatio="portrait"
+                        className="w-full h-full"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                     </div>
