@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { useInView } from "react-intersection-observer";
 import './styles.css';
-import type { EventContent } from "@/types/event.types";
+import type { EventFeature } from "@/types/event.types";
 
 interface EventDetailsProps {
-  features: (EventContent & { icon: any })[];
+  features: EventFeature[];
 }
 
 export const EventDetails = ({ features }: EventDetailsProps) => {
