@@ -7,11 +7,37 @@ export type EventContent = Database["public"]["Tables"]["event_content"]["Row"] 
   image?: string;
 };
 
-export type FashionImage = Database["public"]["Tables"]["fashion_images"]["Row"];
-export type FashionCollection = Database["public"]["Tables"]["fashion_collections"]["Row"] & {
-  image?: string;
+export type FashionImage = {
+  id: string;
+  category: "event_hero" | "event_gallery" | "backstage" | "designer_profile" | "model_profile" | "promotional" | "press_kit";
+  url: string;
+  thumbnail_url?: string | null;
+  alt_text: string;
+  metadata?: Json | null;
+  credits?: string | null;
+  event_id?: string | null;
+  created_at: string;
+  updated_at: string;
+  dimensions?: Json | null;
+  formats?: Json | null;
 };
-export type EventTicket = Database["public"]["Tables"]["event_tickets"]["Row"];
+
+export type FashionCollection = Database["public"]["Tables"]["fashion_collections"]["Row"];
+export type EventTicket = {
+  id: string;
+  event_id: string | null;
+  ticket_type: string;
+  price: number;
+  quantity_available: number;
+  benefits?: string[] | null;
+  early_bird_deadline?: string | null;
+  early_bird_price?: number | null;
+  group_discount_threshold?: number | null;
+  group_discount_percentage?: number | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type DesignerProfile = Database["public"]["Tables"]["designer_profiles"]["Row"];
 
 // Feature types for the EventDetails component
@@ -60,7 +86,7 @@ export type CollectionDisplay = {
 
 export type TicketDisplay = {
   id: string;
-  event_id: string;
+  event_id: string | null;
   ticket_type: string;
   price: number;
   quantity_available: number;
