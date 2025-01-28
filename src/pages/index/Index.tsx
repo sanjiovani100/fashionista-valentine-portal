@@ -10,7 +10,7 @@ import { Cta } from "@/components/sections/cta/Cta";
 import { EventDetails } from "@/components/sections/event-details/EventDetails";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, Heart, Star, Award } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -98,6 +98,25 @@ const Index = () => {
     };
   });
 
+  // Create features array for EventDetails component
+  const features = [
+    {
+      icon: Heart,
+      title: "Exclusive Experience",
+      content: "Immerse yourself in a world of luxury and style"
+    },
+    {
+      icon: Star,
+      title: "Top Designers",
+      content: "Showcase of the most innovative fashion creators"
+    },
+    {
+      icon: Award,
+      title: "Empowerment",
+      content: "Celebrating creativity and individual expression"
+    }
+  ];
+
   return (
     <PageLayout>
       <AnimatePresence mode="wait">
@@ -114,7 +133,7 @@ const Index = () => {
             backgroundImage={heroImage}
           />
 
-          <EventDetails features={eventData.features || []} />
+          <EventDetails features={features} />
 
           <EventsSection />
 
