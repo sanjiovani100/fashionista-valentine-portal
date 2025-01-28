@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { motion, AnimatePresence } from "framer-motion";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { toast } = useToast();
@@ -54,12 +54,17 @@ const Index = () => {
     },
     retry: 2,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
-    onError: (error) => {
-      toast({
-        title: "Error loading event",
-        description: "There was a problem loading the event data. Please try again later.",
-        variant: "destructive",
-      });
+    meta: {
+      errorMessage: "There was a problem loading the event data. Please try again later."
+    },
+    onSettled: (data, error) => {
+      if (error) {
+        toast({
+          title: "Error loading event",
+          description: "There was a problem loading the event data. Please try again later.",
+          variant: "destructive",
+        });
+      }
     }
   });
 
