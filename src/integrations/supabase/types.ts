@@ -414,7 +414,9 @@ export type Database = {
           category: Database["public"]["Enums"]["image_category"]
           created_at: string | null
           credits: string | null
+          dimensions: Json | null
           event_id: string | null
+          formats: Json | null
           id: string
           metadata: Json | null
           thumbnail_url: string | null
@@ -426,7 +428,9 @@ export type Database = {
           category: Database["public"]["Enums"]["image_category"]
           created_at?: string | null
           credits?: string | null
+          dimensions?: Json | null
           event_id?: string | null
+          formats?: Json | null
           id?: string
           metadata?: Json | null
           thumbnail_url?: string | null
@@ -438,7 +442,9 @@ export type Database = {
           category?: Database["public"]["Enums"]["image_category"]
           created_at?: string | null
           credits?: string | null
+          dimensions?: Json | null
           event_id?: string | null
+          formats?: Json | null
           id?: string
           metadata?: Json | null
           thumbnail_url?: string | null
