@@ -584,11 +584,38 @@ export type Database = {
         }
         Relationships: []
       }
+      untracked_storage_files: {
+        Row: {
+          bucket_name: string | null
+          created_at: string | null
+          file_path: string | null
+          updated_at: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      track_uploaded_image: {
+        Args: {
+          p_bucket_id: string
+          p_file_path: string
+          p_event_id: string
+          p_category: Database["public"]["Enums"]["event_image_category"]
+          p_alt_text?: string
+          p_credits?: string
+        }
+        Returns: string
+      }
     }
     Enums: {
+      event_image_category:
+        | "event_hero"
+        | "event_gallery"
+        | "backstage"
+        | "designer_profile"
+        | "model_profile"
+        | "promotional"
+        | "press_kit"
       event_name:
         | "valentines_fashion_show"
         | "spring_fling_fashion_show"
