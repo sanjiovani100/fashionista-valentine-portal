@@ -1,3 +1,5 @@
+import type { DatabaseTables, DatabaseViews, DatabaseFunctions, DatabaseEnums } from './database.types';
+
 export type Json =
   | string
   | number
