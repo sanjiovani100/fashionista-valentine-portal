@@ -47,7 +47,6 @@ const Index = () => {
         return null;
       }
 
-      // Debug logging for image data
       console.log("Event data fetched successfully:", eventData);
       console.log("Fashion images:", eventData?.fashion_images);
       
@@ -83,6 +82,14 @@ const Index = () => {
   // Get hero image with fallback and debug logging
   const heroImage = eventData?.fashion_images?.find(img => img.category === 'event_hero')?.url;
   console.log("Hero image URL:", heroImage);
+
+  // Transform event_content to include image property
+  const highlights = eventData.event_content
+    .filter(content => content.content_type === 'highlight')
+    .map(highlight => ({
+      ...highlight,
+      image: highlight.media_urls?.[0] || '/placeholder.svg' // Use first media URL or fallback
+    }));
 
   // Create features array for EventDetails component
   const features = [
@@ -124,7 +131,7 @@ const Index = () => {
           <EventsSection />
 
           <EventHighlights 
-            highlights={eventData.event_content.filter(content => content.content_type === 'highlight')}
+            highlights={highlights}
             images={eventData.fashion_images || []}
           />
 
