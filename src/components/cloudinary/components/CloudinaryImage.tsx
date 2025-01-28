@@ -6,7 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CloudinaryImageError } from './CloudinaryImageError';
 import { ImageErrorBoundary } from './ImageErrorBoundary';
 import { useCloudinaryImage } from '../hooks/useCloudinaryImage';
-import { CLOUDINARY_CONFIG, isValidCloudinaryUrl } from '@/integrations/cloudinary/config';
+import { CLOUDINARY_CONFIG } from '@/integrations/cloudinary/config';
 import type { CloudinaryImageProps } from '../types/cloudinary.types';
 
 const aspectRatioClasses = {
@@ -27,17 +27,7 @@ export const OptimizedImage = ({
   priority = false
 }: CloudinaryImageProps) => {
   const { isLoading, hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
-  const isFullUrl = publicId.startsWith('http');
   const [loadTime, setLoadTime] = useState<number>(0);
-
-  console.log("CloudinaryImage received props:", {
-    publicId,
-    isFullUrl,
-    imageUrl,
-    isLoading,
-    hasError,
-    loadTime
-  });
 
   const handleLoad = () => {
     if (window.performance && window.performance.getEntriesByName) {
@@ -45,35 +35,24 @@ export const OptimizedImage = ({
       if (imagePerf) {
         const loadTimeMs = imagePerf.duration;
         setLoadTime(loadTimeMs);
-        console.log(`Image loaded successfully:`, {
-          publicId,
-          url: imageUrl,
-          loadTime: `${loadTimeMs}ms`,
-          size: imagePerf.transferSize,
-          type: isFullUrl ? 'full_url' : 'cloudinary_id',
-          renderTime: Date.now()
-        });
+        // Only log performance metrics in development
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`[Image Performance] Load time: ${loadTimeMs}ms`, {
+            url: imageUrl,
+            size: imagePerf.transferSize,
+          });
+        }
       }
     }
   };
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error('Image loading failed:', {
-      publicId,
+    // Only log errors in development or if they're critical
+    console.error('[Image Error]', {
+      type: e.type,
       url: imageUrl,
-      error: e.type,
       timestamp: new Date().toISOString(),
-      cloudinaryConfig: {
-        cloudName: CLOUDINARY_CONFIG.cloudName,
-        isConfigured: !!CLOUDINARY_CONFIG.cloudName
-      },
-      browserInfo: {
-        userAgent: navigator.userAgent,
-        viewport: {
-          width: window.innerWidth,
-          height: window.innerHeight
-        }
-      }
+      isCloudinaryConfigured: !!CLOUDINARY_CONFIG.cloudName
     });
 
     if (e.currentTarget.src !== CLOUDINARY_CONFIG.defaultPlaceholder) {
@@ -85,19 +64,25 @@ export const OptimizedImage = ({
     <ImageErrorBoundary>
       <div className={cn('relative', aspectRatioClasses[aspectRatio], className)}>
         {isLoading && (
-          <Skeleton className="absolute inset-0 bg-gray-200 animate-pulse" />
+          <Skeleton 
+            className={cn(
+              'absolute inset-0 bg-gray-200 animate-pulse',
+              'transition-opacity duration-300'
+            )} 
+          />
         )}
         
         {hasError && <CloudinaryImageError />}
         
         {imageUrl && (
-          isFullUrl ? (
+          publicId.startsWith('http') ? (
             <img 
               src={imageUrl}
               alt={alt}
               loading={priority ? "eager" : "lazy"}
               className={cn(
-                'w-full h-full object-cover transition-opacity duration-200',
+                'w-full h-full object-cover',
+                'transition-opacity duration-300',
                 isLoading && 'opacity-0',
                 hasError && 'opacity-0'
               )}
@@ -116,7 +101,8 @@ export const OptimizedImage = ({
               onLoad={handleLoad}
               onError={handleError}
               className={cn(
-                'w-full h-full object-cover transition-opacity duration-200',
+                'w-full h-full object-cover',
+                'transition-opacity duration-300',
                 isLoading && 'opacity-0',
                 hasError && 'opacity-0'
               )}

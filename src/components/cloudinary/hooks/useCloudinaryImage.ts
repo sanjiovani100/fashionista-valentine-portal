@@ -8,6 +8,11 @@ const validateDimensions = (value?: number): boolean => {
   return typeof value === 'undefined' || (typeof value === 'number' && value > 0);
 };
 
+const isValidCloudinaryId = (id: string): boolean => {
+  // Basic validation for Cloudinary ID format
+  return !id.startsWith('http') && /^[a-zA-Z0-9_\-\/]+$/.test(id);
+};
+
 export const useCloudinaryImage = (
   publicId: string,
   width?: number,
@@ -21,21 +26,12 @@ export const useCloudinaryImage = (
 
   useEffect(() => {
     try {
-      const isFullUrl = publicId.startsWith('http');
-      
-      console.log('Processing image:', {
-        publicId,
-        isFullUrl,
-        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-        dimensions: { width, height },
-        timestamp: new Date().toISOString()
-      });
-
       if (!validateDimensions(width) || !validateDimensions(height)) {
         throw new Error('Invalid dimensions provided');
       }
 
       let imageUrl: string;
+      const isFullUrl = publicId.startsWith('http');
 
       if (isFullUrl) {
         imageUrl = publicId;
@@ -44,6 +40,10 @@ export const useCloudinaryImage = (
         const cloudinaryId = publicId.includes('cloudinary.com') 
           ? publicId.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/)?.[1] || publicId
           : publicId;
+
+        if (!isValidCloudinaryId(cloudinaryId)) {
+          throw new Error('Invalid Cloudinary ID format');
+        }
 
         const myImage = cld.image(cloudinaryId);
         myImage.delivery(format('auto'));
@@ -55,21 +55,16 @@ export const useCloudinaryImage = (
         imageUrl = myImage.toURL();
       }
 
-      console.log('Generated image URL:', {
-        originalId: publicId,
-        generatedUrl: imageUrl,
-        isTransformed: !isFullUrl
-      });
-      
       setState(prev => ({ ...prev, imageUrl, isLoading: false }));
       
     } catch (error) {
-      console.error('Error processing image:', {
-        publicId,
-        error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
-        timestamp: new Date().toISOString()
-      });
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[Cloudinary Error]', {
+          message: error instanceof Error ? error.message : 'Unknown error',
+          publicId,
+          timestamp: new Date().toISOString()
+        });
+      }
       setState(prev => ({ ...prev, hasError: true, isLoading: false }));
     }
   }, [publicId, width, height]);
