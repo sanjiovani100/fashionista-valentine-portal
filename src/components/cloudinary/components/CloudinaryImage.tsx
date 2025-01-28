@@ -16,6 +16,8 @@ const aspectRatioClasses = {
   auto: 'aspect-auto'
 } as const;
 
+const FALLBACK_IMAGE = '/placeholder.svg';
+
 export const OptimizedImage = ({
   publicId,
   alt,
@@ -31,10 +33,17 @@ export const OptimizedImage = ({
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0];
       if (imagePerf) {
-        console.log(`Image loaded in ${imagePerf.duration}ms`);
+        console.log(`Image loaded in ${imagePerf.duration}ms`, {
+          publicId,
+          url: imageUrl
+        });
       }
     }
   };
+
+  // If the image is a full URL (e.g., from Supabase), use it directly
+  const isFullUrl = publicId.startsWith('http');
+  const cloudinaryId = isFullUrl ? publicId : publicId.split('/').pop() || publicId;
 
   return (
     <div className={cn('relative', aspectRatioClasses[aspectRatio], className)}>
@@ -46,13 +55,23 @@ export const OptimizedImage = ({
       
       {imageUrl && (
         <AdvancedImage
-          cldImg={new CloudinaryImageType(publicId, { cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME })}
+          cldImg={new CloudinaryImageType(cloudinaryId, { 
+            cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME 
+          })}
           plugins={[
             lazyload({ rootMargin: '10px 20px 10px 30px', threshold: 0.05 }),
             placeholder({ mode: 'blur' })
           ]}
           onLoad={handleLoad}
-          onError={() => console.error(`Failed to load image: ${publicId}`)}
+          onError={() => {
+            console.error(`Failed to load image: ${publicId}`);
+            // Fallback to placeholder if available
+            if (imageUrl !== FALLBACK_IMAGE) {
+              const img = document.createElement('img');
+              img.src = FALLBACK_IMAGE;
+              img.alt = alt;
+            }
+          }}
           className={cn(
             'w-full h-full object-cover',
             isLoading && 'opacity-0',

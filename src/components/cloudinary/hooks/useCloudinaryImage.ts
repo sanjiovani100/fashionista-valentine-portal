@@ -17,8 +17,17 @@ export const useCloudinaryImage = (
 
   useEffect(() => {
     try {
-      console.log('useCloudinaryImage: Generating URL for publicId:', publicId);
-      const myImage = cld.image(publicId);
+      console.log('useCloudinaryImage: Processing image:', {
+        publicId,
+        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+        isConfigured: !!import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+      });
+
+      // Handle full URLs (e.g., from Supabase) differently
+      const isFullUrl = publicId.startsWith('http');
+      const cloudinaryId = isFullUrl ? publicId : publicId.split('/').pop() || publicId;
+      
+      const myImage = cld.image(cloudinaryId);
       
       // Apply optimizations
       myImage.delivery(format('auto'));
