@@ -13,39 +13,52 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Index = () => {
-  const { data: activeEvent, isLoading } = useQuery({
+  // Fetch active event data
+  const { data: eventData, isLoading, error } = useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('active_fashion_events')
-        .select('*')
-        .maybeSingle();
-      
-      if (error) throw error;
-      return data;
-    }
+      const { data: eventData, error: eventError } = await supabase
+        .from('fashion_events')
+        .select(`
+          *,
+          event_tickets(*),
+          event_content(*),
+          fashion_collections(
+            *,
+            designer_profiles(*)
+          ),
+          fashion_images(*)
+        `)
+        .eq('name', 'valentines_2024')
+        .single();
+
+      if (eventError) throw eventError;
+      return eventData;
+    },
   });
 
+  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <Loader2 className="w-8 h-8 animate-spin text-fashion-pink" />
+        <Loader2 className="w-8 h-8 animate-spin text-red-deep" />
       </div>
     );
   }
 
-  if (!activeEvent) {
+  // Error state
+  if (error || !eventData) {
     return (
       <PageLayout>
         <div className="container mx-auto px-4 py-8">
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>No Active Event</AlertTitle>
+            <AlertTitle>Error Loading Event</AlertTitle>
             <AlertDescription>
-              There are currently no active fashion events. Please check back later.
+              {error?.message || "Event data could not be loaded. Please try again later."}
             </AlertDescription>
           </Alert>
         </div>
@@ -53,23 +66,63 @@ const Index = () => {
     );
   }
 
+  // Content sections with proper data passing
   return (
     <PageLayout>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Hero />
-        <EventDetails />
-        <EventsSection />
-        <EventHighlights />
-        <LingerieShowcase />
-        <TicketSelection />
-        <Partners />
-        <Sponsors />
-        <Cta />
-      </motion.div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-20 overflow-hidden"
+        >
+          <Hero 
+            title={eventData.title}
+            description={eventData.description}
+            date={eventData.start_time}
+          />
+
+          <EventDetails 
+            features={eventData.event_content?.filter(
+              content => content.content_type === 'feature'
+            )}
+          />
+
+          <EventsSection 
+            events={[eventData]}
+          />
+
+          <EventHighlights 
+            images={eventData.fashion_images}
+            content={eventData.event_content?.filter(
+              content => content.content_type === 'highlight'
+            )}
+          />
+
+          <LingerieShowcase 
+            collections={eventData.fashion_collections}
+            designers={eventData.fashion_collections?.map(
+              collection => collection.designer_profiles
+            )}
+          />
+
+          <TicketSelection 
+            tickets={eventData.event_tickets}
+            eventDate={eventData.start_time}
+          />
+
+          <Partners />
+
+          <Sponsors />
+
+          <Cta 
+            title="Join Us This Valentine's"
+            description="Experience the most exclusive fashion event of the year"
+            eventDate={eventData.start_time}
+          />
+        </motion.div>
+      </AnimatePresence>
     </PageLayout>
   );
 };
