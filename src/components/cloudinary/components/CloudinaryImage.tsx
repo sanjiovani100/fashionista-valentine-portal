@@ -17,6 +17,8 @@ const aspectRatioClasses = {
   auto: 'aspect-auto'
 } as const;
 
+const FALLBACK_IMAGE = 'https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041737/placeholder_kgzjk4.jpg';
+
 export const OptimizedImage = ({
   publicId,
   alt,
@@ -28,6 +30,7 @@ export const OptimizedImage = ({
 }: CloudinaryImageProps) => {
   const { hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [loadTime, setLoadTime] = useState<number>(0);
 
   console.log('[CloudinaryImage] Rendering image:', {
@@ -40,6 +43,7 @@ export const OptimizedImage = ({
 
   const handleLoad = () => {
     setIsLoading(false);
+    setLoadError(false);
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0] as PerformanceResourceTiming;
       if (imagePerf) {
@@ -64,10 +68,19 @@ export const OptimizedImage = ({
       error: e
     });
 
-    if (e.currentTarget.src !== CLOUDINARY_CONFIG.defaultPlaceholder) {
-      e.currentTarget.src = CLOUDINARY_CONFIG.defaultPlaceholder;
+    setLoadError(true);
+    setIsLoading(false);
+
+    // If the current image fails and it's not already the fallback, try the fallback
+    if (e.currentTarget.src !== FALLBACK_IMAGE) {
+      e.currentTarget.src = FALLBACK_IMAGE;
     }
   };
+
+  // Show error state if both main image and fallback fail
+  if (hasError && loadError) {
+    return <CloudinaryImageError />;
+  }
 
   return (
     <ImageErrorBoundary>
@@ -81,8 +94,6 @@ export const OptimizedImage = ({
           />
         )}
         
-        {hasError && <CloudinaryImageError />}
-        
         {imageUrl && (
           publicId.startsWith('http') ? (
             <img 
@@ -92,8 +103,7 @@ export const OptimizedImage = ({
               className={cn(
                 'w-full h-full object-cover',
                 'transition-opacity duration-300',
-                isLoading && 'opacity-0',
-                hasError && 'opacity-0'
+                isLoading && 'opacity-0'
               )}
               onLoad={handleLoad}
               onError={handleError}
@@ -112,8 +122,7 @@ export const OptimizedImage = ({
               className={cn(
                 'w-full h-full object-cover',
                 'transition-opacity duration-300',
-                isLoading && 'opacity-0',
-                hasError && 'opacity-0'
+                isLoading && 'opacity-0'
               )}
             />
           )
