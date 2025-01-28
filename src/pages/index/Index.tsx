@@ -8,7 +8,7 @@ import { LingerieShowcase } from "@/components/sections/lingerie-showcase/Linger
 import { TicketSelection } from "@/components/sections/ticket-selection/TicketSelection";
 import { Partners } from "@/components/sections/partners/Partners";
 import { Sponsors } from "@/components/sections/sponsors/Sponsors";
-import { CTASection } from "@/components/blocks/cta-with-rectangle";
+import { Cta11 } from "@/components/blocks/shadcnblocks-com-cta11";
 import { LoadingState } from "./components/LoadingState";
 import { ErrorState } from "./components/ErrorState";
 import { useEventData } from "./hooks/useEventData";
@@ -54,17 +54,19 @@ const Index = () => {
           <Partners />
           <Sponsors />
           <EventsSection />
-          <CTASection
-            badge={{
-              text: "Join Us This Valentine's"
+          <Cta11
+            heading="Join Our Valentine's Fashion Event"
+            description="Be part of an unforgettable evening celebrating fashion, creativity, and empowerment"
+            buttons={{
+              primary: {
+                text: "Get Your Tickets",
+                url: "#tickets"
+              },
+              secondary: {
+                text: "Learn More",
+                url: "#about"
+              }
             }}
-            title="Experience the most exclusive fashion event of the year"
-            action={{
-              text: "Get Your Tickets Now",
-              href: "#tickets",
-              variant: "default"
-            }}
-            withGlow={true}
           />
         </motion.div>
       </AnimatePresence>
