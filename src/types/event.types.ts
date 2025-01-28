@@ -29,35 +29,51 @@ export interface EventDetails {
 }
 
 // Extended types for components
-export interface Highlight extends Omit<EventContent, 'image'> {
-  image: string;
-  engagement_metrics?: Json | null;
+export type Highlight = {
+  id: string;
+  event_id?: string | null;
+  content_type: string;
+  title: string;
+  content: string;
   media_urls?: string[] | null;
   publish_date?: string | null;
-  event_id?: string | null;
-}
+  engagement_metrics?: Json | null;
+  created_at: string;
+  updated_at: string;
+  image: string;
+};
 
-export interface CollectionDisplay extends FashionCollection {
-  designer_profiles?: DesignerProfile;
+export type CollectionDisplay = {
+  id: string;
   designer_id?: string | null;
   event_id?: string | null;
+  collection_name: string;
+  description: string;
+  piece_count: number;
   technical_requirements?: string | null;
   sustainability_info?: string | null;
-}
+  created_at: string;
+  updated_at: string;
+  image?: string;
+  designer_profiles?: DesignerProfile;
+};
 
-export interface TicketDisplay extends Partial<EventTicket> {
+export type TicketDisplay = {
   id: string;
+  event_id: string;
   ticket_type: string;
   price: number;
   quantity_available: number;
-  subtitle?: string;
-  perks?: string[];
   benefits?: string[] | null;
   early_bird_deadline?: string | null;
   early_bird_price?: number | null;
   group_discount_threshold?: number | null;
   group_discount_percentage?: number | null;
-}
+  created_at: string;
+  updated_at: string;
+  subtitle?: string;
+  perks?: string[];
+};
 
 // Component Props Types
 export interface EventDetailsProps {
