@@ -7,6 +7,7 @@ import { TicketSelection } from "@/components/sections/ticket-selection/TicketSe
 import { Partners } from "@/components/sections/partners/Partners";
 import { Sponsors } from "@/components/sections/sponsors/Sponsors";
 import { Cta } from "@/components/sections/cta/Cta";
+import { EventDetails } from "@/components/sections/event-details/EventDetails";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
@@ -54,6 +55,7 @@ const Index = () => {
   return (
     <PageLayout>
       <Hero />
+      <EventDetails />
       <EventsSection />
       <EventHighlights />
       <LingerieShowcase />
