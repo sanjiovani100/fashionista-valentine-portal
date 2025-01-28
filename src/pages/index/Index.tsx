@@ -13,8 +13,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, AlertCircle, Heart, Star, Award } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
+  const { toast } = useToast();
+
   const { data: eventData, isLoading, error } = useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
@@ -39,7 +42,31 @@ const Index = () => {
         throw eventError;
       }
       
-      console.log("Fetched event data:", eventData);
+      // Detailed logging for debugging
+      console.log("Event data fetched successfully:", eventData);
+      console.log("Fashion images:", eventData?.fashion_images);
+      console.log("Event content:", eventData?.event_content);
+      console.log("Fashion collections:", eventData?.fashion_collections);
+
+      // Verify image URLs are correctly formatted
+      eventData?.fashion_images?.forEach((img, index) => {
+        console.log(`Image ${index + 1} URL:`, img.url);
+        console.log(`Image ${index + 1} metadata:`, img.metadata);
+        
+        // Test image loading
+        const testImage = new Image();
+        testImage.onload = () => console.log(`Image ${index + 1} loaded successfully`);
+        testImage.onerror = () => {
+          console.error(`Failed to load image ${index + 1}`);
+          toast({
+            title: "Image Load Error",
+            description: `Failed to load image: ${img.url}`,
+            variant: "destructive",
+          });
+        };
+        testImage.src = img.url;
+      });
+
       return eventData;
     },
   });
@@ -53,6 +80,7 @@ const Index = () => {
   }
 
   if (error || !eventData) {
+    console.error("Error in event data:", error);
     return (
       <PageLayout>
         <div className="container mx-auto px-4 py-8">
@@ -68,19 +96,17 @@ const Index = () => {
     );
   }
 
-  // Get hero image
+  // Get hero image with fallback
   const heroImage = (eventData.fashion_images || [])
-    .find(img => img.category === 'event_hero')?.url;
+    .find(img => img.category === 'event_hero')?.url || '/placeholder.svg';
 
-  // Transform event content into highlights with images
+  // Transform event content into highlights with images and fallbacks
   const highlights = (eventData.event_content || [])
     .filter(content => content.content_type === 'highlight')
     .map((highlight, index) => {
-      // Get gallery images for highlights
       const galleryImages = (eventData.fashion_images || [])
         .filter(img => img.category === 'event_gallery');
       
-      // Use modulo to cycle through available images if we have fewer images than highlights
       const imageIndex = index % galleryImages.length;
       
       return {
@@ -89,7 +115,7 @@ const Index = () => {
       };
     });
 
-  // Transform collections with images
+  // Transform collections with images and fallbacks
   const collections = (eventData.fashion_collections || []).map(collection => {
     const collectionImage = (eventData.fashion_images || []).find(
       img => img.metadata && 

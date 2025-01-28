@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useState } from "react";
 import type { EventContent, FashionImage } from "@/types/event.types";
 
 interface EventHighlightsProps {
@@ -9,6 +10,13 @@ interface EventHighlightsProps {
 }
 
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
+  const [imageLoadErrors, setImageLoadErrors] = useState<Record<string, boolean>>({});
+
+  const handleImageError = (imageUrl: string) => {
+    console.error(`Failed to load image: ${imageUrl}`);
+    setImageLoadErrors(prev => ({ ...prev, [imageUrl]: true }));
+  };
+
   return (
     <section className="py-20 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden">
       {/* Floating hearts background effect */}
@@ -29,9 +37,11 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
             <Card key={index} className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
               <div className="relative h-[300px] overflow-hidden rounded-t-lg">
                 <img
-                  src={highlight.image}
+                  src={imageLoadErrors[highlight.image] ? '/placeholder.svg' : highlight.image}
                   alt={highlight.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  onError={() => handleImageError(highlight.image)}
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
               </div>
@@ -59,9 +69,11 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
                   <Card className="bg-black/60 border-none text-white">
                     <div className="relative h-[300px] overflow-hidden rounded-t-lg">
                       <img
-                        src={highlight.image}
+                        src={imageLoadErrors[highlight.image] ? '/placeholder.svg' : highlight.image}
                         alt={highlight.title}
                         className="w-full h-full object-cover"
+                        onError={() => handleImageError(highlight.image)}
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                     </div>
