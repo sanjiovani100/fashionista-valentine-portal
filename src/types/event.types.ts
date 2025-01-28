@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { Database } from "@/integrations/supabase/types";
+import type { Database } from "@/integrations/supabase/types";
 
 export type EventContent = Database["public"]["Tables"]["event_content"]["Row"];
 export type FashionImage = Database["public"]["Tables"]["fashion_images"]["Row"];
@@ -47,11 +47,5 @@ export interface LingerieShowcaseProps {
 
 export interface TicketSelectionProps {
   tickets: TicketDisplay[];
-  eventDate: string;
-}
-
-export interface CtaProps {
-  title: string;
-  description: string;
   eventDate: string;
 }

@@ -14,7 +14,7 @@ import { Loader2, Heart, Star, Award } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { Feature, Highlight, CollectionDisplay, TicketDisplay } from "@/types/event.types";
+import type { Feature, Highlight, CollectionDisplay, TicketDisplay, EventContent, FashionImage, FashionCollection, EventTicket } from "@/types/event.types";
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useQuery({
@@ -64,39 +64,43 @@ const Index = () => {
     );
   }
 
-  // Transform event content into the required format for each section
-  const features: Feature[] = (eventData.event_content || [])
+  // Transform event content into features
+  const eventFeatures = (eventData.event_content as EventContent[] || [])
     .filter(content => content.content_type === 'feature')
     .map(feature => ({
       icon: feature.title.includes('Exclusive') ? Heart :
            feature.title.includes('Top') ? Star : Award,
       title: feature.title,
       description: feature.content
-    }));
+    })) as Feature[];
 
-  const highlights: Highlight[] = (eventData.event_content || [])
+  // Transform event content into highlights
+  const eventHighlights = (eventData.event_content as EventContent[] || [])
     .filter(content => content.content_type === 'highlight')
     .map(highlight => ({
       title: highlight.title,
       description: highlight.content,
       image: highlight.media_urls?.[0] || '/placeholder.svg'
-    }));
+    })) as Highlight[];
 
-  const collections: CollectionDisplay[] = (eventData.fashion_collections || []).map(collection => ({
+  // Transform collections with images
+  const eventCollections = ((eventData.fashion_collections as FashionCollection[]) || []).map(collection => ({
     ...collection,
-    image: eventData.fashion_images?.find(
-      img => img.metadata && typeof img.metadata === 'object' && 'collection_id' in img.metadata && 
+    image: (eventData.fashion_images as FashionImage[] || []).find(
+      img => img.metadata && typeof img.metadata === 'object' && 
+      'collection_id' in img.metadata && 
       img.metadata.collection_id === collection.id
     )?.url || '/placeholder.svg'
-  }));
+  })) as CollectionDisplay[];
 
-  const tickets: TicketDisplay[] = (eventData.event_tickets || []).map(ticket => ({
+  // Transform tickets
+  const eventTickets = ((eventData.event_tickets as EventTicket[]) || []).map(ticket => ({
     title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     price: `$${ticket.price}`,
     perks: ticket.benefits || [],
     limited: ticket.quantity_available < 10
-  }));
+  })) as TicketDisplay[];
 
   return (
     <PageLayout>
@@ -114,19 +118,19 @@ const Index = () => {
             role="model"
           />
 
-          <EventDetails features={features} />
+          <EventDetails features={eventFeatures} />
 
           <EventsSection />
 
           <EventHighlights 
-            highlights={highlights}
-            images={eventData.fashion_images || []}
+            highlights={eventHighlights}
+            images={eventData.fashion_images as FashionImage[] || []}
           />
 
-          <LingerieShowcase collections={collections} />
+          <LingerieShowcase collections={eventCollections} />
 
           <TicketSelection 
-            tickets={tickets}
+            tickets={eventTickets}
             eventDate={eventData.start_time}
           />
 
