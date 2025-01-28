@@ -65,38 +65,38 @@ const Index = () => {
   }
 
   // Transform event content into the required format for each section
-  const features: Feature[] = eventData.event_content
-    ?.filter(content => content.content_type === 'feature')
+  const features: Feature[] = (eventData.event_content || [])
+    .filter(content => content.content_type === 'feature')
     .map(feature => ({
       icon: feature.title.includes('Exclusive') ? Heart :
            feature.title.includes('Top') ? Star : Award,
       title: feature.title,
       description: feature.content
-    })) || [];
+    }));
 
-  const highlights: Highlight[] = eventData.event_content
-    ?.filter(content => content.content_type === 'highlight')
+  const highlights: Highlight[] = (eventData.event_content || [])
+    .filter(content => content.content_type === 'highlight')
     .map(highlight => ({
       title: highlight.title,
       description: highlight.content,
       image: highlight.media_urls?.[0] || '/placeholder.svg'
-    })) || [];
+    }));
 
-  const collections: CollectionDisplay[] = eventData.fashion_collections?.map(collection => ({
+  const collections: CollectionDisplay[] = (eventData.fashion_collections || []).map(collection => ({
     ...collection,
     image: eventData.fashion_images?.find(
       img => img.metadata && typeof img.metadata === 'object' && 'collection_id' in img.metadata && 
       img.metadata.collection_id === collection.id
     )?.url || '/placeholder.svg'
-  })) || [];
+  }));
 
-  const tickets: TicketDisplay[] = eventData.event_tickets?.map(ticket => ({
+  const tickets: TicketDisplay[] = (eventData.event_tickets || []).map(ticket => ({
     title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     price: `$${ticket.price}`,
     perks: ticket.benefits || [],
     limited: ticket.quantity_available < 10
-  })) || [];
+  }));
 
   return (
     <PageLayout>
@@ -114,20 +114,16 @@ const Index = () => {
             role="model"
           />
 
-          <EventDetails 
-            features={features}
-          />
+          <EventDetails features={features} />
 
           <EventsSection />
 
           <EventHighlights 
             highlights={highlights}
-            images={eventData.fashion_images}
+            images={eventData.fashion_images || []}
           />
 
-          <LingerieShowcase 
-            collections={collections}
-          />
+          <LingerieShowcase collections={collections} />
 
           <TicketSelection 
             tickets={tickets}
