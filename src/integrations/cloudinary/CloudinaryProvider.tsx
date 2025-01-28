@@ -1,10 +1,19 @@
 import React from 'react';
-import { CloudinaryContext } from '@cloudinary/react';
+import { AdvancedImage } from '@cloudinary/react';
+import { Cloudinary } from '@cloudinary/url-gen';
+
+const cld = new Cloudinary({
+  cloud: {
+    cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'demo'
+  }
+});
 
 export const CloudinaryProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <CloudinaryContext cloudName={import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'demo'}>
+    <div className="cloudinary-context">
       {children}
-    </CloudinaryContext>
+    </div>
   );
 };
+
+export { cld };

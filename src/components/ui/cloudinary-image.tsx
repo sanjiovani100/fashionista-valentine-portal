@@ -51,8 +51,8 @@ export const OptimizedImage = ({
       const myImage = cld.image(publicId);
       
       // Apply transformations
-      myImage.format('auto');
-      myImage.quality('auto');
+      myImage.delivery(format('auto'));
+      myImage.delivery(auto());
 
       if (width) myImage.resize(scale().width(width));
       if (height) myImage.resize(scale().height(height));
