@@ -18,7 +18,7 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
   });
 
   return (
-    <section className="py-12 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden -mt-4">
+    <section className="py-12 -mt-12 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden">
       {/* Floating hearts background effect */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute animate-float-1 top-1/4 left-1/4">❤</div>
