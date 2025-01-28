@@ -18,6 +18,7 @@ import { useToast } from "@/components/ui/use-toast";
 const Index = () => {
   const { toast } = useToast();
 
+  // Improved query with better error handling and logging
   const { data: eventData, isLoading, error } = useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
@@ -35,11 +36,16 @@ const Index = () => {
           fashion_images(*)
         `)
         .eq('name', 'valentines_fashion_show')
-        .single();
+        .maybeSingle(); // Changed from single() to handle no results case
 
       if (eventError) {
         console.error("Error fetching event data:", eventError);
         throw eventError;
+      }
+      
+      if (!eventData) {
+        console.error("No event data found");
+        return null;
       }
       
       // Detailed logging for debugging
@@ -69,6 +75,8 @@ const Index = () => {
 
       return eventData;
     },
+    retry: 2, // Add retry logic
+    retryDelay: 1000, // Retry after 1 second
   });
 
   if (isLoading) {
