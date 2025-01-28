@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useInView } from "react-intersection-observer";
-import { CoreImage } from "@/components/ui/core-image";
+import { OptimizedImage } from "@/components/cloudinary";
 import type { FashionCollection } from "@/types/event.types";
 import './styles.css';
 
@@ -30,6 +30,8 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  console.log("LingerieShowcase received collections:", collections);
+
   return (
     <section className="relative py-16 bg-black min-h-screen showcase-section" ref={ref}>
       <div className="showcase-pattern" />
@@ -43,30 +45,40 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {collections.map((collection) => (
-            <Card key={collection.id} className="bg-black border-gray-800 overflow-hidden">
-              <CardContent className="p-0">
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <CoreImage
-                    src={collection.image || '/placeholder.svg'}
-                    alt={collection.collection_name}
-                    aspectRatio="portrait"
-                    className="showcase-image object-cover w-full h-full"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <div className="showcase-content absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <h3 className="text-xl font-montserrat font-bold mb-2">{collection.collection_name}</h3>
-                    <p className="text-sm font-inter text-gray-300 mb-4">{collection.description}</p>
-                    <Button 
-                      className="w-full bg-fashion-pink hover:bg-fashion-pink/90 text-white transition-all duration-300 hover:shadow-glow"
-                    >
-                      Explore Collection
-                    </Button>
+          {collections.map((collection) => {
+            console.log(`Rendering collection: ${collection.collection_name}, Image: ${collection.image}`);
+            return (
+              <Card key={collection.id} className="bg-black border-gray-800 overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    {collection.image ? (
+                      <OptimizedImage
+                        publicId={collection.image}
+                        alt={collection.collection_name}
+                        aspectRatio="portrait"
+                        className="showcase-image object-cover w-full h-full"
+                        priority={false}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                        <span className="text-gray-400">No image available</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                    <div className="showcase-content absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <h3 className="text-xl font-montserrat font-bold mb-2">{collection.collection_name}</h3>
+                      <p className="text-sm font-inter text-gray-300 mb-4">{collection.description}</p>
+                      <Button 
+                        className="w-full bg-fashion-pink hover:bg-fashion-pink/90 text-white transition-all duration-300 hover:shadow-glow"
+                      >
+                        Explore Collection
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>

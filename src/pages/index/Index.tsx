@@ -83,20 +83,22 @@ const Index = () => {
 
   // Transform event_content to include image property and map to Cloudinary IDs
   const highlightImages = ['valentine_mxwzop', 'valentine-011_sgwnbj', 'valentine-013_axosyk'];
-  console.log("Available highlight images:", highlightImages);
-  
   const highlights = eventData.event_content
     .filter(content => content.content_type === 'highlight')
-    .map((highlight, index) => {
-      const mappedHighlight = {
-        ...highlight,
-        image: highlightImages[index] || 'placeholder'
-      };
-      console.log(`Mapped highlight ${index}:`, mappedHighlight);
-      return mappedHighlight;
-    });
+    .map((highlight, index) => ({
+      ...highlight,
+      image: highlightImages[index] || 'placeholder'
+    }));
 
-  console.log("Final highlights array:", highlights);
+  // Map Cloudinary image IDs to collections
+  const collectionsWithImages = eventData.fashion_collections.map((collection, index) => {
+    const cloudinaryIds = ['valentine-012_nbzfkf', 'valentine-011_uebnxo', 'valentine-010_ktl7ko'];
+    console.log(`Mapping collection ${collection.collection_name} with image: ${cloudinaryIds[index]}`);
+    return {
+      ...collection,
+      image: cloudinaryIds[index]
+    };
+  });
 
   // Create features array for EventDetails component
   const features = [
@@ -139,7 +141,7 @@ const Index = () => {
             highlights={highlights}
             images={eventData.fashion_images || []}
           />
-          <LingerieShowcase collections={eventData.fashion_collections} />
+          <LingerieShowcase collections={collectionsWithImages} />
           <TicketSelection 
             tickets={eventData.event_tickets || []}
             eventDate={eventData.start_time}
