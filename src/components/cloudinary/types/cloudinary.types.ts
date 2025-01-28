@@ -1,4 +1,4 @@
-import { AspectRatio } from '@/types';
+export type AspectRatio = 'square' | 'video' | 'portrait' | 'landscape' | 'auto';
 
 export interface CloudinaryImageProps {
   publicId: string;
