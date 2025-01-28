@@ -2,7 +2,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { OptimizedImage } from "@/components/cloudinary";
-import { useState } from "react";
 import { toast } from "sonner";
 import type { EventContent, FashionImage } from "@/types/event.types";
 
@@ -12,7 +11,10 @@ interface EventHighlightsProps {
 }
 
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
-  console.log("EventHighlights received props:", { highlights, images });
+  console.log("EventHighlights received props:", { 
+    highlightsCount: highlights.length,
+    imagesCount: images.length 
+  });
 
   return (
     <section className="py-20 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden">
@@ -31,7 +33,10 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
         {/* Desktop view */}
         <div className="hidden md:grid md:grid-cols-3 gap-6">
           {highlights.map((highlight, index) => (
-            <Card key={index} className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
+            <Card 
+              key={highlight.id} 
+              className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group"
+            >
               <div className="relative h-[300px] overflow-hidden rounded-t-lg">
                 <OptimizedImage
                   publicId={highlight.image}
@@ -65,7 +70,7 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
           <Carousel className="w-full">
             <CarouselContent>
               {highlights.map((highlight, index) => (
-                <CarouselItem key={index}>
+                <CarouselItem key={highlight.id}>
                   <Card className="bg-black/60 border-none text-white">
                     <div className="relative h-[300px] overflow-hidden rounded-t-lg">
                       <OptimizedImage
