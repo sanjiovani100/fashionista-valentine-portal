@@ -18,6 +18,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+      },
       // Enhanced Colors
       colors: {
         border: "rgba(255, 255, 255, 0.1)",
