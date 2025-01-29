@@ -42,7 +42,7 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
 
   return (
     <section 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-maroon to-black"
       aria-labelledby="hero-title"
       role="banner"
     >
@@ -76,7 +76,7 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
             {headline.split(" ").map((word, index) => (
               <span 
                 key={index} 
-                className={index === 1 ? "block text-red-accent mt-4 drop-shadow-glow" : "drop-shadow-glow"}
+                className={index === 1 ? "block text-red-accent mt-4 drop-shadow-glow" : "text-white drop-shadow-glow"}
               >
                 {word}{" "}
               </span>
@@ -85,7 +85,7 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
           
           <motion.p 
             variants={itemVariants}
-            className="font-inter text-xl md:text-2xl max-w-2xl mx-auto text-gray-100 leading-relaxed drop-shadow-md"
+            className="font-inter text-xl md:text-2xl max-w-2xl mx-auto text-white-secondary leading-relaxed drop-shadow-md"
           >
             {subheading}
           </motion.p>
@@ -122,7 +122,7 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
           <motion.button
             onClick={scrollToContent}
             className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer
-                     flex flex-col items-center text-white/80 hover:text-white
+                     flex flex-col items-center text-white-secondary hover:text-white
                      transition-colors duration-300
                      focus:outline-none focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black"
             initial={{ opacity: 0 }}
