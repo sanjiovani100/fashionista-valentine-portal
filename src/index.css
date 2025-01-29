@@ -8,8 +8,8 @@
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --brand: 27 96% 61%;
-    --brand-foreground: 31 97% 72%;
+    --brand: 348 100% 60%;
+    --brand-foreground: 348 100% 94%;
     
     --card: 0 0% 13%;
     --card-foreground: 0 0% 100%;
@@ -26,7 +26,7 @@
     --muted: 0 0% 53%;
     --muted-foreground: 0 0% 100%;
     
-    --accent: 0 100% 25%;
+    --accent: 348 100% 60%;
     --accent-foreground: 0 0% 100%;
     
     --destructive: 0 84% 60%;
@@ -34,7 +34,7 @@
     
     --border: 0 0% 100%;
     --input: 0 0% 100%;
-    --ring: 0 100% 25%;
+    --ring: 348 100% 60%;
     
     --radius: 0.5rem;
   }
@@ -57,18 +57,21 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-pure-white text-pure-black hover:bg-gray-100 
-           transition-colors duration-300 ease-out;
+    @apply bg-red-accent text-pure-white hover:bg-red-accent/90 
+           transition-all duration-300 ease-out transform hover:scale-105;
   }
 
   .btn-secondary {
-    @apply bg-transparent border border-white/20 text-pure-white 
-           hover:bg-white/30 transition-colors duration-300 ease-out;
+    @apply bg-transparent border border-red-accent text-red-accent 
+           hover:bg-red-accent/10 transition-all duration-300 ease-out transform hover:scale-105;
   }
 
-  .btn-cta {
-    @apply bg-red-deep text-pure-white hover:bg-red-dark 
-           transition-colors duration-300 ease-out;
+  .text-shadow-xl {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .drop-shadow-glow {
+    filter: drop-shadow(0 0 20px rgba(255,51,102,0.3));
   }
 
   .card-base {
@@ -92,23 +95,23 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-primary-gradient;
+    @apply bg-clip-text text-transparent bg-accent-gradient;
   }
   
-  .delay-100 {
+  .stagger-delay-1 {
     animation-delay: 100ms;
   }
-  .delay-200 {
+  .stagger-delay-2 {
     animation-delay: 200ms;
   }
-  .delay-300 {
+  .stagger-delay-3 {
     animation-delay: 300ms;
   }
-  .delay-500 {
-    animation-delay: 500ms;
+  .stagger-delay-4 {
+    animation-delay: 400ms;
   }
-  .delay-700 {
-    animation-delay: 700ms;
+  .stagger-delay-5 {
+    animation-delay: 500ms;
   }
   
   .fade-top-lg {

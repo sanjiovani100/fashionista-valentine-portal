@@ -18,7 +18,7 @@ export default {
       },
     },
     extend: {
-      // Colors
+      // Enhanced Colors
       colors: {
         border: "rgba(255, 255, 255, 0.1)",
         input: "rgba(255, 255, 255, 0.1)",
@@ -41,56 +41,44 @@ export default {
           soft: "#FFC1C1",
           dark: "#4A0404",
           light: "#FFE6E6",
+          accent: "#FF3366",
+        },
+        purple: {
+          soft: "#D6BCFA",
+          vivid: "#8B5CF6",
+        },
+        pink: {
+          magenta: "#D946EF",
+          light: "#FFD6E7",
         },
       },
 
-      // Layout
-      maxWidth: {
-        container: "80rem",
-      },
-
-      // Effects
-      boxShadow: {
-        glow: "0 -16px 128px 0 hsla(var(--brand-foreground) / 0.5) inset, 0 -16px 32px 0 hsla(var(--brand) / 0.5) inset",
-      },
-
-      // Typography
-      fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
-        montserrat: ["Montserrat", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
-      },
+      // Enhanced Typography
       fontSize: {
-        hero: ["4.5rem", { lineHeight: "1.2" }],
-        "section-title": ["3rem", { lineHeight: "1.2" }],
-        "card-title": ["2rem", { lineHeight: "1.2" }],
-        "body-large": ["1.125rem", { lineHeight: "1.5" }],
-        body: ["1rem", { lineHeight: "1.5" }],
+        hero: ["5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        "section-title": ["3.5rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
+        "card-title": ["2.25rem", { lineHeight: "1.2" }],
+        "body-large": ["1.25rem", { lineHeight: "1.6" }],
+        body: ["1.125rem", { lineHeight: "1.6" }],
         small: ["0.875rem", { lineHeight: "1.5" }],
       },
 
-      // Spacing
-      spacing: {
-        section: "5rem",
-        component: "2rem",
-        text: "1rem",
-        "button-padding": "1rem 2rem",
-      },
-
-      // Backgrounds
+      // Enhanced Gradients
       backgroundImage: {
-        "hero-gradient": "linear-gradient(to bottom, transparent, rgba(0,0,0,0.8))",
+        "hero-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8))",
         "card-hover": "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-        "primary-gradient": "linear-gradient(to right, #800000, #4A0404)",
-        "overlay-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8))",
+        "primary-gradient": "linear-gradient(135deg, #800000, #4A0404)",
+        "accent-gradient": "linear-gradient(135deg, #FF3366, #FF6B6B)",
+        "overlay-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.9))",
+        "purple-gradient": "linear-gradient(135deg, #D6BCFA, #8B5CF6)",
       },
 
-      // Animations
+      // Enhanced Animations
       keyframes: {
-        "fade-in-up": {
+        "stagger-fade-up": {
           "0%": { 
             opacity: "0",
-            transform: "translateY(10px)"
+            transform: "translateY(30px)"
           },
           "100%": {
             opacity: "1",
@@ -117,6 +105,7 @@ export default {
         }
       },
       animation: {
+        "stagger-fade-up": "stagger-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards",
         "fade-in-up": "fade-in-up 0.5s ease-out forwards",
         "fade-in": "fade-in 0.5s ease-out forwards",
         "scale-in": "scale-in 0.5s ease-out forwards"
