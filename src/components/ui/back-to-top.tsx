@@ -31,6 +31,7 @@ export function BackToTop() {
         "hover:bg-red-dark transition-all duration-300",
         "shadow-lg rounded-full p-3",
         "opacity-0 translate-y-8",
+        "focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black focus:outline-none",
         isVisible && "opacity-100 translate-y-0"
       )}
       onClick={scrollToTop}

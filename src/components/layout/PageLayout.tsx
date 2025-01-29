@@ -39,7 +39,12 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         <SkipToContent />
         <NavBar />
         <ScrollProgress />
-        <div id="main-content" className="scroll-snap-container pt-20">
+        <div 
+          id="main-content" 
+          className="scroll-snap-container pt-20"
+          role="main"
+          tabIndex={-1}
+        >
           {children}
         </div>
         <Footerdemo />

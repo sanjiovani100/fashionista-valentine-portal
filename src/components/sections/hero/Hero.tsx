@@ -56,7 +56,7 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
           priority={true}
         />
         <div 
-          className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90 backdrop-blur-[2px]"
+          className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 backdrop-blur-[2px]"
           aria-hidden="true"
         />
       </div>
@@ -123,11 +123,12 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
             onClick={scrollToContent}
             className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer
                      flex flex-col items-center text-white/80 hover:text-white
-                     transition-colors duration-300"
+                     transition-colors duration-300
+                     focus:outline-none focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 1 }}
-            aria-label="Scroll to content"
+            aria-label="Scroll to explore content"
           >
             <span className="text-sm mb-2 font-inter">Scroll to explore</span>
             <motion.div
