@@ -1,161 +1,106 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React from 'react';
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
+import { LogoCarousel } from "@/components/ui/logo-carousel";
+import { useInView } from "react-intersection-observer";
 
-interface Partner {
-  id: number;
-  name: string;
-  role: string;
-  testimonial: string;
-  image: string;
-}
-
-interface RoleCard {
-  title: string;
-  subtitle: string;
-  benefits: string[];
-  ctaText: string;
-  path: string;
-  testimonial: Partner;
-}
-
-const roleCards: RoleCard[] = [
-  {
-    title: "Walk the Runway",
-    subtitle: "Join our exclusive modeling team",
-    benefits: [
-      "Professional portfolio opportunities",
-      "Network with top designers",
-      "International exposure",
-      "Professional training sessions"
-    ],
-    ctaText: "Join as Model",
-    path: "/register/model",
-    testimonial: {
-      id: 1,
-      name: "Sofia Martinez",
-      role: "Lead Model",
-      testimonial: "Being part of Fashionistas opened doors I never imagined possible.",
-      image: "/placeholder.svg"
-    }
-  },
-  {
-    title: "Showcase Your Collection",
-    subtitle: "Present your designs to the world",
-    benefits: [
-      "Media exposure",
-      "Industry connections",
-      "Dedicated showcase space",
-      "Marketing support"
-    ],
-    ctaText: "Join as Designer",
-    path: "/register/designer",
-    testimonial: {
-      id: 2,
-      name: "Carlos Rivera",
-      role: "Fashion Designer",
-      testimonial: "The platform gave my collection the visibility it deserved.",
-      image: "/placeholder.svg"
-    }
-  },
-  {
-    title: "Partner With Us",
-    subtitle: "Elevate your brand presence",
-    benefits: [
-      "Brand visibility",
-      "VIP access",
-      "Networking opportunities",
-      "Premium positioning"
-    ],
-    ctaText: "Become a Sponsor",
-    path: "/register/sponsor",
-    testimonial: {
-      id: 3,
-      name: "Luxury Brand Co",
-      role: "Premium Sponsor",
-      testimonial: "Our partnership with Fashionistas exceeded all expectations.",
-      image: "/placeholder.svg"
-    }
-  }
+const partnerLogos = [
+  { id: 1, name: "Partner 1", src: "/placeholder.svg" },
+  { id: 2, name: "Partner 2", src: "/placeholder.svg" },
+  { id: 3, name: "Partner 3", src: "/placeholder.svg" },
+  { id: 4, name: "Partner 4", src: "/placeholder.svg" },
+  { id: 5, name: "Partner 5", src: "/placeholder.svg" },
+  { id: 6, name: "Partner 6", src: "/placeholder.svg" },
 ];
 
 export const Partners = () => {
-  const navigate = useNavigate();
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
-  const handleRegistration = (path: string) => {
-    navigate(path);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
 
   return (
-    <section className="py-20 bg-pure-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-poppins text-pure-black mb-4">Join the Experience</h2>
-          <p className="text-xl text-gray-400 font-montserrat">Choose your role in this extraordinary event</p>
-        </div>
+    <section
+      ref={ref}
+      className="relative py-20 overflow-hidden bg-gradient-to-b from-black/95 to-maroon/5"
+      aria-labelledby="partners-title"
+    >
+      {/* Decorative background pattern */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,51,102,0.05)_1px,transparent_0)] bg-[size:30px_30px] pointer-events-none"
+        aria-hidden="true"
+      />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {roleCards.map((card, index) => (
-            <motion.div
-              key={index}
-              className="w-full"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className="h-full bg-pure-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-6">
-                  <h3 className="text-2xl font-poppins text-pure-black mb-2">{card.title}</h3>
-                  <p className="text-gray-400 font-montserrat mb-6">{card.subtitle}</p>
-                  
-                  <div className="space-y-4 mb-8">
-                    {card.benefits.map((benefit, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <Badge variant="secondary" className="bg-red-soft/10 text-red-deep">
-                          ✦
-                        </Badge>
-                        <span className="text-gray-400">{benefit}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="bg-gray-100 rounded-lg p-4 mb-6">
-                    <div className="flex items-center gap-4 mb-3">
-                      <img
-                        src={card.testimonial.image}
-                        alt={card.testimonial.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      <div>
-                        <h4 className="font-montserrat font-medium text-pure-black">{card.testimonial.name}</h4>
-                        <p className="text-sm text-gray-400">{card.testimonial.role}</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-400 italic">{card.testimonial.testimonial}</p>
-                  </div>
-                </CardContent>
-                
-                <CardFooter>
-                  <Button 
-                    onClick={() => handleRegistration(card.path)}
-                    className="w-full bg-red-deep hover:bg-red-dark text-pure-white transition-colors"
-                  >
-                    {card.ctaText}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <p className="text-gray-400 font-montserrat">
-            Limited spots available. Register now to secure your place.
+      {/* Content container */}
+      <motion.div
+        className="container mx-auto px-4"
+        variants={containerVariants}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+      >
+        <motion.div
+          className="text-center mb-12 space-y-4"
+          variants={itemVariants}
+        >
+          <h2
+            id="partners-title"
+            className="text-4xl md:text-[3.5rem] font-bold tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-red-accent via-pink-magenta to-purple-vivid"
+          >
+            Our Partners
+          </h2>
+          <p className="text-white-secondary max-w-2xl mx-auto text-lg">
+            Collaborating with industry leaders to bring you an unforgettable fashion experience
           </p>
+        </motion.div>
+
+        {/* Logo carousel with improved accessibility */}
+        <div
+          className="backdrop-blur-sm bg-black/30 rounded-xl border border-white/10 p-8 shadow-glow"
+          role="region"
+          aria-label="Partner logos carousel"
+        >
+          <LogoCarousel logos={partnerLogos} columns={3} />
         </div>
-      </div>
+
+        {/* Call to action */}
+        <motion.div
+          className="mt-12 text-center"
+          variants={itemVariants}
+        >
+          <p className="text-white-secondary mb-4">
+            Interested in becoming a partner?
+          </p>
+          <a
+            href="/sponsors"
+            className="inline-flex items-center px-6 py-3 bg-red-accent hover:bg-red-accent/90 text-white rounded-lg transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+            aria-label="Learn more about partnership opportunities"
+          >
+            Become a Partner
+          </a>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
