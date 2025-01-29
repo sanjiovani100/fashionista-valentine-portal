@@ -55,15 +55,19 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
     title: ticket.ticket_type,
     subtitle: `${ticket.ticket_type} access to the Fashionistas Valentine's Event`,
     perks: ticket.benefits || [],
-    price: Number(ticket.price) // Convert price to number
+    price: Number(ticket.price)
   }));
 
   return (
     <section 
       className="pt-8 pb-20 md:pb-[80px] px-4 relative overflow-hidden bg-pure-black" 
       ref={ref}
+      aria-labelledby="ticket-selection-title"
     >
-      <div className="absolute inset-0 opacity-5">
+      <div 
+        className="absolute inset-0 opacity-5"
+        aria-hidden="true"
+      >
         <div className="absolute animate-float-slow top-1/4 left-1/4">
           <Heart className="w-24 h-24 text-red-soft animate-pulse" />
         </div>
@@ -81,19 +85,25 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
         initial="hidden"
         animate={controls}
       >
-        <CountdownTimer />
+        <CountdownTimer eventDate={eventDate} />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12"
+          role="list"
+          aria-label="Available ticket options"
+        >
           {transformedTickets.map((ticket, index) => (
             <motion.div
               key={ticket.id}
               variants={cardVariants}
               className="transform transition-all duration-300"
+              role="listitem"
             >
               <TicketCard
                 {...ticket}
                 isSelected={selectedTicket === ticket.title}
                 onSelect={setSelectedTicket}
+                tabIndex={0}
               />
             </motion.div>
           ))}
