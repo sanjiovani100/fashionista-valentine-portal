@@ -23,42 +23,85 @@ export default {
         poppins: ["Poppins", "sans-serif"],
         inter: ["Inter", "sans-serif"],
       },
-      // Enhanced Colors
       colors: {
-        border: "rgba(255, 255, 255, 0.1)",
-        input: "rgba(255, 255, 255, 0.1)",
-        ring: "#800000",
-        background: "#000000",
-        foreground: "#FFFFFF",
-        brand: "hsl(var(--brand))",
-        "brand-foreground": "hsl(var(--brand-foreground))",
-        "pure-white": "#FFFFFF",
-        "pure-black": "#000000",
+        // Primary Colors
+        maroon: {
+          DEFAULT: "#8B0000", // Enhanced deep maroon
+          light: "#B22222",
+          dark: "#4A0404",
+        },
+        black: {
+          DEFAULT: "#0A0A0A", // Softer black
+          pure: "#000000",
+        },
+        white: {
+          DEFAULT: "#FFFFFF",
+          secondary: "rgba(255,255,255,0.8)",
+          muted: "rgba(255,255,255,0.6)",
+        },
+        
+        // Accent Colors
+        pink: {
+          magenta: "#D946EF",
+          light: "#FFD6E7",
+        },
+        purple: {
+          vivid: "#8B5CF6",
+          soft: "#D6BCFA",
+        },
+        red: {
+          accent: "#FF3366",
+          soft: "#FFC1C1",
+          light: "#FFE6E6",
+          deep: "#8B0000",
+        },
+        
+        // Gray Scale
         gray: {
           100: "#F1F1F1",
           200: "#DDDDDD",
           300: "#888888",
           400: "#555555",
           500: "#222222",
+          highlight: "#F0F0F0",
         },
-        red: {
-          deep: "#800000",
-          soft: "#FFC1C1",
-          dark: "#4A0404",
-          light: "#FFE6E6",
-          accent: "#FF3366",
-        },
-        purple: {
-          soft: "#D6BCFA",
-          vivid: "#8B5CF6",
-        },
-        pink: {
-          magenta: "#D946EF",
-          light: "#FFD6E7",
-        },
+        
+        // System Colors
+        border: "rgba(255,255,255,0.1)",
+        input: "rgba(255,255,255,0.1)",
+        ring: "#FF3366",
+        background: "#0A0A0A",
+        foreground: "#FFFFFF",
       },
-
-      // Enhanced Typography
+      
+      // Enhanced Gradients
+      backgroundImage: {
+        "primary-gradient": "linear-gradient(135deg, #8B0000, #4A0404)",
+        "accent-gradient": "linear-gradient(135deg, #FF3366, #D946EF)",
+        "purple-gradient": "linear-gradient(135deg, #8B5CF6, #D946EF)",
+        "overlay-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.9))",
+        "hero-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8))",
+        "card-hover": "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+      },
+      
+      // Interactive States
+      opacity: {
+        '85': '0.85',
+        '95': '0.95',
+      },
+      brightness: {
+        '95': '.95',
+        '105': '1.05',
+        '110': '1.1',
+      },
+      ringWidth: {
+        '3': '3px',
+      },
+      ringOffsetWidth: {
+        '3': '3px',
+      },
+      
+      // Font Size
       fontSize: {
         hero: ["5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
         "section-title": ["3.5rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
@@ -66,16 +109,6 @@ export default {
         "body-large": ["1.25rem", { lineHeight: "1.6" }],
         body: ["1.125rem", { lineHeight: "1.6" }],
         small: ["0.875rem", { lineHeight: "1.5" }],
-      },
-
-      // Enhanced Gradients
-      backgroundImage: {
-        "hero-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8))",
-        "card-hover": "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-        "primary-gradient": "linear-gradient(135deg, #800000, #4A0404)",
-        "accent-gradient": "linear-gradient(135deg, #FF3366, #FF6B6B)",
-        "overlay-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.9))",
-        "purple-gradient": "linear-gradient(135deg, #D6BCFA, #8B5CF6)",
       },
 
       // Enhanced Animations
