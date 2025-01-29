@@ -27,25 +27,12 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
   }, [controls, inView]);
 
   const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20
-    },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.6,
-        ease: "easeOut"
+        staggerChildren: 0.2,
+        delayChildren: 0.3
       }
     }
   };
@@ -60,23 +47,33 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
 
   return (
     <section 
-      className="pt-8 pb-20 md:pb-[80px] px-4 relative overflow-hidden bg-pure-black" 
+      className="relative min-h-screen bg-gradient-to-b from-maroon/5 to-black/95 pt-8 pb-20 md:pb-[80px] px-4 overflow-hidden"
       ref={ref}
       aria-labelledby="ticket-selection-title"
     >
+      {/* Decorative Hearts */}
       <div 
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
       >
-        <div className="absolute animate-float-slow top-1/4 left-1/4">
-          <Heart className="w-24 h-24 text-red-soft animate-pulse" />
-        </div>
-        <div className="absolute animate-float-medium top-1/2 right-1/4">
-          <Heart className="w-16 h-16 text-red-soft animate-pulse" />
-        </div>
-        <div className="absolute animate-float-fast bottom-1/4 left-1/2">
-          <Heart className="w-20 h-20 text-red-soft animate-pulse" />
-        </div>
+        {[1, 2, 3].map((_, index) => (
+          <motion.div
+            key={index}
+            className={`absolute ${index === 0 ? 'top-1/4 left-1/4' : index === 1 ? 'top-1/2 right-1/4' : 'bottom-1/4 left-1/2'}`}
+            animate={{
+              y: [0, -20, 0],
+              rotate: [0, 5, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{
+              duration: 4 + index,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <Heart className={`w-${16 + index * 4} h-${16 + index * 4} text-red-soft/10`} />
+          </motion.div>
+        ))}
       </div>
       
       <motion.div 
@@ -85,6 +82,28 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
         initial="hidden"
         animate={controls}
       >
+        <div className="text-center mb-12 space-y-4">
+          <motion.h2
+            id="ticket-selection-title"
+            className="text-4xl md:text-[3.5rem] font-bold tracking-tight leading-none text-gradient bg-accent-gradient"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+          >
+            Choose Your Perfect Ticket
+          </motion.h2>
+          <motion.p
+            className="text-white-secondary max-w-2xl mx-auto text-lg"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+          >
+            Select from our carefully curated ticket options and be part of this exclusive Valentine's fashion celebration
+          </motion.p>
+        </div>
+
         <CountdownTimer eventDate={eventDate} />
         
         <div 
@@ -95,8 +114,20 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
           {transformedTickets.map((ticket, index) => (
             <motion.div
               key={ticket.id}
-              variants={cardVariants}
-              className="transform transition-all duration-300"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { 
+                  opacity: 1, 
+                  y: 0,
+                  transition: {
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15,
+                    delay: index * 0.1
+                  }
+                }
+              }}
+              className="transform transition-all duration-300 will-change-transform"
               role="listitem"
             >
               <TicketCard
