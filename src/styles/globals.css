@@ -3,86 +3,64 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 100%;
-    
-    --popover: 0 0% 0%;
-    --popover-foreground: 0 0% 100%;
-    
-    --primary: 315 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 240 50% 45%;
-    --secondary-foreground: 0 0% 100%;
-    
-    --muted: 0 0% 64%;
-    --muted-foreground: 0 0% 100%;
-    
-    --accent: 315 100% 50%;
-    --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 100% 61%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 0 0% 100%;
-    --input: 0 0% 100%;
-    --ring: 315 100% 50%;
-    
-    --radius: 0.5rem;
+  /* Improved focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-red-soft ring-offset-2 ring-offset-black transition-shadow duration-200;
+  }
+
+  /* Better text contrast */
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+    @apply selection:bg-red-soft selection:text-white;
+  }
+
+  /* Improved typography */
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight;
+  }
+
+  /* Better button focus states */
+  button:focus-visible {
+    @apply ring-2 ring-red-soft ring-offset-2 ring-offset-black outline-none;
+  }
+
+  /* Skip to main content link */
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
+           focus:px-4 focus:py-2 focus:bg-red-soft focus:text-white focus:rounded-md;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-pure-black text-pure-white font-montserrat;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-playfair tracking-heading;
-  }
-  
-  h1 { @apply text-h1; }
-  h2 { @apply text-h2; }
-  h3 { @apply text-h3; }
-  h4 { @apply text-h4; }
-}
-
-@layer components {
-  .btn {
-    @apply h-12 px-8 rounded-button font-inter font-medium tracking-button
-           transition-all duration-300 ease-out min-w-[44px] min-h-[44px];
-  }
-  
-  .btn-primary {
-    @apply bg-primary-gradient hover:bg-hover-gradient active:bg-active-gradient
-           hover:scale-102 active:scale-98 hover:brightness-110 active:brightness-90;
-  }
-  
-  .card {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-card p-6
-           shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300;
-  }
-  
-  .card:hover {
-    @apply scale-105 shadow-[0_0_20px_rgba(255,0,204,0.2)];
-  }
-  
-  .container {
-    @apply px-4 md:px-8 max-w-[1200px] mx-auto;
-  }
-}
-
+/* Performance optimizations */
 @layer utilities {
-  .focus-visible {
-    @apply outline-none ring-2 ring-fashion-pink ring-offset-2;
+  .optimize-gpu {
+    @apply will-change-transform transform-gpu;
+  }
+
+  .optimize-opacity {
+    @apply will-change-opacity;
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
