@@ -10,6 +10,7 @@ interface TicketCardProps extends Omit<EventTicket, 'benefits'> {
   subtitle: string;
   perks: string[];
   title: string;
+  tabIndex?: number;
 }
 
 export const TicketCard = ({
@@ -19,6 +20,7 @@ export const TicketCard = ({
   perks,
   isSelected,
   onSelect,
+  tabIndex = 0,
 }: TicketCardProps) => {
   const springConfig = {
     type: "spring",
@@ -37,6 +39,7 @@ export const TicketCard = ({
           isSelected ? "border-red-deep shadow-glow" : "border-white/10 hover:border-white/20"
         }`}
         onClick={() => onSelect(title)}
+        tabIndex={tabIndex}
       >
         <CardHeader>
           <CardTitle className="text-2xl md:text-[24px] font-poppins text-pure-white">

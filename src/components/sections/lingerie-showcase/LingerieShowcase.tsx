@@ -26,7 +26,6 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
       }
     };
 
-    // Only add scroll listener if user prefers motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReducedMotion) {
       window.addEventListener('scroll', handleScroll);
@@ -75,7 +74,6 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
                       aspectRatio="portrait"
                       className="showcase-image object-cover w-full h-full"
                       priority={index < 3}
-                      loading={index < 3 ? "eager" : "lazy"}
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-800 flex items-center justify-center">

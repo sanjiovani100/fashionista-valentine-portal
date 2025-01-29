@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+
+interface CountdownTimerProps {
+  eventDate: string;
+}
 
 interface TimeLeft {
   days: number;
@@ -7,65 +11,53 @@ interface TimeLeft {
   seconds: number;
 }
 
-export const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+export const CountdownTimer: React.FC<CountdownTimerProps> = ({ eventDate }) => {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const eventDate = new Date("2024-02-14T20:00:00");
-    
-    const updateTimer = () => {
-      const now = new Date();
-      const difference = eventDate.getTime() - now.getTime();
-      
+    const calculateTimeLeft = () => {
+      const difference = +new Date(eventDate) - +new Date();
+      let timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
       if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        
-        setTimeLeft({ days, hours, minutes, seconds });
+        timeLeft = {
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60)
+        };
       }
+
+      return timeLeft;
     };
 
-    updateTimer();
-    const timer = setInterval(updateTimer, 1000);
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [eventDate]);
 
   return (
-    <div className="flex flex-col items-center space-y-8 mb-16">
-      <h1 className="text-5xl md:text-[48px] font-playfair text-white mb-6 text-center transition-all">
-        Choose Your Perfect Ticket
-      </h1>
-      <p className="text-xl md:text-2xl text-blush mb-4 text-center font-montserrat">
-        Reserve your spot for Medellín's most glamorous night!
-      </p>
-      <p className="text-lg text-gray-300 mb-8 text-center font-montserrat">
-        Join 100+ attendees who've already secured their tickets
-      </p>
-      <div className="flex gap-6 text-center">
-        {Object.entries(timeLeft).map(([unit, value]) => (
-          <div key={unit} className="flex items-center">
-            <div className="flex flex-col items-center transition-all duration-300 hover:transform hover:scale-105">
-              <div className="text-4xl md:text-5xl font-bold text-romantic mb-2 bg-white/5 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/10">
-                {value.toString().padStart(2, '0')}
-              </div>
-              <div className="text-sm uppercase tracking-wider text-gray-300 font-montserrat">{unit}</div>
-            </div>
-            {unit !== 'seconds' && (
-              <div className="text-4xl text-gray-500 mx-2">:</div>
-            )}
-          </div>
-        ))}
+    <div className="text-center mb-12">
+      <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
+        <div className="bg-black/50 p-4 rounded-lg backdrop-blur-sm">
+          <div className="text-4xl font-bold text-white">{timeLeft.days}</div>
+          <div className="text-sm text-gray-300">Days</div>
+        </div>
+        <div className="bg-black/50 p-4 rounded-lg backdrop-blur-sm">
+          <div className="text-4xl font-bold text-white">{timeLeft.hours}</div>
+          <div className="text-sm text-gray-300">Hours</div>
+        </div>
+        <div className="bg-black/50 p-4 rounded-lg backdrop-blur-sm">
+          <div className="text-4xl font-bold text-white">{timeLeft.minutes}</div>
+          <div className="text-sm text-gray-300">Minutes</div>
+        </div>
+        <div className="bg-black/50 p-4 rounded-lg backdrop-blur-sm">
+          <div className="text-4xl font-bold text-white">{timeLeft.seconds}</div>
+          <div className="text-sm text-gray-300">Seconds</div>
+        </div>
       </div>
-      <p className="text-blush text-lg animate-pulse mt-6 font-montserrat">
-        Don't miss out on Medellín's most glamorous event!
-      </p>
     </div>
   );
 };
