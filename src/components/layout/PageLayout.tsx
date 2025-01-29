@@ -5,6 +5,8 @@ import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { initScrollReveal } from "@/utils/scrollReveal";
 import { useParallaxScroll } from "@/hooks/useParallaxScroll";
 import { NavBar } from "@/components/ui/tubelight-navbar";
+import { SkipToContent } from "@/components/ui/skip-to-content";
+import { BackToTop } from "@/components/ui/back-to-top";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -34,12 +36,14 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
           '--scroll-progress': scrollYProgress,
         } as React.CSSProperties}
       >
+        <SkipToContent />
         <NavBar />
         <ScrollProgress />
-        <div className="scroll-snap-container pt-20">
+        <div id="main-content" className="scroll-snap-container pt-20">
           {children}
         </div>
         <Footerdemo />
+        <BackToTop />
       </motion.main>
     </AnimatePresence>
   );
