@@ -26,24 +26,21 @@ export const OptimizedImage = ({
   height,
   className,
   aspectRatio = 'auto',
-  priority = false
-}: CloudinaryImageProps) => {
+  priority = false,
+  onLoadingComplete
+}: CloudinaryImageProps & { onLoadingComplete?: () => void }) => {
   const { hasError, imageUrl } = useCloudinaryImage(publicId, width, height);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [loadTime, setLoadTime] = useState<number>(0);
-
-  console.log('[CloudinaryImage] Rendering image:', {
-    publicId,
-    imageUrl,
-    isLoading,
-    hasError,
-    aspectRatio
-  });
+  const [isBlurred, setIsBlurred] = useState(true);
 
   const handleLoad = () => {
     setIsLoading(false);
     setLoadError(false);
+    setIsBlurred(false);
+    onLoadingComplete?.();
+
     if (window.performance && window.performance.getEntriesByName) {
       const imagePerf = performance.getEntriesByName(imageUrl)[0] as PerformanceResourceTiming;
       if (imagePerf) {
@@ -71,13 +68,11 @@ export const OptimizedImage = ({
     setLoadError(true);
     setIsLoading(false);
 
-    // If the current image fails and it's not already the fallback, try the fallback
     if (e.currentTarget.src !== FALLBACK_IMAGE) {
       e.currentTarget.src = FALLBACK_IMAGE;
     }
   };
 
-  // Show error state if both main image and fallback fail
   if (hasError && loadError) {
     return <CloudinaryImageError />;
   }
@@ -102,8 +97,9 @@ export const OptimizedImage = ({
               loading={priority ? "eager" : "lazy"}
               className={cn(
                 'w-full h-full object-cover',
-                'transition-opacity duration-300',
-                isLoading && 'opacity-0'
+                'transition-all duration-500',
+                isLoading && 'opacity-0',
+                isBlurred && 'blur-sm scale-105'
               )}
               onLoad={handleLoad}
               onError={handleError}
@@ -121,8 +117,9 @@ export const OptimizedImage = ({
               onError={handleError}
               className={cn(
                 'w-full h-full object-cover',
-                'transition-opacity duration-300',
-                isLoading && 'opacity-0'
+                'transition-all duration-500',
+                isLoading && 'opacity-0',
+                isBlurred && 'blur-sm scale-105'
               )}
             />
           )
