@@ -30,18 +30,22 @@ export const verifyReducedMotion = () => {
   
   if (prefersReducedMotion) {
     console.info('[Accessibility] Reduced motion is preferred');
-    // Find elements with animation classes using a more specific approach
-    const animatedElements = Array.from(document.getElementsByTagName('*')).filter(el => {
-      const classList = Array.from(el.classList);
-      return classList.some(className => className.startsWith('animate-'));
+    
+    // Find elements with animation classes using a valid approach
+    const allElements = document.getElementsByTagName('*');
+    const animatedElements = Array.from(allElements).filter(el => {
+      return Array.from(el.classList).some(className => className.startsWith('animate-'));
     });
     
-    animatedElements.forEach(element => {
-      const computedStyle = window.getComputedStyle(element);
-      if (computedStyle.animation !== 'none') {
-        console.warn('[Accessibility] Animation found despite reduced motion preference:', element);
-      }
-    });
+    if (animatedElements.length > 0) {
+      console.warn('[Accessibility] Animations found despite reduced motion preference:', 
+        animatedElements.map(el => ({
+          element: el.tagName,
+          classes: Array.from(el.classList),
+          id: el.id || 'no-id'
+        }))
+      );
+    }
   }
 
   return prefersReducedMotion;
