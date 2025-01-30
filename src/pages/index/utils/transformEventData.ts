@@ -31,10 +31,10 @@ const transformHighlightImage = (highlight: Partial<EventContent>, images: Fashi
     }
 
     console.warn(`No valid image found for highlight: ${highlight.title}`);
-    return cloudinaryConfig.defaults.placeholder;
+    return cloudinaryConfig.defaults.placeholders.event;
   } catch (error) {
     console.error('Error transforming highlight image:', error);
-    return cloudinaryConfig.defaults.placeholder;
+    return cloudinaryConfig.defaults.placeholders.event;
   }
 };
 
@@ -50,10 +50,10 @@ const transformCollectionImage = (collection: Partial<FashionCollection>, images
     }
 
     console.warn(`No valid image found for collection: ${collection.collection_name}`);
-    return cloudinaryConfig.defaults.placeholder;
+    return cloudinaryConfig.defaults.placeholders.collection;
   } catch (error) {
     console.error('Error transforming collection image:', error);
-    return cloudinaryConfig.defaults.placeholder;
+    return cloudinaryConfig.defaults.placeholders.collection;
   }
 };
 
@@ -66,7 +66,7 @@ export const transformEventData = (eventData: any) => {
   // Transform highlights with proper image URL handling
   const highlights = (eventData.event_content || [])
     .filter((content: any) => content.content_type === 'highlight')
-    .map((highlight: any) => ({
+    .map((highlight: EventContent) => ({
       ...highlight,
       event_id: highlight.event_id || '',
       media_urls: highlight.media_urls || [],
@@ -79,7 +79,7 @@ export const transformEventData = (eventData: any) => {
 
   // Transform collections with proper image handling
   const collectionsWithImages = (eventData.fashion_collections || [])
-    .map((collection: any) => ({
+    .map((collection: FashionCollection) => ({
       ...collection,
       designer_id: collection.designer_id || '',
       event_id: collection.event_id || '',
@@ -94,7 +94,7 @@ export const transformEventData = (eventData: any) => {
   const heroImage = eventData.fashion_images?.find((img: FashionImage) => {
     const metadata = img.metadata as ImageMetadata | null;
     return img.category === 'promotional' && metadata?.page === 'home';
-  })?.url || cloudinaryConfig.defaults.placeholder;
+  })?.url || cloudinaryConfig.defaults.placeholders.event;
 
   console.log("Transformation complete:", {
     highlightsCount: highlights.length,
