@@ -2,6 +2,14 @@ import { CLOUDINARY_CONFIG, getFirstValidMediaUrl, isValidCloudinaryUrl } from '
 import type { FashionEvent } from "@/types/database";
 import type { EventContent, FashionCollection } from "@/types/event.types";
 
+interface ImageMetadata {
+  page?: string;
+  collection_id?: string;
+  bucket_id?: string;
+  file_path?: string;
+  uploaded_at?: string;
+}
+
 export const transformEventData = (eventData: FashionEvent) => {
   console.log("Raw event data:", {
     contentCount: eventData.event_content?.length,
@@ -46,12 +54,10 @@ export const transformEventData = (eventData: FashionEvent) => {
   // Transform collections with proper image handling
   const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection): FashionCollection & { image: string } => {
-      const collectionImage = eventData.fashion_images?.find(img => 
-        typeof img.metadata === 'object' && 
-        img.metadata !== null && 
-        'collection_id' in img.metadata && 
-        img.metadata.collection_id === collection.id
-      );
+      const collectionImage = eventData.fashion_images?.find(img => {
+        const metadata = img.metadata as ImageMetadata | null;
+        return metadata?.collection_id === collection.id;
+      });
 
       console.log("Processing collection:", {
         name: collection.collection_name,
@@ -72,11 +78,11 @@ export const transformEventData = (eventData: FashionEvent) => {
     })
     .slice(0, 3);
 
-  // Get hero image with updated selection logic
-  const heroImage = eventData.fashion_images?.find(img => 
-    img.category === 'promotional' && 
-    img.metadata?.page === 'home'
-  )?.url || CLOUDINARY_CONFIG.defaultPlaceholder;
+  // Get hero image with updated selection logic and proper type casting
+  const heroImage = eventData.fashion_images?.find(img => {
+    const metadata = img.metadata as ImageMetadata | null;
+    return img.category === 'promotional' && metadata?.page === 'home';
+  })?.url || CLOUDINARY_CONFIG.defaultPlaceholder;
 
   console.log("Selected hero image:", heroImage);
 
