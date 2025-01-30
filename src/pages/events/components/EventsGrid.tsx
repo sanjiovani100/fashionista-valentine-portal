@@ -1,10 +1,11 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { EventCard } from './EventCard';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, Loader2 } from 'lucide-react';
+import { CardSkeleton } from '@/components/ui/loading-skeleton/CardSkeleton';
 import type { EventSubtype } from '@/types/supabase/enums.types';
 
 interface EventFilters {
@@ -88,6 +89,11 @@ export const EventsGrid = ({ viewMode, filters, sortBy }: EventsGridProps) => {
         query = query.in('subtype', filters.categories);
       }
 
+      if (filters.priceRange) {
+        const [minPrice, maxPrice] = filters.priceRange;
+        query = query.eq('event_tickets.price', minPrice).lte('event_tickets.price', maxPrice);
+      }
+
       // Apply sorting
       switch (sortBy) {
         case 'date':
@@ -122,8 +128,14 @@ export const EventsGrid = ({ viewMode, filters, sortBy }: EventsGridProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className={`grid gap-6 ${
+        viewMode === 'grid' 
+          ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
+          : 'grid-cols-1'
+      }`}>
+        {[...Array(6)].map((_, i) => (
+          <CardSkeleton key={i} />
+        ))}
       </div>
     );
   }
@@ -147,21 +159,24 @@ export const EventsGrid = ({ viewMode, filters, sortBy }: EventsGridProps) => {
   }
 
   return (
-    <div className={`grid gap-6 ${
-      viewMode === 'grid' 
-        ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
-        : 'grid-cols-1'
-    }`}>
-      {events.map((event) => (
-        <motion.div
-          key={event.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <EventCard event={event} viewMode={viewMode} />
-        </motion.div>
-      ))}
-    </div>
+    <AnimatePresence mode="wait">
+      <div className={`grid gap-6 ${
+        viewMode === 'grid' 
+          ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
+          : 'grid-cols-1'
+      }`}>
+        {events.map((event) => (
+          <motion.div
+            key={event.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            <EventCard event={event} viewMode={viewMode} />
+          </motion.div>
+        ))}
+      </div>
+    </AnimatePresence>
   );
 };
