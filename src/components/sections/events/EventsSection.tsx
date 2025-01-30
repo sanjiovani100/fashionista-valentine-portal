@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { EventList } from './EventList';
+import type { EventSubtype } from '@/types/supabase/enums.types';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,6 +29,15 @@ const itemVariants = {
 
 export const EventsSection = () => {
   const prefersReducedMotion = useReducedMotion();
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState<'date' | 'price-asc' | 'price-desc'>('date');
+  const [filters, setFilters] = useState({
+    search: '',
+    dateRange: undefined,
+    priceRange: undefined as [number, number] | undefined,
+    categories: [] as EventSubtype[],
+    location: ''
+  });
 
   return (
     <section 
@@ -69,7 +79,11 @@ export const EventsSection = () => {
           </motion.p>
         </motion.div>
 
-        <EventList />
+        <EventList 
+          filters={filters}
+          sortBy={sortBy}
+          viewMode={viewMode}
+        />
       </div>
     </section>
   );

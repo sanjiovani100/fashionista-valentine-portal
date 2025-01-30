@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import type { FashionEvent } from '@/types/database';
 import { toast } from 'sonner';
 import { CardSkeleton } from '@/components/ui/loading-skeleton/CardSkeleton';
+import type { EventSubtype } from '@/types/supabase/enums.types';
 
 const listVariants = {
   hidden: { opacity: 0 },
@@ -37,7 +38,7 @@ interface EventFilters {
   search: string;
   dateRange?: Date;
   priceRange?: [number, number];
-  categories: string[];
+  categories: EventSubtype[];
   location: string;
 }
 
