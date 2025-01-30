@@ -14,7 +14,8 @@ export const OptimizedImage = ({
   className,
   aspectRatio = 'auto',
   priority = false,
-  onLoadingComplete
+  onLoadingComplete,
+  onError
 }: CloudinaryImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -58,12 +59,13 @@ export const OptimizedImage = ({
         }
         
         setError(err as Error);
+        onError?.();
         setImageUrl(cloudinaryConfig.defaults.placeholder);
       }
     };
 
     loadImage();
-  }, [publicId, width, height, aspectRatio, priority, retryCount]);
+  }, [publicId, width, height, aspectRatio, priority, retryCount, onError]);
 
   const handleImageError = () => {
     console.error('[Cloudinary] Image load error for:', publicId);
@@ -74,6 +76,7 @@ export const OptimizedImage = ({
     }
     
     setError(new Error('Failed to load image'));
+    onError?.();
     setImageUrl(cloudinaryConfig.defaults.placeholder);
     setIsLoading(false);
   };

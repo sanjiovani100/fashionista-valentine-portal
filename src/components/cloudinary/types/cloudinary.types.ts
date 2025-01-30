@@ -9,6 +9,7 @@ export interface CloudinaryImageProps {
   aspectRatio?: AspectRatio;
   priority?: boolean;
   onLoadingComplete?: () => void;
+  onError?: () => void;
 }
 
 export interface ImageLoadingState {
