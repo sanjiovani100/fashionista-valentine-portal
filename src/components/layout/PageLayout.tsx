@@ -2,57 +2,54 @@ import { ReactNode, useEffect } from "react";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { Footerdemo } from "@/components/ui/footer-section";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
-import { initScrollReveal } from "@/utils/scrollReveal";
-import { useParallaxScroll } from "@/hooks/useParallaxScroll";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { useReducedMotion } from "framer-motion";
-import { usePerformanceMonitor, checkAccessibility, checkBrowserCompatibility } from "@/utils/testUtils";
+import { checkBrowserCompatibility } from "@/utils/testing/browserCompatibility";
+import { checkAccessibility, verifyAriaLabels } from "@/utils/testing/accessibilityUtils";
+import { measurePerformance, monitorLayoutShifts } from "@/utils/testing/performanceUtils";
+import { checkDeviceCapabilities } from "@/utils/testing/deviceTesting";
+import { checkAnimationPerformance, verifyReducedMotion } from "@/utils/testing/animationTesting";
 
 interface PageLayoutProps {
   children: ReactNode;
 }
 
 export const PageLayout = ({ children }: PageLayoutProps) => {
-  const scrollY = useParallaxScroll();
   const { scrollYProgress } = useScroll();
   const prefersReducedMotion = useReducedMotion();
   
-  // Initialize performance monitoring
-  usePerformanceMonitor();
-
   useEffect(() => {
-    // Initialize scroll reveal animations
-    const cleanup = initScrollReveal();
-    
-    // Run accessibility checks in development
+    // Run tests in development only
     if (process.env.NODE_ENV === 'development') {
+      // Browser compatibility check
+      checkBrowserCompatibility();
+      
+      // Device capabilities check
+      checkDeviceCapabilities();
+      
+      // Performance monitoring
+      const performanceMetrics = measurePerformance();
+      console.info('[Performance Metrics]:', performanceMetrics);
+      
+      // Layout shift monitoring
+      const layoutObserver = monitorLayoutShifts();
+      
+      // Accessibility checks
       const mainContent = document.getElementById('main-content');
       if (mainContent) {
         checkAccessibility(mainContent);
+        verifyAriaLabels(mainContent);
+        checkAnimationPerformance(mainContent);
       }
-      checkBrowserCompatibility();
+      
+      // Verify reduced motion preferences
+      verifyReducedMotion();
+      
+      return () => {
+        layoutObserver?.disconnect();
+      };
     }
-
-    // Handle keyboard navigation
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        document.body.classList.add('keyboard-navigation');
-      }
-    };
-
-    const handleMouseDown = () => {
-      document.body.classList.remove('keyboard-navigation');
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('mousedown', handleMouseDown);
-
-    return () => {
-      cleanup();
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('mousedown', handleMouseDown);
-    };
   }, []);
 
   const mainVariants = {
@@ -71,7 +68,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         {...mainVariants}
         className="min-h-screen bg-black text-white relative"
         style={{
-          '--scroll-y': `${scrollY}px`,
+          '--scroll-y': `${scrollYProgress}px`,
           '--scroll-progress': scrollYProgress,
         } as React.CSSProperties}
       >
