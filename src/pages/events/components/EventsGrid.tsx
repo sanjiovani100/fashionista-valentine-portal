@@ -30,15 +30,31 @@ export const EventsGrid = ({ viewMode, filters, sortBy }: EventsGridProps) => {
         .select(`
           *,
           event_tickets (
+            id,
             price,
             quantity_available,
             ticket_type,
-            benefits
+            benefits,
+            early_bird_deadline,
+            early_bird_price,
+            group_discount_threshold,
+            group_discount_percentage,
+            created_at,
+            updated_at
           ),
           fashion_images (
+            id,
+            category,
             url,
+            thumbnail_url,
             alt_text,
-            category
+            metadata,
+            credits,
+            event_id,
+            created_at,
+            updated_at,
+            dimensions,
+            formats
           ),
           event_content (
             id,

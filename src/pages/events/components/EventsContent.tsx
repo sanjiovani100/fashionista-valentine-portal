@@ -50,7 +50,7 @@ export const EventsContent = () => {
               onViewModeChange={setViewMode}
               sortBy={sortBy}
               onSortChange={handleSortChange}
-              activeFilters={Object.entries(filters).filter(([_, value]) => {
+              activeFilters={Object.values(filters).filter(value => {
                 if (Array.isArray(value)) return value.length > 0;
                 if (value instanceof Date) return true;
                 return !!value;
