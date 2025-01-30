@@ -7,6 +7,7 @@ import { useParallaxScroll } from "@/hooks/useParallaxScroll";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { useReducedMotion } from "framer-motion";
+import { usePerformanceMonitor, checkAccessibility, checkBrowserCompatibility } from "@/utils/testUtils";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -16,14 +17,24 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
   const scrollY = useParallaxScroll();
   const { scrollYProgress } = useScroll();
   const prefersReducedMotion = useReducedMotion();
+  
+  // Initialize performance monitoring
+  usePerformanceMonitor();
 
   useEffect(() => {
+    // Initialize scroll reveal animations
     const cleanup = initScrollReveal();
-    return cleanup;
-  }, []);
+    
+    // Run accessibility checks in development
+    if (process.env.NODE_ENV === 'development') {
+      const mainContent = document.getElementById('main-content');
+      if (mainContent) {
+        checkAccessibility(mainContent);
+      }
+      checkBrowserCompatibility();
+    }
 
-  // Handle keyboard navigation
-  useEffect(() => {
+    // Handle keyboard navigation
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Tab') {
         document.body.classList.add('keyboard-navigation');
@@ -38,6 +49,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
     window.addEventListener('mousedown', handleMouseDown);
 
     return () => {
+      cleanup();
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('mousedown', handleMouseDown);
     };
@@ -63,7 +75,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
           '--scroll-progress': scrollYProgress,
         } as React.CSSProperties}
       >
-        {/* Skip Links with enhanced contrast and focus styles */}
+        {/* Enhanced Skip Links with better contrast and focus styles */}
         <nav 
           className="skip-links" 
           aria-label="Skip navigation"
