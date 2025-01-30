@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EventCard } from '@/components/sections/events/EventCard';
 import type { FashionEvent } from '@/types/database';
+import { toast } from '@/hooks/use-toast';
 
 interface EventGridProps {
   events: FashionEvent[];
@@ -29,7 +30,10 @@ export const EventGrid = ({ events, viewMode }: EventGridProps) => {
               viewMode={viewMode}
               onRegister={() => {
                 console.log('Register for event:', event.id);
-                toast.success(`Registration initiated for ${event.title}`);
+                toast({
+                  title: "Registration Initiated",
+                  description: `Registration started for ${event.title}`,
+                });
               }}
             />
           </motion.div>

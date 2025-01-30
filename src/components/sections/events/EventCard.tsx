@@ -10,9 +10,10 @@ import { format } from 'date-fns';
 interface EventCardProps {
   event: FashionEvent;
   onRegister?: () => void;
+  viewMode?: 'grid' | 'list';
 }
 
-export const EventCard = ({ event, onRegister }: EventCardProps) => {
+export const EventCard = ({ event, onRegister, viewMode = 'grid' }: EventCardProps) => {
   // Calculate event status and price range
   const isUpcoming = new Date(event.start_time) > new Date();
   const minPrice = Math.min(...(event.event_tickets?.map(t => t.price) || [0]));
@@ -27,6 +28,7 @@ export const EventCard = ({ event, onRegister }: EventCardProps) => {
       transition={{ duration: 0.2 }}
       role="article"
       aria-label={`${event.title} - ${isUpcoming ? 'Upcoming Event' : 'Past Event'}`}
+      className={viewMode === 'list' ? 'flex gap-6' : ''}
     >
       <Card className="group h-full overflow-hidden bg-black/40 backdrop-blur-md border-white/10 hover:border-white/20 transition-all duration-300">
         <CardHeader className="space-y-2">
