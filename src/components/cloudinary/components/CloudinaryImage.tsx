@@ -37,12 +37,8 @@ export const OptimizedImage = ({
 
   const cld = new Cloudinary(cloudinaryConfig);
 
-  // Handle direct URLs vs public IDs
-  const imageId = publicId.includes('cloudinary.com') 
-    ? publicId.split('/upload/')[1].split('.')[0]
-    : publicId;
-
-  const myImage = cld.image(imageId)
+  // Use the publicId directly since we're now storing Cloudinary IDs
+  const myImage = cld.image(publicId)
     .resize(fill().width(width).height(height));
 
   return (
