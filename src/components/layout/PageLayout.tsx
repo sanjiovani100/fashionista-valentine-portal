@@ -1,11 +1,10 @@
 import { ReactNode, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { Footerdemo } from "@/components/ui/footer-section";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { initScrollReveal } from "@/utils/scrollReveal";
 import { useParallaxScroll } from "@/hooks/useParallaxScroll";
 import { NavBar } from "@/components/ui/tubelight-navbar";
-import { SkipToContent } from "@/components/ui/skip-to-content";
 import { BackToTop } from "@/components/ui/back-to-top";
 
 interface PageLayoutProps {
@@ -15,12 +14,31 @@ interface PageLayoutProps {
 export const PageLayout = ({ children }: PageLayoutProps) => {
   const scrollY = useParallaxScroll();
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
 
   useEffect(() => {
     const cleanup = initScrollReveal();
     return cleanup;
+  }, []);
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        document.body.classList.add('keyboard-navigation');
+      }
+    };
+
+    const handleMouseDown = () => {
+      document.body.classList.remove('keyboard-navigation');
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousedown', handleMouseDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousedown', handleMouseDown);
+    };
   }, []);
 
   return (
@@ -36,9 +54,29 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
           '--scroll-progress': scrollYProgress,
         } as React.CSSProperties}
       >
-        <SkipToContent />
+        {/* Skip Links */}
+        <nav className="skip-links" aria-label="Skip navigation">
+          <a 
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
+                     focus:px-4 focus:py-2 focus:bg-red-accent focus:text-white focus:rounded-md
+                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-accent"
+          >
+            Skip to main content
+          </a>
+          <a 
+            href="#footer"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-44 focus:z-50
+                     focus:px-4 focus:py-2 focus:bg-red-accent focus:text-white focus:rounded-md
+                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-accent"
+          >
+            Skip to footer
+          </a>
+        </nav>
+
         <NavBar />
         <ScrollProgress />
+        
         <div 
           id="main-content" 
           className="scroll-snap-container pt-20"
@@ -47,7 +85,11 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         >
           {children}
         </div>
-        <Footerdemo />
+
+        <footer id="footer" role="contentinfo" tabIndex={-1}>
+          <Footerdemo />
+        </footer>
+
         <BackToTop />
       </motion.main>
     </AnimatePresence>

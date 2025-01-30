@@ -5,7 +5,7 @@
 @layer base {
   /* Improved focus styles */
   :focus-visible {
-    @apply outline-none ring-2 ring-red-soft ring-offset-2 ring-offset-black transition-shadow duration-200;
+    @apply outline-none ring-2 ring-red-accent ring-offset-2 ring-offset-black transition-shadow duration-200;
   }
 
   /* Better text contrast */
@@ -16,7 +16,12 @@
   /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
-    @apply selection:bg-red-soft selection:text-white;
+    @apply selection:bg-red-accent selection:text-white;
+  }
+
+  /* Keyboard navigation styles */
+  .keyboard-navigation :focus {
+    @apply outline-none ring-2 ring-red-accent ring-offset-2 ring-offset-black;
   }
 
   /* Improved typography */
@@ -32,15 +37,10 @@
     @apply text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight;
   }
 
-  /* Better button focus states */
-  button:focus-visible {
-    @apply ring-2 ring-red-soft ring-offset-2 ring-offset-black outline-none;
-  }
-
-  /* Skip to main content link */
-  .skip-to-content {
+  /* Skip links */
+  .skip-links a {
     @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
-           focus:px-4 focus:py-2 focus:bg-red-soft focus:text-white focus:rounded-md;
+           focus:px-4 focus:py-2 focus:bg-red-accent focus:text-white focus:rounded-md;
   }
 }
 
@@ -62,5 +62,26 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+
+    .animate-scroll {
+      animation: none !important;
+    }
+
+    .parallax-content {
+      transform: none !important;
+    }
   }
+}
+
+/* Animation performance classes */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.hardware-accelerated {
+  transform: translateZ(0);
 }

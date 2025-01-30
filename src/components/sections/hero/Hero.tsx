@@ -1,6 +1,6 @@
 import { Calendar, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { OptimizedImage } from "@/components/cloudinary";
 
 interface HeroProps {
@@ -10,6 +10,11 @@ interface HeroProps {
 }
 
 export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spclrx" }: HeroProps) => {
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.98]);
+  const y = useTransform(scrollYProgress, [0, 0.2], [0, 20]);
+
   const scrollToContent = () => {
     const contentSection = document.getElementById("event-highlights");
     if (contentSection) {
@@ -61,7 +66,10 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
         />
       </div>
       
-      <div className="container relative z-20 mx-auto px-4">
+      <motion.div 
+        className="container relative z-20 mx-auto px-4"
+        style={{ opacity, scale, y }}
+      >
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -123,23 +131,32 @@ export const Hero = ({ headline, subheading, backgroundImage = "hero-red-bg_spcl
             onClick={scrollToContent}
             className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer
                      flex flex-col items-center text-white-secondary hover:text-white
-                     transition-colors duration-300
+                     transition-colors duration-300 group
                      focus:outline-none focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 1 }}
             aria-label="Scroll to explore content"
           >
-            <span className="text-sm mb-2 font-inter">Scroll to explore</span>
+            <span className="text-sm mb-2 font-inter group-hover:text-red-accent transition-colors duration-300">
+              Scroll to explore
+            </span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="text-red-accent"
             >
               <ChevronDown className="h-6 w-6" />
             </motion.div>
           </motion.button>
         </motion.div>
-      </div>
+      </motion.div>
+
+      {/* Scroll Progress Indicator */}
+      <motion.div
+        className="fixed bottom-0 left-0 right-0 h-1 bg-red-accent origin-left z-50"
+        style={{ scaleX: scrollYProgress }}
+      />
     </section>
   );
 };
