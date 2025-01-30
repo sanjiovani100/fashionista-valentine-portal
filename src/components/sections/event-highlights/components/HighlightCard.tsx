@@ -8,14 +8,19 @@ import { CardSkeleton } from "@/components/ui/loading-skeleton/CardSkeleton";
 import type { EventContent } from "@/types/event.types";
 
 interface HighlightCardProps {
-  highlight: EventContent & { image: string };
+  highlight: EventContent & { 
+    image: string;
+    isLoading?: boolean;
+    error?: Error;
+  };
   index: number;
 }
 
 export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-  if (isLoading) {
+  if (isLoading && !hasError) {
     return <CardSkeleton />;
   }
 
@@ -33,7 +38,15 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
             aspectRatio="portrait"
             className="w-full h-full transition-transform duration-300 group-hover:scale-110"
             priority={index === 0}
-            onLoadingComplete={() => setIsLoading(false)}
+            onLoadingComplete={() => {
+              setIsLoading(false);
+              setHasError(false);
+            }}
+            onError={() => {
+              setHasError(true);
+              setIsLoading(false);
+              toast.error(`Failed to load image for ${highlight.title}`);
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
         </div>

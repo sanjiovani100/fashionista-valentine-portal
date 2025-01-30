@@ -5,10 +5,15 @@ import { useInView } from "react-intersection-observer";
 import { OptimizedImage } from "@/components/cloudinary";
 import type { FashionCollection } from "@/types/event.types";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import './styles.css';
 
 interface LingerieShowcaseProps {
-  collections: (FashionCollection & { image?: string })[];
+  collections: (FashionCollection & { 
+    image: string;
+    isLoading?: boolean;
+    error?: Error;
+  })[];
 }
 
 export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
@@ -105,20 +110,17 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
               >
                 <CardContent className="p-0">
                   <div className="relative aspect-[3/4] overflow-hidden">
-                    {collection.image ? (
-                      <OptimizedImage
-                        publicId={collection.image}
-                        alt={`${collection.collection_name} collection preview`}
-                        aspectRatio="portrait"
-                        className="showcase-image object-cover w-full h-full 
-                                 transition-transform duration-500 group-hover:scale-110"
-                        priority={index < 3}
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-                        <span className="text-gray-400">Image coming soon</span>
-                      </div>
-                    )}
+                    <OptimizedImage
+                      publicId={collection.image}
+                      alt={`${collection.collection_name} collection preview`}
+                      aspectRatio="portrait"
+                      className="showcase-image object-cover w-full h-full 
+                               transition-transform duration-500 group-hover:scale-110"
+                      priority={index < 3}
+                      onError={() => {
+                        toast.error(`Failed to load image for ${collection.collection_name}`);
+                      }}
+                    />
                     <div 
                       className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent
                                transition-opacity duration-500 group-hover:opacity-90"
