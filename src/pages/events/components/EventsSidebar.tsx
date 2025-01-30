@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { Calendar as CalendarIcon, Filter, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import type { EventSubtype } from '@/types/supabase/enums.types';
@@ -32,6 +33,8 @@ const EVENT_CATEGORIES: EventSubtype[] = [
   'after_party'
 ];
 
+const MAX_PRICE = 1000; // Maximum price for the slider
+
 export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFilterChange({ ...filters, search: e.target.value });
@@ -48,17 +51,55 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
     onFilterChange({ ...filters, categories: newCategories });
   };
 
+  const handlePriceRangeChange = (value: number[]) => {
+    onFilterChange({ ...filters, priceRange: [value[0], value[1]] as [number, number] });
+  };
+
+  const clearFilters = () => {
+    onFilterChange({
+      search: '',
+      dateRange: undefined,
+      priceRange: undefined,
+      categories: [],
+      location: ''
+    });
+  };
+
+  const hasActiveFilters = filters.search || 
+    filters.dateRange || 
+    filters.priceRange || 
+    filters.categories.length > 0 || 
+    filters.location;
+
   return (
     <Card className="p-6 space-y-6 bg-black/40 backdrop-blur-md border-white/10">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Filters</h2>
+        {hasActiveFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className="h-8 px-2 lg:px-3"
+          >
+            Clear
+            <X className="ml-2 h-4 w-4" />
+          </Button>
+        )}
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="search">Search Events</Label>
-        <Input
-          id="search"
-          placeholder="Search by name..."
-          value={filters.search}
-          onChange={handleSearchChange}
-          className="bg-white/5 border-white/10"
-        />
+        <div className="relative">
+          <Input
+            id="search"
+            placeholder="Search by name..."
+            value={filters.search}
+            onChange={handleSearchChange}
+            className="bg-white/5 border-white/10 pl-9"
+          />
+          <Filter className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+        </div>
       </div>
 
       <div className="space-y-2">
@@ -82,9 +123,28 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
               selected={filters.dateRange}
               onSelect={(date) => onFilterChange({ ...filters, dateRange: date || undefined })}
               initialFocus
+              disabled={(date) => date < new Date()}
             />
           </PopoverContent>
         </Popover>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Price Range</Label>
+        <div className="pt-2 px-2">
+          <Slider
+            defaultValue={[0, MAX_PRICE]}
+            max={MAX_PRICE}
+            step={10}
+            value={filters.priceRange || [0, MAX_PRICE]}
+            onValueChange={handlePriceRangeChange}
+            className="my-6"
+          />
+          <div className="flex justify-between text-sm text-muted-foreground">
+            <span>${filters.priceRange?.[0] || 0}</span>
+            <span>${filters.priceRange?.[1] || MAX_PRICE}</span>
+          </div>
+        </div>
       </div>
 
       <div className="space-y-2">
@@ -100,15 +160,15 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
 
       <div className="space-y-2">
         <Label>Categories</Label>
-        <div className="space-y-2">
+        <div className="grid grid-cols-1 gap-2">
           {EVENT_CATEGORIES.map((category) => (
             <Button
               key={category}
               variant={filters.categories.includes(category) ? "default" : "outline"}
-              className="w-full justify-start"
+              className="w-full justify-start capitalize"
               onClick={() => handleCategoryToggle(category)}
             >
-              {category.replace('_', ' ').toUpperCase()}
+              {category.replace('_', ' ')}
             </Button>
           ))}
         </div>
