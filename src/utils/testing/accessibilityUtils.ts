@@ -1,8 +1,8 @@
-import { axe } from 'axe-core';
+import { default as axeCore } from 'axe-core';
 
 export const checkAccessibility = async (element: HTMLElement) => {
   try {
-    const results = await axe.run(element);
+    const results = await axeCore.run(element);
     
     if (results.violations.length > 0) {
       console.warn('[Accessibility Issues]:', results.violations);

@@ -21,10 +21,12 @@ export const monitorLayoutShifts = () => {
   }
 
   const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries() as PerformanceEntry[]) {
+    for (const entry of list.getEntries()) {
       if (entry.entryType === 'layout-shift') {
+        // Cast to LayoutShift type which includes the value property
+        const layoutShift = entry as any;
         console.info('[Layout Shift]:', {
-          value: entry.value,
+          value: layoutShift.value || 0,
           timestamp: entry.startTime,
         });
       }

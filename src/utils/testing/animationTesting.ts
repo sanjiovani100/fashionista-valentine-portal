@@ -30,8 +30,13 @@ export const verifyReducedMotion = () => {
   
   if (prefersReducedMotion) {
     console.info('[Accessibility] Reduced motion is preferred');
-    // Verify that animations are disabled or simplified
-    document.querySelectorAll('.animate-*').forEach(element => {
+    // Find elements with animation classes using a more specific approach
+    const animatedElements = Array.from(document.getElementsByTagName('*')).filter(el => {
+      const classList = Array.from(el.classList);
+      return classList.some(className => className.startsWith('animate-'));
+    });
+    
+    animatedElements.forEach(element => {
       const computedStyle = window.getComputedStyle(element);
       if (computedStyle.animation !== 'none') {
         console.warn('[Accessibility] Animation found despite reduced motion preference:', element);
