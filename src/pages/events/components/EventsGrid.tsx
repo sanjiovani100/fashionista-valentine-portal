@@ -5,17 +5,19 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, Loader2 } from 'lucide-react';
-import type { FashionEvent } from '@/types/database';
+import type { EventSubtype } from '@/types/supabase/enums.types';
+
+interface EventFilters {
+  search: string;
+  dateRange?: Date;
+  priceRange?: [number, number];
+  categories: EventSubtype[];
+  location: string;
+}
 
 interface EventsGridProps {
   viewMode: 'grid' | 'list';
-  filters: {
-    search?: string;
-    dateRange?: Date;
-    priceRange?: [number, number];
-    categories?: string[];
-    location?: string;
-  };
+  filters: EventFilters;
   sortBy: 'date' | 'price-asc' | 'price-desc';
 }
 
@@ -39,8 +41,16 @@ export const EventsGrid = ({ viewMode, filters, sortBy }: EventsGridProps) => {
             category
           ),
           event_content (
+            id,
+            event_id,
             content_type,
-            content
+            title,
+            content,
+            media_urls,
+            publish_date,
+            engagement_metrics,
+            created_at,
+            updated_at
           )
         `);
 

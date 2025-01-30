@@ -2,19 +2,28 @@ import React, { useState } from 'react';
 import { EventsSidebar } from './EventsSidebar';
 import { EventsGrid } from './EventsGrid';
 import { EventsHeader } from './EventsHeader';
+import type { EventSubtype } from '@/types/supabase/enums.types';
+
+interface EventFilters {
+  search: string;
+  dateRange?: Date;
+  priceRange?: [number, number];
+  categories: EventSubtype[];
+  location: string;
+}
 
 export const EventsContent = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<EventFilters>({
     search: '',
-    dateRange: undefined as Date | undefined,
-    priceRange: undefined as [number, number] | undefined,
-    categories: [] as string[],
+    dateRange: undefined,
+    priceRange: undefined,
+    categories: [],
     location: ''
   });
   const [sortBy, setSortBy] = useState<'date' | 'price-asc' | 'price-desc'>('date');
 
-  const handleFilterChange = (newFilters: typeof filters) => {
+  const handleFilterChange = (newFilters: EventFilters) => {
     setFilters(newFilters);
   };
 
