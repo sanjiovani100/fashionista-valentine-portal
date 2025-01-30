@@ -507,6 +507,51 @@ export type Database = {
         }
         Relationships: []
       }
+      fashion_images_backup_20240229: {
+        Row: {
+          alt_text: string | null
+          category: Database["public"]["Enums"]["image_category"] | null
+          created_at: string | null
+          credits: string | null
+          dimensions: Json | null
+          event_id: string | null
+          formats: Json | null
+          id: string | null
+          metadata: Json | null
+          thumbnail_url: string | null
+          updated_at: string | null
+          url: string | null
+        }
+        Insert: {
+          alt_text?: string | null
+          category?: Database["public"]["Enums"]["image_category"] | null
+          created_at?: string | null
+          credits?: string | null
+          dimensions?: Json | null
+          event_id?: string | null
+          formats?: Json | null
+          id?: string | null
+          metadata?: Json | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Update: {
+          alt_text?: string | null
+          category?: Database["public"]["Enums"]["image_category"] | null
+          created_at?: string | null
+          credits?: string | null
+          dimensions?: Json | null
+          event_id?: string | null
+          formats?: Json | null
+          id?: string | null
+          metadata?: Json | null
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       fashion_images_backup_verify: {
         Row: {
           alt_text: string | null
@@ -542,6 +587,27 @@ export type Database = {
           metadata?: Json | null
           thumbnail_url?: string | null
           updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
+      fashion_images_review: {
+        Row: {
+          cloudinary_id: string | null
+          id: string | null
+          metadata: Json | null
+          url: string | null
+        }
+        Insert: {
+          cloudinary_id?: string | null
+          id?: string | null
+          metadata?: Json | null
+          url?: string | null
+        }
+        Update: {
+          cloudinary_id?: string | null
+          id?: string | null
+          metadata?: Json | null
           url?: string | null
         }
         Relationships: []
