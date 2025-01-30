@@ -31,6 +31,13 @@ export const EventsContent = () => {
     setSortBy(newSort);
   };
 
+  // Calculate the number of active filters
+  const activeFilters = Object.values(filters).reduce((count, value) => {
+    if (Array.isArray(value)) return count + (value.length > 0 ? 1 : 0);
+    if (value instanceof Date) return count + 1;
+    return count + (value ? 1 : 0);
+  }, 0);
+
   return (
     <section className="bg-background py-12">
       <div className="container">
@@ -50,11 +57,7 @@ export const EventsContent = () => {
               onViewModeChange={setViewMode}
               sortBy={sortBy}
               onSortChange={handleSortChange}
-              activeFilters={Object.values(filters).filter(value => {
-                if (Array.isArray(value)) return value.length > 0;
-                if (value instanceof Date) return true;
-                return !!value;
-              }).length}
+              activeFilters={activeFilters}
               onClearFilters={() => setFilters({
                 search: '',
                 dateRange: undefined,
