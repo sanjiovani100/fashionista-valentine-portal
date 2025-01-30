@@ -1,10 +1,11 @@
 import React from 'react';
-import { format } from 'date-fns';
+import { motion } from 'framer-motion';
 import { OptimizedImage } from '@/components/cloudinary';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, MapPin } from 'lucide-react';
 import type { FashionEvent } from '@/types/database';
-import { motion } from 'framer-motion';
+import { format } from 'date-fns';
 
 interface EventCardProps {
   event: FashionEvent;
@@ -27,8 +28,8 @@ export const EventCard = ({ event, viewMode }: EventCardProps) => {
       <div className={viewMode === 'list' ? 'w-1/3' : 'w-full'}>
         {heroImage ? (
           <OptimizedImage
-            publicId={heroImage.url} // Now using the Cloudinary ID directly
-            alt={heroImage.alt_text || event.title}
+            publicId={heroImage.url}
+            alt={heroImage.alt_text}
             width={400}
             height={300}
             className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"

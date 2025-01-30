@@ -3,6 +3,7 @@ import { Cloudinary } from '@cloudinary/url-gen';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import { ImageErrorBoundary } from './ImageErrorBoundary';
+import { CloudinaryImageError } from './CloudinaryImageError';
 import { cloudinaryConfig } from '../config';
 import type { CloudinaryImageProps } from '../types/cloudinary.types';
 
@@ -31,18 +32,27 @@ export const OptimizedImage = ({
   priority = false,
   onLoadingComplete
 }: CloudinaryImageProps) => {
+  // Extract Cloudinary ID if a full URL is provided
+  const cloudinaryId = publicId.includes('cloudinary.com') 
+    ? publicId.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/)?.[1] || publicId
+    : publicId.includes('supabase.co') 
+      ? publicId.split('/').pop()?.split('?')[0] || publicId
+      : publicId;
+
+  console.log('Cloudinary successfully configured with cloud name:', cloudinaryConfig.cloud.cloudName);
+  console.log('Using Cloudinary ID:', cloudinaryId);
+
   const { width, height } = propWidth && propHeight 
     ? { width: propWidth, height: propHeight }
     : getAspectRatioDimensions(aspectRatio);
 
   const cld = new Cloudinary(cloudinaryConfig);
 
-  // Use the publicId directly since we're now storing Cloudinary IDs
-  const myImage = cld.image(publicId)
+  const myImage = cld.image(cloudinaryId)
     .resize(fill().width(width).height(height));
 
   return (
-    <ImageErrorBoundary fallback={<div className="bg-gray-200 animate-pulse" style={{ width, height }} />}>
+    <ImageErrorBoundary fallback={<CloudinaryImageError />}>
       <AdvancedImage
         cldImg={myImage}
         plugins={[lazyload(), placeholder()]}
