@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Hero } from "@/components/sections/hero/Hero";
@@ -14,9 +14,11 @@ import { ErrorState } from "./components/ErrorState";
 import { useEventData } from "./hooks/useEventData";
 import { transformEventData } from "./utils/transformEventData";
 import { toast } from "sonner";
+import { runVisualTests } from "@/utils/testing/visualTesting";
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useEventData();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Monitor form submissions and navigation
@@ -43,6 +45,11 @@ const Index = () => {
 
     window.addEventListener('popstate', handleNavigation);
 
+    // Run visual tests in development
+    if (process.env.NODE_ENV === 'development' && containerRef.current) {
+      runVisualTests(containerRef.current);
+    }
+
     return () => {
       forms.forEach(form => {
         form.removeEventListener('submit', handleFormSubmit as EventListener);
@@ -66,6 +73,7 @@ const Index = () => {
     <PageLayout>
       <AnimatePresence mode="wait">
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
