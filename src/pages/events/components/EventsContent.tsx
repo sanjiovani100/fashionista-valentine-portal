@@ -5,7 +5,22 @@ import { EventsHeader } from './EventsHeader';
 
 export const EventsContent = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [filters, setFilters] = useState({
+    search: '',
+    dateRange: undefined as Date | undefined,
+    priceRange: undefined as [number, number] | undefined,
+    categories: [] as string[],
+    location: ''
+  });
+  const [sortBy, setSortBy] = useState<'date' | 'price-asc' | 'price-desc'>('date');
+
+  const handleFilterChange = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+  };
+
+  const handleSortChange = (newSort: typeof sortBy) => {
+    setSortBy(newSort);
+  };
 
   return (
     <section className="bg-background py-12">
@@ -14,8 +29,8 @@ export const EventsContent = () => {
           {/* Sidebar */}
           <div className="w-full lg:w-1/4">
             <EventsSidebar 
-              activeFilters={activeFilters}
-              onFilterChange={setActiveFilters}
+              filters={filters}
+              onFilterChange={handleFilterChange}
             />
           </div>
           
@@ -24,10 +39,26 @@ export const EventsContent = () => {
             <EventsHeader 
               viewMode={viewMode}
               onViewModeChange={setViewMode}
-              activeFilters={activeFilters}
-              onClearFilters={() => setActiveFilters([])}
+              sortBy={sortBy}
+              onSortChange={handleSortChange}
+              activeFilters={Object.entries(filters).filter(([_, value]) => {
+                if (Array.isArray(value)) return value.length > 0;
+                if (value instanceof Date) return true;
+                return !!value;
+              }).length}
+              onClearFilters={() => setFilters({
+                search: '',
+                dateRange: undefined,
+                priceRange: undefined,
+                categories: [],
+                location: ''
+              })}
             />
-            <EventsGrid viewMode={viewMode} />
+            <EventsGrid 
+              viewMode={viewMode} 
+              filters={filters}
+              sortBy={sortBy}
+            />
           </div>
         </div>
       </div>
