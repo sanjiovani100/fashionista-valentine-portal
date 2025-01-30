@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { cloudinaryService } from '@/lib/cloudinary/cloudinaryService';
-import { ImageErrorBoundary } from './ImageErrorBoundary';
-import { CloudinaryImageError } from './CloudinaryImageError';
-import type { CloudinaryImageProps } from '../types/cloudinary.types';
+import { ImageErrorBoundary } from './components/ImageErrorBoundary';
+import { CloudinaryImageError } from './components/CloudinaryImageError';
+import type { CloudinaryImageProps } from './types/cloudinary.types';
 
 export const OptimizedImage = ({
   publicId,
