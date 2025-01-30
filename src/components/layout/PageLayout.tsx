@@ -6,6 +6,7 @@ import { initScrollReveal } from "@/utils/scrollReveal";
 import { useParallaxScroll } from "@/hooks/useParallaxScroll";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { BackToTop } from "@/components/ui/back-to-top";
+import { useReducedMotion } from "framer-motion";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ interface PageLayoutProps {
 export const PageLayout = ({ children }: PageLayoutProps) => {
   const scrollY = useParallaxScroll();
   const { scrollYProgress } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const cleanup = initScrollReveal();
@@ -41,26 +43,37 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
     };
   }, []);
 
+  const mainVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { 
+      duration: prefersReducedMotion ? 0 : 0.5,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  };
+
   return (
     <AnimatePresence mode="wait">
       <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
+        {...mainVariants}
         className="min-h-screen bg-black text-white relative"
         style={{
           '--scroll-y': `${scrollY}px`,
           '--scroll-progress': scrollYProgress,
         } as React.CSSProperties}
       >
-        {/* Skip Links */}
-        <nav className="skip-links" aria-label="Skip navigation">
+        {/* Skip Links with enhanced contrast and focus styles */}
+        <nav 
+          className="skip-links" 
+          aria-label="Skip navigation"
+        >
           <a 
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
                      focus:px-4 focus:py-2 focus:bg-red-accent focus:text-white focus:rounded-md
-                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-accent"
+                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-accent
+                     transition-transform duration-200"
           >
             Skip to main content
           </a>
@@ -68,7 +81,8 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
             href="#footer"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-44 focus:z-50
                      focus:px-4 focus:py-2 focus:bg-red-accent focus:text-white focus:rounded-md
-                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-accent"
+                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-accent
+                     transition-transform duration-200"
           >
             Skip to footer
           </a>
@@ -86,7 +100,12 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
           {children}
         </div>
 
-        <footer id="footer" role="contentinfo" tabIndex={-1}>
+        <footer 
+          id="footer" 
+          role="contentinfo" 
+          tabIndex={-1}
+          className="bg-black relative z-10"
+        >
           <Footerdemo />
         </footer>
 

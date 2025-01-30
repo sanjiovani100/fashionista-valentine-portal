@@ -3,55 +3,48 @@
 @tailwind utilities;
 
 @layer base {
-  /* Improved focus styles */
-  :focus-visible {
-    @apply outline-none ring-2 ring-red-accent ring-offset-2 ring-offset-black transition-shadow duration-200;
-  }
-
-  /* Better text contrast */
-  .text-shadow-lg {
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  }
-
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
-    @apply selection:bg-red-accent selection:text-white;
-  }
-
-  /* Keyboard navigation styles */
-  .keyboard-navigation :focus {
-    @apply outline-none ring-2 ring-red-accent ring-offset-2 ring-offset-black;
-  }
-
-  /* Improved typography */
-  h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
-  }
-
-  h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
-  }
-
-  h3 {
-    @apply text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight;
-  }
-
-  /* Skip links */
-  .skip-links a {
-    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
-           focus:px-4 focus:py-2 focus:bg-red-accent focus:text-white focus:rounded-md;
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 100% 27%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 0 73% 41%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 100% / 0.1;
+    --ring: 346 77% 49%;
+    --radius: 0.75rem;
   }
 }
 
-/* Performance optimizations */
-@layer utilities {
-  .optimize-gpu {
-    @apply will-change-transform transform-gpu;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  .optimize-opacity {
-    @apply will-change-opacity;
+  /* Improved focus styles for better accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Enhanced keyboard navigation styles */
+  .keyboard-navigation :focus {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
   /* Reduced motion preferences */
@@ -62,26 +55,60 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
 
-    .animate-scroll {
-      animation: none !important;
-    }
+  /* Typography scale with improved readability */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-montserrat tracking-tight;
+  }
 
-    .parallax-content {
-      transform: none !important;
-    }
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-semibold;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-semibold;
+  }
+
+  p {
+    @apply text-base md:text-lg leading-relaxed;
   }
 }
 
-/* Animation performance classes */
-.will-change-transform {
-  will-change: transform;
+/* Enhanced loading states */
+.loading-skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
 }
 
-.will-change-opacity {
-  will-change: opacity;
+/* Improved scroll behavior */
+.smooth-scroll {
+  scroll-behavior: smooth;
 }
 
-.hardware-accelerated {
-  transform: translateZ(0);
+/* Better responsive images */
+.responsive-image {
+  @apply w-full h-auto object-cover;
+}
+
+/* Enhanced animation performance */
+.will-change {
+  will-change: transform, opacity;
+}
+
+/* Improved contrast for text on dark backgrounds */
+.text-on-dark {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 640px) {
+  button, 
+  [role="button"],
+  .clickable {
+    @apply min-h-[44px] min-w-[44px];
+  }
 }
