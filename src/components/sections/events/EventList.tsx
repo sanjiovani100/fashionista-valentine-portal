@@ -7,6 +7,7 @@ import { Loader2, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import type { FashionEvent } from '@/types/database';
 import { toast } from 'sonner';
+import { CardSkeleton } from '@/components/ui/loading-skeleton/CardSkeleton';
 
 const listVariants = {
   hidden: { opacity: 0 },
@@ -32,15 +33,29 @@ const cardVariants = {
   }
 };
 
-export const EventList = () => {
+interface EventFilters {
+  search: string;
+  dateRange?: Date;
+  priceRange?: [number, number];
+  categories: string[];
+  location: string;
+}
+
+interface EventListProps {
+  filters: EventFilters;
+  sortBy: 'date' | 'price-asc' | 'price-desc';
+  viewMode: 'grid' | 'list';
+}
+
+export const EventList = ({ filters, sortBy, viewMode }: EventListProps) => {
   const prefersReducedMotion = useReducedMotion();
   
   const { data: events, isLoading, error } = useQuery({
-    queryKey: ['events'],
+    queryKey: ['events', filters, sortBy],
     queryFn: async () => {
       try {
-        console.log('Fetching events data...');
-        const { data, error } = await supabase
+        console.log('Fetching events with filters:', filters);
+        let query = supabase
           .from('fashion_events')
           .select(`
             *,
@@ -48,37 +63,87 @@ export const EventList = () => {
             fashion_collections (*),
             fashion_images (*),
             event_tickets (*)
-          `)
-          .order('start_time', { ascending: true });
+          `);
 
+        // Apply filters
+        if (filters.search) {
+          query = query.or(`title.ilike.%${filters.search}%,description.ilike.%${filters.search}%`);
+        }
+
+        if (filters.dateRange) {
+          query = query.gte('start_time', filters.dateRange.toISOString());
+        }
+
+        if (filters.location) {
+          query = query.ilike('venue', `%${filters.location}%`);
+        }
+
+        if (filters.categories?.length) {
+          query = query.in('subtype', filters.categories);
+        }
+
+        // Apply sorting
+        switch (sortBy) {
+          case 'date':
+            query = query.order('start_time', { ascending: true });
+            break;
+          case 'price-asc':
+          case 'price-desc':
+            // We'll sort by price after fetching the data
+            query = query.order('start_time', { ascending: true });
+            break;
+        }
+
+        const { data, error } = await query;
+        
         if (error) {
           console.error('Error fetching events:', error);
           toast.error('Failed to load events. Please try again.');
           throw error;
         }
+
+        // Apply price range filter and sorting
+        let filteredData = data as FashionEvent[];
         
-        if (!data || data.length === 0) {
-          console.info('No events found');
-        } else {
-          console.info(`Found ${data.length} events`);
+        if (filters.priceRange) {
+          const [minPrice, maxPrice] = filters.priceRange;
+          filteredData = filteredData.filter(event => {
+            const eventMinPrice = Math.min(...(event.event_tickets?.map(t => t.price) || [0]));
+            return eventMinPrice >= minPrice && eventMinPrice <= maxPrice;
+          });
         }
-        
-        return data as FashionEvent[];
+
+        // Sort by price if needed
+        if (sortBy.includes('price')) {
+          filteredData.sort((a, b) => {
+            const aMinPrice = Math.min(...(a.event_tickets?.map(t => t.price) || [0]));
+            const bMinPrice = Math.min(...(b.event_tickets?.map(t => t.price) || [0]));
+            return sortBy === 'price-asc' ? aMinPrice - bMinPrice : bMinPrice - aMinPrice;
+          });
+        }
+
+        console.log(`Found ${filteredData.length} events after filtering`);
+        return filteredData;
       } catch (err) {
         console.error('Unexpected error:', err);
         toast.error('An unexpected error occurred. Please try again later.');
         throw err;
       }
     },
-    retry: 2,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     refetchOnWindowFocus: false
   });
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-white/60" />
+      <div className={`grid gap-6 ${
+        viewMode === 'grid' 
+          ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
+          : 'grid-cols-1'
+      }`}>
+        {[...Array(6)].map((_, i) => (
+          <CardSkeleton key={i} />
+        ))}
       </div>
     );
   }
@@ -109,13 +174,24 @@ export const EventList = () => {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       variants={listVariants}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      className={`grid gap-6 ${
+        viewMode === 'grid' 
+          ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
+          : 'grid-cols-1'
+      }`}
     >
       {events.map((event) => (
-        <motion.div key={event.id} variants={cardVariants}>
+        <motion.div 
+          key={event.id} 
+          variants={cardVariants}
+          className="h-full"
+        >
           <EventCard 
             event={event}
-            onRegister={() => console.log('Register for event:', event.id)}
+            onRegister={() => {
+              console.log('Register for event:', event.id);
+              toast.success(`Registration initiated for ${event.title}`);
+            }}
           />
         </motion.div>
       ))}
