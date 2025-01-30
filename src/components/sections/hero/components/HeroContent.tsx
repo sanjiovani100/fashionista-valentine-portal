@@ -40,6 +40,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
     >
       <motion.h1 
         variants={itemVariants}
+        id="hero-title"
         className="font-montserrat text-4xl sm:text-5xl md:text-hero font-bold text-shadow-xl"
       >
         {headline.split(" ").map((word, index) => (
