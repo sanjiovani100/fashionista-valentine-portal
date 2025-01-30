@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 
-interface ImageErrorBoundaryProps {
-  children: React.ReactNode;
+interface Props {
+  children: ReactNode;
+  fallback: ReactNode;
 }
 
-export const ImageErrorBoundary = ({ children }: ImageErrorBoundaryProps) => {
-  const [hasError, setHasError] = useState(false);
+interface State {
+  hasError: boolean;
+}
 
-  useEffect(() => {
-    const handleError = () => setHasError(true);
-    window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
-  }, []);
+export class ImageErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false
+  };
 
-  if (hasError) {
-    return (
-      <Alert 
-        variant="destructive" 
-        className="relative aspect-video bg-gray-100"
-      >
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          Image failed to load
-        </AlertDescription>
-      </Alert>
-    );
+  public static getDerivedStateFromError(_: Error): State {
+    return { hasError: true };
   }
 
-  return <>{children}</>;
-};
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Image Error:', error, errorInfo);
+  }
+
+  public render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
