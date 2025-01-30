@@ -1,9 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Users, Clock, Ticket } from 'lucide-react';
+import { Calendar, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import type { FashionEvent } from '@/types/database';
 import { format } from 'date-fns';
 
@@ -14,10 +13,7 @@ interface EventCardProps {
 }
 
 export const EventCard = ({ event, onRegister, viewMode = 'grid' }: EventCardProps) => {
-  // Calculate event status and price range
   const isUpcoming = new Date(event.start_time) > new Date();
-  const minPrice = Math.min(...(event.event_tickets?.map(t => t.price) || [0]));
-  const maxPrice = Math.max(...(event.event_tickets?.map(t => t.price) || [0]));
   const totalAvailableTickets = event.event_tickets?.reduce((sum, ticket) => sum + ticket.quantity_available, 0) || 0;
   const isSoldOut = totalAvailableTickets === 0;
 
@@ -32,22 +28,6 @@ export const EventCard = ({ event, onRegister, viewMode = 'grid' }: EventCardPro
     >
       <Card className="group h-full overflow-hidden bg-black/40 backdrop-blur-md border-white/10 hover:border-white/20 transition-all duration-300">
         <CardHeader className="space-y-2">
-          <div className="flex justify-between items-start">
-            <Badge 
-              variant={isUpcoming ? "default" : "secondary"}
-              className="bg-pink-magenta/80"
-            >
-              {isUpcoming ? 'Upcoming' : 'Past Event'}
-            </Badge>
-            {isSoldOut ? (
-              <Badge variant="destructive">Sold Out</Badge>
-            ) : (
-              <span className="text-lg font-semibold bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">
-                ${minPrice.toLocaleString()} - ${maxPrice.toLocaleString()}
-              </span>
-            )}
-          </div>
-          
           <CardTitle className="text-2xl font-playfair bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">
             {event.title}
           </CardTitle>
@@ -70,16 +50,6 @@ export const EventCard = ({ event, onRegister, viewMode = 'grid' }: EventCardPro
             <div className="flex items-center space-x-2 group-hover:text-white/80 transition-colors">
               <MapPin className="w-4 h-4 text-pink-magenta" />
               <span>{event.venue}</span>
-            </div>
-            
-            <div className="flex items-center space-x-2 group-hover:text-white/80 transition-colors">
-              <Users className="w-4 h-4 text-pink-magenta" />
-              <span>Capacity: {event.capacity}</span>
-            </div>
-
-            <div className="flex items-center space-x-2 group-hover:text-white/80 transition-colors">
-              <Ticket className="w-4 h-4 text-pink-magenta" />
-              <span>{totalAvailableTickets} tickets available</span>
             </div>
           </div>
 
