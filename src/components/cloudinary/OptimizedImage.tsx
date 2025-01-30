@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { cloudinaryService } from '@/lib/cloudinary/cloudinaryService';
 import { ImageErrorBoundary } from './components/ImageErrorBoundary';
 import { CloudinaryImageError } from './components/CloudinaryImageError';
+import { cloudinaryConfig } from './config';
 import type { CloudinaryImageProps } from './types/cloudinary.types';
 
 export const OptimizedImage = ({
@@ -21,18 +22,33 @@ export const OptimizedImage = ({
 
   useEffect(() => {
     try {
-      console.log('Setting up image with publicId:', publicId);
+      console.log('[Cloudinary] Setting up image with publicId:', publicId);
       
-      if (!cloudinaryService.validateUrl(publicId)) {
-        throw new Error('Invalid image URL');
+      // Handle empty or invalid publicId
+      if (!publicId) {
+        console.warn('[Cloudinary] No publicId provided, using fallback');
+        setImageUrl(cloudinaryConfig.defaults.placeholder);
+        return;
       }
 
+      // If it's already a full URL, validate and use it directly
+      if (publicId.startsWith('http')) {
+        if (cloudinaryService.validateUrl(publicId)) {
+          setImageUrl(publicId);
+        } else {
+          setImageUrl(cloudinaryConfig.defaults.placeholder);
+        }
+        return;
+      }
+
+      // Generate Cloudinary URL
       const url = cloudinaryService.getImageUrl(publicId, {
         width,
         height,
         aspectRatio
       });
 
+      console.log('[Cloudinary] Generated URL:', url);
       setImageUrl(url);
 
       if (priority) {
@@ -40,10 +56,18 @@ export const OptimizedImage = ({
         img.src = url;
       }
     } catch (err) {
-      console.error('Error setting up image:', err);
+      console.error('[Cloudinary] Error setting up image:', err);
       setError(err as Error);
+      setImageUrl(cloudinaryConfig.defaults.placeholder);
     }
   }, [publicId, width, height, aspectRatio, priority]);
+
+  const handleImageError = () => {
+    console.error('[Cloudinary] Image load error for:', publicId);
+    setError(new Error('Failed to load image'));
+    setImageUrl(cloudinaryConfig.defaults.placeholder);
+    setIsLoading(false);
+  };
 
   if (error) {
     return <CloudinaryImageError />;
@@ -67,10 +91,7 @@ export const OptimizedImage = ({
             setIsLoading(false);
             onLoadingComplete?.();
           }}
-          onError={(e) => {
-            console.error('Image load error:', e);
-            setError(new Error('Failed to load image'));
-          }}
+          onError={handleImageError}
         />
       </div>
     </ImageErrorBoundary>

@@ -1,6 +1,7 @@
 import { Cloudinary } from '@cloudinary/url-gen';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import { format, quality } from '@cloudinary/url-gen/actions/delivery';
+import { cloudinaryConfig } from '@/components/cloudinary/config';
 
 interface CloudinaryConfig {
   cloudName: string;
@@ -28,33 +29,48 @@ class CloudinaryService {
   }
 
   private standardizePublicId(publicId: string): string {
-    // Remove file extensions
-    let cleanId = publicId.replace(/\.[^/.]+$/, '');
+    try {
+      // Remove file extensions
+      let cleanId = publicId.replace(/\.[^/.]+$/, '');
 
-    // Handle full Cloudinary URLs
-    if (publicId.includes('cloudinary.com')) {
-      const match = publicId.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
-      if (match) cleanId = match[1];
+      // Handle full Cloudinary URLs
+      if (publicId.includes('cloudinary.com')) {
+        const match = publicId.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+        if (match) cleanId = match[1];
+      }
+
+      // Handle Supabase URLs
+      if (publicId.includes('supabase.co')) {
+        cleanId = publicId.split('/').pop()?.split('?')[0] || publicId;
+      }
+
+      // Add default folder if not present and not already in a folder
+      if (!cleanId.includes('/')) {
+        cleanId = `${this.defaultFolder}/${cleanId}`;
+      }
+
+      console.log('[Cloudinary] Standardized ID:', { original: publicId, cleaned: cleanId });
+      return cleanId;
+    } catch (error) {
+      console.error('[Cloudinary] Error standardizing public ID:', error);
+      return publicId;
     }
-
-    // Handle Supabase URLs
-    if (publicId.includes('supabase.co')) {
-      cleanId = publicId.split('/').pop()?.split('?')[0] || publicId;
-    }
-
-    // Add default folder if not present and not already in a folder
-    if (!cleanId.includes('/')) {
-      cleanId = `${this.defaultFolder}/${cleanId}`;
-    }
-
-    console.log('Standardized ID:', cleanId);
-    return cleanId;
   }
 
   public getImageUrl(publicId: string, options: ImageOptions = {}): string {
     try {
+      if (!publicId) {
+        console.warn('[Cloudinary] Empty publicId provided');
+        return cloudinaryConfig.defaults.placeholder;
+      }
+
+      // If it's already a full URL and not a Cloudinary URL, return it
+      if (publicId.startsWith('http') && !publicId.includes('cloudinary.com')) {
+        return publicId;
+      }
+
       const standardizedId = this.standardizePublicId(publicId);
-      console.log('Processing Cloudinary image:', { publicId, standardizedId });
+      console.log('[Cloudinary] Processing image:', { publicId, standardizedId });
 
       let transformation = this.cld.image(standardizedId)
         .format('auto')
@@ -69,25 +85,38 @@ class CloudinaryService {
       }
 
       const url = transformation.toURL();
-      console.log('Generated Cloudinary URL:', url);
+      console.log('[Cloudinary] Generated URL:', url);
       return url;
     } catch (error) {
-      console.error('Error generating Cloudinary URL:', error);
-      return '/placeholder.svg';
+      console.error('[Cloudinary] Error generating URL:', error);
+      return cloudinaryConfig.defaults.placeholder;
     }
   }
 
   public validateUrl(url: string): boolean {
     try {
-      const standardizedId = this.standardizePublicId(url);
-      return standardizedId.length > 0 && !standardizedId.includes('undefined');
-    } catch {
+      if (!url) return false;
+      
+      // Allow Supabase URLs
+      if (url.includes('supabase.co')) return true;
+      
+      // Validate Cloudinary URLs
+      if (url.includes('cloudinary.com')) {
+        const validDomain = url.includes(cloudinaryConfig.cloud.cloudName);
+        const validFormat = url.includes('/image/upload/');
+        return validDomain && validFormat;
+      }
+
+      // For other URLs, just check if they're valid URLs
+      return url.startsWith('http');
+    } catch (error) {
+      console.error('[Cloudinary] URL validation error:', { url, error });
       return false;
     }
   }
 }
 
 export const cloudinaryService = new CloudinaryService({
-  cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dzqy2ixl0',
+  cloudName: cloudinaryConfig.cloud.cloudName,
   defaultFolder: 'fashion-events'
 });
