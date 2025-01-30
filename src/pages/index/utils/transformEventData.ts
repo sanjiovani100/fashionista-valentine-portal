@@ -72,10 +72,13 @@ export const transformEventData = (eventData: FashionEvent) => {
     })
     .slice(0, 3);
 
-  // Get hero image with proper fallback
+  // Get hero image with updated selection logic
   const heroImage = eventData.fashion_images?.find(img => 
-    img.category === 'event_hero'
+    img.category === 'promotional' && 
+    img.metadata?.page === 'home'
   )?.url || CLOUDINARY_CONFIG.defaultPlaceholder;
+
+  console.log("Selected hero image:", heroImage);
 
   return {
     highlights,
