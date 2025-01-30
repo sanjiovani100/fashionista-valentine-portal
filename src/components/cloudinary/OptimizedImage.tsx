@@ -19,51 +19,60 @@ export const OptimizedImage = ({
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [error, setError] = useState<Error | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const maxRetries = 2;
 
   useEffect(() => {
-    try {
-      console.log('[Cloudinary] Setting up image with publicId:', publicId);
-      
-      // Handle empty or invalid publicId
-      if (!publicId) {
-        console.warn('[Cloudinary] No publicId provided, using fallback');
-        setImageUrl(cloudinaryConfig.defaults.placeholder);
-        return;
-      }
-
-      // If it's already a full URL, validate and use it directly
-      if (publicId.startsWith('http')) {
-        if (cloudinaryService.validateUrl(publicId)) {
-          setImageUrl(publicId);
-        } else {
+    const loadImage = async () => {
+      try {
+        console.log('[Cloudinary] Setting up image with publicId:', publicId);
+        
+        if (!publicId) {
+          console.warn('[Cloudinary] No publicId provided, using fallback');
           setImageUrl(cloudinaryConfig.defaults.placeholder);
+          return;
         }
-        return;
+
+        // Generate Cloudinary URL with error handling
+        const url = await cloudinaryService.getImageUrl(publicId, {
+          width,
+          height,
+          aspectRatio
+        });
+
+        console.log('[Cloudinary] Generated URL:', url);
+        setImageUrl(url);
+        setError(null);
+
+        if (priority) {
+          const img = new Image();
+          img.src = url;
+        }
+      } catch (err) {
+        console.error('[Cloudinary] Error setting up image:', err);
+        
+        if (retryCount < maxRetries) {
+          console.log(`[Cloudinary] Retrying... Attempt ${retryCount + 1} of ${maxRetries}`);
+          setRetryCount(prev => prev + 1);
+          return;
+        }
+        
+        setError(err as Error);
+        setImageUrl(cloudinaryConfig.defaults.placeholder);
       }
+    };
 
-      // Generate Cloudinary URL
-      const url = cloudinaryService.getImageUrl(publicId, {
-        width,
-        height,
-        aspectRatio
-      });
-
-      console.log('[Cloudinary] Generated URL:', url);
-      setImageUrl(url);
-
-      if (priority) {
-        const img = new Image();
-        img.src = url;
-      }
-    } catch (err) {
-      console.error('[Cloudinary] Error setting up image:', err);
-      setError(err as Error);
-      setImageUrl(cloudinaryConfig.defaults.placeholder);
-    }
-  }, [publicId, width, height, aspectRatio, priority]);
+    loadImage();
+  }, [publicId, width, height, aspectRatio, priority, retryCount]);
 
   const handleImageError = () => {
     console.error('[Cloudinary] Image load error for:', publicId);
+    
+    if (retryCount < maxRetries) {
+      setRetryCount(prev => prev + 1);
+      return;
+    }
+    
     setError(new Error('Failed to load image'));
     setImageUrl(cloudinaryConfig.defaults.placeholder);
     setIsLoading(false);

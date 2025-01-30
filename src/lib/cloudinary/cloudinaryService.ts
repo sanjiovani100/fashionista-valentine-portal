@@ -18,6 +18,7 @@ interface ImageOptions {
 class CloudinaryService {
   private cld: Cloudinary;
   private defaultFolder: string;
+  private cache: Map<string, string>;
 
   constructor(config: CloudinaryConfig) {
     this.cld = new Cloudinary({
@@ -26,11 +27,12 @@ class CloudinaryService {
       }
     });
     this.defaultFolder = config.defaultFolder || 'fashion-events';
+    this.cache = new Map();
   }
 
   private standardizePublicId(publicId: string): string {
     try {
-      // Remove file extensions
+      // Remove file extensions and clean the ID
       let cleanId = publicId.replace(/\.[^/.]+$/, '');
 
       // Handle full Cloudinary URLs
@@ -44,7 +46,7 @@ class CloudinaryService {
         cleanId = publicId.split('/').pop()?.split('?')[0] || publicId;
       }
 
-      // Add default folder if not present and not already in a folder
+      // Add default folder if not present
       if (!cleanId.includes('/')) {
         cleanId = `${this.defaultFolder}/${cleanId}`;
       }
@@ -53,20 +55,30 @@ class CloudinaryService {
       return cleanId;
     } catch (error) {
       console.error('[Cloudinary] Error standardizing public ID:', error);
-      return publicId;
+      throw new Error(`Invalid public ID format: ${publicId}`);
     }
   }
 
-  public getImageUrl(publicId: string, options: ImageOptions = {}): string {
+  public async getImageUrl(publicId: string, options: ImageOptions = {}): Promise<string> {
     try {
       if (!publicId) {
-        console.warn('[Cloudinary] Empty publicId provided');
-        return cloudinaryConfig.defaults.placeholder;
+        throw new Error('Empty publicId provided');
       }
 
-      // If it's already a full URL and not a Cloudinary URL, return it
+      // Check cache first
+      const cacheKey = `${publicId}-${JSON.stringify(options)}`;
+      const cachedUrl = this.cache.get(cacheKey);
+      if (cachedUrl) {
+        return cachedUrl;
+      }
+
+      // If it's already a full URL and not a Cloudinary URL, validate and return
       if (publicId.startsWith('http') && !publicId.includes('cloudinary.com')) {
-        return publicId;
+        if (this.validateUrl(publicId)) {
+          this.cache.set(cacheKey, publicId);
+          return publicId;
+        }
+        throw new Error('Invalid URL format');
       }
 
       const standardizedId = this.standardizePublicId(publicId);
@@ -86,10 +98,13 @@ class CloudinaryService {
 
       const url = transformation.toURL();
       console.log('[Cloudinary] Generated URL:', url);
+      
+      // Cache the result
+      this.cache.set(cacheKey, url);
       return url;
     } catch (error) {
       console.error('[Cloudinary] Error generating URL:', error);
-      return cloudinaryConfig.defaults.placeholder;
+      throw error;
     }
   }
 
@@ -107,12 +122,16 @@ class CloudinaryService {
         return validDomain && validFormat;
       }
 
-      // For other URLs, just check if they're valid URLs
+      // For other URLs, check if they're valid URLs
       return url.startsWith('http');
     } catch (error) {
       console.error('[Cloudinary] URL validation error:', { url, error });
       return false;
     }
+  }
+
+  public clearCache(): void {
+    this.cache.clear();
   }
 }
 
