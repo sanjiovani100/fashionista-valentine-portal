@@ -12,9 +12,10 @@ export default {
         md: "2rem",
       },
       screens: {
-        sm: "100%",
-        md: "90%",
-        lg: "1200px",
+        sm: "640px",   /* Mobile */
+        md: "768px",   /* Tablet */
+        lg: "1024px",  /* Desktop */
+        xl: "1280px",  /* Large Desktop */
       },
     },
     extend: {
@@ -29,23 +30,23 @@ export default {
         foreground: "hsl(var(--foreground))",
         // Primary Colors - Maroon Scale
         maroon: {
-          DEFAULT: "#8B0000",
-          light: "#B22222",
-          dark: "#4A0404",
+          DEFAULT: "hsl(var(--maroon))",
+          light: "hsl(var(--maroon-light))",
+          dark: "hsl(var(--maroon-dark))",
         },
         // Accent Colors - Red Scale
         red: {
-          bright: "#FF1744",
-          primary: "#FF3366",
-          soft: "#FF6B81",
+          bright: "hsl(var(--red-bright))",
+          primary: "hsl(var(--red-primary))",
+          soft: "hsl(var(--red-soft))",
         },
         // Gray Scale
         gray: {
-          100: "#F1F1F1",
-          200: "#DDDDDD",
-          300: "#888888",
-          400: "#555555",
-          500: "#222222",
+          100: "hsl(var(--gray-100))",
+          200: "hsl(var(--gray-200))",
+          300: "hsl(var(--gray-300))",
+          400: "hsl(var(--gray-400))",
+          500: "hsl(var(--gray-500))",
         },
         // Base Colors
         black: {
@@ -63,55 +64,55 @@ export default {
         },
       },
       backgroundImage: {
-        "primary-gradient": "linear-gradient(135deg, var(--maroon) 0%, var(--maroon-dark) 100%)",
-        "accent-gradient": "linear-gradient(135deg, var(--red-primary) 0%, var(--red-bright) 100%)",
-        "dark-gradient": "linear-gradient(to bottom, var(--maroon-dark) 0%, var(--black) 100%)",
+        "primary-gradient": "linear-gradient(135deg, hsl(var(--maroon)) 0%, hsl(var(--maroon-dark)) 100%)",
+        "accent-gradient": "linear-gradient(135deg, hsl(var(--red-primary)) 0%, hsl(var(--red-bright)) 100%)",
+        "dark-gradient": "linear-gradient(to bottom, hsl(var(--maroon-dark)) 0%, var(--black) 100%)",
         "card-hover": "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
       },
-      opacity: {
-        '85': '0.85',
-        '95': '0.95',
-      },
-      ringWidth: {
-        '3': '3px',
-      },
-      ringOffsetWidth: {
-        '3': '3px',
+      transitionDuration: {
+        fast: "150ms",
+        normal: "300ms",
+        slow: "500ms",
       },
       animation: {
-        'gradient-x': 'gradient-x 15s ease infinite',
-        'gradient-y': 'gradient-y 15s ease infinite',
-        'gradient-xy': 'gradient-xy 15s ease infinite',
+        "stagger-fade-in": "fadeIn var(--duration-normal) var(--ease-out) forwards",
+        "gradient-x": "gradient-x 15s ease infinite",
+        "gradient-y": "gradient-y 15s ease infinite",
+        "gradient-xy": "gradient-xy 15s ease infinite",
       },
       keyframes: {
-        'gradient-y': {
-          '0%, 100%': {
-            'background-size': '400% 400%',
-            'background-position': 'center top'
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "gradient-y": {
+          "0%, 100%": {
+            "background-size": "400% 400%",
+            "background-position": "center top"
           },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'center center'
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "center center"
           }
         },
-        'gradient-x': {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center'
+        "gradient-x": {
+          "0%, 100%": {
+            "background-size": "200% 200%",
+            "background-position": "left center"
           },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center'
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center"
           }
         },
-        'gradient-xy': {
-          '0%, 100%': {
-            'background-size': '400% 400%',
-            'background-position': 'left center'
+        "gradient-xy": {
+          "0%, 100%": {
+            "background-size": "400% 400%",
+            "background-position": "left center"
           },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center'
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center"
           }
         }
       }

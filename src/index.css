@@ -46,7 +46,24 @@
     --input: var(--gray-200);
     --ring: var(--red-primary);
     
+    /* Animation Durations */
+    --duration-fast: 150ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Border Radius */
     --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 13%;
+    --card-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --primary: 348 100% 60%;
+    --primary-foreground: 0 0% 98%;
   }
 }
 
@@ -68,17 +85,17 @@
 @layer components {
   .btn-primary {
     @apply bg-red-primary text-white hover:bg-red-primary/90 
-           transition-all duration-300 ease-out transform hover:scale-105;
+           transition-all duration-normal ease-out transform hover:scale-105;
   }
 
   .btn-secondary {
     @apply bg-transparent border border-red-primary text-red-primary 
-           hover:bg-red-primary/10 transition-all duration-300 ease-out transform hover:scale-105;
+           hover:bg-red-primary/10 transition-all duration-normal ease-out transform hover:scale-105;
   }
 
   .card-base {
     @apply bg-gray-500 border border-white/10 text-white
-           transition-all duration-300 ease-out;
+           transition-all duration-normal ease-out;
   }
 
   .card-hover {
@@ -89,6 +106,17 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-accent-gradient;
   }
+
+  .stagger-item {
+    @apply opacity-0;
+    animation: fadeIn var(--duration-normal) var(--ease-out) forwards;
+  }
+
+  .stagger-item:nth-child(1) { animation-delay: 100ms; }
+  .stagger-item:nth-child(2) { animation-delay: 200ms; }
+  .stagger-item:nth-child(3) { animation-delay: 300ms; }
+  .stagger-item:nth-child(4) { animation-delay: 400ms; }
+  .stagger-item:nth-child(5) { animation-delay: 500ms; }
 }
 
 @layer utilities {
@@ -98,5 +126,20 @@
 
   .drop-shadow-glow {
     filter: drop-shadow(0 0 20px rgba(255,51,102,0.3));
+  }
+
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
