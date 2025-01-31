@@ -18,25 +18,39 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
 
   // Get card title based on index
   const getCardTitle = (index: number) => {
-    switch (index) {
-      case 0:
-        return "Fashion Show";
-      case 1:
-        return "Valentine's Party";
-      case 2:
-        return "VIP Experience";
-      default:
-        return `Event ${index + 1}`;
-    }
+    const titles = [
+      "Fashion Show",
+      "Valentine's Party",
+      "VIP Experience"
+    ];
+    return titles[index] || `Event ${index + 1}`;
   };
 
-  // Remove "highlight" word and split content into perks
-  const perks = highlight.content
-    .replace(/highlight/gi, '')
-    .replace(/highlights/gi, '')
-    .split('\n')
-    .map(perk => perk.trim())
-    .filter(perk => perk.length > 0);
+  // Clean content by removing highlight words and formatting
+  const cleanContent = (content: string) => {
+    console.log('[Content Cleaning] Original content:', content);
+    
+    const cleaned = content
+      .replace(/highlight(s)?/gi, '') // Remove highlight/highlights
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => {
+        // Remove any remaining instances of the word
+        const cleanedLine = line
+          .replace(/^\s*[-•]\s*/, '') // Remove bullet points
+          .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+          .trim();
+        return cleanedLine.charAt(0).toUpperCase() + cleanedLine.slice(1); // Capitalize first letter
+      })
+      .filter(line => line.length > 0);
+
+    console.log('[Content Cleaning] Cleaned content:', cleaned);
+    return cleaned;
+  };
+
+  // Process the perks from the content
+  const perks = cleanContent(highlight.content);
 
   return (
     <motion.div
