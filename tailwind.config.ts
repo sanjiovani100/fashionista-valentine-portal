@@ -68,6 +68,11 @@ export default {
         "accent-gradient": "linear-gradient(135deg, hsl(var(--red-primary)) 0%, hsl(var(--red-bright)) 100%)",
         "dark-gradient": "linear-gradient(to bottom, hsl(var(--maroon-dark)) 0%, var(--black) 100%)",
         "card-hover": "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+        "hero-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9))",
+      },
+      boxShadow: {
+        glow: "0 0 20px rgba(255,51,102,0.3)",
+        "glow-intense": "0 0 30px rgba(255,51,102,0.5)",
       },
       transitionDuration: {
         fast: "150ms",

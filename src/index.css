@@ -55,16 +55,6 @@
     /* Border Radius */
     --radius: 0.5rem;
   }
-
-  .dark {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 98%;
-    --border: 0 0% 20%;
-    --primary: 348 100% 60%;
-    --primary-foreground: 0 0% 98%;
-  }
 }
 
 @layer base {
@@ -83,30 +73,46 @@
 }
 
 @layer components {
+  /* Button Styles with Enhanced Hover Effects */
   .btn-primary {
-    @apply bg-red-primary text-white hover:bg-red-primary/90 
-           transition-all duration-normal ease-out transform hover:scale-105;
+    @apply bg-red-primary text-white 
+           hover:bg-red-bright hover:shadow-glow
+           focus:ring-2 focus:ring-red-primary focus:ring-offset-2 focus:ring-offset-background
+           active:scale-95
+           transition-all duration-normal ease-out;
   }
 
   .btn-secondary {
     @apply bg-transparent border border-red-primary text-red-primary 
-           hover:bg-red-primary/10 transition-all duration-normal ease-out transform hover:scale-105;
+           hover:bg-red-primary/10 hover:border-red-bright hover:text-red-bright
+           focus:ring-2 focus:ring-red-primary focus:ring-offset-2 focus:ring-offset-background
+           active:scale-95
+           transition-all duration-normal ease-out;
   }
 
+  /* Card Styles with Hover States */
   .card-base {
     @apply bg-gray-500 border border-white/10 text-white
+           backdrop-blur-sm
            transition-all duration-normal ease-out;
   }
 
   .card-hover {
     @apply hover:border-white/20 hover:scale-105
-           hover:shadow-lg hover:shadow-black/30;
+           hover:bg-gradient-to-b hover:from-white/5 hover:to-transparent
+           hover:shadow-xl hover:shadow-black/30;
   }
 
+  /* Text Gradient Effects */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-accent-gradient;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-red-bright to-red-soft;
   }
 
+  .text-gradient-alt {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-maroon via-maroon-light to-red-primary;
+  }
+
+  /* Stagger Animation Items */
   .stagger-item {
     @apply opacity-0;
     animation: fadeIn var(--duration-normal) var(--ease-out) forwards;
@@ -120,14 +126,30 @@
 }
 
 @layer utilities {
+  /* Enhanced Text Shadow */
   .text-shadow-xl {
     text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* Glow Effects */
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(255,51,102,0.3);
+  }
+
+  .shadow-glow-intense {
+    box-shadow: 0 0 30px rgba(255,51,102,0.5);
   }
 
   .drop-shadow-glow {
     filter: drop-shadow(0 0 20px rgba(255,51,102,0.3));
   }
 
+  /* Border Effects */
+  .border-gradient {
+    border-image: linear-gradient(to right, hsl(var(--red-primary)), hsl(var(--red-bright))) 1;
+  }
+
+  /* Smooth Scroll */
   .smooth-scroll {
     scroll-behavior: smooth;
   }
