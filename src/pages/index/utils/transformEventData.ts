@@ -7,13 +7,60 @@ interface ImageMetadataValidation {
   message: string;
 }
 
+interface ProcessedImage {
+  url: string;
+  alt: string;
+}
+
+const processImage = (imageData: FashionImage | null): ProcessedImage => {
+  if (!imageData) {
+    return {
+      url: cloudinaryConfig.defaults.placeholders.highlight,
+      alt: 'Default event image'
+    };
+  }
+  
+  const metadata = imageData.metadata as Record<string, unknown> || {};
+  
+  // Try to get URL from metadata first
+  if (typeof metadata.media_url === 'string' && metadata.media_url) {
+    return {
+      url: metadata.media_url,
+      alt: imageData.alt_text || 'Event image'
+    };
+  }
+  
+  // Try cloudinary_id next
+  if (typeof metadata.cloudinary_id === 'string' && metadata.cloudinary_id) {
+    return {
+      url: `https://res.cloudinary.com/${cloudinaryConfig.cloud.cloudName}/image/upload/v1/${metadata.cloudinary_id}`,
+      alt: imageData.alt_text || 'Event image'
+    };
+  }
+  
+  // If no valid metadata URLs, use the image's direct URL
+  if (imageData.url) {
+    return {
+      url: imageData.url,
+      alt: imageData.alt_text || 'Event image'
+    };
+  }
+  
+  // Fallback to default
+  return {
+    url: cloudinaryConfig.defaults.placeholders.highlight,
+    alt: 'Default event image'
+  };
+};
+
 const validateImageMetadata = (metadata: unknown): ImageMetadataValidation => {
   const metadataObj = metadata as Record<string, unknown>;
   
-  // Explicitly check if either page or media_url exists and is a non-empty string
+  // Check for either media_url or cloudinary_id
   const hasValidMetadata = Boolean(
-    typeof metadataObj?.page === 'string' && metadataObj.page.length > 0 ||
-    typeof metadataObj?.media_url === 'string' && metadataObj.media_url.length > 0
+    (typeof metadataObj?.media_url === 'string' && metadataObj.media_url.length > 0) ||
+    (typeof metadataObj?.cloudinary_id === 'string' && metadataObj.cloudinary_id.length > 0) ||
+    (typeof metadataObj?.page === 'string' && metadataObj.page.length > 0)
   );
   
   return {
@@ -168,19 +215,33 @@ export const transformEventData = (eventData: any) => {
     .map((highlight: EventContent) => {
       console.log('Processing highlight:', highlight.title);
       
+      const galleryImage = (eventData.fashion_images || []).find((img: FashionImage) => {
+        if (img.category !== 'event_gallery') return false;
+        
+        const validation = validateImageMetadata(img.metadata);
+        if (!validation.isValid) {
+          console.warn('Invalid metadata:', validation.message);
+          return false;
+        }
+
+        return true;
+      });
+
+      const processedImage = processImage(galleryImage);
+      
       return {
         ...highlight,
         event_id: highlight.event_id || '',
         media_urls: highlight.media_urls || [],
         publish_date: highlight.publish_date || new Date().toISOString(),
         engagement_metrics: highlight.engagement_metrics || {},
-        image: transformHighlightImage(highlight, eventData.fashion_images || []),
+        image: processedImage.url,
+        alt: processedImage.alt,
         isLoading: false
       };
     })
     .slice(0, 3);
 
-  // Transform collections with proper image handling and validation
   const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection: FashionCollection) => {
       console.log('Processing collection:', collection.collection_name);
@@ -215,7 +276,6 @@ export const transformEventData = (eventData: any) => {
 
   console.log('Transformation complete:', {
     highlightsCount: highlights.length,
-    collectionsCount: collectionsWithImages.length,
     hasHeroImage: !!heroImage
   });
 
