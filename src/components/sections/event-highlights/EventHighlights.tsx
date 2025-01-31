@@ -12,8 +12,8 @@ interface EventHighlightsProps {
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
   const ref = useRef(null);
   const inView = useInView(ref, {
-    threshold: 0.1,
-    triggerOnce: true
+    amount: 0.1,
+    once: true
   });
 
   useEffect(() => {
