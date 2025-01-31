@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/cloudinary";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { CardSkeleton } from "@/components/ui/loading-skeleton/CardSkeleton";
 import type { EventContent } from "@/types/event.types";
 
@@ -19,11 +19,38 @@ interface HighlightCardProps {
 export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const maxRetries = 2;
+
+  const handleImageLoad = useCallback(() => {
+    console.info(`[Image] Successfully loaded image for ${highlight.title}`);
+    setIsLoading(false);
+    setHasError(false);
+  }, [highlight.title]);
+
+  const handleImageError = useCallback(() => {
+    console.error(`[Image] Failed to load image for ${highlight.title}, attempt ${retryCount + 1} of ${maxRetries}`);
+    
+    if (retryCount < maxRetries) {
+      setRetryCount(prev => prev + 1);
+      return;
+    }
+
+    setHasError(true);
+    setIsLoading(false);
+    toast.error(`Failed to load image for ${highlight.title}`, {
+      description: "Please try refreshing the page"
+    });
+  }, [highlight.title, retryCount, maxRetries]);
 
   // Early return for loading state
   if (isLoading && !hasError) {
     return (
-      <div role="status" aria-label="Loading highlight card">
+      <div 
+        role="status" 
+        aria-label="Loading highlight card"
+        className="animate-pulse"
+      >
         <CardSkeleton />
       </div>
     );
@@ -36,26 +63,18 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       role="article"
       aria-label={`Event highlight: ${highlight.title}`}
+      className="h-full"
     >
-      <Card className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
-        <div className="relative h-[300px] overflow-hidden rounded-t-lg">
+      <Card className="bg-black/60 border-none text-white h-full hover:scale-105 transition-transform duration-300 group">
+        <div className="relative h-[300px] md:h-[350px] lg:h-[400px] overflow-hidden rounded-t-lg">
           <OptimizedImage
             publicId={highlight.image}
             alt={highlight.title}
             aspectRatio="portrait"
-            className="w-full h-full transition-transform duration-300 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
             priority={index === 0}
-            onLoadingComplete={() => {
-              setIsLoading(false);
-              setHasError(false);
-              console.log(`[Image] Successfully loaded image for ${highlight.title}`);
-            }}
-            onError={() => {
-              setHasError(true);
-              setIsLoading(false);
-              toast.error(`Failed to load image for ${highlight.title}`);
-              console.error(`[Image] Failed to load image for ${highlight.title}`);
-            }}
+            onLoadingComplete={handleImageLoad}
+            onError={handleImageError}
           />
           <div 
             className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" 
@@ -63,8 +82,10 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
           />
         </div>
         <CardHeader>
-          <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
-          <CardDescription className="text-gray-300 font-montserrat">
+          <CardTitle className="font-playfair text-xl md:text-2xl lg:text-3xl">
+            {highlight.title}
+          </CardTitle>
+          <CardDescription className="text-gray-300 font-montserrat text-sm md:text-base">
             {highlight.content}
           </CardDescription>
         </CardHeader>
