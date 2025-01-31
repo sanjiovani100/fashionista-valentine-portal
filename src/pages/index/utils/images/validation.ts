@@ -1,10 +1,10 @@
-import type { ImageValidationResult } from './types';
+export interface ImageValidationResult {
+  isValid: boolean;
+  message: string;
+}
 
 export const validateImageMetadata = (metadata: unknown): ImageValidationResult => {
-  console.log('[Image Validation] Checking metadata:', metadata);
-  
   if (!metadata || typeof metadata !== 'object') {
-    console.warn('[Image Validation] Invalid metadata structure:', metadata);
     return {
       isValid: false,
       message: 'Invalid metadata structure'

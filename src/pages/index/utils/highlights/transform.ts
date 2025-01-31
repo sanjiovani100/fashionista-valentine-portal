@@ -1,7 +1,24 @@
+import { cloudinaryConfig } from '@/components/cloudinary/config';
 import type { EventContent, FashionCollection, FashionImage } from '@/types/event.types';
 import { findHighlightImage } from '../images/selection';
 import { constructImageUrl } from '../images/processing';
-import type { TransformedEventData, TransformedHighlight, TransformedCollection } from './types';
+
+export interface TransformedHighlight extends EventContent {
+  image: string;
+  alt?: string;
+  isLoading: boolean;
+}
+
+export interface TransformedCollection extends FashionCollection {
+  image: string;
+  isLoading: boolean;
+}
+
+export interface TransformedEventData {
+  highlights: TransformedHighlight[];
+  collectionsWithImages: TransformedCollection[];
+  heroImage: string;
+}
 
 export const transformHighlights = (
   content: EventContent[],
@@ -12,16 +29,10 @@ export const transformHighlights = (
     imagesCount: images?.length
   });
 
-  const usedImageIds = new Set<string>();
-
   return (content || [])
     .filter(item => item.content_type === 'highlight')
     .map(highlight => {
       const highlightImage = findHighlightImage(highlight, images);
-      if (highlightImage) {
-        usedImageIds.add(highlightImage.id);
-      }
-
       const processedImage = constructImageUrl(highlightImage);
 
       return {
@@ -81,7 +92,6 @@ export const transformEventData = (eventData: any): TransformedEventData => {
   const highlights = transformHighlights(eventData.event_content, eventData.fashion_images);
   const collections = transformCollections(eventData.fashion_collections, eventData.fashion_images);
 
-  // Get hero image
   const heroImage = constructImageUrl(
     eventData.fashion_images?.find((img: FashionImage) => {
       const metadata = img.metadata as Record<string, unknown>;

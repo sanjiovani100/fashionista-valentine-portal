@@ -12,7 +12,7 @@ import { Cta11 } from "@/components/blocks/shadcnblocks-com-cta11";
 import { LoadingState } from "./components/LoadingState";
 import { ErrorState } from "./components/ErrorState";
 import { useEventData } from "./hooks/useEventData";
-import { transformEventData } from "./utils/transformEventData";
+import { transformEventData } from "./utils/highlights/transform";
 import { toast } from "sonner";
 import { runVisualTests } from "@/utils/testing/visualTesting";
 
