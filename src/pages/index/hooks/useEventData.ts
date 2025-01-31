@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import type { FashionEvent } from "@/types/database";
 
 export const useEventData = () => {
-  const { toast } = useToast();
-
   return useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
-      console.log("Fetching event data...");
+      console.log("[Query] Fetching event data...");
+      
       const { data: eventData, error: eventError } = await supabase
         .from('fashion_events')
         .select(`
@@ -42,16 +41,23 @@ export const useEventData = () => {
         .maybeSingle();
 
       if (eventError) {
-        console.error("Error fetching event data:", eventError);
+        console.error("[Query] Error fetching event data:", eventError);
+        toast.error("Failed to load event data. Please try again.");
         throw eventError;
       }
       
       if (!eventData) {
-        console.error("No event data found");
+        console.error("[Query] No event data found");
+        toast.error("Event data not found");
         return null;
       }
 
-      console.log("Event data fetched successfully:", eventData);
+      console.log("[Query] Event data fetched successfully:", {
+        hasContent: !!eventData.event_content?.length,
+        hasImages: !!eventData.fashion_images?.length,
+        hasCollections: !!eventData.fashion_collections?.length
+      });
+      
       return eventData as FashionEvent;
     },
     retry: 2,

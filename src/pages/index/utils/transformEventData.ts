@@ -2,31 +2,40 @@ import { toast } from "sonner";
 import { cloudinaryConfig } from '@/components/cloudinary/config';
 import type { EventContent, FashionCollection, FashionImage } from "@/types/event.types";
 
+// Helper function to safely access metadata
+const getMetadataValue = (metadata: unknown, key: string): unknown => {
+  if (metadata && typeof metadata === 'object' && key in metadata) {
+    return (metadata as Record<string, unknown>)[key];
+  }
+  return null;
+};
+
 const transformHighlightImage = (highlight: Partial<EventContent>, images: FashionImage[]): string => {
   try {
     // First try to get image from event_gallery category
     const galleryImage = images.find(img => 
       img.category === 'event_gallery' && 
       img.metadata && 
-      typeof img.metadata === 'object' &&
-      'content_id' in img.metadata &&
-      img.metadata.content_id === highlight.id
+      getMetadataValue(img.metadata, 'content_id') === highlight.id
     );
 
     if (galleryImage?.url) {
+      console.log('[Image] Found gallery image for highlight:', highlight.title);
       return galleryImage.url;
     }
 
     // Fallback to media_urls if available
-    if (highlight.media_urls?.[0]) {
+    if (Array.isArray(highlight.media_urls) && highlight.media_urls[0]) {
+      console.log('[Image] Using media_url for highlight:', highlight.title);
       return highlight.media_urls[0];
     }
 
-    console.warn(`No valid image found for highlight: ${highlight.title}`);
-    return cloudinaryConfig.defaults.placeholders.event;
+    console.warn(`[Image] No valid image found for highlight: ${highlight.title}`);
+    return cloudinaryConfig.defaults.placeholders.highlight;
   } catch (error) {
-    console.error('Error transforming highlight image:', error);
-    return cloudinaryConfig.defaults.placeholders.event;
+    console.error('[Image] Error transforming highlight image:', error);
+    toast.error(`Failed to load image for highlight: ${highlight.title}`);
+    return cloudinaryConfig.defaults.placeholders.highlight;
   }
 };
 
@@ -42,35 +51,37 @@ const transformCollectionImage = (collection: Partial<FashionCollection>, images
     });
 
     if (showcaseImage?.url) {
+      console.log('[Image] Found showcase image for collection:', collection.collection_name);
       return showcaseImage.url;
     }
 
-    console.warn(`No valid image found for collection: ${collection.collection_name}`);
+    console.warn(`[Image] No valid image found for collection: ${collection.collection_name}`);
     return cloudinaryConfig.defaults.placeholders.collection;
   } catch (error) {
-    console.error('Error transforming collection image:', error);
+    console.error('[Image] Error transforming collection image:', error);
+    toast.error(`Failed to load image for collection: ${collection.collection_name}`);
     return cloudinaryConfig.defaults.placeholders.collection;
   }
 };
 
 export const transformEventData = (eventData: any) => {
   if (!eventData) {
-    console.error('No event data provided');
+    console.error('[Transform] No event data provided');
     return {
       highlights: [],
       collectionsWithImages: [],
-      heroImage: cloudinaryConfig.defaults.placeholders.event
+      heroImage: cloudinaryConfig.defaults.placeholders.hero
     };
   }
 
-  console.log("Starting event data transformation:", {
+  console.log("[Transform] Starting event data transformation:", {
     contentCount: eventData.event_content?.length,
     imagesCount: eventData.fashion_images?.length
   });
 
   // Transform highlights with proper image URL handling
   const highlights = (eventData.event_content || [])
-    .filter((content: any) => content.content_type === 'highlight')
+    .filter((content: EventContent) => content.content_type === 'highlight')
     .map((highlight: EventContent) => ({
       ...highlight,
       event_id: highlight.event_id || '',
@@ -101,9 +112,9 @@ export const transformEventData = (eventData: any) => {
     
     const metadata = img.metadata as Record<string, unknown>;
     return metadata.page === 'home';
-  })?.url || cloudinaryConfig.defaults.placeholders.event;
+  })?.url || cloudinaryConfig.defaults.placeholders.hero;
 
-  console.log("Transformation complete:", {
+  console.log("[Transform] Transformation complete:", {
     highlightsCount: highlights.length,
     collectionsCount: collectionsWithImages.length,
     hasHeroImage: !!heroImage
