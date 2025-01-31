@@ -20,8 +20,13 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
+  // Early return for loading state
   if (isLoading && !hasError) {
-    return <CardSkeleton />;
+    return (
+      <div role="status" aria-label="Loading highlight card">
+        <CardSkeleton />
+      </div>
+    );
   }
 
   return (
@@ -29,6 +34,8 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
+      role="article"
+      aria-label={`Event highlight: ${highlight.title}`}
     >
       <Card className="bg-black/60 border-none text-white hover:scale-105 transition-transform duration-300 group">
         <div className="relative h-[300px] overflow-hidden rounded-t-lg">
@@ -41,14 +48,19 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
             onLoadingComplete={() => {
               setIsLoading(false);
               setHasError(false);
+              console.log(`[Image] Successfully loaded image for ${highlight.title}`);
             }}
             onError={() => {
               setHasError(true);
               setIsLoading(false);
               toast.error(`Failed to load image for ${highlight.title}`);
+              console.error(`[Image] Failed to load image for ${highlight.title}`);
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+          <div 
+            className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" 
+            aria-hidden="true"
+          />
         </div>
         <CardHeader>
           <CardTitle className="font-playfair text-2xl">{highlight.title}</CardTitle>
@@ -60,6 +72,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
           <Button 
             className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors"
             onClick={() => toast.success(`Learn more about ${highlight.title}`)}
+            aria-label={`Learn more about ${highlight.title}`}
           >
             Learn More
           </Button>

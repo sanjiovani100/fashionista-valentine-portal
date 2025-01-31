@@ -1,7 +1,8 @@
 import { HighlightGrid } from "./components/HighlightGrid";
 import { HighlightCarousel } from "./components/HighlightCarousel";
 import type { EventContent, FashionImage } from "@/types/event.types";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useEffect } from "react";
 
 interface EventHighlightsProps {
   highlights: (EventContent & { image: string })[];
@@ -9,14 +10,26 @@ interface EventHighlightsProps {
 }
 
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
+
+  useEffect(() => {
+    if (inView) {
+      console.log('[Performance] Event Highlights section is now in view');
+    }
+  }, [inView]);
+
   return (
     <section 
+      ref={ref}
       className="py-20 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden"
       aria-labelledby="highlights-title"
     >
       {/* Background pattern */}
       <div 
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-10 pointer-events-none"
         aria-hidden="true"
       >
         <div className="absolute animate-float-1 top-1/4 left-1/4">❤</div>
@@ -27,9 +40,8 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true, margin: "-100px" }}
           className="text-center space-y-6"
         >
           <h2 
@@ -44,12 +56,18 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
         </motion.div>
 
         {/* Desktop view with improved grid layout */}
-        <div className="hidden md:block">
+        <div 
+          className="hidden md:block"
+          aria-label="Event highlights grid view"
+        >
           <HighlightGrid highlights={highlights} />
         </div>
 
         {/* Mobile view with optimized carousel */}
-        <div className="md:hidden">
+        <div 
+          className="md:hidden"
+          aria-label="Event highlights carousel view"
+        >
           <HighlightCarousel highlights={highlights} />
         </div>
       </div>
