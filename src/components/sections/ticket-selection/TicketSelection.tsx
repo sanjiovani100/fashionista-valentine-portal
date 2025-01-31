@@ -85,7 +85,7 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
         <div className="text-center mb-12 space-y-4">
           <motion.h2
             id="ticket-selection-title"
-            className="text-4xl md:text-[3.5rem] font-bold tracking-tight leading-none text-gradient bg-accent-gradient"
+            className="text-4xl md:text-[3.5rem] font-bold tracking-tight leading-none text-white"
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 }
