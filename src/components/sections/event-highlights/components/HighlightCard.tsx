@@ -2,31 +2,21 @@ import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { EventTicket } from "@/types/event.types";
+import type { EventContent } from "@/types/event.types";
 
-interface HighlightCardProps extends Omit<EventTicket, 'benefits'> {
-  isSelected: boolean;
-  onSelect: (ticketType: string) => void;
-  subtitle: string;
-  perks: string[];
-  title: string;
-  tabIndex?: number;
+interface HighlightCardProps {
+  highlight: EventContent & { image: string };
+  index: number;
 }
 
-export const HighlightCard = ({
-  title,
-  subtitle,
-  price,
-  perks,
-  isSelected,
-  onSelect,
-  tabIndex = 0,
-}: HighlightCardProps) => {
+export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
   const springConfig = {
     type: "spring",
     stiffness: 300,
     damping: 30
   };
+
+  const perks = highlight.content.split('\n').filter(Boolean);
 
   return (
     <motion.div
@@ -36,41 +26,38 @@ export const HighlightCard = ({
       className="h-full"
     >
       <Card
-        className={`relative h-full bg-black/30 backdrop-blur-sm border transition-all duration-300 will-change-transform ${
-          isSelected 
-            ? "border-red-accent shadow-glow" 
-            : "border-white/10 hover:border-white/20 hover:bg-white/5"
-        }`}
-        onClick={() => onSelect(title)}
-        tabIndex={tabIndex}
-        role="button"
-        aria-pressed={isSelected}
+        className="relative h-full bg-black/30 backdrop-blur-sm border transition-all duration-300 will-change-transform border-white/10 hover:border-white/20 hover:bg-white/5"
+        role="article"
+        tabIndex={0}
       >
         <CardHeader className="space-y-2">
           <CardTitle className="text-2xl md:text-3xl font-poppins text-white">
-            {title}
+            {highlight.title}
           </CardTitle>
           <CardDescription className="text-white/80 font-montserrat text-base">
-            {subtitle}
+            {highlight.content_type}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <motion.div 
-            className="text-4xl font-bold font-montserrat text-red-accent mb-8 flex items-baseline gap-2"
+            className="mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            ${price}
-            <span className="text-lg text-white/60">/person</span>
+            <img 
+              src={highlight.image} 
+              alt={highlight.title}
+              className="w-full h-48 object-cover rounded-lg"
+            />
           </motion.div>
           <ul className="space-y-4" role="list">
-            {perks.map((perk, index) => (
+            {perks.map((perk, idx) => (
               <motion.li
-                key={perk}
+                key={`${highlight.id}-perk-${idx}`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * (index + 1) }}
+                transition={{ delay: 0.1 * (idx + 1) }}
                 className="flex items-center gap-3 text-white/80 font-montserrat"
               >
                 <Check className="w-5 h-5 text-red-accent shrink-0" aria-hidden="true" />
@@ -78,9 +65,6 @@ export const HighlightCard = ({
               </motion.li>
             ))}
           </ul>
-          <p className="text-sm text-white/60 mt-6 font-montserrat">
-            Secure payment with Stripe
-          </p>
         </CardContent>
         <CardFooter>
           <Button
@@ -90,9 +74,9 @@ export const HighlightCard = ({
                      focus-visible:ring-2 focus-visible:ring-red-accent 
                      focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             size="lg"
-            aria-label={`Select ${title} ticket`}
+            aria-label={`Learn more about ${highlight.title}`}
           >
-            Select Ticket
+            Learn More
           </Button>
         </CardFooter>
       </Card>
