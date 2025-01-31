@@ -15,12 +15,15 @@ export const TrustSignals = () => (
         </div>
 
         {/* Right section - Security Information */}
-        <div className="flex items-center gap-4 text-gray-400 font-montserrat text-sm whitespace-nowrap">
-          <Shield className="w-5 h-5 shrink-0" />
-          <span>Secure Checkout</span>
-          <span className="select-none">•</span>
-          <span>Verified by Stripe</span>
-          <CreditCard className="w-5 h-5 shrink-0" />
+        <div className="flex flex-col gap-3 text-gray-400 font-montserrat text-sm">
+          <div className="flex items-center gap-2">
+            <Shield className="w-5 h-5 shrink-0" />
+            <span>Secure Checkout</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CreditCard className="w-5 h-5 shrink-0" />
+            <span>Verified by Stripe</span>
+          </div>
         </div>
       </div>
     </div>
