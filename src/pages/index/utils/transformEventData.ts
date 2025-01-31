@@ -2,7 +2,6 @@ import { toast } from "sonner";
 import { cloudinaryConfig } from '@/components/cloudinary/config';
 import type { EventContent, FashionCollection, FashionImage } from "@/types/event.types";
 
-// Helper function to safely access metadata
 const getMetadataValue = (metadata: unknown, key: string): unknown => {
   if (metadata && typeof metadata === 'object' && key in metadata) {
     return (metadata as Record<string, unknown>)[key];
@@ -31,11 +30,11 @@ const transformHighlightImage = (highlight: Partial<EventContent>, images: Fashi
     }
 
     console.warn(`[Image] No valid image found for highlight: ${highlight.title}`);
-    return cloudinaryConfig.defaults.placeholders.highlight;
+    return cloudinaryConfig.defaults.placeholders.highlight || cloudinaryConfig.defaults.placeholder;
   } catch (error) {
     console.error('[Image] Error transforming highlight image:', error);
     toast.error(`Failed to load image for highlight: ${highlight.title}`);
-    return cloudinaryConfig.defaults.placeholders.highlight;
+    return cloudinaryConfig.defaults.placeholders.highlight || cloudinaryConfig.defaults.placeholder;
   }
 };
 
@@ -70,7 +69,7 @@ export const transformEventData = (eventData: any) => {
     return {
       highlights: [],
       collectionsWithImages: [],
-      heroImage: cloudinaryConfig.defaults.placeholders.hero
+      heroImage: cloudinaryConfig.defaults.placeholders.hero || cloudinaryConfig.defaults.placeholder
     };
   }
 
@@ -112,7 +111,7 @@ export const transformEventData = (eventData: any) => {
     
     const metadata = img.metadata as Record<string, unknown>;
     return metadata.page === 'home';
-  })?.url || cloudinaryConfig.defaults.placeholders.hero;
+  })?.url || cloudinaryConfig.defaults.placeholders.hero || cloudinaryConfig.defaults.placeholder;
 
   console.log("[Transform] Transformation complete:", {
     highlightsCount: highlights.length,

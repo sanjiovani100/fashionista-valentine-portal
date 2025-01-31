@@ -15,7 +15,9 @@ export const cloudinaryConfig = {
     placeholders: {
       event: 'https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041736/valentine-011_sgwnbj.jpg',
       collection: 'https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041785/valentine-002_jg1o0m.jpg',
-      profile: 'https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041736/valentine-011_sgwnbj.jpg'
+      profile: 'https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041736/valentine-011_sgwnbj.jpg',
+      highlight: 'https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041736/valentine-011_sgwnbj.jpg',
+      hero: 'https://res.cloudinary.com/dzqy2ixl0/image/upload/v1738041597/hero-red-bg_spclrx.jpg'
     }
   },
   categories: {
