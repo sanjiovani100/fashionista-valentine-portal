@@ -1,5 +1,5 @@
 import type { FashionImage } from '@/types/event.types';
-import type { ProcessedImage } from '../types/image.types';
+import type { ProcessedImage } from '@/pages/index/utils/imageTypes';
 import { cloudinaryConfig } from '@/components/cloudinary/config';
 
 export const constructImageUrl = (imageData: FashionImage | null): ProcessedImage => {
