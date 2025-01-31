@@ -4,22 +4,20 @@ import type { EventContent, FashionCollection, FashionImage } from "@/types/even
 
 interface ImageMetadataValidation {
   isValid: boolean;
-  missingFields: string[];
   message: string;
 }
 
 const validateImageMetadata = (metadata: unknown): ImageMetadataValidation => {
-  const requiredFields = ['page', 'content_id', 'collection_id'];
   const metadataObj = metadata as Record<string, unknown>;
   
-  const missingFields = requiredFields.filter(field => !metadataObj?.[field]);
+  // Relaxed validation - only check if we have either page or media_url
+  const hasValidMetadata = metadataObj?.page || metadataObj?.media_url;
   
   return {
-    isValid: missingFields.length === 0,
-    missingFields,
-    message: missingFields.length > 0 
-      ? `Missing required metadata fields: ${missingFields.join(', ')}`
-      : 'Metadata validation passed'
+    isValid: hasValidMetadata,
+    message: hasValidMetadata 
+      ? 'Metadata validation passed'
+      : 'Missing required metadata fields'
   };
 };
 
@@ -33,7 +31,7 @@ const transformHighlightImage = (highlight: Partial<EventContent>, images: Fashi
       promotionalImages: images.filter(img => img.category === 'promotional').length
     });
     
-    // First try to get image from event_gallery category with matching content_id
+    // First try to get image from event_gallery category
     const galleryImage = images.find(img => {
       console.log('Checking image:', {
         id: img.id,
@@ -57,17 +55,8 @@ const transformHighlightImage = (highlight: Partial<EventContent>, images: Fashi
         console.warn('Invalid metadata:', validation.message);
         return false;
       }
-      
-      const isMatch = img.metadata && 
-                     (img.metadata as Record<string, unknown>).content_id === highlight.id;
-      
-      console.log('Image evaluation:', {
-        isMatch,
-        highlightId: highlight.id,
-        contentId: (img.metadata as Record<string, unknown>).content_id
-      });
-      
-      return isMatch;
+
+      return true;
     });
 
     if (galleryImage?.url) {
@@ -123,14 +112,12 @@ const transformCollectionImage = (collection: Partial<FashionCollection>, images
       }
       
       const metadata = img.metadata as Record<string, unknown>;
-      const isValid = metadata.page === 'lingerie_showcase' && 
-                     metadata.collection_id === collection.id;
+      const isValid = metadata.page === 'lingerie_showcase';
       
       console.log('Image evaluation:', {
         isValid,
         collectionId: collection.id,
-        page: metadata.page,
-        metadataCollectionId: metadata.collection_id
+        page: metadata.page
       });
       
       return isValid;
