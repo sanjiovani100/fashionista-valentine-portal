@@ -2,7 +2,7 @@ import { HighlightGrid } from "./components/HighlightGrid";
 import { HighlightCarousel } from "./components/HighlightCarousel";
 import type { EventContent, FashionImage } from "@/types/event.types";
 import { motion, useInView } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface EventHighlightsProps {
   highlights: (EventContent & { image: string })[];
@@ -10,7 +10,8 @@ interface EventHighlightsProps {
 }
 
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
-  const { ref, inView } = useInView({
+  const ref = useRef(null);
+  const inView = useInView(ref, {
     threshold: 0.1,
     triggerOnce: true
   });
