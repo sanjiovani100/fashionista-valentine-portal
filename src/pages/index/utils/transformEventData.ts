@@ -27,11 +27,16 @@ const transformHighlightImage = (highlight: Partial<EventContent>, images: Fashi
   console.group(`[Transform] Processing highlight image for: ${highlight.title}`);
   
   try {
-    console.log('Available images for highlight:', images.length);
+    console.log('Available images for highlight:', {
+      totalImages: images.length,
+      galleryImages: images.filter(img => img.category === 'event_gallery').length,
+      promotionalImages: images.filter(img => img.category === 'promotional').length
+    });
     
     // First try to get image from event_gallery category with matching content_id
     const galleryImage = images.find(img => {
       console.log('Checking image:', {
+        id: img.id,
         category: img.category,
         metadata: img.metadata,
         url: img.url
@@ -93,11 +98,15 @@ const transformCollectionImage = (collection: Partial<FashionCollection>, images
   console.group(`[Transform] Processing collection image for: ${collection.collection_name}`);
   
   try {
-    console.log('Available images for collection:', images.length);
+    console.log('Available images for collection:', {
+      totalImages: images.length,
+      promotionalImages: images.filter(img => img.category === 'promotional').length
+    });
     
     // Look for promotional images with lingerie_showcase metadata
     const showcaseImage = images.find(img => {
       console.log('Checking image:', {
+        id: img.id,
         category: img.category,
         metadata: img.metadata,
         url: img.url
@@ -159,7 +168,8 @@ export const transformEventData = (eventData: any) => {
 
   console.log('Initial data:', {
     contentCount: eventData.event_content?.length,
-    imagesCount: eventData.fashion_images?.length
+    imagesCount: eventData.fashion_images?.length,
+    collectionsCount: eventData.fashion_collections?.length
   });
 
   // Transform highlights with proper image URL handling and validation

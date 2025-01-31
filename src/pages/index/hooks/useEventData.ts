@@ -4,19 +4,6 @@ import { toast } from "sonner";
 import type { FashionEvent } from "@/types/database";
 import { cloudinaryConfig } from "@/components/cloudinary/config";
 
-interface ImageDimensions {
-  width: number;
-  height: number;
-  aspectRatio: number;
-}
-
-interface ImageFormats {
-  original: string;
-  thumbnail?: string;
-  webp?: string;
-  avif?: string;
-}
-
 interface ImageMetadata {
   page?: string;
   content_id?: string;
@@ -24,67 +11,24 @@ interface ImageMetadata {
   uploadedAt?: string;
 }
 
-interface QueryError {
-  code: string;
-  message: string;
-  details?: string;
-}
-
-const validateImageMetadata = (metadata: unknown): metadata is ImageMetadata => {
+const validateImageMetadata = (metadata: unknown): { isValid: boolean; missingFields: string[] } => {
   if (!metadata || typeof metadata !== 'object') {
-    console.warn('[Image Metadata] Invalid metadata structure:', metadata);
-    return false;
+    console.warn('[Image Validation] Invalid metadata structure:', metadata);
+    return { isValid: false, missingFields: ['metadata structure invalid'] };
   }
   
   const required = ['page', 'content_id', 'collection_id'];
-  const hasRequired = required.every(field => field in metadata);
+  const metadataObj = metadata as Record<string, unknown>;
+  const missingFields = required.filter(field => !metadataObj[field]);
   
-  if (!hasRequired) {
-    console.warn('[Image Metadata] Missing required fields:', {
+  if (missingFields.length > 0) {
+    console.warn('[Image Validation] Missing required fields:', {
       metadata,
-      missingFields: required.filter(field => !(field in metadata))
+      missingFields
     });
   }
   
-  return hasRequired;
-};
-
-const getPromotionalImage = (images: FashionEvent['fashion_images'], type: 'hero' | 'highlight'): string => {
-  console.log(`[Image Selection] Searching for ${type} image in ${images?.length || 0} images`);
-  
-  const image = images?.find(img => {
-    if (img.category !== 'promotional') {
-      console.debug('[Image Selection] Skipping non-promotional image:', img.category);
-      return false;
-    }
-    
-    if (!img.metadata) {
-      console.warn('[Image Selection] Missing metadata for image:', img.id);
-      return false;
-    }
-    
-    const metadata = img.metadata as ImageMetadata;
-    const isMatch = metadata.page === type;
-    
-    console.debug('[Image Selection] Image evaluation:', {
-      id: img.id,
-      category: img.category,
-      metadata,
-      isMatch
-    });
-    
-    return isMatch;
-  });
-
-  if (!image) {
-    console.warn(`[Image Selection] No ${type} image found, using fallback`);
-    return type === 'hero' 
-      ? cloudinaryConfig.defaults.placeholders.hero 
-      : cloudinaryConfig.defaults.placeholders.highlight;
-  }
-
-  console.info(`[Image Selection] Found ${type} image:`, image.url);
-  return image.url;
+  return { isValid: missingFields.length === 0, missingFields };
 };
 
 export const useEventData = () => {
@@ -126,67 +70,58 @@ export const useEventData = () => {
           .maybeSingle();
 
         if (eventError) {
-          console.error("[Query] Error fetching event data:", {
+          console.error("[Query Error]", {
             code: eventError.code,
             message: eventError.message,
             details: eventError.details,
             timestamp: new Date().toISOString()
           });
           
-          toast.error("Failed to load event data", {
-            description: "There was a problem connecting to the server."
-          });
-          
+          toast.error("Failed to load event data");
           throw eventError;
         }
-        
+
         if (!eventData) {
-          console.error("[Query] No event data found", {
-            timestamp: new Date().toISOString()
-          });
-          
-          toast.error("Event data not found", {
-            description: "The requested event could not be found."
-          });
-          
+          console.error("[Query] No event data found");
+          toast.error("Event data not found");
           return null;
         }
 
         // Log image data for debugging
-        console.group('[Event Data] Image Analysis');
+        console.group('[Image Analysis]');
+        
+        const imagesByCategory = eventData.fashion_images?.reduce((acc, img) => {
+          acc[img.category] = (acc[img.category] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>);
+
+        console.log('Images by category:', imagesByCategory);
+
         eventData.fashion_images?.forEach((image, index) => {
+          const validation = validateImageMetadata(image.metadata);
+          
           console.log(`Image ${index + 1}:`, {
             id: image.id,
             category: image.category,
             metadata: image.metadata,
-            url: image.url
+            url: image.url,
+            isValid: validation.isValid,
+            missingFields: validation.missingFields
           });
-
-          if (!validateImageMetadata(image.metadata)) {
-            console.warn(`[Image ${index + 1}] Invalid metadata:`, {
-              imageId: image.id,
-              category: image.category,
-              metadata: image.metadata
-            });
-          }
-
-          if (!image.dimensions) {
-            console.warn(`[Image ${index + 1}] Missing dimensions:`, {
-              imageId: image.id,
-              category: image.category
-            });
-          }
-
-          if (!image.formats) {
-            console.warn(`[Image ${index + 1}] Missing formats:`, {
-              imageId: image.id,
-              category: image.category
-            });
-          }
         });
+
+        // Log content data for debugging
+        console.group('[Content Analysis]');
+        console.log('Event content count:', eventData.event_content?.length);
+        console.log('Collections count:', eventData.fashion_collections?.length);
+        
+        const contentWithImages = eventData.event_content?.filter(content => 
+          content.media_urls && content.media_urls.length > 0
+        );
+        
+        console.log('Content items with images:', contentWithImages?.length);
         console.groupEnd();
 
-        // Log successful data fetch with important counts
         console.log("[Query] Event data fetched successfully:", {
           hasContent: !!eventData.event_content?.length,
           hasImages: !!eventData.fashion_images?.length,
@@ -199,18 +134,8 @@ export const useEventData = () => {
         console.groupEnd();
         return eventData as FashionEvent;
       } catch (error) {
-        const queryError = error as QueryError;
-        console.error("[Query] Unexpected error:", {
-          code: queryError.code,
-          message: queryError.message,
-          details: queryError.details,
-          timestamp: new Date().toISOString()
-        });
-        
-        toast.error("An unexpected error occurred", {
-          description: "Please try refreshing the page."
-        });
-        
+        console.error("[Query] Unexpected error:", error);
+        toast.error("An unexpected error occurred");
         throw error;
       }
     },

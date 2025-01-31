@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/cloudinary";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { CardSkeleton } from "@/components/ui/loading-skeleton/CardSkeleton";
 import type { EventContent } from "@/types/event.types";
 
@@ -22,14 +22,26 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
   const [retryCount, setRetryCount] = useState(0);
   const maxRetries = 2;
 
+  useEffect(() => {
+    console.log(`[HighlightCard] Initializing card for: ${highlight.title}`, {
+      image: highlight.image,
+      contentType: highlight.content_type,
+      mediaUrls: highlight.media_urls
+    });
+  }, [highlight]);
+
   const handleImageLoad = useCallback(() => {
-    console.info(`[Image] Successfully loaded image for ${highlight.title}`);
+    console.info(`[HighlightCard] Successfully loaded image for ${highlight.title}`);
     setIsLoading(false);
     setHasError(false);
   }, [highlight.title]);
 
   const handleImageError = useCallback(() => {
-    console.error(`[Image] Failed to load image for ${highlight.title}, attempt ${retryCount + 1} of ${maxRetries}`);
+    console.error(`[HighlightCard] Failed to load image for ${highlight.title}`, {
+      attempt: retryCount + 1,
+      maxRetries,
+      imageUrl: highlight.image
+    });
     
     if (retryCount < maxRetries) {
       setRetryCount(prev => prev + 1);
@@ -41,7 +53,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
     toast.error(`Failed to load image for ${highlight.title}`, {
       description: "Please try refreshing the page"
     });
-  }, [highlight.title, retryCount, maxRetries]);
+  }, [highlight.title, highlight.image, retryCount, maxRetries]);
 
   // Early return for loading state
   if (isLoading && !hasError) {
