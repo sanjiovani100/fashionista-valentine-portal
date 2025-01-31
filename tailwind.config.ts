@@ -45,6 +45,23 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        red: {
+          primary: 'hsl(var(--red-primary))',
+          bright: 'hsl(var(--red-bright))',
+          soft: 'hsl(var(--red-soft))',
+        },
+        maroon: {
+          DEFAULT: 'hsl(var(--maroon))',
+          light: 'hsl(var(--maroon-light))',
+          dark: 'hsl(var(--maroon-dark))',
+        },
+        gray: {
+          100: 'hsl(var(--gray-100))',
+          200: 'hsl(var(--gray-200))',
+          300: 'hsl(var(--gray-300))',
+          400: 'hsl(var(--gray-400))',
+          500: 'hsl(var(--gray-500))',
+        }
       },
       transitionDuration: {
         normal: 'var(--duration-normal)',
