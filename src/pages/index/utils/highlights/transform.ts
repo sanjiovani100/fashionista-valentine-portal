@@ -29,10 +29,12 @@ export const transformHighlights = (
     imagesCount: images?.length
   });
 
+  const usedImages = new Set<string>();
+
   return (content || [])
     .filter(item => item.content_type === 'highlight')
     .map(highlight => {
-      const highlightImage = findHighlightImage(highlight, images);
+      const highlightImage = findHighlightImage(highlight, images, usedImages);
       const processedImage = constructImageUrl(highlightImage);
 
       return {
