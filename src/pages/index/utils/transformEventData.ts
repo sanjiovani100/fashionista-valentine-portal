@@ -10,8 +10,11 @@ interface ImageMetadataValidation {
 const validateImageMetadata = (metadata: unknown): ImageMetadataValidation => {
   const metadataObj = metadata as Record<string, unknown>;
   
-  // Relaxed validation - only check if we have either page or media_url
-  const hasValidMetadata = metadataObj?.page || metadataObj?.media_url;
+  // Explicitly check if either page or media_url exists and is a non-empty string
+  const hasValidMetadata = Boolean(
+    typeof metadataObj?.page === 'string' && metadataObj.page.length > 0 ||
+    typeof metadataObj?.media_url === 'string' && metadataObj.media_url.length > 0
+  );
   
   return {
     isValid: hasValidMetadata,
