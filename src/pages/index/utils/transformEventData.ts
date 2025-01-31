@@ -14,39 +14,44 @@ interface ProcessedImage {
 
 const processImage = (imageData: FashionImage | null): ProcessedImage => {
   if (!imageData) {
+    console.warn('[Image Processing] No image data provided');
     return {
       url: cloudinaryConfig.defaults.placeholders.highlight,
       alt: 'Default event image'
     };
   }
   
+  // First try to get URL from metadata
   const metadata = imageData.metadata as Record<string, unknown> || {};
   
-  // Try to get URL from metadata first
   if (typeof metadata.media_url === 'string' && metadata.media_url) {
+    console.log('[Image Processing] Using media_url from metadata:', metadata.media_url);
     return {
       url: metadata.media_url,
       alt: imageData.alt_text || 'Event image'
     };
   }
   
-  // Try cloudinary_id next
+  // Then try cloudinary_id
   if (typeof metadata.cloudinary_id === 'string' && metadata.cloudinary_id) {
+    const url = `https://res.cloudinary.com/${cloudinaryConfig.cloud.cloudName}/image/upload/v1/${metadata.cloudinary_id}`;
+    console.log('[Image Processing] Using constructed Cloudinary URL:', url);
     return {
-      url: `https://res.cloudinary.com/${cloudinaryConfig.cloud.cloudName}/image/upload/v1/${metadata.cloudinary_id}`,
+      url,
       alt: imageData.alt_text || 'Event image'
     };
   }
   
-  // If no valid metadata URLs, use the image's direct URL
+  // If we have a direct URL on the image, use that
   if (imageData.url) {
+    console.log('[Image Processing] Using direct image URL:', imageData.url);
     return {
       url: imageData.url,
       alt: imageData.alt_text || 'Event image'
     };
   }
   
-  // Fallback to default
+  console.warn('[Image Processing] No valid image source found, using fallback');
   return {
     url: cloudinaryConfig.defaults.placeholders.highlight,
     alt: 'Default event image'
@@ -54,82 +59,67 @@ const processImage = (imageData: FashionImage | null): ProcessedImage => {
 };
 
 const validateImageMetadata = (metadata: unknown): ImageMetadataValidation => {
+  if (!metadata || typeof metadata !== 'object') {
+    return {
+      isValid: false,
+      message: 'Invalid metadata structure'
+    };
+  }
+  
   const metadataObj = metadata as Record<string, unknown>;
   
   // Check for either media_url or cloudinary_id
-  const hasValidMetadata = Boolean(
-    (typeof metadataObj?.media_url === 'string' && metadataObj.media_url.length > 0) ||
-    (typeof metadataObj?.cloudinary_id === 'string' && metadataObj.cloudinary_id.length > 0) ||
-    (typeof metadataObj?.page === 'string' && metadataObj.page.length > 0)
+  const hasValidSource = Boolean(
+    (typeof metadataObj.media_url === 'string' && metadataObj.media_url) ||
+    (typeof metadataObj.cloudinary_id === 'string' && metadataObj.cloudinary_id)
   );
   
   return {
-    isValid: hasValidMetadata,
-    message: hasValidMetadata 
-      ? 'Metadata validation passed'
-      : 'Missing required metadata fields'
+    isValid: hasValidSource,
+    message: hasValidSource ? 'Valid image source found' : 'No valid image source found'
   };
 };
 
-const transformHighlightImage = (highlight: Partial<EventContent>, images: FashionImage[]): string => {
-  console.group(`[Transform] Processing highlight image for: ${highlight.title}`);
+const findHighlightImage = (highlight: Partial<EventContent>, images: FashionImage[]): FashionImage | null => {
+  console.group(`[Image Selection] Finding image for highlight: ${highlight.title}`);
   
   try {
-    console.log('Available images for highlight:', {
-      totalImages: images.length,
-      galleryImages: images.filter(img => img.category === 'event_gallery').length,
-      promotionalImages: images.filter(img => img.category === 'promotional').length
+    // First try to find an image specifically linked to this highlight
+    const linkedImage = images.find(img => {
+      const metadata = img.metadata as Record<string, unknown> || {};
+      return metadata.content_id === highlight.id;
     });
-    
-    // First try to get image from event_gallery category
-    const galleryImage = images.find(img => {
-      console.log('Checking image:', {
-        id: img.id,
-        category: img.category,
-        metadata: img.metadata,
-        url: img.url
-      });
 
-      if (img.category !== 'event_gallery') {
-        console.debug('Skipping non-gallery image');
-        return false;
-      }
-      
-      if (!img.metadata) {
-        console.warn('Missing metadata for image');
-        return false;
-      }
+    if (linkedImage) {
+      console.log('Found linked image:', linkedImage);
+      return linkedImage;
+    }
+
+    // Then try to find a gallery image
+    const galleryImage = images.find(img => {
+      if (img.category !== 'event_gallery') return false;
       
       const validation = validateImageMetadata(img.metadata);
-      if (!validation.isValid) {
-        console.warn('Invalid metadata:', validation.message);
-        return false;
-      }
-
-      return true;
+      console.log('Validating gallery image:', {
+        id: img.id,
+        validation
+      });
+      
+      return validation.isValid;
     });
 
-    if (galleryImage?.url) {
-      console.log('Found gallery image:', galleryImage.url);
-      console.groupEnd();
-      return galleryImage.url;
+    if (galleryImage) {
+      console.log('Found gallery image:', galleryImage);
+      return galleryImage;
     }
 
-    // Fallback to media_urls if available
-    if (Array.isArray(highlight.media_urls) && highlight.media_urls[0]) {
-      console.log('Using media_url:', highlight.media_urls[0]);
-      console.groupEnd();
-      return highlight.media_urls[0];
-    }
-
-    console.warn('No valid image found, using fallback');
-    console.groupEnd();
-    return cloudinaryConfig.defaults.placeholders.highlight;
+    console.warn('No suitable image found');
+    return null;
   } catch (error) {
-    console.error('Error transforming highlight image:', error);
+    console.error('Error finding highlight image:', error);
+    return null;
+  } finally {
     console.groupEnd();
-    toast.error(`Failed to load image for highlight: ${highlight.title}`);
-    return cloudinaryConfig.defaults.placeholders.highlight;
   }
 };
 
@@ -215,19 +205,8 @@ export const transformEventData = (eventData: any) => {
     .map((highlight: EventContent) => {
       console.log('Processing highlight:', highlight.title);
       
-      const galleryImage = (eventData.fashion_images || []).find((img: FashionImage) => {
-        if (img.category !== 'event_gallery') return false;
-        
-        const validation = validateImageMetadata(img.metadata);
-        if (!validation.isValid) {
-          console.warn('Invalid metadata:', validation.message);
-          return false;
-        }
-
-        return true;
-      });
-
-      const processedImage = processImage(galleryImage);
+      const highlightImage = findHighlightImage(highlight, eventData.fashion_images || []);
+      const processedImage = processImage(highlightImage);
       
       return {
         ...highlight,
@@ -242,6 +221,7 @@ export const transformEventData = (eventData: any) => {
     })
     .slice(0, 3);
 
+  // Transform collections with proper image handling
   const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection: FashionCollection) => {
       console.log('Processing collection:', collection.collection_name);
@@ -258,20 +238,12 @@ export const transformEventData = (eventData: any) => {
     })
     .slice(0, 3);
 
-  // Get hero image with enhanced selection logic and validation
+  // Get hero image with enhanced selection logic
   const heroImage = eventData.fashion_images?.find((img: FashionImage) => {
-    console.log('Checking hero image:', {
-      category: img.category,
-      metadata: img.metadata
-    });
-
-    if (img.category !== 'promotional' || !img.metadata) {
-      console.debug('Skipping non-promotional or missing metadata image');
-      return false;
-    }
+    if (img.category !== 'promotional') return false;
     
     const metadata = img.metadata as Record<string, unknown>;
-    return metadata.page === 'home';
+    return metadata?.page === 'home';
   })?.url || cloudinaryConfig.defaults.placeholders.hero;
 
   console.log('Transformation complete:', {
