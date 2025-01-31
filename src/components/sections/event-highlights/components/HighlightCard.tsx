@@ -1,113 +1,98 @@
+import { Check } from "lucide-react";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { OptimizedImage } from "@/components/cloudinary";
-import { toast } from "sonner";
-import { motion } from "framer-motion";
-import { useState, useCallback, useEffect } from "react";
-import { CardSkeleton } from "@/components/ui/loading-skeleton/CardSkeleton";
-import type { EventContent } from "@/types/event.types";
+import type { EventTicket } from "@/types/event.types";
 
-interface HighlightCardProps {
-  highlight: EventContent & { 
-    image: string;
-    isLoading?: boolean;
-    error?: Error;
-  };
-  index: number;
+interface HighlightCardProps extends Omit<EventTicket, 'benefits'> {
+  isSelected: boolean;
+  onSelect: (ticketType: string) => void;
+  subtitle: string;
+  perks: string[];
+  title: string;
+  tabIndex?: number;
 }
 
-export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const maxRetries = 2;
-
-  useEffect(() => {
-    console.log(`[HighlightCard] Initializing card for: ${highlight.title}`, {
-      image: highlight.image,
-      contentType: highlight.content_type,
-      mediaUrls: highlight.media_urls
-    });
-  }, [highlight]);
-
-  const handleImageLoad = useCallback(() => {
-    console.info(`[HighlightCard] Successfully loaded image for ${highlight.title}`);
-    setIsLoading(false);
-    setHasError(false);
-  }, [highlight.title]);
-
-  const handleImageError = useCallback(() => {
-    console.error(`[HighlightCard] Failed to load image for ${highlight.title}`, {
-      attempt: retryCount + 1,
-      maxRetries,
-      imageUrl: highlight.image
-    });
-    
-    if (retryCount < maxRetries) {
-      setRetryCount(prev => prev + 1);
-      return;
-    }
-
-    setHasError(true);
-    setIsLoading(false);
-    toast.error(`Failed to load image for ${highlight.title}`, {
-      description: "Please try refreshing the page"
-    });
-  }, [highlight.title, highlight.image, retryCount, maxRetries]);
-
-  // Early return for loading state
-  if (isLoading && !hasError) {
-    return (
-      <div 
-        role="status" 
-        aria-label="Loading highlight card"
-        className="animate-pulse"
-      >
-        <CardSkeleton />
-      </div>
-    );
-  }
+export const HighlightCard = ({
+  title,
+  subtitle,
+  price,
+  perks,
+  isSelected,
+  onSelect,
+  tabIndex = 0,
+}: HighlightCardProps) => {
+  const springConfig = {
+    type: "spring",
+    stiffness: 300,
+    damping: 30
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      role="article"
-      aria-label={`Event highlight: ${highlight.title}`}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={springConfig}
       className="h-full"
     >
-      <Card className="bg-black/60 border-none text-white h-full hover:scale-105 transition-transform duration-300 group">
-        <div className="relative h-[300px] md:h-[350px] lg:h-[400px] overflow-hidden rounded-t-lg">
-          <OptimizedImage
-            publicId={highlight.image}
-            alt={highlight.title}
-            aspectRatio="portrait"
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-            priority={index === 0}
-            onLoadingComplete={handleImageLoad}
-            onError={handleImageError}
-          />
-          <div 
-            className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" 
-            aria-hidden="true"
-          />
-        </div>
-        <CardHeader>
-          <CardTitle className="font-playfair text-xl md:text-2xl lg:text-3xl">
-            {highlight.title}
+      <Card
+        className={`relative h-full bg-black/30 backdrop-blur-sm border transition-all duration-300 will-change-transform ${
+          isSelected 
+            ? "border-red-accent shadow-glow" 
+            : "border-white/10 hover:border-white/20 hover:bg-white/5"
+        }`}
+        onClick={() => onSelect(title)}
+        tabIndex={tabIndex}
+        role="button"
+        aria-pressed={isSelected}
+      >
+        <CardHeader className="space-y-2">
+          <CardTitle className="text-2xl md:text-3xl font-poppins text-white">
+            {title}
           </CardTitle>
-          <CardDescription className="text-gray-300 font-montserrat text-sm md:text-base">
-            {highlight.content}
+          <CardDescription className="text-white/80 font-montserrat text-base">
+            {subtitle}
           </CardDescription>
         </CardHeader>
-        <CardFooter>
-          <Button 
-            className="w-full bg-red-deep hover:bg-red-dark text-white transition-colors"
-            onClick={() => toast.success(`Learn more about ${highlight.title}`)}
-            aria-label={`Learn more about ${highlight.title}`}
+        <CardContent>
+          <motion.div 
+            className="text-4xl font-bold font-montserrat text-red-accent mb-8 flex items-baseline gap-2"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
           >
-            Learn More
+            ${price}
+            <span className="text-lg text-white/60">/person</span>
+          </motion.div>
+          <ul className="space-y-4" role="list">
+            {perks.map((perk, index) => (
+              <motion.li
+                key={perk}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * (index + 1) }}
+                className="flex items-center gap-3 text-white/80 font-montserrat"
+              >
+                <Check className="w-5 h-5 text-red-accent shrink-0" aria-hidden="true" />
+                <span>{perk}</span>
+              </motion.li>
+            ))}
+          </ul>
+          <p className="text-sm text-white/60 mt-6 font-montserrat">
+            Secure payment with Stripe
+          </p>
+        </CardContent>
+        <CardFooter>
+          <Button
+            className="w-full h-12 bg-gradient-to-r from-red-accent to-red-accent/80 
+                     hover:opacity-90 text-white transition-all hover:scale-[1.02] 
+                     active:scale-[0.98] rounded-lg font-montserrat
+                     focus-visible:ring-2 focus-visible:ring-red-accent 
+                     focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            size="lg"
+            aria-label={`Select ${title} ticket`}
+          >
+            Select Ticket
           </Button>
         </CardFooter>
       </Card>

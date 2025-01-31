@@ -36,12 +36,12 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-12 md:space-y-8 text-center"
+      className="space-y-8 md:space-y-12"
     >
       <motion.h1 
         variants={itemVariants}
         id="hero-title"
-        className="font-montserrat text-4xl sm:text-5xl md:text-hero font-bold text-shadow-xl"
+        className="font-montserrat text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-shadow-xl leading-tight"
       >
         {headline.split(" ").map((word, index) => (
           <span 
@@ -55,7 +55,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       
       <motion.p 
         variants={itemVariants}
-        className="font-inter text-xl md:text-2xl max-w-2xl mx-auto text-white-secondary leading-relaxed drop-shadow-md"
+        className="font-inter text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto text-white/90 leading-relaxed drop-shadow-md"
       >
         {subheading}
       </motion.p>
@@ -69,7 +69,8 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
           className="bg-red-accent hover:bg-red-accent/90 text-white min-w-[200px]
                    transition-all duration-300 transform hover:scale-105
                    hover:shadow-[0_0_20px_rgba(255,51,102,0.3)]
-                   focus:ring-2 focus:ring-red-accent focus:outline-none"
+                   focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-accent"
           aria-label="Get your tickets now"
         >
           Get Tickets
@@ -80,7 +81,8 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
           className="border-red-accent text-red-accent hover:bg-red-accent/10
                    min-w-[200px] transition-all duration-300
                    transform hover:scale-105
-                   focus:ring-2 focus:ring-red-accent focus:outline-none"
+                   focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-accent"
           aria-label="View event date and calendar"
         >
           <Calendar className="mr-2 h-5 w-5" aria-hidden="true" />
