@@ -20,7 +20,14 @@ export const useEventData = () => {
             *,
             designer_profiles(*)
           ),
-          fashion_images(*)
+          fashion_images!inner(
+            id,
+            category,
+            url,
+            alt_text,
+            metadata,
+            description
+          )
         `)
         .eq('name', 'valentines_fashion_show')
         .order('created_at', { ascending: false })
