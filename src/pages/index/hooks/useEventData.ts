@@ -30,7 +30,7 @@ interface QueryError {
   details?: string;
 }
 
-const validateImageMetadata = (metadata: unknown): boolean => {
+const validateImageMetadata = (metadata: unknown): metadata is ImageMetadata => {
   if (!metadata || typeof metadata !== 'object') return false;
   
   const required = ['page', 'content_id', 'collection_id'];
@@ -38,10 +38,12 @@ const validateImageMetadata = (metadata: unknown): boolean => {
 };
 
 const getPromotionalImage = (images: FashionEvent['fashion_images'], type: 'hero' | 'highlight'): string => {
-  const image = images?.find(img => 
-    img.category === 'promotional' && 
-    img.metadata?.page === type
-  );
+  const image = images?.find(img => {
+    if (img.category !== 'promotional' || !img.metadata) return false;
+    
+    const metadata = img.metadata as ImageMetadata;
+    return metadata.page === type;
+  });
 
   if (!image) {
     console.warn(`[Image] No ${type} image found, using fallback`);
