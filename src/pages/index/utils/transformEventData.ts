@@ -24,51 +24,92 @@ const validateImageMetadata = (metadata: unknown): ImageMetadataValidation => {
 };
 
 const transformHighlightImage = (highlight: Partial<EventContent>, images: FashionImage[]): string => {
-  console.log('[Transform] Processing highlight image for:', highlight.title);
+  console.group(`[Transform] Processing highlight image for: ${highlight.title}`);
   
   try {
+    console.log('Available images for highlight:', images.length);
+    
     // First try to get image from event_gallery category with matching content_id
     const galleryImage = images.find(img => {
-      if (img.category !== 'event_gallery' || !img.metadata) return false;
-      
-      const validation = validateImageMetadata(img.metadata);
-      if (!validation.isValid) {
-        console.warn(`[Transform] Invalid metadata for image:`, validation.message);
+      console.log('Checking image:', {
+        category: img.category,
+        metadata: img.metadata,
+        url: img.url
+      });
+
+      if (img.category !== 'event_gallery') {
+        console.debug('Skipping non-gallery image');
         return false;
       }
       
-      return img.metadata && 
-             (img.metadata as Record<string, unknown>).content_id === highlight.id;
+      if (!img.metadata) {
+        console.warn('Missing metadata for image');
+        return false;
+      }
+      
+      const validation = validateImageMetadata(img.metadata);
+      if (!validation.isValid) {
+        console.warn('Invalid metadata:', validation.message);
+        return false;
+      }
+      
+      const isMatch = img.metadata && 
+                     (img.metadata as Record<string, unknown>).content_id === highlight.id;
+      
+      console.log('Image evaluation:', {
+        isMatch,
+        highlightId: highlight.id,
+        contentId: (img.metadata as Record<string, unknown>).content_id
+      });
+      
+      return isMatch;
     });
 
     if (galleryImage?.url) {
-      console.log('[Transform] Found gallery image for highlight:', highlight.title);
+      console.log('Found gallery image:', galleryImage.url);
+      console.groupEnd();
       return galleryImage.url;
     }
 
     // Fallback to media_urls if available
     if (Array.isArray(highlight.media_urls) && highlight.media_urls[0]) {
-      console.log('[Transform] Using media_url for highlight:', highlight.title);
+      console.log('Using media_url:', highlight.media_urls[0]);
+      console.groupEnd();
       return highlight.media_urls[0];
     }
 
-    console.warn(`[Transform] No valid image found for highlight: ${highlight.title}`);
+    console.warn('No valid image found, using fallback');
+    console.groupEnd();
     return cloudinaryConfig.defaults.placeholders.highlight;
   } catch (error) {
-    console.error('[Transform] Error transforming highlight image:', error);
+    console.error('Error transforming highlight image:', error);
+    console.groupEnd();
     toast.error(`Failed to load image for highlight: ${highlight.title}`);
     return cloudinaryConfig.defaults.placeholders.highlight;
   }
 };
 
 const transformCollectionImage = (collection: Partial<FashionCollection>, images: FashionImage[]): string => {
-  console.log('[Transform] Processing collection image for:', collection.collection_name);
+  console.group(`[Transform] Processing collection image for: ${collection.collection_name}`);
   
   try {
+    console.log('Available images for collection:', images.length);
+    
     // Look for promotional images with lingerie_showcase metadata
     const showcaseImage = images.find(img => {
-      if (img.category !== 'promotional' || !img.metadata) {
-        console.debug('[Transform] Skipping image - invalid category or missing metadata');
+      console.log('Checking image:', {
+        category: img.category,
+        metadata: img.metadata,
+        url: img.url
+      });
+
+      if (img.category !== 'promotional') {
+        console.debug('Skipping non-promotional image');
+        return false;
+      }
+      
+      if (!img.metadata) {
+        console.warn('Missing metadata for image');
         return false;
       }
       
@@ -76,34 +117,39 @@ const transformCollectionImage = (collection: Partial<FashionCollection>, images
       const isValid = metadata.page === 'lingerie_showcase' && 
                      metadata.collection_id === collection.id;
       
-      if (!isValid) {
-        console.debug('[Transform] Image metadata validation failed:', {
-          page: metadata.page,
-          collection_id: metadata.collection_id,
-          expected_id: collection.id
-        });
-      }
+      console.log('Image evaluation:', {
+        isValid,
+        collectionId: collection.id,
+        page: metadata.page,
+        metadataCollectionId: metadata.collection_id
+      });
       
       return isValid;
     });
 
     if (showcaseImage?.url) {
-      console.log('[Transform] Found showcase image for collection:', collection.collection_name);
+      console.log('Found showcase image:', showcaseImage.url);
+      console.groupEnd();
       return showcaseImage.url;
     }
 
-    console.warn(`[Transform] No valid image found for collection: ${collection.collection_name}`);
+    console.warn('No valid image found, using fallback');
+    console.groupEnd();
     return cloudinaryConfig.defaults.placeholders.collection;
   } catch (error) {
-    console.error('[Transform] Error transforming collection image:', error);
+    console.error('Error transforming collection image:', error);
+    console.groupEnd();
     toast.error(`Failed to load image for collection: ${collection.collection_name}`);
     return cloudinaryConfig.defaults.placeholders.collection;
   }
 };
 
 export const transformEventData = (eventData: any) => {
+  console.group('[Transform] Starting event data transformation');
+  
   if (!eventData) {
-    console.error('[Transform] No event data provided');
+    console.error('No event data provided');
+    console.groupEnd();
     return {
       highlights: [],
       collectionsWithImages: [],
@@ -111,7 +157,7 @@ export const transformEventData = (eventData: any) => {
     };
   }
 
-  console.log("[Transform] Starting event data transformation:", {
+  console.log('Initial data:', {
     contentCount: eventData.event_content?.length,
     imagesCount: eventData.fashion_images?.length
   });
@@ -120,7 +166,7 @@ export const transformEventData = (eventData: any) => {
   const highlights = (eventData.event_content || [])
     .filter((content: EventContent) => content.content_type === 'highlight')
     .map((highlight: EventContent) => {
-      console.log('[Transform] Processing highlight:', highlight.title);
+      console.log('Processing highlight:', highlight.title);
       
       return {
         ...highlight,
@@ -137,7 +183,7 @@ export const transformEventData = (eventData: any) => {
   // Transform collections with proper image handling and validation
   const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection: FashionCollection) => {
-      console.log('[Transform] Processing collection:', collection.collection_name);
+      console.log('Processing collection:', collection.collection_name);
       
       return {
         ...collection,
@@ -153,8 +199,13 @@ export const transformEventData = (eventData: any) => {
 
   // Get hero image with enhanced selection logic and validation
   const heroImage = eventData.fashion_images?.find((img: FashionImage) => {
+    console.log('Checking hero image:', {
+      category: img.category,
+      metadata: img.metadata
+    });
+
     if (img.category !== 'promotional' || !img.metadata) {
-      console.debug('[Transform] Skipping hero image - invalid category or missing metadata');
+      console.debug('Skipping non-promotional or missing metadata image');
       return false;
     }
     
@@ -162,12 +213,13 @@ export const transformEventData = (eventData: any) => {
     return metadata.page === 'home';
   })?.url || cloudinaryConfig.defaults.placeholders.hero;
 
-  console.log("[Transform] Transformation complete:", {
+  console.log('Transformation complete:', {
     highlightsCount: highlights.length,
     collectionsCount: collectionsWithImages.length,
     hasHeroImage: !!heroImage
   });
 
+  console.groupEnd();
   return {
     highlights,
     collectionsWithImages,

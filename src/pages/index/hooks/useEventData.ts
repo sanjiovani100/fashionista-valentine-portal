@@ -31,27 +31,59 @@ interface QueryError {
 }
 
 const validateImageMetadata = (metadata: unknown): metadata is ImageMetadata => {
-  if (!metadata || typeof metadata !== 'object') return false;
+  if (!metadata || typeof metadata !== 'object') {
+    console.warn('[Image Metadata] Invalid metadata structure:', metadata);
+    return false;
+  }
   
   const required = ['page', 'content_id', 'collection_id'];
-  return required.every(field => field in metadata);
+  const hasRequired = required.every(field => field in metadata);
+  
+  if (!hasRequired) {
+    console.warn('[Image Metadata] Missing required fields:', {
+      metadata,
+      missingFields: required.filter(field => !(field in metadata))
+    });
+  }
+  
+  return hasRequired;
 };
 
 const getPromotionalImage = (images: FashionEvent['fashion_images'], type: 'hero' | 'highlight'): string => {
+  console.log(`[Image Selection] Searching for ${type} image in ${images?.length || 0} images`);
+  
   const image = images?.find(img => {
-    if (img.category !== 'promotional' || !img.metadata) return false;
+    if (img.category !== 'promotional') {
+      console.debug('[Image Selection] Skipping non-promotional image:', img.category);
+      return false;
+    }
+    
+    if (!img.metadata) {
+      console.warn('[Image Selection] Missing metadata for image:', img.id);
+      return false;
+    }
     
     const metadata = img.metadata as ImageMetadata;
-    return metadata.page === type;
+    const isMatch = metadata.page === type;
+    
+    console.debug('[Image Selection] Image evaluation:', {
+      id: img.id,
+      category: img.category,
+      metadata,
+      isMatch
+    });
+    
+    return isMatch;
   });
 
   if (!image) {
-    console.warn(`[Image] No ${type} image found, using fallback`);
+    console.warn(`[Image Selection] No ${type} image found, using fallback`);
     return type === 'hero' 
       ? cloudinaryConfig.defaults.placeholders.hero 
       : cloudinaryConfig.defaults.placeholders.highlight;
   }
 
+  console.info(`[Image Selection] Found ${type} image:`, image.url);
   return image.url;
 };
 
@@ -59,7 +91,7 @@ export const useEventData = () => {
   return useQuery({
     queryKey: ['active-fashion-event'],
     queryFn: async () => {
-      console.log("[Query] Fetching event data...");
+      console.group('[Event Data] Fetching event data...');
       
       try {
         const { data: eventData, error: eventError } = await supabase
@@ -120,31 +152,39 @@ export const useEventData = () => {
           return null;
         }
 
-        // Validate image metadata and log issues
+        // Log image data for debugging
+        console.group('[Event Data] Image Analysis');
         eventData.fashion_images?.forEach((image, index) => {
+          console.log(`Image ${index + 1}:`, {
+            id: image.id,
+            category: image.category,
+            metadata: image.metadata,
+            url: image.url
+          });
+
           if (!validateImageMetadata(image.metadata)) {
-            console.warn(`[Query] Image ${index} has invalid metadata:`, {
+            console.warn(`[Image ${index + 1}] Invalid metadata:`, {
               imageId: image.id,
               category: image.category,
               metadata: image.metadata
             });
           }
 
-          // Validate dimensions and formats
           if (!image.dimensions) {
-            console.warn(`[Query] Image ${index} missing dimensions:`, {
+            console.warn(`[Image ${index + 1}] Missing dimensions:`, {
               imageId: image.id,
               category: image.category
             });
           }
 
           if (!image.formats) {
-            console.warn(`[Query] Image ${index} missing formats:`, {
+            console.warn(`[Image ${index + 1}] Missing formats:`, {
               imageId: image.id,
               category: image.category
             });
           }
         });
+        console.groupEnd();
 
         // Log successful data fetch with important counts
         console.log("[Query] Event data fetched successfully:", {
@@ -156,6 +196,7 @@ export const useEventData = () => {
           collectionsCount: eventData.fashion_collections?.length || 0
         });
         
+        console.groupEnd();
         return eventData as FashionEvent;
       } catch (error) {
         const queryError = error as QueryError;
