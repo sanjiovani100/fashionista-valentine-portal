@@ -10,14 +10,12 @@ interface ImageMetadata {
   page?: string;
 }
 
-interface ProcessedImage {
-  url: string;
-  alt: string;
-}
-
 const validateImageMetadata = (metadata: unknown): { isValid: boolean; message: string } => {
+  console.group('[Image Validation]');
+  
   if (!metadata || typeof metadata !== 'object') {
-    console.warn('[Image Validation] Invalid metadata structure:', metadata);
+    console.warn('Invalid metadata structure:', metadata);
+    console.groupEnd();
     return { 
       isValid: false, 
       message: 'Invalid metadata structure' 
@@ -25,27 +23,36 @@ const validateImageMetadata = (metadata: unknown): { isValid: boolean; message: 
   }
   
   const meta = metadata as ImageMetadata;
+  console.log('Validating metadata:', meta);
   
   // Check for either cloudinary_id or media_url
-  if (meta.cloudinary_id || meta.media_url) {
-    console.log('[Image Validation] Valid source found:', {
-      hasCloudinaryId: !!meta.cloudinary_id,
-      hasMediaUrl: !!meta.media_url
-    });
+  if (meta.cloudinary_id) {
+    console.log('Found valid cloudinary_id:', meta.cloudinary_id);
+    console.groupEnd();
     return { 
       isValid: true, 
-      message: 'Valid image source found' 
+      message: 'Valid cloudinary_id found' 
     };
   }
   
-  console.warn('[Image Validation] No valid image source found in metadata:', meta);
+  if (meta.media_url) {
+    console.log('Found valid media_url:', meta.media_url);
+    console.groupEnd();
+    return { 
+      isValid: true, 
+      message: 'Valid media_url found' 
+    };
+  }
+  
+  console.warn('No valid image source found in metadata:', meta);
+  console.groupEnd();
   return { 
     isValid: false, 
     message: 'No valid image source found' 
   };
 };
 
-const constructImageUrl = (imageData: FashionImage): ProcessedImage => {
+const constructImageUrl = (imageData: FashionImage): { url: string; alt: string } => {
   console.group('[URL Construction]');
   try {
     if (!imageData) {
@@ -53,10 +60,15 @@ const constructImageUrl = (imageData: FashionImage): ProcessedImage => {
     }
 
     const metadata = imageData.metadata as ImageMetadata;
+    console.log('Processing image data:', {
+      id: imageData.id,
+      metadata,
+      category: imageData.category
+    });
     
     // First try media_url from metadata
     if (metadata?.media_url) {
-      console.log('Using media_url from metadata:', metadata.media_url);
+      console.log('Using media_url:', metadata.media_url);
       return {
         url: metadata.media_url,
         alt: imageData.alt_text || 'Event image'
@@ -94,28 +106,38 @@ const constructImageUrl = (imageData: FashionImage): ProcessedImage => {
   }
 };
 
-const findHighlightImage = (highlight: Partial<EventContent>, images: FashionImage[]): FashionImage | null => {
+const findHighlightImage = (highlight: Partial<EventContent>, images: FashionImage[], usedImageIds: Set<string>): FashionImage | null => {
   console.group(`[Image Selection] Finding image for highlight: ${highlight.title}`);
   
   try {
     // First try to find an image specifically linked to this highlight
     const linkedImage = images.find(img => {
       const metadata = img.metadata as ImageMetadata;
-      return metadata?.content_id === highlight.id;
+      const isUnused = !usedImageIds.has(img.id);
+      const isLinked = metadata?.content_id === highlight.id;
+      
+      console.log('Checking image:', {
+        imageId: img.id,
+        isUnused,
+        isLinked,
+        metadata
+      });
+      
+      return isLinked && isUnused;
     });
 
     if (linkedImage) {
-      console.log('[Image Selection] Found linked image:', linkedImage);
+      console.log('Found linked image:', linkedImage);
+      usedImageIds.add(linkedImage.id);
       return linkedImage;
     }
 
-    // Then try to find a gallery image that hasn't been used yet
+    // Then try to find an unused gallery image
     const unusedGalleryImage = images.find(img => {
-      if (img.category !== 'event_gallery') return false;
+      if (img.category !== 'event_gallery' || usedImageIds.has(img.id)) return false;
       
       const validation = validateImageMetadata(img.metadata);
-      
-      console.log('[Image Selection] Validating gallery image:', {
+      console.log('Checking gallery image:', {
         id: img.id,
         validation,
         metadata: img.metadata
@@ -125,14 +147,15 @@ const findHighlightImage = (highlight: Partial<EventContent>, images: FashionIma
     });
 
     if (unusedGalleryImage) {
-      console.log('[Image Selection] Found unused gallery image:', unusedGalleryImage);
+      console.log('Found unused gallery image:', unusedGalleryImage);
+      usedImageIds.add(unusedGalleryImage.id);
       return unusedGalleryImage;
     }
 
-    console.warn('[Image Selection] No suitable image found');
+    console.warn('No suitable image found');
     return null;
   } catch (error) {
-    console.error('[Image Selection] Error finding highlight image:', error);
+    console.error('[Image Selection] Error:', error);
     return null;
   } finally {
     console.groupEnd();
@@ -152,6 +175,9 @@ export const transformEventData = (eventData: any) => {
     };
   }
 
+  // Track used images to prevent duplicates
+  const usedImageIds = new Set<string>();
+
   console.log('[Transform] Initial data:', {
     contentCount: eventData.event_content?.length,
     imagesCount: eventData.fashion_images?.length,
@@ -164,7 +190,7 @@ export const transformEventData = (eventData: any) => {
     .map((highlight: EventContent) => {
       console.log('[Transform] Processing highlight:', highlight.title);
       
-      const highlightImage = findHighlightImage(highlight, eventData.fashion_images || []);
+      const highlightImage = findHighlightImage(highlight, eventData.fashion_images || [], usedImageIds);
       const processedImage = constructImageUrl(highlightImage || {
         url: cloudinaryConfig.defaults.placeholders.highlight,
         alt_text: highlight.title
