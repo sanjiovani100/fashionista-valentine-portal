@@ -13,7 +13,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
     visible: {
       opacity: 1,
       transition: {
-        st.2,
+        duration: 0.2,
         delayChildren: 0.3,
       },
     },
