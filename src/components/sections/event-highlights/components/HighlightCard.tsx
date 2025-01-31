@@ -16,7 +16,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
     damping: 30
   };
 
-  // Get card title based on index
+  // Fixed titles for the cards
   const getCardTitle = (index: number) => {
     const titles = [
       "Fashion Show",
@@ -26,17 +26,15 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
     return titles[index] || `Event ${index + 1}`;
   };
 
-  // Clean content by removing highlight words and formatting
+  // Clean content by removing any unwanted words and formatting
   const cleanContent = (content: string) => {
     console.log('[Content Cleaning] Original content:', content);
     
     const cleaned = content
-      .replace(/highlight(s)?/gi, '') // Remove highlight/highlights
       .split('\n')
       .map(line => line.trim())
       .filter(line => line.length > 0)
       .map(line => {
-        // Remove any remaining instances of the word
         const cleanedLine = line
           .replace(/^\s*[-•]\s*/, '') // Remove bullet points
           .replace(/\s+/g, ' ') // Replace multiple spaces with single space
@@ -68,9 +66,6 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
           <CardTitle className="text-2xl md:text-3xl font-poppins text-white">
             {getCardTitle(index)}
           </CardTitle>
-          <p className="text-white/80 font-montserrat text-base">
-            {highlight.content_type}
-          </p>
         </CardHeader>
         <CardContent>
           <motion.div 
