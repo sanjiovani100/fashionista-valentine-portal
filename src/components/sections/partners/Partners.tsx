@@ -1,16 +1,13 @@
 import React from 'react';
 import { motion } from "framer-motion";
-import { LogoCarousel } from "@/components/ui/logo-carousel";
 import { useInView } from "react-intersection-observer";
-
-const partnerLogos = [
-  { id: 1, name: "Partner 1", src: "/placeholder.svg" },
-  { id: 2, name: "Partner 2", src: "/placeholder.svg" },
-  { id: 3, name: "Partner 3", src: "/placeholder.svg" },
-  { id: 4, name: "Partner 4", src: "/placeholder.svg" },
-  { id: 5, name: "Partner 5", src: "/placeholder.svg" },
-  { id: 6, name: "Partner 6", src: "/placeholder.svg" },
-];
+import { Link } from "react-router-dom";
+import { 
+  Camera, Palette, Building2, 
+  Award, Users, TrendingUp,
+  Globe, Briefcase, Target 
+} from "lucide-react";
+import { roleContent } from "@/constants/role-content";
 
 export const Partners = () => {
   const { ref, inView } = useInView({
@@ -66,39 +63,76 @@ export const Partners = () => {
         >
           <h2
             id="partners-title"
-            className="text-4xl md:text-[3.5rem] font-bold tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-red-accent via-pink-magenta to-purple-vivid"
+            className="text-4xl md:text-[3.5rem] font-bold tracking-tight leading-none text-gradient"
           >
-            Our Partners
+            Join Our Fashion Community
           </h2>
-          <p className="text-white-secondary max-w-2xl mx-auto text-lg">
-            Collaborating with industry leaders to bring you an unforgettable fashion experience
+          <p className="text-white/80 max-w-2xl mx-auto text-lg">
+            Be part of an exclusive network of fashion industry professionals and enthusiasts
           </p>
         </motion.div>
 
-        {/* Logo carousel with improved accessibility */}
-        <div
-          className="backdrop-blur-sm bg-black/30 rounded-xl border border-white/10 p-8 shadow-glow"
-          role="region"
-          aria-label="Partner logos carousel"
-        >
-          <LogoCarousel logos={partnerLogos} columns={3} />
+        {/* Partner Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+          {Object.entries(roleContent).map(([role, content]) => (
+            <motion.div
+              key={role}
+              variants={itemVariants}
+              className="card-base card-hover rounded-xl p-8 flex flex-col"
+            >
+              <h3 className="text-2xl font-bold mb-4 text-gradient">
+                {content.hero.title}
+              </h3>
+              <p className="text-white/70 mb-6">
+                {content.hero.subtitle}
+              </p>
+              
+              {/* Benefits List */}
+              <ul className="space-y-4 mb-8 flex-grow">
+                {content.benefits.map((benefit, index) => {
+                  const Icon = benefit.icon;
+                  return (
+                    <li key={index} className="flex items-start space-x-3">
+                      <Icon className="w-6 h-6 text-red-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold text-white mb-1">
+                          {benefit.title}
+                        </h4>
+                        <p className="text-sm text-white/70">
+                          {benefit.description}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {/* CTA Button */}
+              <Link
+                to={`/register/${role}`}
+                className="btn-primary w-full text-center py-3 px-6 rounded-lg font-semibold"
+                aria-label={`Register as ${role}`}
+              >
+                Register Now
+              </Link>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Call to action */}
+        {/* Additional Information */}
         <motion.div
-          className="mt-12 text-center"
+          className="mt-16 text-center"
           variants={itemVariants}
         >
-          <p className="text-white-secondary mb-4">
-            Interested in becoming a partner?
+          <p className="text-white/60 mb-4">
+            Want to learn more about partnership opportunities?
           </p>
-          <a
-            href="/sponsors"
-            className="inline-flex items-center px-6 py-3 bg-red-accent hover:bg-red-accent/90 text-white rounded-lg transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
-            aria-label="Learn more about partnership opportunities"
+          <Link
+            to="/sponsors"
+            className="btn-secondary inline-flex items-center px-6 py-3"
           >
-            Become a Partner
-          </a>
+            View Partnership Details
+          </Link>
         </motion.div>
       </motion.div>
     </section>
