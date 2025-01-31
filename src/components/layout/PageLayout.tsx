@@ -125,7 +125,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         
         <div 
           id="main-content" 
-          className="scroll-snap-container pt-20 space-y-16 md:space-y-24 lg:space-y-32"
+          className="scroll-snap-container pt-16 space-y-8 md:space-y-12 lg:space-y-16"
           role="main"
           tabIndex={-1}
         >
@@ -136,7 +136,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
           id="footer" 
           role="contentinfo" 
           tabIndex={-1}
-          className="bg-black relative z-10 mt-16 md:mt-24 lg:mt-32"
+          className="bg-black relative z-10 mt-8 md:mt-12 lg:mt-16"
         >
           <Footerdemo />
         </footer>
