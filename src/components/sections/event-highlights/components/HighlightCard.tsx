@@ -16,12 +16,27 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
     damping: 30
   };
 
+  // Get card title based on index
+  const getCardTitle = (index: number) => {
+    switch (index) {
+      case 0:
+        return "Fashion Show";
+      case 1:
+        return "Valentine's Party";
+      case 2:
+        return "VIP Experience";
+      default:
+        return `Event ${index + 1}`;
+    }
+  };
+
   // Remove "highlight" word and split content into perks
   const perks = highlight.content
     .replace(/highlight/gi, '')
+    .replace(/highlights/gi, '')
     .split('\n')
-    .filter(Boolean)
-    .map(perk => perk.trim());
+    .map(perk => perk.trim())
+    .filter(perk => perk.length > 0);
 
   return (
     <motion.div
@@ -37,7 +52,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
       >
         <CardHeader className="space-y-2">
           <CardTitle className="text-2xl md:text-3xl font-poppins text-white">
-            Runway Spectacle {index + 1}
+            {getCardTitle(index)}
           </CardTitle>
           <p className="text-white/80 font-montserrat text-base">
             {highlight.content_type}
@@ -52,7 +67,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
           >
             <img 
               src={highlight.image} 
-              alt={`Runway Spectacle ${index + 1}`}
+              alt={`${getCardTitle(index)} preview`}
               className="w-full h-48 object-cover rounded-lg"
               loading="lazy"
             />
@@ -78,7 +93,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
                      focus-visible:ring-2 focus-visible:ring-white 
                      focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             size="lg"
-            aria-label={`Learn more about Runway Spectacle ${index + 1}`}
+            aria-label={`Learn more about ${getCardTitle(index)}`}
           >
             Learn More
           </Button>
