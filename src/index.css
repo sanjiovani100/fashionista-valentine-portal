@@ -52,7 +52,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200;
   }
   
   body {
@@ -82,7 +82,7 @@
   }
 
   .card-hover {
-    @apply hover:border-white/20 hover:scale-102 
+    @apply hover:border-white/20 hover:scale-105
            hover:shadow-lg hover:shadow-black/30;
   }
 
