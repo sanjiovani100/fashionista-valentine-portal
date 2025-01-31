@@ -62,7 +62,7 @@ function Footerdemo() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <motion.div variants={item} className="relative">
             <img 
-              src="/fashionistas-logo.png" 
+              src="/lovable-uploads/780caef1-834f-4fa7-a143-60c38ed8afe1.png" 
               alt="Fashionistas Logo" 
               className="h-12 mb-4 object-contain"
             />
