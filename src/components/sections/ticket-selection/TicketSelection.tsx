@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Heart } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation } from "framer-motion";
 import { CountdownTimer } from "./components/CountdownTimer";
@@ -47,35 +46,10 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
 
   return (
     <section 
-      className="relative min-h-screen bg-gradient-to-b from-maroon/5 to-black/95 pt-8 pb-20 md:pb-[80px] px-4 overflow-hidden"
+      className="relative bg-gradient-to-b from-maroon/5 to-black/95 pt-8 pb-20 md:pb-[80px] px-4 overflow-hidden"
       ref={ref}
       aria-labelledby="ticket-selection-title"
     >
-      {/* Decorative Hearts */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-      >
-        {[1, 2, 3].map((_, index) => (
-          <motion.div
-            key={index}
-            className={`absolute ${index === 0 ? 'top-1/4 left-1/4' : index === 1 ? 'top-1/2 right-1/4' : 'bottom-1/4 left-1/2'}`}
-            animate={{
-              y: [0, -20, 0],
-              rotate: [0, 5, 0],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{
-              duration: 4 + index,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <Heart className={`w-${16 + index * 4} h-${16 + index * 4} text-red-soft/10`} />
-          </motion.div>
-        ))}
-      </div>
-      
       <motion.div 
         className="container mx-auto relative z-10 max-w-7xl"
         variants={containerVariants}
