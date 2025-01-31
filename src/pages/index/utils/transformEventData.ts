@@ -1,33 +1,25 @@
 import { toast } from "sonner";
 import { cloudinaryConfig } from '@/components/cloudinary/config';
 import type { EventContent, FashionCollection, FashionImage } from "@/types/event.types";
-import type { Json } from "@/types/database";
-
-interface ImageMetadata {
-  page?: string;
-  collection_id?: string;
-  bucket_id?: string;
-  file_path?: string;
-  uploaded_at?: string;
-}
 
 const transformHighlightImage = (highlight: Partial<EventContent>, images: FashionImage[]): string => {
   try {
-    // First try to get image from media_urls
-    const mediaUrl = highlight.media_urls?.[0];
-    if (mediaUrl && mediaUrl.includes('cloudinary.com')) {
-      return mediaUrl;
-    }
-
-    // Then look for matching image in fashion_images
-    const matchingImage = images.find(img => 
+    // First try to get image from event_gallery category
+    const galleryImage = images.find(img => 
       img.category === 'event_gallery' && 
       img.metadata && 
-      (img.metadata as ImageMetadata).collection_id === highlight.id
+      typeof img.metadata === 'object' &&
+      'content_id' in img.metadata &&
+      img.metadata.content_id === highlight.id
     );
 
-    if (matchingImage?.url) {
-      return matchingImage.url;
+    if (galleryImage?.url) {
+      return galleryImage.url;
+    }
+
+    // Fallback to media_urls if available
+    if (highlight.media_urls?.[0]) {
+      return highlight.media_urls[0];
     }
 
     console.warn(`No valid image found for highlight: ${highlight.title}`);
@@ -40,13 +32,17 @@ const transformHighlightImage = (highlight: Partial<EventContent>, images: Fashi
 
 const transformCollectionImage = (collection: Partial<FashionCollection>, images: FashionImage[]): string => {
   try {
-    const collectionImage = images.find(img => {
-      const metadata = img.metadata as ImageMetadata | null;
-      return img.category === 'promotional' && metadata?.collection_id === collection.id;
+    // Look for promotional images with lingerie_showcase metadata
+    const showcaseImage = images.find(img => {
+      if (img.category !== 'promotional' || !img.metadata) return false;
+      
+      const metadata = img.metadata as Record<string, unknown>;
+      return metadata.page === 'lingerie_showcase' && 
+             metadata.collection_id === collection.id;
     });
 
-    if (collectionImage?.url) {
-      return collectionImage.url;
+    if (showcaseImage?.url) {
+      return showcaseImage.url;
     }
 
     console.warn(`No valid image found for collection: ${collection.collection_name}`);
@@ -58,6 +54,15 @@ const transformCollectionImage = (collection: Partial<FashionCollection>, images
 };
 
 export const transformEventData = (eventData: any) => {
+  if (!eventData) {
+    console.error('No event data provided');
+    return {
+      highlights: [],
+      collectionsWithImages: [],
+      heroImage: cloudinaryConfig.defaults.placeholders.event
+    };
+  }
+
   console.log("Starting event data transformation:", {
     contentCount: eventData.event_content?.length,
     imagesCount: eventData.fashion_images?.length
@@ -92,8 +97,10 @@ export const transformEventData = (eventData: any) => {
 
   // Get hero image with updated selection logic
   const heroImage = eventData.fashion_images?.find((img: FashionImage) => {
-    const metadata = img.metadata as ImageMetadata | null;
-    return img.category === 'promotional' && metadata?.page === 'home';
+    if (img.category !== 'promotional' || !img.metadata) return false;
+    
+    const metadata = img.metadata as Record<string, unknown>;
+    return metadata.page === 'home';
   })?.url || cloudinaryConfig.defaults.placeholders.event;
 
   console.log("Transformation complete:", {
