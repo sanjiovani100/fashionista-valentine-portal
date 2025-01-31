@@ -24,38 +24,18 @@ export default {
         inter: ["Inter", "sans-serif"],
       },
       colors: {
-        // Primary Colors
+        // Primary Colors - Maroon Scale
         maroon: {
-          DEFAULT: "#8B0000", // Enhanced deep maroon
+          DEFAULT: "#8B0000",
           light: "#B22222",
           dark: "#4A0404",
         },
-        black: {
-          DEFAULT: "#0A0A0A", // Softer black
-          pure: "#000000",
-        },
-        white: {
-          DEFAULT: "#FFFFFF",
-          secondary: "rgba(255,255,255,0.8)",
-          muted: "rgba(255,255,255,0.6)",
-        },
-        
-        // Accent Colors
-        pink: {
-          magenta: "#D946EF",
-          light: "#FFD6E7",
-        },
-        purple: {
-          vivid: "#8B5CF6",
-          soft: "#D6BCFA",
-        },
+        // Accent Colors - Red Scale
         red: {
-          accent: "#FF3366",
-          soft: "#FFC1C1",
-          light: "#FFE6E6",
-          deep: "#8B0000",
+          bright: "#FF1744",
+          primary: "#FF3366",
+          soft: "#FF6B81",
         },
-        
         // Gray Scale
         gray: {
           100: "#F1F1F1",
@@ -63,90 +43,37 @@ export default {
           300: "#888888",
           400: "#555555",
           500: "#222222",
-          highlight: "#F0F0F0",
         },
-        
-        // System Colors
-        border: "rgba(255,255,255,0.1)",
-        input: "rgba(255,255,255,0.1)",
-        ring: "#FF3366",
-        background: "#0A0A0A",
-        foreground: "#FFFFFF",
+        // Base Colors
+        black: {
+          DEFAULT: "#0A0A0A",
+          pure: "#000000",
+        },
+        white: {
+          DEFAULT: "#FFFFFF",
+          opacity: {
+            80: "rgba(255,255,255,0.8)",
+            60: "rgba(255,255,255,0.6)",
+            40: "rgba(255,255,255,0.4)",
+            20: "rgba(255,255,255,0.2)",
+          },
+        },
       },
-      
-      // Enhanced Gradients
       backgroundImage: {
-        "primary-gradient": "linear-gradient(135deg, #8B0000, #4A0404)",
-        "accent-gradient": "linear-gradient(135deg, #FF3366, #D946EF)",
-        "purple-gradient": "linear-gradient(135deg, #8B5CF6, #D946EF)",
-        "overlay-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.9))",
-        "hero-gradient": "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8))",
+        "primary-gradient": "linear-gradient(135deg, var(--maroon) 0%, var(--maroon-dark) 100%)",
+        "accent-gradient": "linear-gradient(135deg, var(--red-primary) 0%, var(--red-bright) 100%)",
+        "dark-gradient": "linear-gradient(to bottom, var(--maroon-dark) 0%, var(--black) 100%)",
         "card-hover": "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
       },
-      
-      // Interactive States
       opacity: {
         '85': '0.85',
         '95': '0.95',
-      },
-      brightness: {
-        '95': '.95',
-        '105': '1.05',
-        '110': '1.1',
       },
       ringWidth: {
         '3': '3px',
       },
       ringOffsetWidth: {
         '3': '3px',
-      },
-      
-      // Font Size
-      fontSize: {
-        hero: ["5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-        "section-title": ["3.5rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
-        "card-title": ["2.25rem", { lineHeight: "1.2" }],
-        "body-large": ["1.25rem", { lineHeight: "1.6" }],
-        body: ["1.125rem", { lineHeight: "1.6" }],
-        small: ["0.875rem", { lineHeight: "1.5" }],
-      },
-
-      // Enhanced Animations
-      keyframes: {
-        "stagger-fade-up": {
-          "0%": { 
-            opacity: "0",
-            transform: "translateY(30px)"
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)"
-          }
-        },
-        "fade-in": {
-          "0%": {
-            opacity: "0"
-          },
-          "100%": {
-            opacity: "1"
-          }
-        },
-        "scale-in": {
-          "0%": {
-            opacity: "0",
-            transform: "scale(0.95)"
-          },
-          "100%": {
-            opacity: "1",
-            transform: "scale(1)"
-          }
-        }
-      },
-      animation: {
-        "stagger-fade-up": "stagger-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards",
-        "fade-in-up": "fade-in-up 0.5s ease-out forwards",
-        "fade-in": "fade-in 0.5s ease-out forwards",
-        "scale-in": "scale-in 0.5s ease-out forwards"
       },
     },
   },

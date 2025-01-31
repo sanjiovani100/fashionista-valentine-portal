@@ -6,35 +6,45 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
+    /* Base Colors */
+    --background: 0 0% 4%;
     --foreground: 0 0% 100%;
-    --brand: 348 100% 60%;
-    --brand-foreground: 348 100% 94%;
     
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 100%;
+    /* Maroon Scale */
+    --maroon: 0 100% 27%;
+    --maroon-light: 0 68% 41%;
+    --maroon-dark: 0 91% 15%;
     
-    --popover: 0 0% 0%;
-    --popover-foreground: 0 0% 100%;
+    /* Red Scale */
+    --red-bright: 348 100% 54%;
+    --red-primary: 348 100% 60%;
+    --red-soft: 348 100% 71%;
     
-    --primary: 0 100% 25%;
-    --primary-foreground: 0 0% 100%;
+    /* Gray Scale */
+    --gray-100: 0 0% 95%;
+    --gray-200: 0 0% 87%;
+    --gray-300: 0 0% 53%;
+    --gray-400: 0 0% 33%;
+    --gray-500: 0 0% 13%;
     
-    --secondary: 0 24% 93%;
-    --secondary-foreground: 0 0% 0%;
-    
-    --muted: 0 0% 53%;
-    --muted-foreground: 0 0% 100%;
-    
-    --accent: 348 100% 60%;
-    --accent-foreground: 0 0% 100%;
-    
+    /* System Colors */
+    --card: var(--gray-500);
+    --card-foreground: var(--foreground);
+    --popover: var(--background);
+    --popover-foreground: var(--foreground);
+    --primary: var(--maroon);
+    --primary-foreground: var(--foreground);
+    --secondary: var(--gray-200);
+    --secondary-foreground: var(--background);
+    --muted: var(--gray-300);
+    --muted-foreground: var(--foreground);
+    --accent: var(--red-primary);
+    --accent-foreground: var(--foreground);
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 0 0% 100%;
-    --input: 0 0% 100%;
-    --ring: 348 100% 60%;
+    --destructive-foreground: var(--foreground);
+    --border: var(--gray-200);
+    --input: var(--gray-200);
+    --ring: var(--red-primary);
     
     --radius: 0.5rem;
   }
@@ -57,25 +67,17 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-red-accent text-pure-white hover:bg-red-accent/90 
+    @apply bg-red-primary text-white hover:bg-red-primary/90 
            transition-all duration-300 ease-out transform hover:scale-105;
   }
 
   .btn-secondary {
-    @apply bg-transparent border border-red-accent text-red-accent 
-           hover:bg-red-accent/10 transition-all duration-300 ease-out transform hover:scale-105;
-  }
-
-  .text-shadow-xl {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
-  }
-
-  .drop-shadow-glow {
-    filter: drop-shadow(0 0 20px rgba(255,51,102,0.3));
+    @apply bg-transparent border border-red-primary text-red-primary 
+           hover:bg-red-primary/10 transition-all duration-300 ease-out transform hover:scale-105;
   }
 
   .card-base {
-    @apply bg-gray-500 border border-white/10 text-pure-white
+    @apply bg-gray-500 border border-white/10 text-white
            transition-all duration-300 ease-out;
   }
 
@@ -84,46 +86,17 @@
            hover:shadow-lg hover:shadow-black/30;
   }
 
-  .section-padding {
-    @apply py-20 md:py-[80px];
-  }
-
-  .container-padding {
-    @apply px-4 md:px-8;
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-accent-gradient;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-accent-gradient;
-  }
-  
-  .stagger-delay-1 {
-    animation-delay: 100ms;
-  }
-  .stagger-delay-2 {
-    animation-delay: 200ms;
-  }
-  .stagger-delay-3 {
-    animation-delay: 300ms;
-  }
-  .stagger-delay-4 {
-    animation-delay: 400ms;
-  }
-  .stagger-delay-5 {
-    animation-delay: 500ms;
-  }
-  
-  .fade-top-lg {
-    mask-image: linear-gradient(to bottom, 
-      transparent, 
-      rgba(0, 0, 0, 1) 8rem
-    );
+  .text-shadow-xl {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
   }
 
-  .animate-in {
-    animation-duration: 1000ms;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-out;
+  .drop-shadow-glow {
+    filter: drop-shadow(0 0 20px rgba(255,51,102,0.3));
   }
 }
