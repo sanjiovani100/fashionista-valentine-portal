@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { EventContent } from "@/types/event.types";
 
@@ -32,11 +32,11 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
       >
         <CardHeader className="space-y-2">
           <CardTitle className="text-2xl md:text-3xl font-poppins text-white">
-            {highlight.title}
+            Runway Spectacle
           </CardTitle>
-          <CardDescription className="text-white/80 font-montserrat text-base">
+          <p className="text-white/80 font-montserrat text-base">
             {highlight.content_type}
-          </CardDescription>
+          </p>
         </CardHeader>
         <CardContent>
           <motion.div 
@@ -47,8 +47,9 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
           >
             <img 
               src={highlight.image} 
-              alt={highlight.title}
+              alt={`Runway Spectacle ${index + 1}`}
               className="w-full h-48 object-cover rounded-lg"
+              loading="lazy"
             />
           </motion.div>
           <ul className="space-y-4" role="list">
@@ -65,20 +66,18 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
               </motion.li>
             ))}
           </ul>
-        </CardContent>
-        <CardFooter>
           <Button
-            className="w-full h-12 bg-gradient-to-r from-red-accent to-red-accent/80 
-                     hover:opacity-90 text-white transition-all hover:scale-[1.02] 
-                     active:scale-[0.98] rounded-lg font-montserrat
-                     focus-visible:ring-2 focus-visible:ring-red-accent 
+            className="w-full h-12 mt-6 bg-white text-black hover:bg-white/90 
+                     transition-all hover:scale-[1.02] active:scale-[0.98] 
+                     rounded-lg font-montserrat
+                     focus-visible:ring-2 focus-visible:ring-white 
                      focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             size="lg"
-            aria-label={`Learn more about ${highlight.title}`}
+            aria-label={`Learn more about Runway Spectacle ${index + 1}`}
           >
             Learn More
           </Button>
-        </CardFooter>
+        </CardContent>
       </Card>
     </motion.div>
   );

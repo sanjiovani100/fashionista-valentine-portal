@@ -13,7 +13,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        st.2,
         delayChildren: 0.3,
       },
     },
@@ -36,7 +36,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-8 md:space-y-12"
+      className="space-y-8 md:space-y-12 text-center max-w-4xl mx-auto"
     >
       <motion.h1 
         variants={itemVariants}
@@ -46,7 +46,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
         {headline.split(" ").map((word, index) => (
           <span 
             key={index} 
-            className={index === 1 ? "block text-red-accent mt-4 drop-shadow-glow" : "text-white drop-shadow-glow"}
+            className={`block ${index === 1 ? "text-red-accent mt-4 drop-shadow-glow" : "text-white drop-shadow-glow"}`}
           >
             {word}{" "}
           </span>
@@ -66,11 +66,11 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       >
         <Button 
           size="lg" 
-          className="bg-red-accent hover:bg-red-accent/90 text-white min-w-[200px]
+          className="bg-white text-black hover:bg-white/90 min-w-[200px]
                    transition-all duration-300 transform hover:scale-105
-                   hover:shadow-[0_0_20px_rgba(255,51,102,0.3)]
-                   focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-accent"
+                   hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]
+                   focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label="Get your tickets now"
         >
           Get Tickets
@@ -78,11 +78,11 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
         <Button 
           variant="outline" 
           size="lg" 
-          className="border-red-accent text-red-accent hover:bg-red-accent/10
+          className="border-white text-white hover:bg-white/10
                    min-w-[200px] transition-all duration-300
                    transform hover:scale-105
-                   focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-accent"
+                   focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label="View event date and calendar"
         >
           <Calendar className="mr-2 h-5 w-5" aria-hidden="true" />
