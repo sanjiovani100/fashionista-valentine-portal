@@ -25,10 +25,9 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
   return (
     <section 
       ref={ref}
-      className="py-20 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden"
+      className="py-12 bg-gradient-to-br from-black to-[#2B0000] relative overflow-hidden"
       aria-labelledby="highlights-title"
     >
-      {/* Background pattern */}
       <div 
         className="absolute inset-0 opacity-10 pointer-events-none"
         aria-hidden="true"
@@ -43,7 +42,7 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-6"
+          className="text-center space-y-4"
         >
           <h2 
             id="highlights-title"
@@ -51,12 +50,11 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
           >
             Event Highlights
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-12 font-inter">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-inter">
             Discover the magical moments that await you at our Valentine's Fashion Event
           </p>
         </motion.div>
 
-        {/* Desktop view with improved grid layout */}
         <div 
           className="hidden md:block"
           aria-label="Event highlights grid view"
@@ -64,7 +62,6 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
           <HighlightGrid highlights={highlights} />
         </div>
 
-        {/* Mobile view with optimized carousel */}
         <div 
           className="md:hidden"
           aria-label="Event highlights carousel view"

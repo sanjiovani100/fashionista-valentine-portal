@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Hero } from "@/components/sections/hero/Hero";
-import { EventsSection } from "@/components/sections/events/EventsSection";
 import { EventHighlights } from "@/components/sections/event-highlights/EventHighlights";
 import { LingerieShowcase } from "@/components/sections/lingerie-showcase/LingerieShowcase";
 import { TicketSelection } from "@/components/sections/ticket-selection/TicketSelection";
@@ -14,49 +13,10 @@ import { ErrorState } from "./components/ErrorState";
 import { useEventData } from "./hooks/useEventData";
 import { transformEventData } from "./utils/highlights/transform";
 import { toast } from "sonner";
-import { runVisualTests } from "@/utils/testing/visualTesting";
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useEventData();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Monitor form submissions and navigation
-    const handleFormSubmit = (event: SubmitEvent) => {
-      const form = event.target as HTMLFormElement;
-      console.info('[Form Submission]:', {
-        formId: form.id,
-        formData: new FormData(form)
-      });
-    };
-
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-      form.addEventListener('submit', handleFormSubmit as EventListener);
-    });
-
-    // Monitor navigation
-    const handleNavigation = () => {
-      console.info('[Navigation]:', {
-        path: window.location.pathname,
-        timestamp: new Date().toISOString()
-      });
-    };
-
-    window.addEventListener('popstate', handleNavigation);
-
-    // Run visual tests in development
-    if (process.env.NODE_ENV === 'development' && containerRef.current) {
-      runVisualTests(containerRef.current);
-    }
-
-    return () => {
-      forms.forEach(form => {
-        form.removeEventListener('submit', handleFormSubmit as EventListener);
-      });
-      window.removeEventListener('popstate', handleNavigation);
-    };
-  }, []);
 
   if (isLoading) {
     return <LoadingState />;
@@ -78,7 +38,7 @@ const Index = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="space-y-16 md:space-y-24 lg:space-y-32 overflow-hidden"
+          className="space-y-8 md:space-y-12 lg:space-y-16 overflow-hidden"
         >
           <Hero 
             headline={eventData?.title || "Fashionistas Valentine's Event"}
@@ -108,10 +68,6 @@ const Index = () => {
 
           <section className="container mx-auto px-4 md:px-8">
             <Sponsors />
-          </section>
-
-          <section className="container mx-auto px-4 md:px-8">
-            <EventsSection />
           </section>
 
           <section className="container mx-auto px-4 md:px-8">

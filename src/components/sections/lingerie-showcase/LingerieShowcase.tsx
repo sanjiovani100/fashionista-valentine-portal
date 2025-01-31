@@ -64,7 +64,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
 
   return (
     <section 
-      className="relative py-20 bg-gradient-to-b from-black to-maroon min-h-screen showcase-section" 
+      className="relative py-12 bg-gradient-to-b from-black to-maroon min-h-screen showcase-section" 
       ref={ref}
       aria-labelledby="showcase-title"
     >
@@ -81,7 +81,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
       <div className="container mx-auto px-4 relative">
         <motion.h2 
           id="showcase-title"
-          className="text-3xl md:text-4xl font-bold font-montserrat text-white text-center mb-12"
+          className="text-3xl md:text-4xl font-bold font-montserrat text-white text-center mb-8"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
