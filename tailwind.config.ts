@@ -15,6 +15,15 @@ export default {
         marquee: {
           to: { transform: 'translateX(-50%)' }
         }
+      },
+      colors: {
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+      },
+      durations: {
+        normal: 'var(--duration-normal)',
+        fast: 'var(--duration-fast)',
+        slow: 'var(--duration-slow)',
       }
     }
   },
