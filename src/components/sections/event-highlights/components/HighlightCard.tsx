@@ -16,7 +16,12 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
     damping: 30
   };
 
-  const perks = highlight.content.split('\n').filter(Boolean);
+  // Remove "highlight" word and split content into perks
+  const perks = highlight.content
+    .replace(/highlight/gi, '')
+    .split('\n')
+    .filter(Boolean)
+    .map(perk => perk.trim());
 
   return (
     <motion.div
@@ -32,7 +37,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
       >
         <CardHeader className="space-y-2">
           <CardTitle className="text-2xl md:text-3xl font-poppins text-white">
-            Runway Spectacle
+            Runway Spectacle {index + 1}
           </CardTitle>
           <p className="text-white/80 font-montserrat text-base">
             {highlight.content_type}
