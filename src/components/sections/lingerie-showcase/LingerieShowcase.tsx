@@ -64,7 +64,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
 
   return (
     <section 
-      className="relative pt-12 pb-0 bg-gradient-to-b from-black to-maroon showcase-section" 
+      className="relative pt-12 pb-6 bg-gradient-to-b from-black to-maroon showcase-section" 
       ref={ref}
       aria-labelledby="showcase-title"
     >
