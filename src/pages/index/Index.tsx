@@ -104,9 +104,7 @@ const Index = () => {
             />
           </section>
 
-          <section className="container mx-auto px-4 md:px-8">
-            <Partners />
-          </section>
+          <Partners />
 
           <section className="container mx-auto px-4 md:px-8">
             <Sponsors />
