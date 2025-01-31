@@ -10,6 +10,7 @@ import ModelsPage from "./pages/models/ModelsPage";
 import DesignersPage from "./pages/designers/DesignersPage";
 import SponsorsPage from "./pages/sponsors/SponsorsPage";
 import EventsPage from "./pages/events/EventsPage";
+import AboutPage from "./pages/about/AboutPage";
 import Confirmation from "./pages/confirmation/Confirmation";
 
 const queryClient = new QueryClient({
@@ -31,6 +32,7 @@ const App: React.FC = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/events" element={<EventsPage />} />
               <Route path="/models" element={<ModelsPage />} />
               <Route path="/designers" element={<DesignersPage />} />

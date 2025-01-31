@@ -7,13 +7,21 @@ import { DesktopNav } from "./navbar/DesktopNav"
 import { RightActions } from "./navbar/RightActions"
 import { MobileMenu } from "./navbar/MobileMenu"
 import { MobileMenuButton } from "./navbar/MobileMenuButton"
+import { useLocation, useNavigate } from "react-router-dom"
 
-const defaultItems = [
-  { name: 'Home', url: '#home' },
-  { name: 'Fashion', url: '#fashion' },
-  { name: 'Tickets', url: '#tickets' },
-  { name: 'Event', url: '#event' },
-  { name: 'Contact Us', url: '#contact' }
+interface NavItem {
+  name: string;
+  url: string;
+  type: 'hash' | 'route';
+  disabled?: boolean;
+}
+
+const defaultItems: NavItem[] = [
+  { name: 'Home', url: '#home', type: 'hash' },
+  { name: 'About', url: '/about', type: 'route' },
+  { name: 'Events', url: '/events', type: 'route' },
+  { name: 'Tickets', url: '#tickets', type: 'hash' },
+  { name: 'Contact', url: '#contact', type: 'hash', disabled: true }
 ]
 
 export function NavBar() {
@@ -21,6 +29,8 @@ export function NavBar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50)
@@ -38,6 +48,46 @@ export function NavBar() {
     }
   }, [])
 
+  useEffect(() => {
+    // Update active tab based on current route or hash
+    const path = location.pathname
+    const hash = location.hash
+    
+    const currentItem = defaultItems.find(item => {
+      if (item.type === 'route') return item.url === path
+      return item.url === hash
+    })
+    
+    if (currentItem) {
+      setActiveTab(currentItem.name)
+    }
+  }, [location])
+
+  const handleNavigation = (item: NavItem) => {
+    if (item.disabled) {
+      return
+    }
+
+    if (item.type === 'route') {
+      navigate(item.url)
+    } else {
+      // Handle hash navigation
+      const element = document.querySelector(item.url)
+      if (element) {
+        const navbarHeight = 80 // Adjust this value based on your navbar height
+        const elementPosition = element.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - navbarHeight
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        })
+      }
+    }
+    setActiveTab(item.name)
+    if (isMenuOpen) setIsMenuOpen(false)
+  }
+
   return (
     <nav
       className={cn(
@@ -50,7 +100,7 @@ export function NavBar() {
         <DesktopNav 
           items={defaultItems} 
           activeTab={activeTab} 
-          setActiveTab={setActiveTab} 
+          onNavigate={handleNavigation}
         />
         <RightActions />
         <MobileMenuButton 
@@ -58,9 +108,10 @@ export function NavBar() {
           onClick={() => setIsMenuOpen(!isMenuOpen)} 
         />
         <MobileMenu 
-          isOpen={isMenuOpen} 
-          items={defaultItems} 
-          onClose={() => setIsMenuOpen(false)} 
+          isOpen={isMenuOpen}
+          items={defaultItems}
+          activeTab={activeTab}
+          onNavigate={handleNavigation}
         />
       </div>
     </nav>

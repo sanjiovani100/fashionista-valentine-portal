@@ -1,50 +1,50 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface NavItem {
   name: string;
   url: string;
+  type: 'hash' | 'route';
+  disabled?: boolean;
 }
 
 interface MobileMenuProps {
   isOpen: boolean;
   items: NavItem[];
-  onClose: () => void;
+  activeTab: string;
+  onNavigate: (item: NavItem) => void;
 }
 
-export const MobileMenu = ({ isOpen, items, onClose }: MobileMenuProps) => {
+export const MobileMenu = ({ isOpen, items, activeTab, onNavigate }: MobileMenuProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: "100%" }}
-      animate={{ opacity: isOpen ? 1 : 0, x: isOpen ? 0 : "100%" }}
-      transition={{ duration: 0.3 }}
-      className={`fixed inset-0 top-16 bg-black/95 backdrop-blur-md lg:hidden ${isOpen ? 'block' : 'hidden'}`}
-    >
-      <div className="container px-4 py-8 flex flex-col space-y-4">
-        {items.map((item) => (
-          <a
-            key={item.name}
-            href={item.url}
-            className="text-white/90 hover:text-white font-montserrat text-lg"
-            onClick={() => onClose()}
-          >
-            {item.name}
-          </a>
-        ))}
-        <div className="pt-4 flex items-center justify-between">
-          <button className="text-white/90 hover:text-white transition-colors">
-            <Globe className="w-5 h-5" />
-          </button>
-          <Button 
-            className="bg-gradient-to-r from-fashion-pink to-deep-purple hover:brightness-110 active:brightness-90 transition-all duration-300"
-            size="sm"
-          >
-            Get Tickets
-          </Button>
-        </div>
-      </div>
-    </motion.div>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.2 }}
+          className="lg:hidden fixed inset-x-0 top-[64px] bg-black/95 backdrop-blur-lg border-t border-white/10"
+        >
+          <nav className="container mx-auto py-4 px-4 flex flex-col space-y-2">
+            {items.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => onNavigate(item)}
+                disabled={item.disabled}
+                className={cn(
+                  "w-full text-left px-4 py-3 rounded-lg transition-colors",
+                  "text-white/80 hover:text-fashion-pink hover:bg-white/5",
+                  activeTab === item.name && "text-fashion-pink bg-white/5",
+                  item.disabled && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                {item.name}
+              </button>
+            ))}
+          </nav>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };

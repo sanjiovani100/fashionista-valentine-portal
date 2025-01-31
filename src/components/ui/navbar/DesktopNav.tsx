@@ -5,31 +5,29 @@ import { cn } from "@/lib/utils";
 interface NavItem {
   name: string;
   url: string;
+  type: 'hash' | 'route';
+  disabled?: boolean;
 }
 
 interface DesktopNavProps {
   items: NavItem[];
   activeTab: string;
-  setActiveTab: (tab: string) => void;
+  onNavigate: (item: NavItem) => void;
 }
 
-export const DesktopNav = ({ items, activeTab, setActiveTab }: DesktopNavProps) => {
+export const DesktopNav = ({ items, activeTab, onNavigate }: DesktopNavProps) => {
   return (
     <div className="hidden lg:flex items-center gap-0.5 bg-white/5 backdrop-blur-lg py-1 px-1 rounded-full">
       {items.map((item) => (
-        <a
+        <button
           key={item.name}
-          href={item.url}
-          onClick={(e) => {
-            e.preventDefault();
-            setActiveTab(item.name);
-            const element = document.querySelector(item.url);
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }}
+          onClick={() => onNavigate(item)}
+          disabled={item.disabled}
           className={cn(
             "relative px-3 py-1.5 rounded-full transition-colors text-sm font-montserrat",
             "text-white/80 hover:text-fashion-pink",
-            activeTab === item.name && "text-fashion-pink"
+            activeTab === item.name && "text-fashion-pink",
+            item.disabled && "opacity-50 cursor-not-allowed"
           )}
         >
           {item.name}
@@ -44,7 +42,7 @@ export const DesktopNav = ({ items, activeTab, setActiveTab }: DesktopNavProps) 
               }}
             />
           )}
-        </a>
+        </button>
       ))}
     </div>
   );

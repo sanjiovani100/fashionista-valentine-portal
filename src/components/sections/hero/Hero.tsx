@@ -32,6 +32,7 @@ export const Hero = ({
 
   return (
     <section 
+      id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-maroon to-black"
       aria-labelledby="hero-title"
       role="banner"
