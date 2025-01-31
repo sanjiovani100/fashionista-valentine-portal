@@ -24,6 +24,7 @@ export default {
         inter: ["Inter", "sans-serif"],
       },
       colors: {
+        border: "hsl(var(--border))",
         // Primary Colors - Maroon Scale
         maroon: {
           DEFAULT: "#8B0000",
