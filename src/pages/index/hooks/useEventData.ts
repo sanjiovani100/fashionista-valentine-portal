@@ -26,7 +26,14 @@ export const useEventData = () => {
             url,
             alt_text,
             metadata,
-            description
+            description,
+            event_id,
+            created_at,
+            updated_at,
+            thumbnail_url,
+            credits,
+            dimensions,
+            formats
           )
         `)
         .eq('name', 'valentines_fashion_show')
