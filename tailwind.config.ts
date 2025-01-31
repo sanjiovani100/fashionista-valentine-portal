@@ -16,6 +16,11 @@ export default {
           to: { transform: 'translateX(-50%)' }
         }
       },
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        inter: ['Inter', 'sans-serif']
+      },
       colors: {
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',
