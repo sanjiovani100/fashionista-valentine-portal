@@ -24,6 +24,7 @@ const processImage = (imageData: FashionImage | null): ProcessedImage => {
   // First try to get URL from metadata
   const metadata = imageData.metadata as Record<string, unknown> || {};
   
+  // Check for direct media_url first
   if (typeof metadata.media_url === 'string' && metadata.media_url) {
     console.log('[Image Processing] Using media_url from metadata:', metadata.media_url);
     return {
@@ -91,92 +92,42 @@ const findHighlightImage = (highlight: Partial<EventContent>, images: FashionIma
     });
 
     if (linkedImage) {
-      console.log('Found linked image:', linkedImage);
+      console.log('[Image Selection] Found linked image:', linkedImage);
       return linkedImage;
     }
 
-    // Then try to find a gallery image
-    const galleryImage = images.find(img => {
+    // Then try to find a gallery image that hasn't been used yet
+    const unusedGalleryImage = images.find(img => {
       if (img.category !== 'event_gallery') return false;
       
-      const validation = validateImageMetadata(img.metadata);
-      console.log('Validating gallery image:', {
+      const metadata = img.metadata as Record<string, unknown> || {};
+      const validation = validateImageMetadata(metadata);
+      
+      console.log('[Image Selection] Validating gallery image:', {
         id: img.id,
-        validation
+        validation,
+        metadata
       });
       
-      return validation.isValid;
+      return validation.isValid && !metadata.used;
     });
 
-    if (galleryImage) {
-      console.log('Found gallery image:', galleryImage);
-      return galleryImage;
+    if (unusedGalleryImage) {
+      // Mark the image as used
+      if (unusedGalleryImage.metadata && typeof unusedGalleryImage.metadata === 'object') {
+        (unusedGalleryImage.metadata as Record<string, unknown>).used = true;
+      }
+      console.log('[Image Selection] Found unused gallery image:', unusedGalleryImage);
+      return unusedGalleryImage;
     }
 
-    console.warn('No suitable image found');
+    console.warn('[Image Selection] No suitable image found');
     return null;
   } catch (error) {
-    console.error('Error finding highlight image:', error);
+    console.error('[Image Selection] Error finding highlight image:', error);
     return null;
   } finally {
     console.groupEnd();
-  }
-};
-
-const transformCollectionImage = (collection: Partial<FashionCollection>, images: FashionImage[]): string => {
-  console.group(`[Transform] Processing collection image for: ${collection.collection_name}`);
-  
-  try {
-    console.log('Available images for collection:', {
-      totalImages: images.length,
-      promotionalImages: images.filter(img => img.category === 'promotional').length
-    });
-    
-    // Look for promotional images with lingerie_showcase metadata
-    const showcaseImage = images.find(img => {
-      console.log('Checking image:', {
-        id: img.id,
-        category: img.category,
-        metadata: img.metadata,
-        url: img.url
-      });
-
-      if (img.category !== 'promotional') {
-        console.debug('Skipping non-promotional image');
-        return false;
-      }
-      
-      if (!img.metadata) {
-        console.warn('Missing metadata for image');
-        return false;
-      }
-      
-      const metadata = img.metadata as Record<string, unknown>;
-      const isValid = metadata.page === 'lingerie_showcase';
-      
-      console.log('Image evaluation:', {
-        isValid,
-        collectionId: collection.id,
-        page: metadata.page
-      });
-      
-      return isValid;
-    });
-
-    if (showcaseImage?.url) {
-      console.log('Found showcase image:', showcaseImage.url);
-      console.groupEnd();
-      return showcaseImage.url;
-    }
-
-    console.warn('No valid image found, using fallback');
-    console.groupEnd();
-    return cloudinaryConfig.defaults.placeholders.collection;
-  } catch (error) {
-    console.error('Error transforming collection image:', error);
-    console.groupEnd();
-    toast.error(`Failed to load image for collection: ${collection.collection_name}`);
-    return cloudinaryConfig.defaults.placeholders.collection;
   }
 };
 
@@ -184,7 +135,7 @@ export const transformEventData = (eventData: any) => {
   console.group('[Transform] Starting event data transformation');
   
   if (!eventData) {
-    console.error('No event data provided');
+    console.error('[Transform] No event data provided');
     console.groupEnd();
     return {
       highlights: [],
@@ -193,19 +144,25 @@ export const transformEventData = (eventData: any) => {
     };
   }
 
-  console.log('Initial data:', {
+  console.log('[Transform] Initial data:', {
     contentCount: eventData.event_content?.length,
     imagesCount: eventData.fashion_images?.length,
     collectionsCount: eventData.fashion_collections?.length
   });
 
+  // Reset the 'used' flag for all images
+  const availableImages = (eventData.fashion_images || []).map(img => ({
+    ...img,
+    metadata: { ...(img.metadata || {}), used: false }
+  }));
+
   // Transform highlights with proper image URL handling and validation
   const highlights = (eventData.event_content || [])
     .filter((content: EventContent) => content.content_type === 'highlight')
     .map((highlight: EventContent) => {
-      console.log('Processing highlight:', highlight.title);
+      console.log('[Transform] Processing highlight:', highlight.title);
       
-      const highlightImage = findHighlightImage(highlight, eventData.fashion_images || []);
+      const highlightImage = findHighlightImage(highlight, availableImages);
       const processedImage = processImage(highlightImage);
       
       return {
@@ -224,7 +181,14 @@ export const transformEventData = (eventData: any) => {
   // Transform collections with proper image handling
   const collectionsWithImages = (eventData.fashion_collections || [])
     .map((collection: FashionCollection) => {
-      console.log('Processing collection:', collection.collection_name);
+      console.log('[Transform] Processing collection:', collection.collection_name);
+      
+      const collectionImage = availableImages.find(img => {
+        const metadata = img.metadata as Record<string, unknown> || {};
+        return metadata.collection_id === collection.id;
+      });
+
+      const processedImage = processImage(collectionImage);
       
       return {
         ...collection,
@@ -232,23 +196,25 @@ export const transformEventData = (eventData: any) => {
         event_id: collection.event_id || '',
         technical_requirements: collection.technical_requirements || '',
         sustainability_info: collection.sustainability_info || '',
-        image: transformCollectionImage(collection, eventData.fashion_images || []),
+        image: processedImage.url,
         isLoading: false
       };
     })
     .slice(0, 3);
 
   // Get hero image with enhanced selection logic
-  const heroImage = eventData.fashion_images?.find((img: FashionImage) => {
-    if (img.category !== 'promotional') return false;
-    
-    const metadata = img.metadata as Record<string, unknown>;
-    return metadata?.page === 'home';
-  })?.url || cloudinaryConfig.defaults.placeholders.hero;
+  const heroImage = processImage(
+    availableImages.find((img: FashionImage) => {
+      const metadata = img.metadata as Record<string, unknown>;
+      return img.category === 'promotional' && metadata?.page === 'home';
+    })
+  ).url || cloudinaryConfig.defaults.placeholders.hero;
 
-  console.log('Transformation complete:', {
+  console.log('[Transform] Transformation complete:', {
     highlightsCount: highlights.length,
-    hasHeroImage: !!heroImage
+    collectionsCount: collectionsWithImages.length,
+    hasHeroImage: !!heroImage,
+    highlights
   });
 
   console.groupEnd();
