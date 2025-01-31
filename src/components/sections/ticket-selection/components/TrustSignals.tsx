@@ -3,9 +3,9 @@ import { Shield, CreditCard } from "lucide-react";
 export const TrustSignals = () => (
   <div className="mt-16">
     <div className="border border-white/10 rounded-lg px-6 py-4">
-      <div className="flex flex-col md:flex-row items-center justify-between w-full gap-6 md:gap-4">
-        {/* Left section - Ticket Information */}
-        <div className="flex flex-col space-y-1 text-center md:text-left">
+      <div className="flex flex-col items-center space-y-4 w-full">
+        {/* Ticket Information */}
+        <div className="flex flex-col items-center space-y-1 text-center">
           <p className="text-romantic font-semibold text-xl font-montserrat">
             Limited Tickets Remaining
           </p>
@@ -14,8 +14,8 @@ export const TrustSignals = () => (
           </p>
         </div>
 
-        {/* Right section - Security Information */}
-        <div className="flex flex-col gap-3 text-gray-400 font-montserrat text-sm">
+        {/* Security Information */}
+        <div className="flex flex-col items-center space-y-3 text-gray-400 font-montserrat text-sm">
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 shrink-0" />
             <span>Secure Checkout</span>
