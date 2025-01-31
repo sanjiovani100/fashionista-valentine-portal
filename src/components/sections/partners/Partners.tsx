@@ -36,7 +36,7 @@ export const Partners = () => {
   return (
     <section
       ref={ref}
-      className="relative py-20 overflow-hidden bg-gradient-to-b from-black/95 to-maroon/5"
+      className="relative py-12 overflow-hidden bg-gradient-to-b from-black/95 to-maroon/5"
       aria-labelledby="partners-title"
     >
       {/* Decorative background pattern */}
@@ -53,7 +53,7 @@ export const Partners = () => {
         animate={inView ? "visible" : "hidden"}
       >
         <motion.div
-          className="text-center mb-12 space-y-4"
+          className="text-center mb-8 space-y-4"
           variants={itemVariants}
         >
           <h2
