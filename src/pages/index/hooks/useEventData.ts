@@ -2,28 +2,55 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { FashionEvent } from "@/types/database";
+import { cloudinaryConfig } from "@/components/cloudinary/config";
+
+interface ImageDimensions {
+  width: number;
+  height: number;
+  aspectRatio: number;
+}
+
+interface ImageFormats {
+  original: string;
+  thumbnail?: string;
+  webp?: string;
+  avif?: string;
+}
+
+interface ImageMetadata {
+  page?: string;
+  content_id?: string;
+  collection_id?: string;
+  uploadedAt?: string;
+}
 
 interface QueryError {
+  code: string;
   message: string;
   details?: string;
-  hint?: string;
 }
 
-interface ImageMetadataValidation {
-  hasRequiredFields: boolean;
-  missingFields: string[];
-}
+const validateImageMetadata = (metadata: unknown): boolean => {
+  if (!metadata || typeof metadata !== 'object') return false;
+  
+  const required = ['page', 'content_id', 'collection_id'];
+  return required.every(field => field in metadata);
+};
 
-const validateImageMetadata = (metadata: unknown): ImageMetadataValidation => {
-  const requiredFields = ['page', 'content_id', 'collection_id'];
-  const metadataObj = metadata as Record<string, unknown>;
-  
-  const missingFields = requiredFields.filter(field => !metadataObj?.[field]);
-  
-  return {
-    hasRequiredFields: missingFields.length === 0,
-    missingFields
-  };
+const getPromotionalImage = (images: FashionEvent['fashion_images'], type: 'hero' | 'highlight'): string => {
+  const image = images?.find(img => 
+    img.category === 'promotional' && 
+    img.metadata?.page === type
+  );
+
+  if (!image) {
+    console.warn(`[Image] No ${type} image found, using fallback`);
+    return type === 'hero' 
+      ? cloudinaryConfig.defaults.placeholders.hero 
+      : cloudinaryConfig.defaults.placeholders.highlight;
+  }
+
+  return image.url;
 };
 
 export const useEventData = () => {
@@ -50,13 +77,13 @@ export const useEventData = () => {
               alt_text,
               metadata,
               description,
-              event_id,
-              created_at,
-              updated_at,
+              dimensions,
+              formats,
               thumbnail_url,
               credits,
-              dimensions,
-              formats
+              event_id,
+              created_at,
+              updated_at
             )
           `)
           .eq('name', 'valentines_fashion_show')
@@ -66,11 +93,13 @@ export const useEventData = () => {
 
         if (eventError) {
           console.error("[Query] Error fetching event data:", {
-            error: eventError,
+            code: eventError.code,
+            message: eventError.message,
+            details: eventError.details,
             timestamp: new Date().toISOString()
           });
           
-          toast.error("Failed to load event data. Please try again.", {
+          toast.error("Failed to load event data", {
             description: "There was a problem connecting to the server."
           });
           
@@ -91,20 +120,11 @@ export const useEventData = () => {
 
         // Validate image metadata and log issues
         eventData.fashion_images?.forEach((image, index) => {
-          if (!image.metadata) {
-            console.warn(`[Query] Image ${index} missing metadata:`, {
-              imageId: image.id,
-              category: image.category
-            });
-            return;
-          }
-
-          const validation = validateImageMetadata(image.metadata);
-          if (!validation.hasRequiredFields) {
-            console.warn(`[Query] Image ${index} has incomplete metadata:`, {
+          if (!validateImageMetadata(image.metadata)) {
+            console.warn(`[Query] Image ${index} has invalid metadata:`, {
               imageId: image.id,
               category: image.category,
-              missingFields: validation.missingFields
+              metadata: image.metadata
             });
           }
 
@@ -135,16 +155,16 @@ export const useEventData = () => {
         });
         
         return eventData as FashionEvent;
-      } catch (err) {
-        const error = err as QueryError;
+      } catch (error) {
+        const queryError = error as QueryError;
         console.error("[Query] Unexpected error:", {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
+          code: queryError.code,
+          message: queryError.message,
+          details: queryError.details,
           timestamp: new Date().toISOString()
         });
         
-        toast.error("An unexpected error occurred.", {
+        toast.error("An unexpected error occurred", {
           description: "Please try refreshing the page."
         });
         
