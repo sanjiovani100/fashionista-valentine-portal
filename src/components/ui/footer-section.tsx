@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
 import {
   Tooltip,
   TooltipContent,
@@ -40,6 +41,13 @@ function Footerdemo() {
     }
   }, [isDarkMode])
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <footer className="relative border-t border-white/10 bg-gradient-to-b from-background to-background/80 text-foreground transition-colors duration-300">
       <div className="absolute inset-0 bg-gradient-to-b from-maroon/5 to-purple-vivid/5 backdrop-blur-xl" />
@@ -53,9 +61,11 @@ function Footerdemo() {
       >
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <motion.div variants={item} className="relative">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-              Stay Connected
-            </h2>
+            <img 
+              src="/fashionistas-logo.png" 
+              alt="Fashionistas Logo" 
+              className="h-12 mb-4 object-contain"
+            />
             <p className="mb-6 text-white/60">
               Join our newsletter for the latest updates and exclusive offers.
             </p>
@@ -79,11 +89,57 @@ function Footerdemo() {
           <motion.div variants={item}>
             <h3 className="mb-4 text-lg font-semibold text-white/90">Quick Links</h3>
             <nav className="space-y-2 text-sm">
-              <a href="#" className="block text-white/60 transition-colors hover:text-white">Home</a>
-              <a href="#" className="block text-white/60 transition-colors hover:text-white">About Us</a>
-              <a href="#" className="block text-white/60 transition-colors hover:text-white">Services</a>
-              <a href="#" className="block text-white/60 transition-colors hover:text-white">Products</a>
-              <a href="#" className="block text-white/60 transition-colors hover:text-white">Contact</a>
+              <a 
+                href="#home" 
+                onClick={() => scrollToSection('home')}
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                Home
+              </a>
+              <Link 
+                to="/about" 
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                About Us
+              </Link>
+              <Link 
+                to="/events" 
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                Events
+              </Link>
+              <a 
+                href="#tickets" 
+                onClick={() => scrollToSection('tickets')}
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                Tickets
+              </a>
+              <Link 
+                to="/sponsors" 
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                Sponsors
+              </Link>
+              <Link 
+                to="/models" 
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                Models
+              </Link>
+              <Link 
+                to="/designers" 
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                Designers
+              </Link>
+              <a 
+                href="#contact" 
+                onClick={() => scrollToSection('contact')}
+                className="block text-white/60 transition-colors hover:text-white"
+              >
+                Contact
+              </a>
             </nav>
           </motion.div>
 
@@ -178,16 +234,16 @@ function Footerdemo() {
           className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center md:flex-row"
         >
           <p className="text-sm text-white/60">
-            © 2024 Your Company. All rights reserved.
+            © 2024 Fashionistas. All rights reserved.
           </p>
           <nav className="flex gap-4 text-sm">
-            <a href="#" className="text-white/60 transition-colors hover:text-white">
+            <a href="/privacy" className="text-white/60 transition-colors hover:text-white">
               Privacy Policy
             </a>
-            <a href="#" className="text-white/60 transition-colors hover:text-white">
+            <a href="/terms" className="text-white/60 transition-colors hover:text-white">
               Terms of Service
             </a>
-            <a href="#" className="text-white/60 transition-colors hover:text-white">
+            <a href="/cookies" className="text-white/60 transition-colors hover:text-white">
               Cookie Settings
             </a>
           </nav>
