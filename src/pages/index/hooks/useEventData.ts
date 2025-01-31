@@ -9,6 +9,23 @@ interface QueryError {
   hint?: string;
 }
 
+interface ImageMetadataValidation {
+  hasRequiredFields: boolean;
+  missingFields: string[];
+}
+
+const validateImageMetadata = (metadata: unknown): ImageMetadataValidation => {
+  const requiredFields = ['page', 'content_id', 'collection_id'];
+  const metadataObj = metadata as Record<string, unknown>;
+  
+  const missingFields = requiredFields.filter(field => !metadataObj?.[field]);
+  
+  return {
+    hasRequiredFields: missingFields.length === 0,
+    missingFields
+  };
+};
+
 export const useEventData = () => {
   return useQuery({
     queryKey: ['active-fashion-event'],
@@ -72,6 +89,41 @@ export const useEventData = () => {
           return null;
         }
 
+        // Validate image metadata and log issues
+        eventData.fashion_images?.forEach((image, index) => {
+          if (!image.metadata) {
+            console.warn(`[Query] Image ${index} missing metadata:`, {
+              imageId: image.id,
+              category: image.category
+            });
+            return;
+          }
+
+          const validation = validateImageMetadata(image.metadata);
+          if (!validation.hasRequiredFields) {
+            console.warn(`[Query] Image ${index} has incomplete metadata:`, {
+              imageId: image.id,
+              category: image.category,
+              missingFields: validation.missingFields
+            });
+          }
+
+          // Validate dimensions and formats
+          if (!image.dimensions) {
+            console.warn(`[Query] Image ${index} missing dimensions:`, {
+              imageId: image.id,
+              category: image.category
+            });
+          }
+
+          if (!image.formats) {
+            console.warn(`[Query] Image ${index} missing formats:`, {
+              imageId: image.id,
+              category: image.category
+            });
+          }
+        });
+
         // Log successful data fetch with important counts
         console.log("[Query] Event data fetched successfully:", {
           hasContent: !!eventData.event_content?.length,
@@ -80,16 +132,6 @@ export const useEventData = () => {
           imageCount: eventData.fashion_images?.length || 0,
           contentCount: eventData.event_content?.length || 0,
           collectionsCount: eventData.fashion_collections?.length || 0
-        });
-
-        // Validate image metadata
-        eventData.fashion_images?.forEach((image, index) => {
-          if (!image.metadata) {
-            console.warn(`[Query] Image ${index} missing metadata:`, {
-              imageId: image.id,
-              category: image.category
-            });
-          }
         });
         
         return eventData as FashionEvent;
