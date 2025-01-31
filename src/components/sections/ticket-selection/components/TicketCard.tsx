@@ -84,7 +84,7 @@ export const TicketCard = ({
         </CardContent>
         <CardFooter>
           <Button
-            className="w-full h-[48px] bg-primary-gradient hover:opacity-90 text-white transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg font-montserrat focus-visible:ring-2 focus-visible:ring-red-accent focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="w-full h-[48px] bg-red-primary hover:bg-red-bright text-white transition-all hover:scale-[1.02] active:scale-[0.98] hover:shadow-glow rounded-lg font-montserrat focus-visible:ring-2 focus-visible:ring-red-accent focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             size="lg"
             aria-label={`Select ${title} ticket`}
           >
