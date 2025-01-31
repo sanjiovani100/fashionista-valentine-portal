@@ -19,21 +19,31 @@ export function Marquee({
   return (
     <div 
       className={cn(
-        "w-full overflow-hidden sm:mt-24 mt-10 z-10",
+        "w-full overflow-hidden",
         className
       )} 
       {...props}
     >
-      <div className="relative flex max-w-[90vw] overflow-hidden py-5">
+      <div className="relative flex overflow-hidden">
         <div 
           className={cn(
-            "flex w-max animate-marquee",
+            "flex min-w-full shrink-0 items-center justify-around gap-4 animate-marquee",
             pauseOnHover && "hover:[animation-play-state:paused]",
             direction === "right" && "animate-marquee-reverse"
           )}
           style={{ "--duration": `${speed}s` } as React.CSSProperties}
         >
           {children}
+        </div>
+        <div 
+          className={cn(
+            "flex min-w-full shrink-0 items-center justify-around gap-4 animate-marquee",
+            pauseOnHover && "hover:[animation-play-state:paused]",
+            direction === "right" && "animate-marquee-reverse"
+          )}
+          style={{ "--duration": `${speed}s` } as React.CSSProperties}
+          aria-hidden="true"
+        >
           {children}
         </div>
       </div>

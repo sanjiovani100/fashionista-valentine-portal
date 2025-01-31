@@ -80,13 +80,19 @@ export const Sponsors = () => {
           </motion.div>
 
           {/* Enhanced Logo Marquee */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none z-10" />
-            <Marquee speed={40} pauseOnHover>
+          <div className="relative w-full overflow-hidden">
+            <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black/80 to-transparent z-10" />
+            <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black/80 to-transparent z-10" />
+            
+            <Marquee 
+              className="py-8" 
+              speed={40} 
+              pauseOnHover={true}
+            >
               {sponsorLogos.map((logo) => (
                 <div
                   key={logo.id}
-                  className="relative h-20 w-fit mx-16 flex items-center justify-start"
+                  className="relative h-20 w-[200px] mx-12 flex items-center justify-center"
                 >
                   <img
                     src={logo.src}
