@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Send } from "lucide-react"; // Add this import
 
 interface FooterLogoProps {
   variants: any;
