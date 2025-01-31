@@ -64,7 +64,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
 
   return (
     <section 
-      className="relative pt-12 bg-gradient-to-b from-black to-maroon min-h-screen showcase-section" 
+      className="relative pt-12 pb-0 bg-gradient-to-b from-black to-maroon showcase-section" 
       ref={ref}
       aria-labelledby="showcase-title"
     >
@@ -78,7 +78,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
         aria-hidden="true"
       />
 
-      <div className="container mx-auto px-4 relative">
+      <div className="container mx-auto px-4">
         <motion.h2 
           id="showcase-title"
           className="text-3xl md:text-4xl font-bold font-montserrat text-white text-center mb-8"
