@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { LogoCarousel } from "@/components/ui/logo-carousel";
+import { Marquee } from "@/components/ui/marquee";
 import { useReducedMotion } from "framer-motion";
 
 const sponsorLogos = [
@@ -58,7 +58,7 @@ export const Sponsors = () => {
           >
             <motion.p 
               variants={itemVariants}
-              className="text-sm font-medium tracking-widest text-white/60 uppercase"
+              className="text-sm font-montserrat font-medium tracking-widest text-white uppercase"
             >
               Proudly Supported By Leading Fashion Brands
             </motion.p>
@@ -66,26 +66,36 @@ export const Sponsors = () => {
             <motion.h2 
               id="sponsors-title"
               variants={itemVariants}
-              className="text-4xl md:text-[3.5rem] font-bold tracking-tight leading-none bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent"
+              className="text-4xl md:text-[3.5rem] font-poppins font-bold tracking-tight leading-none text-white"
             >
               Our Esteemed Sponsors
             </motion.h2>
 
             <motion.p
               variants={itemVariants}
-              className="max-w-2xl mx-auto text-white/80 text-lg"
+              className="max-w-2xl mx-auto text-white font-montserrat text-lg"
             >
               Join these industry leaders in supporting fashion innovation and creativity
             </motion.p>
           </motion.div>
 
-          {/* Enhanced Logo Carousel */}
+          {/* Enhanced Logo Marquee */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none z-10" />
-            <LogoCarousel 
-              logos={sponsorLogos} 
-              columns={3} 
-            />
+            <Marquee speed={40} pauseOnHover>
+              {sponsorLogos.map((logo) => (
+                <div
+                  key={logo.id}
+                  className="relative h-20 w-fit mx-16 flex items-center justify-start"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="h-full w-auto object-contain"
+                  />
+                </div>
+              ))}
+            </Marquee>
           </div>
         </CardContent>
       </Card>
