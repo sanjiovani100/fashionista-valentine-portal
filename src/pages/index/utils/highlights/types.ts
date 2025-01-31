@@ -1,4 +1,4 @@
-import type { EventContent, FashionCollection, FashionImage } from '@/types/event.types';
+import type { EventContent, FashionCollection } from "@/types/event.types";
 
 export interface TransformedHighlight extends EventContent {
   image: string;

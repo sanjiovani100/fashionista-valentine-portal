@@ -1,4 +1,10 @@
-import type { FashionImage } from '@/types/event.types';
+export interface ImageMetadata {
+  cloudinary_id?: string;
+  media_url?: string;
+  content_id?: string;
+  collection_id?: string;
+  page?: string;
+}
 
 export interface ProcessedImage {
   url: string;
@@ -8,10 +14,4 @@ export interface ProcessedImage {
 export interface ImageValidationResult {
   isValid: boolean;
   message: string;
-}
-
-export interface ImageSelectionCriteria {
-  category?: string;
-  contentId?: string;
-  metadata?: Record<string, unknown>;
 }
