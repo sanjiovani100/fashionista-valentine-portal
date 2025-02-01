@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { EventList } from './EventList';
 import type { EventSubtype } from '@/types/supabase/enums.types';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -27,10 +37,20 @@ const itemVariants = {
   }
 };
 
+const EVENT_CATEGORIES: { label: string; value: EventSubtype }[] = [
+  { label: 'Main Show', value: 'main_show' },
+  { label: 'VIP Session', value: 'vip_session' },
+  { label: 'Workshop', value: 'workshop' },
+  { label: 'Networking', value: 'networking' },
+  { label: 'Photo Session', value: 'photo_session' },
+  { label: 'After Party', value: 'after_party' },
+];
+
 export const EventsSection = () => {
   const prefersReducedMotion = useReducedMotion();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'date' | 'price-asc' | 'price-desc'>('date');
+  const [selectedCategories, setSelectedCategories] = useState<EventSubtype[]>([]);
   const [filters, setFilters] = useState({
     search: '',
     dateRange: undefined,
@@ -38,6 +58,17 @@ export const EventsSection = () => {
     categories: [] as EventSubtype[],
     location: ''
   });
+
+  const handleCategoryToggle = (category: EventSubtype, checked: boolean) => {
+    let newCategories: EventSubtype[];
+    if (checked) {
+      newCategories = [...selectedCategories, category];
+    } else {
+      newCategories = selectedCategories.filter(c => c !== category);
+    }
+    setSelectedCategories(newCategories);
+    setFilters(prev => ({ ...prev, categories: newCategories }));
+  };
 
   return (
     <section 
@@ -77,6 +108,41 @@ export const EventsSection = () => {
           >
             Join us for exclusive fashion shows and events throughout the year
           </motion.p>
+
+          <motion.div
+            variants={itemVariants}
+            className="mt-8"
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className="bg-maroon hover:bg-maroon-light text-white border-white/20"
+                  aria-label="Select event categories"
+                >
+                  Categories ({selectedCategories.length})
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="bg-gray-900/95 backdrop-blur-sm border-white/10 text-white"
+                align="center"
+              >
+                <DropdownMenuLabel>Event Types</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-white/10" />
+                {EVENT_CATEGORIES.map(({ label, value }) => (
+                  <DropdownMenuCheckboxItem
+                    key={value}
+                    checked={selectedCategories.includes(value)}
+                    onCheckedChange={(checked) => handleCategoryToggle(value, checked)}
+                    className="hover:bg-maroon/20 focus:bg-maroon/20"
+                  >
+                    {label}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </motion.div>
         </motion.div>
 
         <EventList 
