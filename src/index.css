@@ -76,7 +76,7 @@
   /* Button Styles with Enhanced Hover Effects */
   .btn-primary {
     @apply bg-red-primary text-white 
-           hover:bg-red-bright hover:shadow-glow
+           hover:bg-red-bright
            focus:ring-2 focus:ring-red-primary focus:ring-offset-2 focus:ring-offset-background
            active:scale-95
            transition-all duration-normal ease-out;
@@ -129,19 +129,6 @@
   /* Enhanced Text Shadow */
   .text-shadow-xl {
     text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
-  }
-
-  /* Glow Effects */
-  .shadow-glow {
-    box-shadow: 0 0 20px rgba(255,51,102,0.3);
-  }
-
-  .shadow-glow-intense {
-    box-shadow: 0 0 30px rgba(255,51,102,0.5);
-  }
-
-  .drop-shadow-glow {
-    filter: drop-shadow(0 0 20px rgba(255,51,102,0.3));
   }
 
   /* Border Effects */
