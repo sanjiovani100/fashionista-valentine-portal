@@ -13,20 +13,20 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.2,
-        delayChildren: 0.3,
+        duration: 0.3,
+        delayChildren: 0.2,
         staggerChildren: 0.15
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.22, 1, 0.36, 1],
       },
     },
@@ -47,9 +47,13 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
         {headline.split(" ").map((word, index) => (
           <span 
             key={index} 
-            className={`block ${index === 1 ? "text-red-primary mt-4 drop-shadow-glow" : "text-white drop-shadow-glow"}`}
+            className={`block ${
+              index === 1 
+                ? "text-red-primary mt-4 drop-shadow-glow" 
+                : "text-white drop-shadow-glow"
+            }`}
           >
-            {word}{" "}
+            {word}
           </span>
         ))}
       </motion.h1>
@@ -67,7 +71,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       >
         <Button 
           size="lg" 
-          className="bg-maroon text-white hover:bg-maroon-light min-w-[200px]
+          className="bg-maroon hover:bg-maroon-light text-white min-w-[200px]
                    transition-all duration-normal ease-out transform hover:scale-105
                    hover:shadow-glow focus:ring-2 focus:ring-maroon focus:ring-offset-2 
                    focus:ring-offset-black focus-visible:outline-none"
