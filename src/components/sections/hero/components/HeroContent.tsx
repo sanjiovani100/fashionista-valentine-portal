@@ -32,7 +32,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
             key={index} 
             className={`block ${
               index === 1 
-                ? "text-red-primary mt-4" 
+                ? "text-red-primary" 
                 : "text-white"
             }`}
           >

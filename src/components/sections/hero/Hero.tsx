@@ -51,7 +51,7 @@ export const Hero = ({
       </ImageErrorBoundary>
       
       <motion.div 
-        className="container relative z-20 mx-auto px-4 py-16 md:py-24 lg:py-32"
+        className="container relative z-10 mx-auto px-4 py-16 md:py-24 lg:py-32"
         initial="hidden"
         animate="visible"
         variants={containerVariants}

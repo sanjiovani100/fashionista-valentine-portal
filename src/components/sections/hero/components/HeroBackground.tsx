@@ -8,7 +8,7 @@ interface HeroBackgroundProps {
 export const HeroBackground = ({ imageUrl }: HeroBackgroundProps) => {
   return (
     <>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/90 to-black z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/95 to-black z-[1]" />
       <motion.div 
         className="absolute inset-0 w-full h-full"
         initial={{ scale: 1.1, opacity: 0 }}
@@ -24,7 +24,7 @@ export const HeroBackground = ({ imageUrl }: HeroBackgroundProps) => {
       </motion.div>
       
       {/* Floating Hearts Animation */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2]">
         {[...Array(4)].map((_, i) => (
           <motion.div
             key={i}
