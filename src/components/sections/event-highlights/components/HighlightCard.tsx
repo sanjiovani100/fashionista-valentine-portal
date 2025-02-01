@@ -55,10 +55,11 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={springConfig}
-      className="h-full"
+      className="h-full touch-none"
     >
       <Card
-        className="relative h-full bg-black/30 backdrop-blur-sm border transition-all duration-300 will-change-transform border-white/10 hover:border-white/20 hover:bg-white/5"
+        className="relative h-full bg-black/30 backdrop-blur-sm border transition-all duration-300 will-change-transform 
+                 border-white/10 hover:border-white/20 hover:bg-white/5 card-hover"
         role="article"
         tabIndex={0}
       >
@@ -77,7 +78,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
             <img 
               src={highlight.image} 
               alt={`${getCardTitle(index)} preview`}
-              className="w-full h-48 object-cover rounded-lg"
+              className="w-full h-48 object-cover rounded-lg transform transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
           </motion.div>
@@ -98,7 +99,7 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
           <Button
             className="w-full h-12 mt-6 bg-white text-black hover:bg-white/90 
                      transition-all hover:scale-[1.02] active:scale-[0.98] 
-                     rounded-lg font-montserrat
+                     rounded-lg font-montserrat touch-target
                      focus-visible:ring-2 focus-visible:ring-white 
                      focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             size="lg"
