@@ -16,10 +16,9 @@ export const HeroBackground = ({ imageUrl }: HeroBackgroundProps) => {
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
         <OptimizedImage
-          src={imageUrl}
+          publicId={imageUrl}
           alt="Fashion event background"
           className="object-cover w-full h-full"
-          loading="eager"
           priority={true}
         />
       </motion.div>
