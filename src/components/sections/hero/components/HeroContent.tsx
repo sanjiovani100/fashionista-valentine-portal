@@ -32,8 +32,8 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
             key={index} 
             className={`block ${
               index === 1 
-                ? "text-red-primary mt-4 drop-shadow-glow" 
-                : "text-white drop-shadow-glow"
+                ? "text-red-primary mt-4" 
+                : "text-white"
             }`}
           >
             {word}
@@ -43,7 +43,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       
       <motion.p 
         variants={itemVariants}
-        className="font-inter text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto text-white/90 leading-relaxed drop-shadow-md"
+        className="font-inter text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto text-white/90 leading-relaxed"
       >
         {subheading}
       </motion.p>
@@ -56,7 +56,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
           size="lg" 
           className="bg-maroon hover:bg-maroon-light text-white min-w-[200px]
                    transition-all duration-normal ease-out transform hover:scale-105
-                   hover:shadow-glow focus:ring-2 focus:ring-maroon focus:ring-offset-2 
+                   focus:ring-2 focus:ring-maroon focus:ring-offset-2 
                    focus:ring-offset-black focus-visible:outline-none"
           aria-label="Get your tickets now"
         >

@@ -8,7 +8,7 @@ interface HeroBackgroundProps {
 export const HeroBackground = ({ imageUrl }: HeroBackgroundProps) => {
   return (
     <>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/90 z-10" />
       <motion.div 
         className="absolute inset-0 w-full h-full"
         initial={{ scale: 1.1, opacity: 0 }}
@@ -28,7 +28,7 @@ export const HeroBackground = ({ imageUrl }: HeroBackgroundProps) => {
         {[...Array(4)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute text-white/10 text-6xl"
+            className="absolute text-white/5 text-6xl"
             initial={{ y: 0, x: Math.random() * 100 - 50 }}
             animate={{
               y: [-20, 20],
