@@ -8,7 +8,7 @@ interface HeroBackgroundProps {
 export const HeroBackground = ({ imageUrl }: HeroBackgroundProps) => {
   return (
     <>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/90 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/90 to-black z-10" />
       <motion.div 
         className="absolute inset-0 w-full h-full"
         initial={{ scale: 1.1, opacity: 0 }}
