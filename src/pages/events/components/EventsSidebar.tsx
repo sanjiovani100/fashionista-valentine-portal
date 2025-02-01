@@ -6,7 +6,15 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { Calendar as CalendarIcon, Filter, X } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
+import { Calendar as CalendarIcon, Filter, X, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import type { EventSubtype } from '@/types/supabase/enums.types';
@@ -33,7 +41,7 @@ const EVENT_CATEGORIES: EventSubtype[] = [
   'after_party'
 ];
 
-const MAX_PRICE = 1000; // Maximum price for the slider
+const MAX_PRICE = 1000;
 
 export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,10 +52,10 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
     onFilterChange({ ...filters, location: e.target.value });
   };
 
-  const handleCategoryToggle = (category: EventSubtype) => {
-    const newCategories = filters.categories.includes(category)
-      ? filters.categories.filter(c => c !== category)
-      : [...filters.categories, category];
+  const handleCategoryToggle = (category: EventSubtype, checked: boolean) => {
+    const newCategories = checked
+      ? [...filters.categories, category]
+      : filters.categories.filter(c => c !== category);
     onFilterChange({ ...filters, categories: newCategories });
   };
 
@@ -130,6 +138,39 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
       </div>
 
       <div className="space-y-2">
+        <Label>Categories</Label>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="w-full justify-between"
+              aria-label="Select event categories"
+            >
+              Categories ({filters.categories.length})
+              <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            className="w-full min-w-[200px] bg-black/95 backdrop-blur-md border-white/10"
+            align="start"
+          >
+            <DropdownMenuLabel>Event Types</DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-white/10" />
+            {EVENT_CATEGORIES.map((category) => (
+              <DropdownMenuCheckboxItem
+                key={category}
+                checked={filters.categories.includes(category)}
+                onCheckedChange={(checked) => handleCategoryToggle(category, checked)}
+                className="text-white hover:bg-maroon/20 focus:bg-maroon/20"
+              >
+                {category.replace('_', ' ')}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className="space-y-2">
         <Label>Price Range</Label>
         <div className="pt-2 px-2">
           <Slider
@@ -156,22 +197,6 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
           onChange={handleLocationChange}
           className="bg-white/5 border-white/10"
         />
-      </div>
-
-      <div className="space-y-2">
-        <Label>Categories</Label>
-        <div className="grid grid-cols-1 gap-2">
-          {EVENT_CATEGORIES.map((category) => (
-            <Button
-              key={category}
-              variant={filters.categories.includes(category) ? "default" : "outline"}
-              className="w-full justify-start capitalize"
-              onClick={() => handleCategoryToggle(category)}
-            >
-              {category.replace('_', ' ')}
-            </Button>
-          ))}
-        </div>
       </div>
     </Card>
   );
