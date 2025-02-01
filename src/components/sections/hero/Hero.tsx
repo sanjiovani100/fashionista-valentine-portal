@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { HeroBackground } from "./components/HeroBackground";
 import { HeroContent } from "./components/HeroContent";
 import { ScrollIndicator } from "./components/ScrollIndicator";
-import { ScrollProgress } from "./components/ScrollProgress";
 import { ImageErrorBoundary } from "@/components/cloudinary/components/ImageErrorBoundary";
 import { CloudinaryImageError } from "@/components/cloudinary/components/CloudinaryImageError";
 
@@ -65,7 +64,6 @@ export const Hero = ({
       </motion.div>
 
       <ScrollIndicator onClick={scrollToContent} />
-      <ScrollProgress />
     </section>
   );
 };
