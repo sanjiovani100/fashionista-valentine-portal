@@ -99,13 +99,11 @@ const Index = () => {
                 buttons={{
                   primary: {
                     text: "Get Your Tickets",
-                    url: "#tickets",
-                    className: "bg-maroon hover:bg-maroon-light text-white transition-colors"
+                    url: "#tickets"
                   },
                   secondary: {
                     text: "Learn More",
-                    url: "#about",
-                    className: "border-maroon text-maroon hover:bg-maroon/10 transition-colors"
+                    url: "#about"
                   }
                 }}
               />
