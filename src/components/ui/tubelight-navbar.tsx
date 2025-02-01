@@ -49,7 +49,6 @@ export function NavBar() {
   }, [])
 
   useEffect(() => {
-    // Update active tab based on current route or hash
     const path = location.pathname
     const hash = location.hash
     
@@ -71,10 +70,9 @@ export function NavBar() {
     if (item.type === 'route') {
       navigate(item.url)
     } else {
-      // Handle hash navigation
       const element = document.querySelector(item.url)
       if (element) {
-        const navbarHeight = 80 // Adjust this value based on your navbar height
+        const navbarHeight = 80
         const elementPosition = element.getBoundingClientRect().top
         const offsetPosition = elementPosition + window.pageYOffset - navbarHeight
 
@@ -91,8 +89,8 @@ export function NavBar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "h-16 bg-black/95" : "h-20 bg-transparent"
+        "fixed top-0 left-0 right-0 z-50",
+        isScrolled ? "h-16 bg-black" : "h-20 bg-transparent"
       )}
     >
       <div className="container h-full mx-auto px-4 flex items-center justify-between">
