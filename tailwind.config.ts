@@ -21,6 +21,18 @@ export default {
         poppins: ['Poppins', 'sans-serif'],
         inter: ['Inter', 'sans-serif']
       },
+      fontSize: {
+        // Mobile first approach
+        'h1': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+        'h2': ['2.5rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
+        'h3': ['2rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
+        'h4': ['1.5rem', { lineHeight: '1.5' }],
+        // Desktop sizes
+        'h1-desktop': ['4rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+        'h2-desktop': ['3rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
+        'h3-desktop': ['2.5rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
+        'h4-desktop': ['2rem', { lineHeight: '1.5' }],
+      },
       colors: {
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',
@@ -45,15 +57,15 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        maroon: {
+          DEFAULT: '#800000',
+          light: '#A52A2A',
+          dark: '#4D0000',
+        },
         red: {
           primary: 'hsl(var(--red-primary))',
           bright: 'hsl(var(--red-bright))',
           soft: 'hsl(var(--red-soft))',
-        },
-        maroon: {
-          DEFAULT: 'hsl(var(--maroon))',
-          light: 'hsl(var(--maroon-light))',
-          dark: 'hsl(var(--maroon-dark))',
         },
         gray: {
           100: 'hsl(var(--gray-100))',
@@ -63,10 +75,27 @@ export default {
           500: 'hsl(var(--gray-500))',
         }
       },
+      spacing: {
+        section: '6rem',      // 96px
+        'section-inner': '4rem', // 64px
+        component: '2rem',    // 32px
+        element: '1rem',      // 16px
+      },
+      minHeight: {
+        'btn-lg': '48px',
+        'btn-md': '40px',
+        'btn-sm': '32px',
+      },
       transitionDuration: {
         normal: 'var(--duration-normal)',
         fast: 'var(--duration-fast)',
         slow: 'var(--duration-slow)',
+      },
+      boxShadow: {
+        'card': '0 4px 6px rgba(0, 0, 0, 0.1)',
+        'card-hover': '0 8px 12px rgba(0, 0, 0, 0.15)',
+        'btn': '0 2px 4px rgba(0, 0, 0, 0.1)',
+        'btn-hover': '0 4px 8px rgba(0, 0, 0, 0.2)',
       }
     }
   },
