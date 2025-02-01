@@ -8,18 +8,6 @@ interface HeroContentProps {
 }
 
 export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-        delayChildren: 0.2,
-        staggerChildren: 0.15
-      },
-    },
-  };
-
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -33,12 +21,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
   };
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="space-y-8 md:space-y-12 text-center max-w-4xl mx-auto"
-    >
+    <div className="space-y-8 md:space-y-12 text-center max-w-4xl mx-auto">
       <motion.h1 
         variants={itemVariants}
         id="hero-title"
@@ -92,6 +75,6 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
           February 14, 2024
         </Button>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
