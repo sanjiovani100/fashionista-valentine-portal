@@ -10,6 +10,7 @@ import { Calendar as CalendarIcon, Filter, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import type { EventSubtype } from '@/types/supabase/enums.types';
+import { useTranslation } from 'react-i18next';
 
 interface EventFilters {
   search: string;
@@ -36,6 +37,8 @@ const EVENT_CATEGORIES: EventSubtype[] = [
 const MAX_PRICE = 1000; // Maximum price for the slider
 
 export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) => {
+  const { t } = useTranslation('home');
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFilterChange({ ...filters, search: e.target.value });
   };
@@ -52,7 +55,7 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
   };
 
   const handlePriceRangeChange = (value: number[]) => {
-    onFilterChange({ ...filters, priceRange: [value[0], value[1]] as [number, number] });
+    onFilterChange({ ...filters, priceRange: value as [number, number] });
   };
 
   const clearFilters = () => {
@@ -74,7 +77,7 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
   return (
     <Card className="p-6 space-y-6 bg-black/40 backdrop-blur-md border-white/10">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Filters</h2>
+        <h2 className="text-lg font-semibold">{t('events.filters.title')}</h2>
         {hasActiveFilters && (
           <Button
             variant="ghost"
@@ -82,18 +85,18 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
             onClick={clearFilters}
             className="h-8 px-2 lg:px-3"
           >
-            Clear
+            {t('events.filters.clear')}
             <X className="ml-2 h-4 w-4" />
           </Button>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="search">Search Events</Label>
+        <Label htmlFor="search">{t('events.filters.search')}</Label>
         <div className="relative">
           <Input
             id="search"
-            placeholder="Search by name..."
+            placeholder={t('events.filters.search')}
             value={filters.search}
             onChange={handleSearchChange}
             className="bg-white/5 border-white/10 pl-9"
@@ -103,7 +106,7 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
       </div>
 
       <div className="space-y-2">
-        <Label>Event Date</Label>
+        <Label>{t('events.filters.date')}</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -130,7 +133,7 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
       </div>
 
       <div className="space-y-2">
-        <Label>Price Range</Label>
+        <Label>{t('events.filters.priceRange')}</Label>
         <div className="pt-2 px-2">
           <Slider
             defaultValue={[0, MAX_PRICE]}
@@ -148,10 +151,10 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="location">Location</Label>
+        <Label htmlFor="location">{t('events.filters.location')}</Label>
         <Input
           id="location"
-          placeholder="Filter by location..."
+          placeholder={t('events.filters.location')}
           value={filters.location}
           onChange={handleLocationChange}
           className="bg-white/5 border-white/10"
@@ -159,7 +162,7 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
       </div>
 
       <div className="space-y-2">
-        <Label>Categories</Label>
+        <Label>{t('events.filters.categories')}</Label>
         <div className="grid grid-cols-1 gap-2">
           {EVENT_CATEGORIES.map((category) => (
             <Button
@@ -168,7 +171,7 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
               className="w-full justify-start capitalize"
               onClick={() => handleCategoryToggle(category)}
             >
-              {category.replace('_', ' ')}
+              {t(`events.categories.${category}`)}
             </Button>
           ))}
         </div>

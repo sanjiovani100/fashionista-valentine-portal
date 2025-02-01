@@ -6,6 +6,7 @@ import { TrustSignals } from "./components/TrustSignals";
 import { TicketHeader } from "./components/TicketHeader";
 import { TicketGrid } from "./components/TicketGrid";
 import type { EventTicket } from "@/types/event.types";
+import { useTranslation } from 'react-i18next';
 
 interface TicketSelectionProps {
   tickets: EventTicket[];
@@ -19,6 +20,7 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
     triggerOnce: true,
     threshold: 0.1
   });
+  const { t } = useTranslation('home');
 
   useEffect(() => {
     if (inView) {
@@ -49,15 +51,30 @@ export const TicketSelection = ({ tickets, eventDate }: TicketSelectionProps) =>
         initial="hidden"
         animate={controls}
       >
-        <TicketHeader controls={controls} />
-        <CountdownTimer eventDate={eventDate} />
+        <TicketHeader />
+        
         <TicketGrid 
           tickets={tickets}
           selectedTicket={selectedTicket}
           onSelectTicket={setSelectedTicket}
         />
-        <TrustSignals />
+
+        <div className="mt-12">
+          <TrustSignals />
+        </div>
+
+        <div className="mt-8">
+          <CountdownTimer eventDate={eventDate} />
+        </div>
       </motion.div>
+
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+      >
+        <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-black to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-black to-transparent" />
+      </div>
     </section>
   );
 };

@@ -1,6 +1,8 @@
+import * as React from 'react';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface Benefit {
   icon: LucideIcon;
@@ -11,9 +13,13 @@ interface Benefit {
 interface BenefitsGridProps {
   benefits: Benefit[];
   className?: string;
+  role: "model" | "designer" | "sponsor";
+  section?: string;
 }
 
-export const BenefitsGrid = ({ benefits, className }: BenefitsGridProps) => {
+export const BenefitsGrid = ({ benefits, className, role, section = 'benefits' }: BenefitsGridProps) => {
+  const { t } = useTranslation(role);
+
   return (
     <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8", className)}>
       {benefits.map((benefit, index) => (
@@ -35,9 +41,11 @@ export const BenefitsGrid = ({ benefits, className }: BenefitsGridProps) => {
             <div>
               <h3 className="text-h4 font-playfair mb-2 
                            group-hover:text-fashion-pink transition-colors duration-300">
-                {benefit.title}
+                {t(`${section}.${benefit.title}.title`)}
               </h3>
-              <p className="text-gray-300">{benefit.description}</p>
+              <p className="text-gray-300">
+                {t(`${section}.${benefit.title}.description`)}
+              </p>
             </div>
           </div>
         </motion.div>

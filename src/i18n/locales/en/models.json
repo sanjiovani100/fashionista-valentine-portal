@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "title": "Join Our Model Community",
+    "subtitle": "Showcase your talent and build your portfolio"
+  },
+  "requirements": {
+    "title": "Model Requirements",
+    "description": "What we look for in our models",
+    "items": {
+      "height": {
+        "title": "Height Requirements",
+        "description": "Minimum height of 175cm for female models and 185cm for male models"
+      },
+      "portfolio": {
+        "title": "Portfolio",
+        "description": "Professional photos showcasing your modeling experience"
+      },
+      "experience": {
+        "title": "Experience",
+        "description": "Previous runway or photoshoot experience is preferred"
+      }
+    }
+  },
+  "opportunities": {
+    "title": "Model Opportunities",
+    "description": "Launch your modeling career with us",
+    "items": {
+      "runway": {
+        "title": "Runway Experience",
+        "description": "Walk for top designers in our Valentine's showcase",
+        "metrics": ["10+ Designers", "500+ Attendees"]
+      },
+      "portfolio": {
+        "title": "Portfolio Building",
+        "description": "Professional photos from the event",
+        "metrics": ["Professional Photos", "Video Coverage"]
+      }
+    }
+  },
+  "benefits": {
+    "portfolio": {
+      "title": "Professional Portfolio",
+      "description": "Build a stunning portfolio with professional photographs from our events"
+    },
+    "connections": {
+      "title": "Industry Connections",
+      "description": "Network with top designers, photographers, and industry professionals"
+    },
+    "career": {
+      "title": "Career Growth",
+      "description": "Gain valuable runway experience and exposure to major brands"
+    }
+  },
+  "registration": {
+    "title": "Apply Now"
+  }
+} 

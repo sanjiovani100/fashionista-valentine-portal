@@ -1,0 +1,237 @@
+{
+  "version": "1.0",
+  "rules": {
+    "fileStructure": {
+      "components": {
+        "baseDir": "src/components",
+        "structure": {
+          "required": [
+            "{ComponentName}/index.tsx",
+            "{ComponentName}/components/",
+            "{ComponentName}/__tests__/",
+            "{ComponentName}/types.ts"
+          ],
+          "optional": [
+            "{ComponentName}/utils.ts",
+            "{ComponentName}/hooks.ts",
+            "{ComponentName}/constants.ts"
+          ]
+        }
+      },
+      "translations": {
+        "baseDir": "src/i18n/locales",
+        "structure": {
+          "required": [
+            "{lang}/common.json",
+            "{lang}/models.json",
+            "{lang}/sponsors.json",
+            "{lang}/home.json"
+          ]
+        },
+        "namespaces": [
+          "common",
+          "models",
+          "sponsors",
+          "home"
+        ]
+      }
+    },
+
+    "codeStyle": {
+      "components": {
+        "maxLines": 200,
+        "naming": {
+          "components": "PascalCase",
+          "hooks": "camelCase",
+          "utils": "camelCase",
+          "types": "PascalCase",
+          "constants": "SCREAMING_SNAKE_CASE"
+        },
+        "imports": {
+          "order": [
+            "react",
+            "external-libs",
+            "components",
+            "hooks",
+            "utils",
+            "types",
+            "constants",
+            "styles"
+          ]
+        }
+      },
+      "translations": {
+        "keyNaming": {
+          "pattern": "{section}.{subsection}.{element}",
+          "examples": [
+            "hero.title.main",
+            "form.submit.button",
+            "error.validation.required"
+          ]
+        }
+      }
+    },
+
+    "componentRules": {
+      "required": {
+        "hooks": [
+          "useTranslation must be first hook",
+          "Custom hooks after standard hooks",
+          "State hooks before effect hooks"
+        ],
+        "props": [
+          "All props must have explicit types",
+          "Required props must be marked",
+          "Optional props must have defaults"
+        ],
+        "exports": [
+          "Default export for main component",
+          "Named exports for utilities"
+        ]
+      },
+      "forbidden": {
+        "patterns": [
+          "No inline styles",
+          "No hardcoded strings",
+          "No direct DOM manipulation",
+          "No props spreading without type safety"
+        ]
+      }
+    },
+
+    "translationRules": {
+      "required": {
+        "implementation": [
+          "Use useTranslation hook",
+          "Implement fallback text",
+          "Handle loading states",
+          "Support language switching"
+        ],
+        "keys": [
+          "Must be hierarchical",
+          "Must be descriptive",
+          "Must include context comments",
+          "Must follow naming convention"
+        ]
+      },
+      "forbidden": {
+        "patterns": [
+          "No hardcoded text",
+          "No inline translations",
+          "No missing keys",
+          "No duplicate keys"
+        ]
+      }
+    },
+
+    "testingRules": {
+      "required": {
+        "components": [
+          "Unit tests for all components",
+          "Integration tests for pages",
+          "Accessibility tests",
+          "Snapshot tests"
+        ],
+        "translations": [
+          "Test missing translations",
+          "Test language switching",
+          "Test fallback behavior",
+          "Test loading states"
+        ]
+      },
+      "coverage": {
+        "minimum": {
+          "statements": 80,
+          "branches": 80,
+          "functions": 80,
+          "lines": 80
+        }
+      }
+    },
+
+    "accessibilityRules": {
+      "required": {
+        "attributes": [
+          "aria-labels must be translated",
+          "role attributes must be explicit",
+          "alt text must be meaningful",
+          "focus states must be visible"
+        ],
+        "structure": [
+          "Proper heading hierarchy",
+          "Semantic HTML elements",
+          "Keyboard navigation support",
+          "Screen reader compatibility"
+        ]
+      }
+    },
+
+    "performanceRules": {
+      "required": {
+        "optimization": [
+          "Memoize expensive computations",
+          "Lazy load translations",
+          "Implement code splitting",
+          "Cache translation results"
+        ],
+        "metrics": {
+          "maxBundleSize": "500kb",
+          "maxChunkSize": "200kb",
+          "maxInitialLoad": "2s",
+          "maxTTI": "3s"
+        }
+      }
+    },
+
+    "gitRules": {
+      "commits": {
+        "format": "type(scope): description",
+        "types": [
+          "feat",
+          "fix",
+          "docs",
+          "style",
+          "refactor",
+          "test",
+          "chore",
+          "trans"
+        ],
+        "scopes": [
+          "component",
+          "translation",
+          "test",
+          "config",
+          "docs"
+        ]
+      },
+      "branches": {
+        "naming": {
+          "feature": "feature/{name}",
+          "bugfix": "fix/{name}",
+          "translation": "trans/{lang}/{feature}",
+          "release": "release/v{version}"
+        }
+      }
+    },
+
+    "reviewRules": {
+      "required": {
+        "checks": [
+          "Translation implementation",
+          "Accessibility compliance",
+          "Performance metrics",
+          "Test coverage",
+          "Code style",
+          "Documentation"
+        ],
+        "approvals": {
+          "minimum": 1,
+          "requiredReviewers": [
+            "tech-lead",
+            "i18n-specialist"
+          ]
+        }
+      }
+    }
+  }
+} 

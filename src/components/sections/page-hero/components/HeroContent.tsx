@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface HeroContentProps {
-  headline: string;
-  subheading: string;
+  role: "model" | "designer" | "sponsor";
 }
 
-export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
+export const HeroContent = ({ role }: HeroContentProps) => {
+  const { t } = useTranslation('home');
+
   return (
     <div className="container relative z-20 max-w-[800px] mx-auto px-4 py-16">
       <div className="text-center space-y-8">
@@ -17,7 +19,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {headline}
+          {t('hero.title')}
         </motion.h1>
         
         <motion.p 
@@ -26,7 +28,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {subheading}
+          {t('hero.subtitle')}
         </motion.p>
 
         <motion.div 
@@ -35,7 +37,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           role="group"
-          aria-label="Sponsorship actions"
+          aria-label={t('cta.primary')}
         >
           <Button 
             size="lg"
@@ -45,7 +47,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
                      transition-all duration-300 ease-out transform hover:scale-105
                      hover:shadow-[0_0_20px_rgba(255,0,204,0.3)]"
           >
-            Become a Sponsor
+            {t('cta.primary')}
           </Button>
           <Button 
             variant="outline"
@@ -56,7 +58,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
                      transform hover:scale-105
                      hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
           >
-            Learn More
+            {t('cta.secondary')}
           </Button>
         </motion.div>
       </div>

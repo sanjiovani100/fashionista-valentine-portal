@@ -1,0 +1,63 @@
+{
+  "hero": {
+    "title": "Asóciate con Nosotros",
+    "subtitle": "Conecta tu marca con audiencias apasionadas por la moda"
+  },
+  "feature": {
+    "badge": "Patrocinio",
+    "title": "¿Por qué Patrocinar el Evento de San Valentín Fashionistas?",
+    "description": "Conecta con una audiencia exclusiva de líderes de la industria de la moda, diseñadores e influencers en un ambiente íntimo diseñado para interacciones significativas",
+    "benefits": {
+      "visibility": {
+        "title": "Visibilidad Premium de Marca",
+        "description": "Exhibe tu marca en todo el recinto del evento"
+      },
+      "networking": {
+        "title": "Networking VIP",
+        "description": "Conecta con líderes de la industria e influencers"
+      },
+      "placement": {
+        "title": "Ubicación Estratégica",
+        "description": "Oportunidades de colocación y activación de productos"
+      }
+    }
+  },
+  "benefits": {
+    "visibility": {
+      "title": "Visibilidad de Marca",
+      "description": "Muestra tu marca a nuestra audiencia exclusiva de entusiastas de la moda"
+    },
+    "marketing": {
+      "title": "Marketing Dirigido",
+      "description": "Alcanza tu demografía ideal a través de nuestros eventos especializados"
+    },
+    "network": {
+      "title": "Red de Negocios",
+      "description": "Conecta con líderes de la industria y potenciales socios comerciales"
+    }
+  },
+  "sponsorshipLevels": {
+    "title": "Niveles de Patrocinio",
+    "subtitle": "Elige el paquete de patrocinio perfecto para tu marca",
+    "levels": {
+      "gold": {
+        "title": "Patrocinador Oro",
+        "description": "Visibilidad premium, acceso VIP y oportunidades exclusivas de marca durante todo el evento"
+      },
+      "silver": {
+        "title": "Patrocinador Plata",
+        "description": "Visibilidad mejorada y oportunidades de networking con actores clave de la industria"
+      },
+      "bronze": {
+        "title": "Patrocinador Bronce",
+        "description": "Presencia de marca y oportunidades de networking en nuestro exclusivo evento de moda"
+      }
+    },
+    "cta": "Más Información"
+  },
+  "cta": {
+    "primary": "Conviértete en Patrocinador",
+    "secondary": "Más Información"
+  },
+  "imageAlt": "Modelo de moda en un elegante vestido negro con detalles recortados, exhibiendo diseño de alta moda sobre un fondo neutro"
+} 

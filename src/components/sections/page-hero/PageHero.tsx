@@ -5,13 +5,11 @@ import { HeroContent } from "./components/HeroContent";
 import { AnimatedBackground } from "./components/AnimatedBackground";
 
 interface PageHeroProps {
-  headline: string;
-  subheading: string;
   role: "model" | "designer" | "sponsor";
   className?: string;
 }
 
-export const PageHero = ({ headline, subheading, role, className }: PageHeroProps) => {
+export const PageHero = ({ role, className }: PageHeroProps) => {
   const backgroundImage = role === "sponsor" 
     ? "/lovable-uploads/30ae724b-7186-449a-ba71-b9438b79458f.png"
     : "/fashionistas-logo.png";
@@ -28,7 +26,7 @@ export const PageHero = ({ headline, subheading, role, className }: PageHeroProp
     >
       <HeroBackground backgroundImage={backgroundImage} />
       <AnimatedBackground />
-      <HeroContent headline={headline} subheading={subheading} />
+      <HeroContent role={role} />
     </section>
   );
 };

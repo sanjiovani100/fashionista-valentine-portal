@@ -9,6 +9,37 @@ interface HighlightCardProps {
   index: number;
 }
 
+const extractPublicId = (url: string) => {
+  console.log('[HighlightCard] Extracting public ID from URL:', url);
+
+  if (!url) {
+    console.warn('[HighlightCard] Empty URL provided');
+    return '';
+  }
+
+  // Handle full Cloudinary URLs
+  if (url.includes('cloudinary.com')) {
+    const matches = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+    if (matches) {
+      console.log('[HighlightCard] Extracted Cloudinary ID:', matches[1]);
+      return matches[1];
+    }
+  }
+
+  // Handle Supabase storage URLs
+  if (url.includes('supabase.co')) {
+    const id = url.split('/').pop()?.split('?')[0];
+    if (id) {
+      console.log('[HighlightCard] Extracted Supabase ID:', id);
+      return id;
+    }
+  }
+
+  // If it's already a public ID or we can't parse it, return as is
+  console.log('[HighlightCard] Using URL as is:', url);
+  return url;
+};
+
 export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
   const springConfig = {
     type: "spring",
@@ -16,97 +47,39 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
     damping: 30
   };
 
-  // Fixed titles for the cards
-  const getCardTitle = (index: number) => {
-    const titles = [
-      "Fashion Show",
-      "Valentine's Party",
-      "VIP Experience"
-    ];
-    return titles[index] || `Event ${index + 1}`;
-  };
-
-  // Clean content by removing any unwanted words and formatting
-  const cleanContent = (content: string) => {
-    console.log('[Content Cleaning] Original content:', content);
-    
-    const cleaned = content
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line.length > 0)
-      .map(line => {
-        const cleanedLine = line
-          .replace(/^\s*[-•]\s*/, '') // Remove bullet points
-          .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-          .trim();
-        return cleanedLine.charAt(0).toUpperCase() + cleanedLine.slice(1); // Capitalize first letter
-      })
-      .filter(line => line.length > 0);
-
-    console.log('[Content Cleaning] Cleaned content:', cleaned);
-    return cleaned;
-  };
-
-  // Process the perks from the content
-  const perks = cleanContent(highlight.content);
-
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={springConfig}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ ...springConfig, delay: index * 0.1 }}
       className="h-full"
     >
-      <Card
-        className="relative h-full bg-black/30 backdrop-blur-sm border transition-all duration-300 will-change-transform border-white/10 hover:border-white/20 hover:bg-white/5"
-        role="article"
-        tabIndex={0}
-      >
-        <CardHeader className="space-y-2">
-          <CardTitle className="text-2xl md:text-3xl font-poppins text-white">
-            {getCardTitle(index)}
+      <Card className="relative h-full bg-black/50 border-red-800/20 backdrop-blur-sm overflow-hidden group">
+        <CardHeader className="relative z-10">
+          <CardTitle className="text-xl font-semibold text-white">
+            {highlight.title}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <motion.div 
-            className="mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <img 
-              src={highlight.image} 
-              alt={`${getCardTitle(index)} preview`}
-              className="w-full h-48 object-cover rounded-lg"
-              loading="lazy"
-            />
-          </motion.div>
-          <ul className="space-y-4" role="list">
-            {perks.map((perk, idx) => (
-              <motion.li
-                key={`${highlight.id}-perk-${idx}`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * (idx + 1) }}
-                className="flex items-center gap-3 text-white/80 font-montserrat"
-              >
-                <Check className="w-5 h-5 text-red-accent shrink-0" aria-hidden="true" />
-                <span>{perk}</span>
-              </motion.li>
+        <CardContent className="relative z-10">
+          <ul className="space-y-2">
+            {highlight.features.map((feature, idx) => (
+              <li key={idx} className="flex items-start space-x-2">
+                <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-300">{feature}</span>
+              </li>
             ))}
           </ul>
           <Button
-            className="w-full h-12 mt-6 bg-white text-black hover:bg-white/90 
-                     transition-all hover:scale-[1.02] active:scale-[0.98] 
-                     rounded-lg font-montserrat
-                     focus-visible:ring-2 focus-visible:ring-white 
-                     focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-            size="lg"
-            aria-label={`Learn more about ${getCardTitle(index)}`}
+            variant="outline"
+            className="mt-4 w-full border-red-500/50 text-red-500 hover:bg-red-500/10"
           >
             Learn More
           </Button>
         </CardContent>
+        <div 
+          className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"
+          aria-hidden="true"
+        />
       </Card>
     </motion.div>
   );

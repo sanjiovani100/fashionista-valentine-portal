@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { EventTicket } from "@/types/event.types";
+import { useTranslation } from 'react-i18next';
 
 interface TicketCardProps extends Omit<EventTicket, 'benefits'> {
   isSelected: boolean;
@@ -22,11 +23,18 @@ export const TicketCard = ({
   onSelect,
   tabIndex = 0,
 }: TicketCardProps) => {
+  const { t } = useTranslation('home');
+
   const springConfig = {
     type: "spring",
     stiffness: 300,
     damping: 30
   };
+
+  console.log('Translation for title:', t(`tickets.${title}.title`));
+  console.log('Translation for subtitle:', t(`tickets.${title}.subtitle`));
+  console.log('Translation for perks:', perks.map((_, index) => t(`tickets.${title}.perks.${index}`)));
+  console.log('Translation for securePayment:', t('tickets.securePayment'));
 
   return (
     <motion.div
@@ -48,10 +56,10 @@ export const TicketCard = ({
       >
         <CardHeader>
           <CardTitle className="text-2xl md:text-[24px] font-poppins text-white">
-            {title}
+            {t(`tickets.${title}.title`)}
           </CardTitle>
           <CardDescription className="text-white-secondary font-montserrat">
-            {subtitle}
+            {t(`tickets.${title}.subtitle`)}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -74,21 +82,21 @@ export const TicketCard = ({
                 className="flex items-center gap-3 text-white-secondary font-montserrat"
               >
                 <Check className="w-5 h-5 text-red-accent shrink-0" />
-                <span>{perk}</span>
+                <span>{t(`tickets.${title}.perks.${index}`)}</span>
               </motion.li>
             ))}
           </ul>
           <p className="text-sm text-white-muted mt-6 font-montserrat">
-            Secure payment with Stripe
+            {t('tickets.securePayment')}
           </p>
         </CardContent>
         <CardFooter>
           <Button
             className="w-full h-[48px] bg-maroon hover:bg-maroon-light text-white transition-all hover:scale-[1.02] active:scale-[0.98] hover:shadow-glow rounded-lg font-montserrat focus-visible:ring-2 focus-visible:ring-red-accent focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             size="lg"
-            aria-label={`Select ${title} ticket`}
+            aria-label={t('tickets.selectTicket', { title: t(`tickets.${title}.title`) })}
           >
-            Select Ticket
+            {t('tickets.selectTicketButton')}
           </Button>
         </CardFooter>
       </Card>

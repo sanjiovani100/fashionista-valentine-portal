@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { EventList } from './EventList';
 import type { EventSubtype } from '@/types/supabase/enums.types';
+import { useTranslation } from 'react-i18next';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -9,7 +10,7 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.2,
-      delayChildren: 0.1,
+      delayChildren: 0.3,
     }
   }
 };
@@ -20,14 +21,14 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
     }
   }
 };
 
 export const EventsSection = () => {
+  const { t } = useTranslation('home');
   const prefersReducedMotion = useReducedMotion();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'date' | 'price-asc' | 'price-desc'>('date');
@@ -60,7 +61,7 @@ export const EventsSection = () => {
             variants={itemVariants}
             className="text-sm font-medium tracking-widest text-white/60 uppercase mb-4"
           >
-            Mark Your Calendar
+            {t('events.subtitle')}
           </motion.p>
           
           <motion.h2 
@@ -68,14 +69,14 @@ export const EventsSection = () => {
             variants={itemVariants}
             className="text-4xl md:text-5xl font-playfair mb-4 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent"
           >
-            Upcoming Fashion Events
+            {t('events.title')}
           </motion.h2>
           
           <motion.p 
             variants={itemVariants}
             className="text-xl text-white/80 max-w-2xl mx-auto"
           >
-            Join us for exclusive fashion shows and events throughout the year
+            {t('events.description')}
           </motion.p>
         </motion.div>
 
@@ -83,6 +84,18 @@ export const EventsSection = () => {
           filters={filters}
           sortBy={sortBy}
           viewMode={viewMode}
+          translations={{
+            search: t('events.filters.search'),
+            viewMode: {
+              grid: t('events.filters.viewMode.grid'),
+              list: t('events.filters.viewMode.list')
+            },
+            sortBy: {
+              date: t('events.filters.sortBy.date'),
+              priceAsc: t('events.filters.sortBy.priceAsc'),
+              priceDesc: t('events.filters.sortBy.priceDesc')
+            }
+          }}
         />
       </div>
     </section>

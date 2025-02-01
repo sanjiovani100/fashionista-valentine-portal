@@ -1,0 +1,40 @@
+{
+  "navigation": {
+    "home": "Home",
+    "models": "Models",
+    "sponsors": "Sponsors",
+    "getTickets": "Get Tickets",
+    "changeLanguage": "Change Language"
+  },
+  "buttons": {
+    "explore": "Explore",
+    "learnMore": "Learn More",
+    "apply": "Apply Now",
+    "submit": "Submit",
+    "register": "Register"
+  },
+  "footer": {
+    "contact": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "followUs": "Follow Us"
+  },
+  "accessibility": {
+    "skipToContent": "Skip to main content",
+    "menuToggle": "Toggle menu",
+    "closeMenu": "Close menu"
+  },
+  "errors": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "generalError": "Something went wrong. Please try again.",
+    "networkError": "Network error. Please check your connection."
+  },
+  "forms": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "phone": "Phone Number",
+    "submit": "Submit"
+  }
+} 

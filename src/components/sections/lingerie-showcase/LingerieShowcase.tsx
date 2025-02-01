@@ -7,6 +7,7 @@ import type { FashionCollection } from "@/types/event.types";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import './styles.css';
+import { useTranslation } from 'react-i18next';
 
 interface LingerieShowcaseProps {
   collections: (FashionCollection & { 
@@ -17,6 +18,7 @@ interface LingerieShowcaseProps {
 }
 
 export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
+  const { t } = useTranslation('home');
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -86,7 +88,7 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          Luxury Lingerie Showcase
+          {t('showcase.title')}
         </motion.h2>
 
         <motion.div 
@@ -112,13 +114,13 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
                   <div className="relative aspect-[3/4] overflow-hidden">
                     <OptimizedImage
                       publicId={collection.image}
-                      alt={`${collection.collection_name} collection preview`}
+                      alt={`${t('showcase.collection.preview', { collectionName: collection.collection_name })}`}
                       aspectRatio="portrait"
                       className="showcase-image object-cover w-full h-full 
                                transition-transform duration-500 group-hover:scale-110"
                       priority={index < 3}
                       onError={() => {
-                        toast.error(`Failed to load image for ${collection.collection_name}`);
+                        toast.error(t('showcase.collection.loadError', { collectionName: collection.collection_name }));
                       }}
                     />
                     <div 
@@ -138,9 +140,9 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
                                  transition-all duration-300 transform hover:scale-105
                                  focus:ring-2 focus:ring-red-accent focus:ring-offset-2 
                                  focus:ring-offset-black focus:outline-none"
-                        aria-label={`Explore ${collection.collection_name} collection`}
+                        aria-label={t('showcase.collection.explore', { collectionName: collection.collection_name })}
                       >
-                        Explore Collection
+                        {t('showcase.collection.exploreButton')}
                       </Button>
                     </div>
                   </div>

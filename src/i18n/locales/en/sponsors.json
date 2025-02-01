@@ -1,0 +1,63 @@
+{
+  "hero": {
+    "title": "Partner With Us",
+    "subtitle": "Connect your brand with fashion-forward audiences"
+  },
+  "feature": {
+    "badge": "Sponsorship",
+    "title": "Why Sponsor Fashionistas Valentine's Event?",
+    "description": "Connect with an exclusive audience of fashion industry leaders, designers, and influencers in an intimate setting designed for meaningful interactions",
+    "benefits": {
+      "visibility": {
+        "title": "Premium Brand Visibility",
+        "description": "Showcase your brand throughout the event venue"
+      },
+      "networking": {
+        "title": "VIP Networking",
+        "description": "Connect with industry leaders and influencers"
+      },
+      "placement": {
+        "title": "Strategic Placement",
+        "description": "Product placement and activation opportunities"
+      }
+    }
+  },
+  "benefits": {
+    "visibility": {
+      "title": "Brand Visibility",
+      "description": "Showcase your brand to our exclusive audience of fashion enthusiasts"
+    },
+    "marketing": {
+      "title": "Target Marketing",
+      "description": "Reach your ideal demographic through our focused events"
+    },
+    "network": {
+      "title": "Business Network",
+      "description": "Connect with industry leaders and potential business partners"
+    }
+  },
+  "sponsorshipLevels": {
+    "title": "Sponsorship Levels",
+    "subtitle": "Choose the perfect sponsorship package for your brand",
+    "levels": {
+      "gold": {
+        "title": "Gold Sponsor",
+        "description": "Premium visibility, VIP access, and exclusive branding opportunities throughout the event"
+      },
+      "silver": {
+        "title": "Silver Sponsor",
+        "description": "Enhanced visibility and networking opportunities with key industry players"
+      },
+      "bronze": {
+        "title": "Bronze Sponsor",
+        "description": "Brand presence and networking opportunities at our exclusive fashion event"
+      }
+    },
+    "cta": "Learn More"
+  },
+  "cta": {
+    "primary": "Become a Sponsor",
+    "secondary": "Learn More"
+  },
+  "imageAlt": "Fashion model in an elegant black dress with cutout detail, showcasing high-end fashion design against a neutral background"
+} 

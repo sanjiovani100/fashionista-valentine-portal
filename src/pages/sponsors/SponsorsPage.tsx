@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/sections/page-hero/PageHero";
 import { BenefitsGrid } from "@/components/sections/benefits/BenefitsGrid";
@@ -10,33 +10,30 @@ const SponsorsPage = () => {
   const benefits = [
     {
       icon: Building2,
-      title: "Brand Visibility",
-      description: "Showcase your brand to our exclusive audience of fashion enthusiasts"
+      title: 'visibility',
+      description: ''
     },
     {
       icon: Target,
-      title: "Target Marketing",
-      description: "Reach your ideal demographic through our focused events"
+      title: 'marketing',
+      description: ''
     },
     {
       icon: Briefcase,
-      title: "Business Network",
-      description: "Connect with industry leaders and potential business partners"
+      title: 'network',
+      description: ''
     }
   ];
 
   return (
     <PageLayout>
-      <PageHero 
-        headline="Partner with Us for an Unforgettable Fashion Experience"
-        subheading="Showcase your brand to an exclusive audience of fashion industry leaders"
-        role="sponsor"
-      />
-      <Feature />
+      <PageHero role="sponsor" />
+      <Feature role="sponsor" />
       <SponsorshipLevels />
       <BenefitsGrid
         benefits={benefits}
         className="py-20"
+        role="sponsor"
       />
     </PageLayout>
   );

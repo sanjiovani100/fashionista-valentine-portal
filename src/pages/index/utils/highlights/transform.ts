@@ -29,12 +29,10 @@ export const transformHighlights = (
     imagesCount: images?.length
   });
 
-  const usedImages = new Set<string>();
-
   return (content || [])
     .filter(item => item.content_type === 'highlight')
     .map(highlight => {
-      const highlightImage = findHighlightImage(highlight, images, usedImages);
+      const highlightImage = findHighlightImage(highlight, images);
       const processedImage = constructImageUrl(highlightImage);
 
       return {
@@ -91,7 +89,26 @@ export const transformEventData = (eventData: any): TransformedEventData => {
     };
   }
 
-  const highlights = transformHighlights(eventData.event_content, eventData.fashion_images);
+  const usedImageIds = new Set<string>();  // Track used images
+
+  const highlights = (eventData.event_content || [])
+    .filter((content: EventContent) => content.content_type === 'highlight')
+    .map((highlight: EventContent) => {
+      const highlightImage = findHighlightImage(highlight, eventData.fashion_images || [], usedImageIds);
+      const processedImage = {
+        url: highlightImage?.url || cloudinaryConfig.defaults.placeholders.highlight,
+        alt: highlightImage?.alt_text || 'Event image'
+      };
+
+      return {
+        ...highlight,
+        image: processedImage.url,
+        alt: processedImage.alt,
+        isLoading: false
+      };
+    })
+    .slice(0, 3);
+
   const collections = transformCollections(eventData.fashion_collections, eventData.fashion_images);
 
   const heroImage = constructImageUrl(

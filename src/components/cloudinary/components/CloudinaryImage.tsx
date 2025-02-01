@@ -30,41 +30,70 @@ export const OptimizedImage = ({
   className,
   aspectRatio = 'auto',
   priority = false,
-  onLoadingComplete
+  onLoadingComplete,
+  onError
 }: CloudinaryImageProps) => {
+  console.group('[OptimizedImage] Initializing');
+  console.log('Input publicId:', publicId);
+
   // Extract Cloudinary ID if a full URL is provided
-  const cloudinaryId = publicId.includes('cloudinary.com') 
-    ? publicId.match(/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/)?.[1] || publicId
-    : publicId.includes('supabase.co') 
-      ? publicId.split('/').pop()?.split('?')[0] || publicId
-      : publicId;
+  let cloudinaryId = publicId;
+  
+  try {
+    if (publicId.includes('cloudinary.com')) {
+      const matches = publicId.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+      if (matches) {
+        cloudinaryId = matches[1];
+        console.log('Extracted Cloudinary ID from URL:', cloudinaryId);
+      }
+    } else if (publicId.includes('supabase.co')) {
+      const id = publicId.split('/').pop()?.split('?')[0];
+      if (id) {
+        cloudinaryId = id;
+        console.log('Extracted Supabase ID from URL:', cloudinaryId);
+      }
+    }
 
-  console.log('Cloudinary successfully configured with cloud name:', cloudinaryConfig.cloud.cloudName);
-  console.log('Using Cloudinary ID:', cloudinaryId);
+    console.log('Final Cloudinary ID:', cloudinaryId);
+    console.log('Cloud name:', cloudinaryConfig.cloud.cloudName);
 
-  const { width, height } = propWidth && propHeight 
-    ? { width: propWidth, height: propHeight }
-    : getAspectRatioDimensions(aspectRatio);
+    const { width, height } = propWidth && propHeight 
+      ? { width: propWidth, height: propHeight }
+      : getAspectRatioDimensions(aspectRatio);
 
-  const cld = new Cloudinary(cloudinaryConfig);
+    console.log('Dimensions:', { width, height, aspectRatio });
 
-  const myImage = cld.image(cloudinaryId)
-    .resize(fill().width(width).height(height));
+    const cld = new Cloudinary(cloudinaryConfig);
+    const myImage = cld.image(cloudinaryId)
+      .resize(fill().width(width).height(height));
 
-  return (
-    <ImageErrorBoundary fallback={<CloudinaryImageError />}>
-      <AdvancedImage
-        cldImg={myImage}
-        plugins={[lazyload(), placeholder()]}
-        alt={alt}
-        className={className}
-        onError={(e) => {
-          console.error('[Cloudinary Error]', e);
-        }}
-        onLoad={() => {
-          onLoadingComplete?.();
-        }}
-      />
-    </ImageErrorBoundary>
-  );
+    console.groupEnd();
+
+    return (
+      <ImageErrorBoundary 
+        fallback={(props) => (
+          <CloudinaryImageError {...props} />
+        )}
+      >
+        <AdvancedImage
+          cldImg={myImage}
+          plugins={[lazyload(), placeholder()]}
+          alt={alt}
+          className={className}
+          onError={(e) => {
+            console.error('[Cloudinary Error]', e);
+            onError?.(e);
+          }}
+          onLoad={() => {
+            console.log('[Cloudinary] Image loaded successfully:', cloudinaryId);
+            onLoadingComplete?.();
+          }}
+        />
+      </ImageErrorBoundary>
+    );
+  } catch (error) {
+    console.error('[OptimizedImage] Error:', error);
+    console.groupEnd();
+    return <CloudinaryImageError error={error instanceof Error ? error : new Error('Failed to load image')} />;
+  }
 };

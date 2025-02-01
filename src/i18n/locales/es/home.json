@@ -1,0 +1,95 @@
+{
+  "hero": {
+    "title": {
+      "main": "Fashionistas",
+      "sub": "Evento de San Valentín"
+    },
+    "description": "Únete a nuestra celebración exclusiva de moda, creatividad y empoderamiento",
+    "buttons": {
+      "getTickets": "Obtener Entradas",
+      "date": "14 de Febrero, 2024"
+    }
+  },
+  "showcase": {
+    "title": "Exhibición de Lencería de Lujo",
+    "collection": {
+      "exploreButton": "Explorar Colección",
+      "loadError": "Error al cargar la imagen de {{collectionName}}"
+    }
+  },
+  "events": {
+    "title": "Próximos Eventos de Moda",
+    "subtitle": "Marca tu Calendario",
+    "description": "Únete a nuestros exclusivos desfiles de moda y eventos durante todo el año",
+    "stats": {
+      "events": {
+        "value": "20+",
+        "label": "Próximos Eventos"
+      },
+      "cities": {
+        "value": "15",
+        "label": "Ciudades"
+      },
+      "attendees": {
+        "value": "5000+",
+        "label": "Asistentes Esperados"
+      }
+    },
+    "filters": {
+      "search": "Buscar eventos...",
+      "viewMode": {
+        "grid": "Vista en cuadrícula",
+        "list": "Vista en lista"
+      },
+      "sortBy": {
+        "date": "Ordenar por fecha",
+        "priceAsc": "Precio: Menor a Mayor",
+        "priceDesc": "Precio: Mayor a Menor"
+      }
+    },
+    "card": {
+      "soldOut": "Agotado",
+      "registerNow": "Registrarse Ahora",
+      "getTickets": "Obtener Entradas",
+      "eventEnded": "Evento finalizado",
+      "upcomingEvent": "Próximo Evento",
+      "pastEvent": "Evento Pasado",
+      "accessibility": {
+        "soldOut": "Evento agotado",
+        "ended": "El evento ha finalizado",
+        "register": "Registrarse para {{title}}",
+        "getTickets": "Obtener entradas para {{title}}"
+      }
+    }
+  },
+  "meta": {
+    "title": "Evento de San Valentín Fashionistas",
+    "description": "Únete a nuestro exclusivo evento de moda de San Valentín celebrando la creatividad y el empoderamiento",
+    "author": "Fashionistas"
+  },
+  "eventHighlights": "Destacados del Evento",
+  "discoverMoments": "Descubre los momentos mágicos que te esperan en nuestro Evento de Moda de San Valentín",
+  "chooseTicket": "Elige Tu Entrada Perfecta",
+  "selectTicket": "Selecciona entre nuestras opciones de entradas cuidadosamente seleccionadas y sé parte de esta exclusiva celebración de moda de San Valentín",
+  "generalAdmission": "Entrada General",
+  "generalAdmissionAccess": "Acceso de Entrada General al Evento de Moda de San Valentín de Fashionistas",
+  "vipExperience": "Experiencia VIP",
+  "vipExperienceAccess": "Acceso de Experiencia VIP al Evento de Moda de San Valentín de Fashionistas",
+  "sponsorPackage": "Paquete de Patrocinador",
+  "sponsorPackageAccess": "Acceso de Paquete de Patrocinador al Evento de Moda de San Valentín de Fashionistas",
+  "limitedTickets": "Entradas Limitadas Restantes",
+  "onlyVipTicketsLeft": "Solo quedan 20 Entradas VIP",
+  "secureCheckout": "Pago Seguro",
+  "verifiedByStripe": "Verificado por Stripe",
+  "ourPartners": "Nuestros Socios",
+  "collaboratingWithLeaders": "Colaborando con líderes de la industria para ofrecerte una experiencia de moda inolvidable",
+  "interestedInPartner": "¿Interesado en convertirte en socio?",
+  "becomePartner": "Conviértete en Socio",
+  "proudlySupportedBy": "Orgullosamente Apoyado Por Marcas Líderes de Moda",
+  "ourEsteemedSponsors": "Nuestros Estimados Patrocinadores",
+  "joinSponsors": "Únete a estos líderes de la industria en el apoyo a la innovación y creatividad en la moda",
+  "joinValentinesEvent": "Únete a Nuestro Evento de Moda de San Valentín",
+  "bePartOfEvening": "Sé parte de una noche inolvidable celebrando la moda, la creatividad y el empoderamiento",
+  "learnMore": "Aprende Más",
+  "getYourTickets": "Obtén Tus Entradas"
+} 

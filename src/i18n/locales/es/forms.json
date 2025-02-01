@@ -1,0 +1,93 @@
+{
+  "registration": {
+    "sponsor": {
+      "title": "Registro de Patrocinador",
+      "subtitle": "Complete el formulario para registrarse como patrocinador",
+      "submitButton": "Enviar Registro",
+      "submittingButton": "Enviando...",
+      "successMessage": "¡Gracias por registrarse! Nos pondremos en contacto pronto.",
+      "errorMessage": "Hubo un error al enviar el formulario. Por favor, inténtelo de nuevo.",
+      "fields": {
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo Electrónico",
+        "phone": "Teléfono",
+        "companyName": "Nombre de la Empresa",
+        "industry": "Industria",
+        "companyDescription": "Descripción de la Empresa",
+        "marketingGoals": "Objetivos de Marketing",
+        "partnershipPreferences": "Preferencias de Colaboración",
+        "website": "Sitio Web",
+        "budget": "Presupuesto"
+      },
+      "placeholders": {
+        "firstName": "Ingrese su nombre",
+        "lastName": "Ingrese su apellido",
+        "email": "ejemplo@empresa.com",
+        "phone": "+34 XXX XXX XXX",
+        "companyName": "Nombre de su empresa",
+        "industry": "Sector de su empresa",
+        "companyDescription": "Breve descripción de su empresa...",
+        "marketingGoals": "¿Cuáles son sus objetivos de marketing para este evento?",
+        "partnershipPreferences": "¿Qué tipo de colaboración le interesa?",
+        "website": "https://www.suempresa.com",
+        "budget": "Presupuesto estimado"
+      },
+      "validation": {
+        "required": "Este campo es obligatorio",
+        "email": "Por favor, ingrese un correo electrónico válido",
+        "phone": "Por favor, ingrese un número de teléfono válido",
+        "url": "Por favor, ingrese una URL válida",
+        "minLength": "Este campo debe tener al menos {{count}} caracteres"
+      }
+    },
+    "model": {
+      "title": "Solicitud de Modelo",
+      "subtitle": "Únete a nuestra exclusiva comunidad de moda",
+      "fields": {
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo Electrónico",
+        "phone": "Número de Teléfono",
+        "experience": "Experiencia como Modelo",
+        "portfolio": "URL del Portafolio",
+        "height": "Altura",
+        "measurements": "Medidas"
+      },
+      "validation": {
+        "required": "Este campo es obligatorio",
+        "email": "Por favor, introduce un correo electrónico válido",
+        "phone": "Por favor, introduce un número de teléfono válido",
+        "minLength": "Debe tener al menos {{count}} caracteres",
+        "maxLength": "No debe tener más de {{count}} caracteres",
+        "pattern": "Por favor, introduce un formato válido",
+        "match": "Las contraseñas deben coincidir"
+      },
+      "submit": "Enviar Solicitud",
+      "success": "¡Solicitud enviada con éxito! Nos pondremos en contacto pronto.",
+      "error": "Hubo un error al enviar tu solicitud. Por favor, inténtalo de nuevo."
+    }
+  },
+  "common": {
+    "validation": {
+      "required": "Este campo es obligatorio",
+      "email": "Por favor, introduce un correo electrónico válido",
+      "phone": "Por favor, introduce un número de teléfono válido",
+      "minLength": "Debe tener al menos {{count}} caracteres",
+      "maxLength": "No debe tener más de {{count}} caracteres",
+      "pattern": "Por favor, introduce un formato válido",
+      "match": "Las contraseñas deben coincidir"
+    },
+    "buttons": {
+      "submit": "Enviar",
+      "cancel": "Cancelar",
+      "back": "Atrás",
+      "next": "Siguiente"
+    },
+    "placeholders": {
+      "email": "Introduce tu correo electrónico",
+      "phone": "Introduce tu número de teléfono",
+      "name": "Introduce tu nombre"
+    }
+  }
+} 

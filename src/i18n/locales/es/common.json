@@ -1,0 +1,40 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "models": "Modelos",
+    "sponsors": "Patrocinadores",
+    "getTickets": "Obtener Entradas",
+    "changeLanguage": "Cambiar Idioma"
+  },
+  "buttons": {
+    "explore": "Explorar",
+    "learnMore": "Más Información",
+    "apply": "Aplicar Ahora",
+    "submit": "Enviar",
+    "register": "Registrarse"
+  },
+  "footer": {
+    "contact": "Contáctenos",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "followUs": "Síguenos"
+  },
+  "accessibility": {
+    "skipToContent": "Saltar al contenido principal",
+    "menuToggle": "Alternar menú",
+    "closeMenu": "Cerrar menú"
+  },
+  "errors": {
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Por favor, introduce una dirección de correo válida",
+    "generalError": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "networkError": "Error de red. Por favor, verifica tu conexión."
+  },
+  "forms": {
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "message": "Mensaje",
+    "phone": "Número de Teléfono",
+    "submit": "Enviar"
+  }
+} 

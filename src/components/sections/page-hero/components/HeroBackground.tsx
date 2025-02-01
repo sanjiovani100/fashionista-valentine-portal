@@ -10,7 +10,7 @@ export const HeroBackground = ({ backgroundImage, className }: HeroBackgroundPro
     <>
       <div 
         className={cn(
-          "absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[20s] hover:scale-110",
+          "absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[20000ms] hover:scale-110",
           className
         )}
         style={{ backgroundImage: `url("${backgroundImage}")` }}

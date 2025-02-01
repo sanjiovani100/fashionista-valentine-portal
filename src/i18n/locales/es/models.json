@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "title": "Únete a Nuestra Comunidad de Modelos",
+    "subtitle": "Muestra tu talento y construye tu portafolio"
+  },
+  "requirements": {
+    "title": "Requisitos para Modelos",
+    "description": "Lo que buscamos en nuestros modelos",
+    "items": {
+      "height": {
+        "title": "Requisitos de Altura",
+        "description": "Altura mínima de 175cm para modelos femeninas y 185cm para modelos masculinos"
+      },
+      "portfolio": {
+        "title": "Portafolio",
+        "description": "Fotos profesionales que muestren tu experiencia como modelo"
+      },
+      "experience": {
+        "title": "Experiencia",
+        "description": "Se prefiere experiencia previa en pasarela o sesiones fotográficas"
+      }
+    }
+  },
+  "opportunities": {
+    "title": "Oportunidades para Modelos",
+    "description": "Inicia tu carrera de modelaje con nosotros",
+    "items": {
+      "runway": {
+        "title": "Experiencia en Pasarela",
+        "description": "Desfila para los mejores diseñadores en nuestro evento de San Valentín",
+        "metrics": ["10+ Diseñadores", "500+ Asistentes"]
+      },
+      "portfolio": {
+        "title": "Construcción de Portafolio",
+        "description": "Fotos profesionales del evento",
+        "metrics": ["Fotos Profesionales", "Cobertura en Video"]
+      }
+    }
+  },
+  "benefits": {
+    "portfolio": {
+      "title": "Portafolio Profesional",
+      "description": "Construye un impresionante portafolio con fotografías profesionales de nuestros eventos"
+    },
+    "connections": {
+      "title": "Conexiones en la Industria",
+      "description": "Establece contactos con diseñadores, fotógrafos y profesionales de la industria"
+    },
+    "career": {
+      "title": "Crecimiento Profesional",
+      "description": "Obtén valiosa experiencia en pasarela y exposición a grandes marcas"
+    }
+  },
+  "registration": {
+    "title": "Aplicar Ahora"
+  }
+} 

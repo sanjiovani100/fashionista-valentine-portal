@@ -3,19 +3,20 @@ import { AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 
-export const CloudinaryImageError = () => {
+interface CloudinaryImageErrorProps {
+  error?: Error;
+}
+
+export const CloudinaryImageError = ({ error }: CloudinaryImageErrorProps) => {
   useEffect(() => {
     toast.error("Failed to load image. Using placeholder instead.");
   }, []);
 
   return (
-    <Alert 
-      variant="destructive" 
-      className="absolute inset-0 flex items-center bg-opacity-90 backdrop-blur-sm"
-    >
-      <AlertCircle className="h-4 w-4" />
+    <Alert variant="destructive" className="flex items-center justify-center h-full">
+      <AlertCircle className="h-4 w-4 mr-2" />
       <AlertDescription>
-        Unable to load image. Please try again later.
+        {error?.message || "Failed to load image"}
       </AlertDescription>
     </Alert>
   );

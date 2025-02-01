@@ -3,6 +3,7 @@ import { HighlightCarousel } from "./components/HighlightCarousel";
 import type { EventContent, FashionImage } from "@/types/event.types";
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 
 interface EventHighlightsProps {
   highlights: (EventContent & { image: string })[];
@@ -10,6 +11,7 @@ interface EventHighlightsProps {
 }
 
 export const EventHighlights = ({ highlights, images }: EventHighlightsProps) => {
+  const { t } = useTranslation('home');
   const ref = useRef(null);
   const inView = useInView(ref, {
     amount: 0.1,
@@ -46,27 +48,20 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
         >
           <h2 
             id="highlights-title"
-            className="text-4xl md:text-5xl font-playfair text-white mb-4 font-bold"
+            className="text-4xl md:text-5xl font-bold text-white mb-4"
           >
-            Event Highlights
+            {t('eventHighlights')}
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-inter">
-            Discover the magical moments that await you at our Valentine's Fashion Event
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            {t('discoverMoments')}
           </p>
         </motion.div>
 
-        <div 
-          className="hidden md:block"
-          aria-label="Event highlights grid view"
-        >
+        <div className="mt-12">
           <HighlightGrid highlights={highlights} />
-        </div>
-
-        <div 
-          className="md:hidden"
-          aria-label="Event highlights carousel view"
-        >
-          <HighlightCarousel highlights={highlights} />
+          <div className="mt-8 md:hidden">
+            <HighlightCarousel highlights={highlights} />
+          </div>
         </div>
       </div>
     </section>

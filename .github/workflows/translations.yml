@@ -1,0 +1,59 @@
+name: Translation Updates
+
+on:
+  push:
+    paths:
+      - 'src/i18n/locales/en/**'
+    branches:
+      - main
+      - develop
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for translation changes
+        id: check
+        run: |
+          CHANGES=$(git diff --name-only HEAD~1 HEAD | grep "src/i18n/locales/en/")
+          echo "changes=$CHANGES" >> $GITHUB_OUTPUT
+
+      - name: Update translations
+        if: steps.check.outputs.changes != ''
+        run: |
+          # For each changed English translation file, update corresponding Spanish translations
+          for file in ${{ steps.check.outputs.changes }}; do
+            ES_FILE=${file/en/es}
+            echo "Updating $ES_FILE"
+            # Here you would typically call your translation service
+            # For now, we'll create a placeholder that needs to be reviewed
+            cp $file $ES_FILE
+          done
+
+      - name: Create Pull Request
+        if: steps.check.outputs.changes != ''
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: update translations'
+          title: 'Update translations'
+          body: |
+            Automated translation updates for:
+            ${{ steps.check.outputs.changes }}
+            
+            Please review the translations before merging.
+          branch: translation-updates
+          base: ${{ github.ref_name }}
+          labels: translations, needs-review 

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { FashionEvent } from '@/types/database';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface EventCardProps {
   event: FashionEvent;
@@ -12,10 +13,19 @@ interface EventCardProps {
   viewMode?: 'grid' | 'list';
 }
 
-export const EventCard = ({ event, onRegister, viewMode = 'grid' }: EventCardProps) => {
+export const EventCard = ({ event, onRegister, viewMode }: EventCardProps) => {
+  const { t } = useTranslation('home');
   const isUpcoming = new Date(event.start_time) > new Date();
   const totalAvailableTickets = event.event_tickets?.reduce((sum, ticket) => sum + ticket.quantity_available, 0) || 0;
   const isSoldOut = totalAvailableTickets === 0;
+
+  const eventStatus = isUpcoming ? t('events.card.upcomingEvent') : t('events.card.pastEvent');
+  const buttonText = isSoldOut ? t('events.card.soldOut') : t('events.card.registerNow');
+  const ariaLabel = isSoldOut 
+    ? t('events.card.accessibility.soldOut')
+    : !isUpcoming 
+      ? t('events.card.accessibility.ended')
+      : t('events.card.accessibility.register', { title: event.title });
 
   return (
     <motion.div
@@ -23,7 +33,7 @@ export const EventCard = ({ event, onRegister, viewMode = 'grid' }: EventCardPro
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2 }}
       role="article"
-      aria-label={`${event.title} - ${isUpcoming ? 'Upcoming Event' : 'Past Event'}`}
+      aria-label={`${event.title} - ${eventStatus}`}
       className={viewMode === 'list' ? 'flex gap-6' : ''}
     >
       <Card className="group h-full overflow-hidden bg-black/40 backdrop-blur-md border-white/10 hover:border-white/20 transition-all duration-300">
@@ -57,9 +67,9 @@ export const EventCard = ({ event, onRegister, viewMode = 'grid' }: EventCardPro
             onClick={onRegister}
             className="w-full bg-gradient-to-r from-pink-magenta to-purple-vivid hover:opacity-90 transition-opacity"
             disabled={isSoldOut || !isUpcoming}
-            aria-label={isSoldOut ? 'Event is sold out' : !isUpcoming ? 'Event has ended' : `Register for ${event.title}`}
+            aria-label={ariaLabel}
           >
-            {isSoldOut ? 'Sold Out' : 'Register Now'}
+            {buttonText}
           </Button>
         </CardContent>
       </Card>

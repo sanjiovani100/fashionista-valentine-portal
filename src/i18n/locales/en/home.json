@@ -1,0 +1,125 @@
+{
+  "hero": {
+    "title": {
+      "main": "Fashionistas",
+      "sub": "Valentine's Event"
+    },
+    "description": "Join us for an exclusive celebration of fashion, creativity, and empowerment",
+    "buttons": {
+      "getTickets": "Get Tickets",
+      "date": "February 14, 2024"
+    }
+  },
+  "showcase": {
+    "title": "Luxury Lingerie Showcase",
+    "collection": {
+      "exploreButton": "Explore Collection",
+      "loadError": "Failed to load image for {{collectionName}}"
+    }
+  },
+  "events": {
+    "title": "Upcoming Fashion Events",
+    "subtitle": "Mark Your Calendar",
+    "description": "Join us for exclusive fashion shows and events throughout the year",
+    "stats": {
+      "events": {
+        "value": "20+",
+        "label": "Upcoming Events"
+      },
+      "cities": {
+        "value": "15",
+        "label": "Cities"
+      },
+      "attendees": {
+        "value": "5000+",
+        "label": "Attendees Expected"
+      }
+    },
+    "filters": {
+      "search": "Search events...",
+      "viewMode": {
+        "grid": "Grid view",
+        "list": "List view"
+      },
+      "sortBy": {
+        "date": "Sort by date",
+        "priceAsc": "Price: Low to High",
+        "priceDesc": "Price: High to Low"
+      }
+    },
+    "card": {
+      "soldOut": "Sold Out",
+      "registerNow": "Register Now",
+      "getTickets": "Get Tickets",
+      "eventEnded": "Event has ended",
+      "upcomingEvent": "Upcoming Event",
+      "pastEvent": "Past Event",
+      "accessibility": {
+        "soldOut": "Event is sold out",
+        "ended": "Event has ended",
+        "register": "Register for {{title}}",
+        "getTickets": "Get tickets for {{title}}"
+      }
+    }
+  },
+  "meta": {
+    "title": "Fashionistas Valentine's Event",
+    "description": "Join us for an exclusive Valentine's fashion event celebrating creativity and empowerment",
+    "author": "Fashionistas"
+  },
+  "eventHighlights": "Event Highlights",
+  "discoverMoments": "Discover the magical moments that await you at our Valentine's Fashion Event",
+  "chooseTicket": "Choose Your Perfect Ticket",
+  "selectTicket": "Select from our carefully curated ticket options and be part of this exclusive Valentine's fashion celebration",
+  "generalAdmission": "General Admission",
+  "generalAdmissionAccess": "General Admission access to the Fashionistas Valentine's Event",
+  "vipExperience": "VIP Experience",
+  "vipExperienceAccess": "VIP Experience access to the Fashionistas Valentine's Event",
+  "sponsorPackage": "Sponsor Package",
+  "sponsorPackageAccess": "Sponsor Package access to the Fashionistas Valentine's Event",
+  "limitedTickets": "Limited Tickets Remaining",
+  "onlyVipTicketsLeft": "Only 20 VIP Tickets Left",
+  "secureCheckout": "Secure Checkout",
+  "verifiedByStripe": "Verified by Stripe",
+  "ourPartners": "Our Partners",
+  "collaboratingWithLeaders": "Collaborating with industry leaders to bring you an unforgettable fashion experience",
+  "interestedInPartner": "Interested in becoming a partner?",
+  "becomePartner": "Become a Partner",
+  "proudlySupportedBy": "Proudly Supported By Leading Fashion Brands",
+  "ourEsteemedSponsors": "Our Esteemed Sponsors",
+  "joinSponsors": "Join these industry leaders in supporting fashion innovation and creativity",
+  "joinValentinesEvent": "Join Our Valentine's Fashion Event",
+  "bePartOfEvening": "Be part of an unforgettable evening celebrating fashion, creativity, and empowerment",
+  "learnMore": "Learn More",
+  "getYourTickets": "Get Your Tickets",
+  "tickets": {
+    "General Admission": {
+      "title": "General Admission",
+      "subtitle": "General Admission access to the Fashionistas Valentine's Event",
+      "perks": [
+        "Standard seating",
+        "Access to all shows"
+      ]
+    },
+    "VIP Experience": {
+      "title": "VIP Experience",
+      "subtitle": "VIP Experience access to the Fashionistas Valentine's Event",
+      "perks": [
+        "Front-row seating",
+        "Welcome champagne",
+        "VIP lounge access"
+      ]
+    },
+    "Sponsor Package": {
+      "title": "Sponsor Package",
+      "subtitle": "Sponsor Package access to the Fashionistas Valentine's Event",
+      "perks": [
+        "Premium seating",
+        "Unlimited premium drinks",
+        "Private suite access"
+      ]
+    },
+    "securePayment": "Secure payment with Stripe",
+    "selectTicketButton": "Select Ticket"
+  }
+} 
