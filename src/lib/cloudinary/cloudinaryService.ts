@@ -96,10 +96,14 @@ class CloudinaryService {
         const standardizedId = this.standardizePublicId(publicId);
         console.log('[Cloudinary] Processing image:', { publicId, standardizedId });
 
-        let transformation = this.cld.image(standardizedId)
-          .format(format('auto'))
-          .quality(quality('auto'));
+        let transformation = this.cld.image(standardizedId);
 
+        // Apply format and quality transformations
+        transformation = transformation
+          .delivery(format('auto'))
+          .delivery(quality('auto'));
+
+        // Apply resize transformation if width or height is specified
         if (options.width || options.height) {
           transformation = transformation.resize(
             fill()
