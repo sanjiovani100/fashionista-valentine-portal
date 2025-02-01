@@ -15,6 +15,7 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       transition: {
         duration: 0.2,
         delayChildren: 0.3,
+        staggerChildren: 0.15
       },
     },
   };
@@ -41,12 +42,12 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       <motion.h1 
         variants={itemVariants}
         id="hero-title"
-        className="font-montserrat text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-shadow-xl leading-tight"
+        className="font-montserrat text-h1 md:text-h1-desktop font-bold tracking-tight leading-tight"
       >
         {headline.split(" ").map((word, index) => (
           <span 
             key={index} 
-            className={`block ${index === 1 ? "text-red-accent mt-4 drop-shadow-glow" : "text-white drop-shadow-glow"}`}
+            className={`block ${index === 1 ? "text-red-primary mt-4 drop-shadow-glow" : "text-white drop-shadow-glow"}`}
           >
             {word}{" "}
           </span>
@@ -66,11 +67,10 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
       >
         <Button 
           size="lg" 
-          className="bg-white text-black hover:bg-white/90 min-w-[200px]
-                   transition-all duration-300 transform hover:scale-105
-                   hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]
-                   focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          className="bg-maroon text-white hover:bg-maroon-light min-w-[200px]
+                   transition-all duration-normal ease-out transform hover:scale-105
+                   hover:shadow-glow focus:ring-2 focus:ring-maroon focus:ring-offset-2 
+                   focus:ring-offset-black focus-visible:outline-none"
           aria-label="Get your tickets now"
         >
           Get Tickets
@@ -78,11 +78,10 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
         <Button 
           variant="outline" 
           size="lg" 
-          className="border-white text-white hover:bg-white/10
-                   min-w-[200px] transition-all duration-300
-                   transform hover:scale-105
+          className="border-white text-white hover:bg-white/10 min-w-[200px]
+                   transition-all duration-normal ease-out transform hover:scale-105
                    focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                   focus-visible:outline-none"
           aria-label="View event date and calendar"
         >
           <Calendar className="mr-2 h-5 w-5" aria-hidden="true" />
