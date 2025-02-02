@@ -7,6 +7,7 @@ import ContactPage from './pages/contact/ContactPage';
 import DesignersPage from './pages/designers/DesignersPage';
 import ModelsPage from './pages/models/ModelsPage';
 import EventsPage from './pages/events/EventsPage';
+import EventDetailsPage from './pages/events/[id]/EventDetailsPage';
 import SponsorsPage from './pages/sponsors/SponsorsPage';
 import ModelRegistration from './pages/register/model/ModelRegistration';
 import DesignerRegistration from './pages/register/designer/DesignerRegistration';
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/events",
     element: <EventsPage />,
+  },
+  {
+    path: "/events/:id",
+    element: <EventDetailsPage />,
   },
   {
     path: "/sponsors",
