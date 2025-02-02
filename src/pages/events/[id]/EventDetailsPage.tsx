@@ -6,8 +6,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { EventHero } from './components/EventHero';
 import { EventContent } from './components/EventContent';
 import { EventSidebar } from './components/EventSidebar';
-import { LoadingState } from '@/pages/index/components/LoadingState';
-import { ErrorState } from '@/pages/index/components/ErrorState';
+import { LoadingState, ErrorState } from '@/features/events/components/EventListStates';
 
 const EventDetailsPage = () => {
   const { id } = useParams();
@@ -39,8 +38,8 @@ const EventDetailsPage = () => {
     },
   });
 
-  if (isLoading) return <LoadingState />;
-  if (error) return <ErrorState />;
+  if (isLoading) return <LoadingState viewMode="grid" />;
+  if (error) return <ErrorState message={error instanceof Error ? error.message : 'Failed to load event'} />;
   if (!event) return <ErrorState message="Event not found" />;
 
   return (
