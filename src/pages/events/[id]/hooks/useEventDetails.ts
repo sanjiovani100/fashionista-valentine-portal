@@ -27,7 +27,11 @@ export const useEventDetails = (eventId?: string) => {
 
       if (error) {
         console.error('Error fetching event:', error);
-        toast.error('Failed to load event details');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load event details"
+        });
         throw error;
       }
 
