@@ -1,3 +1,5 @@
+import type { EventName, EventSubtype, ImageCategory } from '@/types/supabase/enums.types';
+
 export type SwimwearEventDetails = {
   id: string;
   event_id: string;
@@ -27,22 +29,6 @@ export type SwimwearEventDetails = {
   updated_at: string;
 };
 
-export type EventName = 
-  | "valentines_fashion_show" 
-  | "spring_fling_fashion_show" 
-  | "summer_splash_fashion_show" 
-  | "fall_fantasy_fashion_show" 
-  | "swim_paradise_show";
-
-export type EventSubtype = 
-  | "main_show" 
-  | "vip_session" 
-  | "workshop" 
-  | "networking" 
-  | "photo_session" 
-  | "after_party"
-  | "swimwear";
-
 export interface FashionEvent {
   id: string;
   name: EventName;
@@ -71,15 +57,15 @@ export interface FashionEvent {
 
 export interface EventContent {
   id: string;
-  event_id?: string;
+  event_id: string;
   content_type: string;
   title: string;
   content: string;
   media_urls?: string[];
   publish_date?: string;
   engagement_metrics?: Record<string, unknown>;
-  created_at?: string;
-  updated_at?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface FashionCollection {
@@ -100,15 +86,6 @@ export interface FashionCollection {
   created_at?: string;
   updated_at?: string;
 }
-
-export type ImageCategory = 
-  | "event_hero" 
-  | "event_gallery" 
-  | "promotional" 
-  | "backstage" 
-  | "designer_profile" 
-  | "model_profile" 
-  | "press_kit";
 
 export interface FashionImage {
   id: string;
