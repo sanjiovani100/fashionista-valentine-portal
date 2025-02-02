@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { EventDetails } from '@/types/event-details.bridge';
+import { isVenueFeatures, isEventHighlight, isBeachPartyDetails } from '@/types/event-details.bridge';
 import { toast } from 'sonner';
 
 // UUID validation regex
@@ -56,11 +57,24 @@ export const useEventDetails = (eventId?: string) => {
         throw new Error('Event not found');
       }
 
+      // Transform and validate the data
+      const venue_features = data.venue_features as unknown;
+      if (!isVenueFeatures(venue_features)) {
+        console.error('[EventQuery] Invalid venue features format');
+        throw new Error('Invalid venue features format');
+      }
+
+      const event_highlights = data.event_highlights as unknown[];
+      if (!Array.isArray(event_highlights) || !event_highlights.every(isEventHighlight)) {
+        console.error('[EventQuery] Invalid event highlights format');
+        throw new Error('Invalid event highlights format');
+      }
+
       // Transform the data to match EventDetails type
       const eventDetails: EventDetails = {
         ...data,
-        venue_features: data.venue_features as VenueFeatures,
-        event_highlights: data.event_highlights as EventHighlight[],
+        venue_features,
+        event_highlights,
         swimwear_event_details: data.swimwear_event_details ? {
           ...data.swimwear_event_details,
           beach_party_details: data.swimwear_event_details.beach_party_details as BeachPartyDetails

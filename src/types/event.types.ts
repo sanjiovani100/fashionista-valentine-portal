@@ -78,6 +78,22 @@ export interface EventSponsor {
   updated_at: string;
 }
 
+export interface FashionCollection {
+  id: string;
+  designer_id?: string | null;
+  event_id?: string | null;
+  collection_name: string;
+  description: string;
+  piece_count: number;
+  technical_requirements?: string | null;
+  sustainability_info?: string | null;
+  collection_type?: string | null;
+  size_range?: JsonObject;
+  materials?: string[];
+  created_at: string;
+  updated_at: string;
+}
+
 export interface SwimwearEventDetails {
   id: string;
   event_id: string | null;
@@ -113,4 +129,5 @@ export interface FashionEvent {
   event_content?: EventContent[];
   event_tickets?: EventTicket[];
   event_sponsors?: EventSponsor[];
+  fashion_collections?: FashionCollection[];
 }
