@@ -22,10 +22,66 @@ export interface BeachPartyDetails {
   features: string[];
 }
 
+export interface EventContent {
+  id: string;
+  event_id: string | null;
+  content_type: string;
+  title: string;
+  content: string;
+  media_urls?: string[] | null;
+  publish_date?: string | null;
+  engagement_metrics?: Record<string, unknown> | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FashionImage {
+  id: string;
+  category: ImageCategory;
+  url: string;
+  thumbnail_url?: string | null;
+  alt_text: string;
+  metadata?: Record<string, unknown> | null;
+  credits?: string | null;
+  event_id: string | null;
+  created_at: string;
+  updated_at: string;
+  dimensions?: Record<string, unknown> | null;
+  formats?: Record<string, unknown> | null;
+  description?: string | null;
+}
+
+export interface EventTicket {
+  id: string;
+  event_id: string;
+  ticket_type: string;
+  price: number;
+  quantity_available: number;
+  benefits?: string[] | null;
+  early_bird_deadline?: string | null;
+  early_bird_price?: number | null;
+  group_discount_threshold?: number | null;
+  group_discount_percentage?: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EventSponsor {
+  id: string;
+  event_id: string;
+  sponsor_id: string;
+  sponsorship_tier: string;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
+  ad_placement?: string[];
+  display_priority?: number;
+}
+
 export interface FashionCollection {
   id: string;
   designer_id?: string | null;
-  event_id?: string | null;
+  event_id: string;
   collection_name: string;
   description: string;
   piece_count: number;
@@ -40,7 +96,7 @@ export interface FashionCollection {
 
 export interface SwimwearEventDetails {
   id: string;
-  event_id: string | null;
+  event_id: string;
   beach_party_details: BeachPartyDetails;
   pool_access_info: Record<string, unknown>;
   fitting_sessions: Record<string, unknown>[];
@@ -70,10 +126,10 @@ export interface FashionEvent {
   event_highlights: EventHighlight[];
   swimwear_event_details?: SwimwearEventDetails | null;
   fashion_collections?: FashionCollection[] | null;
-  event_content?: any[] | null;
-  event_tickets?: any[] | null;
-  event_sponsors?: any[] | null;
-  fashion_images?: any[] | null;
+  event_content?: EventContent[] | null;
+  event_tickets?: EventTicket[] | null;
+  event_sponsors?: EventSponsor[] | null;
+  fashion_images?: FashionImage[] | null;
 }
 
 // Type guards with improved validation
