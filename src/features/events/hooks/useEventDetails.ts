@@ -63,10 +63,16 @@ export const useEventDetails = (eventId?: string) => {
 
       // Transform swimwear event details if present
       const swimwear_event_details = data.swimwear_event_details ? {
-        ...data.swimwear_event_details,
+        id: data.swimwear_event_details.id,
+        event_id: data.swimwear_event_details.event_id,
         beach_party_details: isBeachPartyDetails(data.swimwear_event_details.beach_party_details)
           ? data.swimwear_event_details.beach_party_details
-          : { location: '', time: '', features: [] }
+          : { location: '', time: '', features: [] },
+        pool_access_info: data.swimwear_event_details.pool_access_info || {},
+        fitting_sessions: data.swimwear_event_details.fitting_sessions || [],
+        beauty_workshops: data.swimwear_event_details.beauty_workshops || [],
+        created_at: data.swimwear_event_details.created_at,
+        updated_at: data.swimwear_event_details.updated_at
       } : null;
 
       // Transform the data to match EventDetails type
@@ -74,7 +80,12 @@ export const useEventDetails = (eventId?: string) => {
         ...data,
         venue_features,
         event_highlights,
-        swimwear_event_details
+        swimwear_event_details,
+        fashion_collections: data.fashion_collections || null,
+        event_content: data.event_content || null,
+        event_tickets: data.event_tickets || null,
+        event_sponsors: data.event_sponsors || null,
+        fashion_images: data.fashion_images || null
       };
 
       console.log('[EventQuery] Successfully loaded event data:', {

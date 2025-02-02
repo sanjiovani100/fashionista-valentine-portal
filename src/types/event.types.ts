@@ -1,5 +1,5 @@
-import { Json } from './supabase/base/json.types';
-import { EventName, EventSubtype, ImageCategory } from './supabase/base/enums.types';
+import type { Json } from './supabase/base/json.types';
+import type { EventName, EventSubtype, ImageCategory } from './supabase/base/enums.types';
 
 export interface VenueFeatures {
   amenities: string[];
@@ -174,7 +174,13 @@ export function transformVenueFeatures(json: Json): VenueFeatures {
     return { amenities: [], accessibility: [] };
   }
   
-  return isVenueFeatures(json) ? json : { amenities: [], accessibility: [] };
+  const features = json as Record<string, unknown>;
+  return {
+    amenities: Array.isArray(features.amenities) ? features.amenities.filter(item => typeof item === 'string') : [],
+    accessibility: Array.isArray(features.accessibility) ? features.accessibility.filter(item => typeof item === 'string') : [],
+    technical_equipment: Array.isArray(features.technical_equipment) ? features.technical_equipment.filter(item => typeof item === 'string') : undefined,
+    special_requirements: Array.isArray(features.special_requirements) ? features.special_requirements.filter(item => typeof item === 'string') : undefined
+  };
 }
 
 export function transformEventHighlights(json: Json): EventHighlight[] {
