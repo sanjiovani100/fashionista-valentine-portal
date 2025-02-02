@@ -27,7 +27,7 @@ export const useEventDetails = (eventId?: string) => {
 
       if (error) {
         console.error('Error fetching event:', error);
-        toast.error('Failed to load event details. Please try again.');
+        toast.error('Failed to load event details');
         throw error;
       }
 
@@ -37,6 +37,6 @@ export const useEventDetails = (eventId?: string) => {
 
       return data as FashionEvent;
     },
-    enabled: !!eventId
+    enabled: Boolean(eventId)
   });
 };
