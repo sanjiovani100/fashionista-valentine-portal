@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -10,8 +10,11 @@ import { ContactSection } from './components/ContactSection';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { AboutPageContent } from './types/about.types';
+import { runAboutPageTests, testAboutSection } from './utils/aboutPageTesting';
 
 const AboutPage = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const { data: aboutContent, isLoading, error } = useQuery({
     queryKey: ['about-page-content'],
     queryFn: async () => {
@@ -34,7 +37,6 @@ const AboutPage = () => {
         return null;
       }
       
-      // Transform the data to match our expected types
       const transformedData: AboutPageContent = {
         id: data.id,
         title: data.title,
@@ -53,6 +55,15 @@ const AboutPage = () => {
       return transformedData;
     }
   });
+
+  useEffect(() => {
+    if (containerRef.current && !isLoading && !error) {
+      // Run tests after content is loaded
+      runAboutPageTests(containerRef.current).then((results) => {
+        console.info('About page test results:', results);
+      });
+    }
+  }, [isLoading, error]);
 
   if (isLoading) {
     return (
@@ -89,18 +100,20 @@ const AboutPage = () => {
 
   return (
     <PageLayout>
-      <AboutOverview
-        title={aboutContent.content.overview.title}
-        description={aboutContent.content.overview.description}
-        imageUrl={aboutContent.content.overview.image_url}
-      />
-      <MissionVision
-        mission={aboutContent.mission_vision.mission}
-        vision={aboutContent.mission_vision.vision}
-      />
-      <CoreValues values={aboutContent.core_values} />
-      <TeamSection members={aboutContent.team_members} />
-      <ContactSection contactInfo={aboutContent.contact_info} />
+      <div ref={containerRef}>
+        <AboutOverview
+          title={aboutContent.content.overview.title}
+          description={aboutContent.content.overview.description}
+          imageUrl={aboutContent.content.overview.image_url}
+        />
+        <MissionVision
+          mission={aboutContent.mission_vision.mission}
+          vision={aboutContent.mission_vision.vision}
+        />
+        <CoreValues values={aboutContent.core_values} />
+        <TeamSection members={aboutContent.team_members} />
+        <ContactSection contactInfo={aboutContent.contact_info} />
+      </div>
     </PageLayout>
   );
 };
