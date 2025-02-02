@@ -1,7 +1,7 @@
 import React from 'react';
 import { OptimizedImage } from '@/components/cloudinary/OptimizedImage';
 import { Button } from '@/components/ui/button';
-import { Calendar, MapPin, Waves, Sun } from 'lucide-react';
+import { Calendar, MapPin, Sun, Waves } from 'lucide-react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import type { FashionEvent } from '@/types/event.types';

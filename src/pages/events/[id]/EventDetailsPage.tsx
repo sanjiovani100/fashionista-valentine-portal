@@ -8,6 +8,7 @@ import { useEventDetails } from './hooks/useEventDetails';
 import { LoadingState } from '@/pages/index/components/LoadingState';
 import { ErrorState } from '@/pages/index/components/ErrorState';
 import { ImageErrorBoundary } from '@/components/cloudinary';
+import { SwimwearHero } from './components/swimwear/SwimwearHero';
 import { toast } from 'sonner';
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -109,25 +110,18 @@ export const EventDetailsPage = () => {
     return <LoadingState />;
   }
 
-  // Verify data relationships
-  const hasImages = event.fashion_images && event.fashion_images.length > 0;
-  const hasTickets = event.event_tickets && event.event_tickets.length > 0;
-  const hasSponsors = event.event_sponsors && event.event_sponsors.length > 0;
-
-  console.log('[EventDetails] Data relationships:', {
-    hasImages,
-    imageCount: event.fashion_images?.length,
-    hasTickets,
-    ticketCount: event.event_tickets?.length,
-    hasSponsors,
-    sponsorCount: event.event_sponsors?.length
-  });
+  // Determine if this is a swimwear event
+  const isSwimwearEvent = event.subtype === 'swimwear';
 
   return (
     <PageLayout>
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
         <ImageErrorBoundary fallback={<div>Failed to load event hero</div>}>
-          <EventHero event={event} />
+          {isSwimwearEvent ? (
+            <SwimwearHero event={event} />
+          ) : (
+            <EventHero event={event} />
+          )}
         </ImageErrorBoundary>
         <div className="container mx-auto px-4 py-8 lg:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
