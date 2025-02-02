@@ -24,8 +24,8 @@ import {
 import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
-  firstName: z.string().min(2, 'First name must be at least 2 characters'),
-  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
+  first_name: z.string().min(2, 'First name must be at least 2 characters'),
+  last_name: z.string().min(2, 'Last name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
   subject: z.string().min(1, 'Please select a subject'),
@@ -38,8 +38,8 @@ export const ContactForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       email: '',
       phone: '',
       subject: '',
@@ -86,7 +86,7 @@ export const ContactForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="firstName"
+            name="first_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>First Name</FormLabel>
@@ -99,7 +99,7 @@ export const ContactForm = () => {
           />
           <FormField
             control={form.control}
-            name="lastName"
+            name="last_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Last Name</FormLabel>
