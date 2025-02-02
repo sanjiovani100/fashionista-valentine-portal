@@ -67,15 +67,34 @@ export interface FashionEvent {
 
 export interface EventContent {
   id: string;
+  event_id?: string;
+  content_type: string;
   title: string;
   content: string;
   media_urls?: string[];
+  publish_date?: string;
+  engagement_metrics?: Record<string, unknown>;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface FashionCollection {
   id: string;
   collection_name: string;
   description: string;
+  designer_id?: string;
+  event_id?: string;
+  piece_count?: number;
+  technical_requirements?: string;
+  sustainability_info?: string;
+  collection_type?: string;
+  size_range?: {
+    min: string;
+    max: string;
+  };
+  materials?: string[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface FashionImage {
@@ -83,6 +102,13 @@ export interface FashionImage {
   url: string;
   category: string;
   alt_text: string;
+  thumbnail_url?: string;
+  metadata?: Record<string, unknown>;
+  credits?: string;
+  event_id?: string;
+  dimensions?: Record<string, unknown>;
+  formats?: Record<string, unknown>;
+  description?: string;
 }
 
 export interface EventTicket {
@@ -90,4 +116,11 @@ export interface EventTicket {
   ticket_type: string;
   price: number;
   benefits?: string[];
+  quantity_available?: number;
+  early_bird_deadline?: string;
+  early_bird_price?: number;
+  group_discount_threshold?: number;
+  group_discount_percentage?: number;
+  created_at?: string;
+  updated_at?: string;
 }
