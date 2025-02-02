@@ -1,6 +1,15 @@
-import type { Json } from './database';
-import type { EventName, EventSubtype, ImageCategory } from './supabase/database/enums';
-import type { VenueFeatures, EventHighlight, BeachPartyDetails, EventContent, FashionImage, EventTicket, EventSponsor } from './event.types';
+import type { Json } from './supabase/common.types';
+import type { EventName, EventSubtype, ImageCategory } from './supabase/enums.types';
+import type { 
+  VenueFeatures, 
+  EventHighlight, 
+  BeachPartyDetails, 
+  EventContent, 
+  FashionImage, 
+  EventTicket, 
+  EventSponsor,
+  SwimwearEventDetails
+} from './event.types';
 
 export interface EventDetails {
   id: string;
@@ -21,18 +30,20 @@ export interface EventDetails {
   swimwear_specific_requirements?: string | null;
   venue_features: VenueFeatures;
   event_highlights: EventHighlight[];
-  swimwear_event_details?: {
-    id: string;
-    event_id: string | null;
-    beach_party_details: BeachPartyDetails;
-    pool_access_info: Record<string, unknown>;
-    fitting_sessions: Record<string, unknown>[];
-    beauty_workshops: Record<string, unknown>[];
-    created_at: string;
-    updated_at: string;
-  } | null;
+  swimwear_event_details?: SwimwearEventDetails | null;
   fashion_images?: FashionImage[];
   event_content?: EventContent[];
   event_tickets?: EventTicket[];
   event_sponsors?: EventSponsor[];
 }
+
+export type {
+  VenueFeatures,
+  EventHighlight,
+  BeachPartyDetails,
+  EventContent,
+  FashionImage,
+  EventTicket,
+  EventSponsor,
+  SwimwearEventDetails
+};

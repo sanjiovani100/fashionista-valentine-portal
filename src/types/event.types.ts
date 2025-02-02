@@ -1,13 +1,13 @@
-import type { Json } from '@/types/database';
+import type { Json } from '@/types/supabase/common.types';
 import type { EventName, EventSubtype, ImageCategory } from '@/types/supabase/enums.types';
 
 export interface SwimwearEventDetails {
   id: string;
   event_id: string | null;
-  beach_party_details: Json;
+  beach_party_details: BeachPartyDetails;
   pool_access_info: Json;
-  fitting_sessions: Json;
-  beauty_workshops: Json;
+  fitting_sessions: Json[];
+  beauty_workshops: Json[];
   created_at: string;
   updated_at: string;
 }
