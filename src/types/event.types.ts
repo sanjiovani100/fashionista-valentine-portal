@@ -44,13 +44,14 @@ export interface FashionEvent {
   created_at?: string;
   updated_at?: string;
   swimwear_specific_requirements?: string;
-  venue_features?: string[];
-  event_highlights?: string[];
+  venue_features?: Record<string, unknown>;
+  event_highlights?: Record<string, unknown>;
   swimwear_event_details?: SwimwearEventDetails;
   fashion_images?: Array<{
     id: string;
     category: string;
     url: string;
+    metadata?: Record<string, unknown>;
   }>;
   event_tickets?: Array<{
     id: string;

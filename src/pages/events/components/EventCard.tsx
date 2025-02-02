@@ -4,17 +4,20 @@ import { Card } from '@/components/ui/card';
 import { OptimizedImage } from '@/components/cloudinary';
 import type { FashionEvent } from '@/types/event.types';
 
-interface EventCardProps {
+export interface EventCardProps {
   event: FashionEvent;
+  viewMode?: 'grid' | 'list';
 }
 
-export const EventCard = ({ event }: EventCardProps) => {
+export const EventCard = ({ event, viewMode = 'grid' }: EventCardProps) => {
   const heroImage = event.fashion_images?.find(img => img.category === 'event_hero')?.url;
 
   return (
     <Link to={`/events/${event.id}`} className="block">
-      <Card className="overflow-hidden transition-transform hover:scale-[1.02]">
-        <div className="relative aspect-[16/9]">
+      <Card className={`overflow-hidden transition-transform hover:scale-[1.02] ${
+        viewMode === 'list' ? 'flex gap-4' : ''
+      }`}>
+        <div className={`relative ${viewMode === 'list' ? 'w-1/3' : ''} aspect-[16/9]`}>
           {heroImage && (
             <OptimizedImage
               publicId={heroImage}
