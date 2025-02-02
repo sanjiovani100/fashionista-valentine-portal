@@ -22,3 +22,5 @@ export type EventSubtype =
   | "photo_session"
   | "after_party"
   | "swimwear";
+
+export type SponsorTier = "platinum" | "gold" | "silver" | "bronze";

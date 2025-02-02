@@ -20,7 +20,7 @@ export interface EventContent {
   content: string;
   media_urls?: string[] | null;
   publish_date?: string | null;
-  engagement_metrics?: Record<string, unknown> | null;
+  engagement_metrics?: Json | null;
   created_at: string;
   updated_at: string;
 }
@@ -77,6 +77,27 @@ export interface EventSponsor {
   sponsor_profiles?: {
     company_name: string;
   };
+}
+
+export interface VenueFeatures {
+  amenities: string[];
+  accessibility: string[];
+  technical_equipment?: string[];
+  special_requirements?: string[];
+}
+
+export interface EventHighlight {
+  title: string;
+  description: string;
+  icon?: string;
+  order?: number;
+}
+
+export interface BeachPartyDetails {
+  location: string;
+  time: string;
+  dress_code?: string;
+  features: string[];
 }
 
 export interface FashionEvent {
