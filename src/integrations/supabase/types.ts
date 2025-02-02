@@ -317,64 +317,6 @@ export type Database = {
         }
         Relationships: []
       }
-      event_sponsors: {
-        Row: {
-          ad_placement: string[] | null
-          created_at: string | null
-          display_priority: number | null
-          event_id: string
-          id: string
-          is_featured: boolean | null
-          sponsor_id: string
-          sponsorship_tier: Database["public"]["Enums"]["sponsor_tier"]
-          updated_at: string | null
-        }
-        Insert: {
-          ad_placement?: string[] | null
-          created_at?: string | null
-          display_priority?: number | null
-          event_id: string
-          id?: string
-          is_featured?: boolean | null
-          sponsor_id: string
-          sponsorship_tier: Database["public"]["Enums"]["sponsor_tier"]
-          updated_at?: string | null
-        }
-        Update: {
-          ad_placement?: string[] | null
-          created_at?: string | null
-          display_priority?: number | null
-          event_id?: string
-          id?: string
-          is_featured?: boolean | null
-          sponsor_id?: string
-          sponsorship_tier?: Database["public"]["Enums"]["sponsor_tier"]
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "event_sponsors_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "active_fashion_events"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "event_sponsors_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "fashion_events"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "event_sponsors_sponsor_id_fkey"
-            columns: ["sponsor_id"]
-            isOneToOne: false
-            referencedRelation: "sponsor_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       event_tickets: {
         Row: {
           benefits: string[] | null
@@ -468,45 +410,36 @@ export type Database = {
       fashion_collections: {
         Row: {
           collection_name: string
-          collection_type: string | null
           created_at: string | null
           description: string
           designer_id: string | null
           event_id: string | null
           id: string
-          materials: string[] | null
           piece_count: number
-          size_range: Json | null
           sustainability_info: string | null
           technical_requirements: string | null
           updated_at: string | null
         }
         Insert: {
           collection_name: string
-          collection_type?: string | null
           created_at?: string | null
           description: string
           designer_id?: string | null
           event_id?: string | null
           id?: string
-          materials?: string[] | null
           piece_count: number
-          size_range?: Json | null
           sustainability_info?: string | null
           technical_requirements?: string | null
           updated_at?: string | null
         }
         Update: {
           collection_name?: string
-          collection_type?: string | null
           created_at?: string | null
           description?: string
           designer_id?: string | null
           event_id?: string | null
           id?: string
-          materials?: string[] | null
           piece_count?: number
-          size_range?: Json | null
           sustainability_info?: string | null
           technical_requirements?: string | null
           updated_at?: string | null
@@ -541,7 +474,6 @@ export type Database = {
           created_at: string | null
           description: string
           end_time: string
-          event_highlights: Json | null
           id: string
           meta_description: string | null
           meta_keywords: string[] | null
@@ -549,19 +481,16 @@ export type Database = {
           registration_deadline: string
           start_time: string
           subtype: Database["public"]["Enums"]["event_subtype"]
-          swimwear_specific_requirements: string | null
           theme: string | null
           title: string
           updated_at: string | null
           venue: string
-          venue_features: Json | null
         }
         Insert: {
           capacity: number
           created_at?: string | null
           description: string
           end_time: string
-          event_highlights?: Json | null
           id?: string
           meta_description?: string | null
           meta_keywords?: string[] | null
@@ -569,19 +498,16 @@ export type Database = {
           registration_deadline: string
           start_time: string
           subtype: Database["public"]["Enums"]["event_subtype"]
-          swimwear_specific_requirements?: string | null
           theme?: string | null
           title: string
           updated_at?: string | null
           venue: string
-          venue_features?: Json | null
         }
         Update: {
           capacity?: number
           created_at?: string | null
           description?: string
           end_time?: string
-          event_highlights?: Json | null
           id?: string
           meta_description?: string | null
           meta_keywords?: string[] | null
@@ -589,12 +515,10 @@ export type Database = {
           registration_deadline?: string
           start_time?: string
           subtype?: Database["public"]["Enums"]["event_subtype"]
-          swimwear_specific_requirements?: string | null
           theme?: string | null
           title?: string
           updated_at?: string | null
           venue?: string
-          venue_features?: Json | null
         }
         Relationships: []
       }
@@ -797,54 +721,6 @@ export type Database = {
         }
         Relationships: []
       }
-      swimwear_event_details: {
-        Row: {
-          beach_party_details: Json | null
-          beauty_workshops: Json | null
-          created_at: string | null
-          event_id: string | null
-          fitting_sessions: Json | null
-          id: string
-          pool_access_info: Json | null
-          updated_at: string | null
-        }
-        Insert: {
-          beach_party_details?: Json | null
-          beauty_workshops?: Json | null
-          created_at?: string | null
-          event_id?: string | null
-          fitting_sessions?: Json | null
-          id?: string
-          pool_access_info?: Json | null
-          updated_at?: string | null
-        }
-        Update: {
-          beach_party_details?: Json | null
-          beauty_workshops?: Json | null
-          created_at?: string | null
-          event_id?: string | null
-          fitting_sessions?: Json | null
-          id?: string
-          pool_access_info?: Json | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "swimwear_event_details_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "active_fashion_events"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "swimwear_event_details_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "fashion_events"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       active_fashion_events: {
@@ -923,17 +799,6 @@ export type Database = {
         | "model_profile"
         | "promotional"
         | "press_kit"
-      image_category_extended:
-        | "event_hero"
-        | "event_gallery"
-        | "backstage"
-        | "designer_profile"
-        | "model_profile"
-        | "promotional"
-        | "press_kit"
-        | "venue_features"
-        | "swimwear_details"
-      sponsor_tier: "platinum" | "gold" | "silver" | "bronze"
     }
     CompositeTypes: {
       [_ in never]: never

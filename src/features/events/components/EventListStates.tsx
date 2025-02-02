@@ -7,10 +7,6 @@ interface LoadingStateProps {
   viewMode: 'grid' | 'list';
 }
 
-interface ErrorStateProps {
-  message?: string;
-}
-
 export const LoadingState = ({ viewMode }: LoadingStateProps) => (
   <div className={`grid gap-6 ${
     viewMode === 'grid' 
@@ -23,11 +19,11 @@ export const LoadingState = ({ viewMode }: LoadingStateProps) => (
   </div>
 );
 
-export const ErrorState = ({ message = "Failed to load events. Please try refreshing the page." }: ErrorStateProps) => (
+export const ErrorState = () => (
   <Alert variant="destructive" className="bg-red-500/10 border-red-500/20">
     <AlertCircle className="h-4 w-4" />
     <AlertDescription>
-      {message}
+      Failed to load events. Please try refreshing the page.
     </AlertDescription>
   </Alert>
 );
