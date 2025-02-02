@@ -7,7 +7,8 @@ import type {
   FashionImage,
   EventTicket,
   EventSponsor,
-  SwimwearEventDetails
+  SwimwearEventDetails,
+  FashionCollection
 } from './event.types';
 
 export interface EventDetails {
@@ -34,6 +35,7 @@ export interface EventDetails {
   event_content?: EventContent[];
   event_tickets?: EventTicket[];
   event_sponsors?: EventSponsor[];
+  fashion_collections?: FashionCollection[];
 }
 
 export type {
@@ -44,5 +46,6 @@ export type {
   FashionImage,
   EventTicket,
   EventSponsor,
-  SwimwearEventDetails
+  SwimwearEventDetails,
+  FashionCollection
 };
