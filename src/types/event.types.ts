@@ -47,4 +47,47 @@ export interface FashionEvent {
   venue_features?: string[];
   event_highlights?: string[];
   swimwear_event_details?: SwimwearEventDetails;
+  fashion_images?: Array<{
+    id: string;
+    category: string;
+    url: string;
+  }>;
+  event_tickets?: Array<{
+    id: string;
+    ticket_type: string;
+    price: number;
+  }>;
+  event_sponsors?: Array<{
+    id: string;
+    sponsor_profiles?: {
+      company_name: string;
+    };
+  }>;
+}
+
+export interface EventContent {
+  id: string;
+  title: string;
+  content: string;
+  media_urls?: string[];
+}
+
+export interface FashionCollection {
+  id: string;
+  collection_name: string;
+  description: string;
+}
+
+export interface FashionImage {
+  id: string;
+  url: string;
+  category: string;
+  alt_text: string;
+}
+
+export interface EventTicket {
+  id: string;
+  ticket_type: string;
+  price: number;
+  benefits?: string[];
 }
