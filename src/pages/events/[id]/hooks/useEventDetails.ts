@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { FashionEvent } from '@/types/event.types';
+import type { FashionEvent } from '@/types/database';
 import { toast } from 'sonner';
 
 export const useEventDetails = (eventId?: string) => {
