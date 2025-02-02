@@ -29,8 +29,8 @@ export type SwimwearEventDetails = {
 
 export interface FashionEvent {
   id: string;
-  name: string;
-  subtype: string;
+  name: "valentines_fashion_show" | "spring_fling_fashion_show" | "summer_splash_fashion_show" | "fall_fantasy_fashion_show" | "swim_paradise_show";
+  subtype: "main_show" | "vip_session" | "workshop" | "networking" | "photo_session" | "after_party";
   title: string;
   description: string;
   venue: string;
@@ -47,23 +47,9 @@ export interface FashionEvent {
   venue_features?: Record<string, unknown>;
   event_highlights?: Record<string, unknown>;
   swimwear_event_details?: SwimwearEventDetails;
-  fashion_images?: Array<{
-    id: string;
-    category: string;
-    url: string;
-    metadata?: Record<string, unknown>;
-  }>;
-  event_tickets?: Array<{
-    id: string;
-    ticket_type: string;
-    price: number;
-  }>;
-  event_sponsors?: Array<{
-    id: string;
-    sponsor_profiles?: {
-      company_name: string;
-    };
-  }>;
+  fashion_images?: FashionImage[];
+  event_tickets?: EventTicket[];
+  event_sponsors?: EventSponsor[];
 }
 
 export interface EventContent {
@@ -101,7 +87,7 @@ export interface FashionCollection {
 export interface FashionImage {
   id: string;
   url: string;
-  category: string;
+  category: "event_hero" | "event_gallery" | "promotional" | "backstage" | "designer_profile" | "model_profile" | "press_kit";
   alt_text: string;
   thumbnail_url?: string;
   metadata?: Record<string, unknown>;
@@ -124,4 +110,11 @@ export interface EventTicket {
   group_discount_percentage?: number;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface EventSponsor {
+  id: string;
+  sponsor_profiles?: {
+    company_name: string;
+  };
 }
