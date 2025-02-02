@@ -66,6 +66,7 @@ export interface FashionEvent {
   fashion_images?: FashionImage[];
   event_tickets?: EventTicket[];
   event_sponsors?: EventSponsor[];
+  event_content?: EventContent[];
 }
 
 export interface EventContent {
@@ -121,6 +122,8 @@ export interface FashionImage {
   dimensions?: Record<string, unknown>;
   formats?: Record<string, unknown>;
   description?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface EventTicket {
