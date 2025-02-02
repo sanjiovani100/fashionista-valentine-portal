@@ -70,40 +70,43 @@ export const EventDetailsPage = () => {
     }
   }, [event]);
 
-  // Early return for missing ID
-  if (!id) {
-    console.error('[EventDetails] No event ID provided');
-    return <ErrorState error={new Error('No event ID provided')} />;
-  }
+  // Handle different error scenarios with specific messages
+  const getErrorMessage = () => {
+    if (!id) {
+      return new Error('Please provide an event ID to view event details.');
+    }
 
-  // Invalid ID format
-  if (id === ':id') {
-    console.error('[EventQuery] Invalid event ID format');
-    return <ErrorState error={new Error('Invalid event ID format')} />;
-  }
+    if (id === ':id') {
+      return new Error('The event ID is not properly formatted. Please check the URL.');
+    }
 
-  // Invalid UUID format
-  if (!UUID_REGEX.test(id)) {
-    console.error('[EventQuery] Invalid UUID format:', id);
-    return <ErrorState error={new Error('Invalid UUID format')} />;
+    if (!UUID_REGEX.test(id)) {
+      return new Error('The provided event ID is not valid. Please check the URL and try again.');
+    }
+
+    if (error) {
+      return error;
+    }
+
+    if (!event) {
+      return new Error('Event not found. Please check if the event ID is correct.');
+    }
+
+    return null;
+  };
+
+  const errorMessage = getErrorMessage();
+
+  // Early return for error states with specific messages
+  if (errorMessage) {
+    console.error('[EventDetails] Error:', errorMessage.message);
+    return <ErrorState error={errorMessage} />;
   }
 
   // Loading state
   if (isLoading) {
     console.log('[EventDetails] Loading event data...');
     return <LoadingState />;
-  }
-
-  // Error state
-  if (error) {
-    console.error('[EventDetails] Error loading event:', error);
-    return <ErrorState error={error} />;
-  }
-
-  // Not found state
-  if (!event) {
-    console.error('[EventDetails] Event not found for ID:', id);
-    return <ErrorState error={new Error('Event not found')} />;
   }
 
   // Verify data relationships
