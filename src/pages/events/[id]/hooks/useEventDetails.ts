@@ -12,14 +12,17 @@ export const useEventDetails = (eventId?: string) => {
     queryFn: async () => {
       // Validate event ID
       if (!eventId) {
+        console.error('Event ID is required');
         throw new Error('Event ID is required');
       }
 
       if (eventId === ':id') {
+        console.error('Invalid event ID format');
         throw new Error('Invalid event ID format');
       }
 
       if (!UUID_REGEX.test(eventId)) {
+        console.error('Invalid UUID format:', eventId);
         throw new Error('Invalid UUID format');
       }
 
