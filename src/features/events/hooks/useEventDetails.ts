@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { EventDetails } from '@/types/event-details.bridge';
-import { isVenueFeatures, isEventHighlight, isBeachPartyDetails } from '@/types/event.types';
+import { isVenueFeatures, isEventHighlight, isBeachPartyDetails, transformVenueFeatures, transformEventHighlights } from '@/types/event.types';
 import { toast } from 'sonner';
 
 // UUID validation regex
@@ -58,14 +58,8 @@ export const useEventDetails = (eventId?: string) => {
       }
 
       // Transform and validate the data
-      const venue_features = isVenueFeatures(data.venue_features) 
-        ? data.venue_features 
-        : { amenities: [], accessibility: [] };
-
-      const event_highlights = Array.isArray(data.event_highlights) && 
-        data.event_highlights.every(isEventHighlight)
-        ? data.event_highlights
-        : [];
+      const venue_features = transformVenueFeatures(data.venue_features);
+      const event_highlights = transformEventHighlights(data.event_highlights);
 
       // Transform swimwear event details if present
       const swimwear_event_details = data.swimwear_event_details ? {

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { EventSubtype } from '@/types/supabase/enums.types';
-import type { FashionEvent, VenueFeatures, EventHighlight } from '@/types/event.types';
-import { isVenueFeatures, isEventHighlight } from '@/types/event.types';
+import type { FashionEvent } from '@/types/event.types';
+import { transformVenueFeatures, transformEventHighlights } from '@/types/event.types';
 import { toast } from 'sonner';
 
 interface EventFilters {
@@ -61,7 +61,6 @@ export const useEventQuery = (
             break;
           case 'price-asc':
           case 'price-desc':
-            // We'll sort by price after fetching the data
             query = query.order('start_time', { ascending: true });
             break;
         }
@@ -76,22 +75,10 @@ export const useEventQuery = (
 
         // Transform and validate the data
         let events = (data as any[]).map(event => {
-          const rawVenueFeatures = event.venue_features as unknown;
-          const rawEventHighlights = event.event_highlights as unknown[];
-
-          const venue_features: VenueFeatures = isVenueFeatures(rawVenueFeatures) 
-            ? rawVenueFeatures 
-            : { amenities: [], accessibility: [] };
-
-          const event_highlights: EventHighlight[] = Array.isArray(rawEventHighlights) && 
-            rawEventHighlights.every(isEventHighlight) 
-            ? rawEventHighlights 
-            : [];
-
           return {
             ...event,
-            venue_features,
-            event_highlights
+            venue_features: transformVenueFeatures(event.venue_features),
+            event_highlights: transformEventHighlights(event.event_highlights)
           };
         }) as FashionEvent[];
 
