@@ -9,7 +9,7 @@ import { LoadingState } from '@/pages/index/components/LoadingState';
 import { ErrorState } from '@/pages/index/components/ErrorState';
 
 export const EventDetailsPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const { data: event, isLoading, error } = useEventDetails(id);
 
   if (isLoading) return <LoadingState />;

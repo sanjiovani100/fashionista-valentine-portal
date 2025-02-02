@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { FashionEvent } from '@/types/event.types';
+import { toast } from 'sonner';
 
 export const useEventDetails = (eventId?: string) => {
   return useQuery({
@@ -22,10 +23,17 @@ export const useEventDetails = (eventId?: string) => {
           )
         `)
         .eq('id', eventId)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
-      if (!data) throw new Error('Event not found');
+      if (error) {
+        console.error('Error fetching event:', error);
+        toast.error('Failed to load event details. Please try again.');
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('Event not found');
+      }
 
       return data as FashionEvent;
     },
