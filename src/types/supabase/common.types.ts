@@ -4,7 +4,9 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
+
+export type JsonObject = { [key: string]: Json };
 
 export interface Database {
   public: {
@@ -18,4 +20,4 @@ export interface Database {
   }
 }
 
-export type PublicSchema = Database[Extract<keyof Database, "public">]
+export type PublicSchema = Database[Extract<keyof Database, "public">];

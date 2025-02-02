@@ -1,12 +1,11 @@
-import type { Json } from './supabase/common.types';
-import type { EventName, EventSubtype, ImageCategory } from './supabase/enums.types';
-import type { 
-  VenueFeatures, 
-  EventHighlight, 
-  BeachPartyDetails, 
-  EventContent, 
-  FashionImage, 
-  EventTicket, 
+import type { EventName, EventSubtype } from './supabase/enums.types';
+import type {
+  VenueFeatures,
+  EventHighlight,
+  BeachPartyDetails,
+  EventContent,
+  FashionImage,
+  EventTicket,
   EventSponsor,
   SwimwearEventDetails
 } from './event.types';
