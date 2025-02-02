@@ -10,31 +10,82 @@ import { ErrorState } from '@/pages/index/components/ErrorState';
 import { ImageErrorBoundary } from '@/components/cloudinary';
 import { toast } from 'sonner';
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export const EventDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: event, isLoading, error } = useEventDetails(id);
 
-  // Log the current state for testing
+  // Validate ID format and existence
   React.useEffect(() => {
-    console.log('[EventDetails] Current state:', {
-      id,
-      isLoading,
-      hasError: !!error,
-      eventLoaded: !!event,
-      imageCount: event?.fashion_images?.length,
-      ticketCount: event?.event_tickets?.length,
-      sponsorCount: event?.event_sponsors?.length
-    });
+    if (!id) {
+      console.error('[EventDetails] No event ID provided');
+      return;
+    }
 
+    if (id === ':id') {
+      console.error('[EventQuery] Invalid event ID format');
+      return;
+    }
+
+    if (!UUID_REGEX.test(id)) {
+      console.error('[EventQuery] Invalid UUID format:', id);
+      return;
+    }
+
+    console.log('[EventDetails] Validating event ID:', id);
+  }, [id]);
+
+  // Log data relationships
+  React.useEffect(() => {
     if (event) {
+      console.log('[EventQuery] Successfully loaded event data:', {
+        title: event.title,
+        hasImages: event.fashion_images?.length > 0,
+        hasTickets: event.event_tickets?.length > 0,
+        hasSponsors: event.event_sponsors?.length > 0,
+        imageCount: event.fashion_images?.length,
+        ticketCount: event.event_tickets?.length,
+        sponsorCount: event.event_sponsors?.length
+      });
+
+      console.log('[EventDetails] Data relationships:', {
+        images: event.fashion_images?.map(img => ({
+          id: img.id,
+          category: img.category,
+          url: img.url
+        })),
+        tickets: event.event_tickets?.map(ticket => ({
+          id: ticket.id,
+          type: ticket.ticket_type,
+          price: ticket.price
+        })),
+        sponsors: event.event_sponsors?.map(sponsor => ({
+          id: sponsor.id,
+          name: sponsor.sponsor_profiles?.company_name
+        }))
+      });
+
       toast.success('Event details loaded successfully');
     }
-  }, [id, event, isLoading, error]);
+  }, [event]);
 
   // Early return for missing ID
   if (!id) {
     console.error('[EventDetails] No event ID provided');
     return <ErrorState error={new Error('No event ID provided')} />;
+  }
+
+  // Invalid ID format
+  if (id === ':id') {
+    console.error('[EventQuery] Invalid event ID format');
+    return <ErrorState error={new Error('Invalid event ID format')} />;
+  }
+
+  // Invalid UUID format
+  if (!UUID_REGEX.test(id)) {
+    console.error('[EventQuery] Invalid UUID format:', id);
+    return <ErrorState error={new Error('Invalid UUID format')} />;
   }
 
   // Loading state
