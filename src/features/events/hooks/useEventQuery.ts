@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { EventSubtype } from '@/types/supabase/enums.types';
 import type { FashionEvent, VenueFeatures, EventHighlight } from '@/types/event.types';
+import { isVenueFeatures, isEventHighlight } from '@/types/event.types';
 import { toast } from 'sonner';
 
 interface EventFilters {
@@ -73,19 +74,28 @@ export const useEventQuery = (
           throw error;
         }
 
-        // Transform the data to match FashionEvent type
-        let events = (data as unknown[]).map(event => {
-          const venue_features = event.venue_features as VenueFeatures;
-          const event_highlights = event.event_highlights as EventHighlight[];
-          
+        // Transform and validate the data
+        let events = (data as any[]).map(event => {
+          const rawVenueFeatures = event.venue_features as unknown;
+          const rawEventHighlights = event.event_highlights as unknown[];
+
+          const venue_features: VenueFeatures = isVenueFeatures(rawVenueFeatures) 
+            ? rawVenueFeatures 
+            : { amenities: [], accessibility: [] };
+
+          const event_highlights: EventHighlight[] = Array.isArray(rawEventHighlights) && 
+            rawEventHighlights.every(isEventHighlight) 
+            ? rawEventHighlights 
+            : [];
+
           return {
             ...event,
-            venue_features: venue_features || { amenities: [], accessibility: [] },
-            event_highlights: event_highlights || []
+            venue_features,
+            event_highlights
           };
         }) as FashionEvent[];
 
-        // Apply price range filter and sorting
+        // Apply price range filter
         if (filters.priceRange) {
           const [minPrice, maxPrice] = filters.priceRange;
           events = events.filter(event => {

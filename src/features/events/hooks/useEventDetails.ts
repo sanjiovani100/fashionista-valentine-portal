@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { EventDetails } from '@/types/event-details.bridge';
-import { isVenueFeatures, isEventHighlight, isBeachPartyDetails } from '@/types/event-details.bridge';
+import { isVenueFeatures, isEventHighlight, isBeachPartyDetails } from '@/types/event.types';
 import { toast } from 'sonner';
 
 // UUID validation regex

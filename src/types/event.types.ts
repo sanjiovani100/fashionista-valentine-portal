@@ -66,18 +66,6 @@ export interface EventTicket {
   updated_at: string;
 }
 
-export interface EventSponsor {
-  id: string;
-  event_id: string;
-  sponsor_id: string;
-  sponsorship_tier: string;
-  is_featured?: boolean;
-  ad_placement?: string[];
-  display_priority?: number;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface FashionCollection {
   id: string;
   designer_id?: string | null;
@@ -128,6 +116,39 @@ export interface FashionEvent {
   fashion_images?: FashionImage[];
   event_content?: EventContent[];
   event_tickets?: EventTicket[];
-  event_sponsors?: EventSponsor[];
   fashion_collections?: FashionCollection[];
+}
+
+// Type guards
+export function isVenueFeatures(value: unknown): value is VenueFeatures {
+  if (!value || typeof value !== 'object') return false;
+  const features = value as Record<string, unknown>;
+  return (
+    Array.isArray(features.amenities) &&
+    Array.isArray(features.accessibility) &&
+    (!features.technical_equipment || Array.isArray(features.technical_equipment)) &&
+    (!features.special_requirements || Array.isArray(features.special_requirements))
+  );
+}
+
+export function isEventHighlight(value: unknown): value is EventHighlight {
+  if (!value || typeof value !== 'object') return false;
+  const highlight = value as Record<string, unknown>;
+  return (
+    typeof highlight.title === 'string' &&
+    typeof highlight.description === 'string' &&
+    (!highlight.icon || typeof highlight.icon === 'string') &&
+    (!highlight.order || typeof highlight.order === 'number')
+  );
+}
+
+export function isBeachPartyDetails(value: unknown): value is BeachPartyDetails {
+  if (!value || typeof value !== 'object') return false;
+  const details = value as Record<string, unknown>;
+  return (
+    typeof details.location === 'string' &&
+    typeof details.time === 'string' &&
+    (!details.dress_code || typeof details.dress_code === 'string') &&
+    Array.isArray(details.features)
+  );
 }
