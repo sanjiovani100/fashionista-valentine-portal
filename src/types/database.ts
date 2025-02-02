@@ -1,3 +1,5 @@
+import type { EventName, EventSubtype, ImageCategory } from './event.types';
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export interface FashionEvent {
@@ -14,8 +16,8 @@ export interface FashionEvent {
   meta_keywords?: string[] | null;
   created_at: string;
   updated_at: string;
-  name: "valentines_fashion_show" | "spring_fling_fashion_show" | "summer_splash_fashion_show" | "fall_fantasy_fashion_show" | "swim_paradise_show";
-  subtype: "main_show" | "vip_session" | "workshop" | "networking" | "photo_session" | "after_party";
+  name: EventName;
+  subtype: EventSubtype;
   event_content?: Array<{
     id: string;
     event_id: string | null;
@@ -24,7 +26,7 @@ export interface FashionEvent {
     content: string;
     media_urls?: string[] | null;
     publish_date?: string | null;
-    engagement_metrics?: Json | null;
+    engagement_metrics?: Record<string, unknown> | null;
     created_at: string;
     updated_at: string;
   }> | null;
@@ -42,17 +44,17 @@ export interface FashionEvent {
   }> | null;
   fashion_images?: Array<{
     id: string;
-    category: "event_hero" | "event_gallery" | "backstage" | "designer_profile" | "model_profile" | "promotional" | "press_kit";
+    category: ImageCategory;
     url: string;
     thumbnail_url?: string | null;
     alt_text: string;
-    metadata?: Json | null;
+    metadata?: Record<string, unknown> | null;
     credits?: string | null;
     event_id: string | null;
     created_at: string;
     updated_at: string;
-    dimensions?: Json | null;
-    formats?: Json | null;
+    dimensions?: Record<string, unknown> | null;
+    formats?: Record<string, unknown> | null;
   }> | null;
   event_tickets?: Array<{
     id: string;
