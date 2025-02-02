@@ -13,12 +13,20 @@ const AboutPage = () => {
       const { data, error } = await supabase
         .from('about_page_content')
         .select('*')
-        .single();
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
       
       if (error) {
         console.error('Error fetching about page content:', error);
         toast.error('Failed to load about page content');
         throw error;
+      }
+
+      if (!data) {
+        console.warn('No about page content found');
+        toast.error('Content not found');
+        return null;
       }
       
       return data;
@@ -48,10 +56,10 @@ const AboutPage = () => {
       <PageLayout>
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold text-red-500">
-            Failed to load about page content
+            {error ? 'Failed to load about page content' : 'Content not found'}
           </h1>
           <p className="mt-4 text-gray-200">
-            Please try refreshing the page
+            {error ? 'Please try refreshing the page' : 'The about page content is currently unavailable'}
           </p>
         </div>
       </PageLayout>
