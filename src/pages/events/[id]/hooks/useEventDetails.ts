@@ -3,12 +3,12 @@ import { supabase } from '@/integrations/supabase/client';
 import type { FashionEvent } from '@/types/event.types';
 import { toast } from '@/hooks/use-toast';
 
-export const useEventDetails = (eventId?: string) => {
+export const useEventDetails = (eventId: string) => {
   return useQuery({
     queryKey: ['event', eventId],
     queryFn: async () => {
-      if (!eventId) {
-        throw new Error('Event ID is required');
+      if (!eventId || eventId === ':id') {
+        throw new Error('Invalid event ID');
       }
 
       console.log('Fetching event with ID:', eventId);
@@ -45,6 +45,6 @@ export const useEventDetails = (eventId?: string) => {
 
       return data as FashionEvent;
     },
-    enabled: Boolean(eventId)
+    enabled: Boolean(eventId) && eventId !== ':id'
   });
 };
