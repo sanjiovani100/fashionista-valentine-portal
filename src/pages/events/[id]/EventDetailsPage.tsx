@@ -4,7 +4,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { EventHero } from './components/EventHero';
 import { EventContent } from './components/EventContent';
 import { EventSidebar } from './components/EventSidebar';
-import { useEventDetails } from './hooks/useEventDetails';
+import { useEventDetails } from '@/features/events/hooks/useEventDetails';
 import { LoadingState } from '@/pages/index/components/LoadingState';
 import { ErrorState } from '@/pages/index/components/ErrorState';
 import { ImageErrorBoundary } from '@/components/cloudinary';
@@ -62,8 +62,8 @@ export const EventDetailsPage = () => {
 
   // Error state
   if (error) {
-    console.error('[EventDetails] Error:', error.message);
-    return <ErrorState error={error} />;
+    console.error('[EventDetails] Error:', error);
+    return <ErrorState error={error instanceof Error ? error : new Error('Failed to load event')} />;
   }
 
   // No event found
