@@ -3,12 +3,24 @@ import { supabase } from '@/integrations/supabase/client';
 import type { FashionEvent } from '@/types/event.types';
 import { toast } from '@/hooks/use-toast';
 
-export const useEventDetails = (eventId: string) => {
+// UUID validation regex
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export const useEventDetails = (eventId?: string) => {
   return useQuery({
     queryKey: ['event', eventId],
     queryFn: async () => {
-      if (!eventId || eventId === ':id') {
-        throw new Error('Invalid event ID');
+      // Validate event ID
+      if (!eventId) {
+        throw new Error('Event ID is required');
+      }
+
+      if (eventId === ':id') {
+        throw new Error('Invalid event ID format');
+      }
+
+      if (!UUID_REGEX.test(eventId)) {
+        throw new Error('Invalid UUID format');
       }
 
       console.log('Fetching event with ID:', eventId);
@@ -26,7 +38,7 @@ export const useEventDetails = (eventId: string) => {
             sponsor_profiles (*)
           )
         `)
-        .eq('id', eventId)
+        .match({ id: eventId })
         .maybeSingle();
 
       if (error) {
@@ -45,6 +57,11 @@ export const useEventDetails = (eventId: string) => {
 
       return data as FashionEvent;
     },
-    enabled: Boolean(eventId) && eventId !== ':id'
+    enabled: Boolean(eventId) && eventId !== ':id',
+    retry: 1,
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    meta: {
+      errorMessage: 'Failed to load event details'
+    }
   });
 };
