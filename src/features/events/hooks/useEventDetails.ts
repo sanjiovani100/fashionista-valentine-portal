@@ -75,17 +75,37 @@ export const useEventDetails = (eventId?: string) => {
         updated_at: data.swimwear_event_details.updated_at
       } : null;
 
+      // Transform collections data
+      const fashion_collections = data.fashion_collections?.map(collection => ({
+        ...collection,
+        size_range: collection.size_range as Record<string, string>
+      })) || null;
+
+      // Transform event content data
+      const event_content = data.event_content?.map(content => ({
+        ...content,
+        engagement_metrics: content.engagement_metrics as Record<string, unknown>
+      })) || null;
+
+      // Transform fashion images data
+      const fashion_images = data.fashion_images?.map(image => ({
+        ...image,
+        metadata: image.metadata as Record<string, unknown>,
+        formats: image.formats as Record<string, unknown>,
+        dimensions: image.dimensions as Record<string, unknown>
+      })) || null;
+
       // Transform the data to match EventDetails type
       const eventDetails: EventDetails = {
         ...data,
         venue_features,
         event_highlights,
         swimwear_event_details,
-        fashion_collections: data.fashion_collections || null,
-        event_content: data.event_content || null,
+        fashion_collections,
+        event_content,
         event_tickets: data.event_tickets || null,
         event_sponsors: data.event_sponsors || null,
-        fashion_images: data.fashion_images || null
+        fashion_images
       };
 
       console.log('[EventQuery] Successfully loaded event data:', {

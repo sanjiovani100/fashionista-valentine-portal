@@ -53,7 +53,7 @@ export interface FashionImage {
 
 export interface EventTicket {
   id: string;
-  event_id: string;
+  event_id: string | null;
   ticket_type: string;
   price: number;
   quantity_available: number;
@@ -87,11 +87,11 @@ export interface FashionCollection {
   piece_count: number;
   technical_requirements?: string | null;
   sustainability_info?: string | null;
+  created_at: string;
+  updated_at: string;
   collection_type?: string | null;
   size_range?: Record<string, string>;
   materials?: string[];
-  created_at: string;
-  updated_at: string;
 }
 
 export interface SwimwearEventDetails {
@@ -124,12 +124,6 @@ export interface FashionEvent {
   swimwear_specific_requirements?: string | null;
   venue_features: VenueFeatures;
   event_highlights: EventHighlight[];
-  swimwear_event_details?: SwimwearEventDetails | null;
-  fashion_collections?: FashionCollection[] | null;
-  event_content?: EventContent[] | null;
-  event_tickets?: EventTicket[] | null;
-  event_sponsors?: EventSponsor[] | null;
-  fashion_images?: FashionImage[] | null;
 }
 
 // Type guards with improved validation
@@ -189,14 +183,4 @@ export function transformEventHighlights(json: Json): EventHighlight[] {
   }
 
   return json.filter(isEventHighlight);
-}
-
-export function transformBeachPartyDetails(json: Json): BeachPartyDetails {
-  const defaultDetails: BeachPartyDetails = {
-    location: '',
-    time: '',
-    features: []
-  };
-
-  return isBeachPartyDetails(json) ? json : defaultDetails;
 }
