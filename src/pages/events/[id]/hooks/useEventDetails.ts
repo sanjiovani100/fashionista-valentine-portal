@@ -9,6 +9,8 @@ export const useEventDetails = (eventId?: string) => {
     queryFn: async () => {
       if (!eventId) throw new Error('Event ID is required');
 
+      console.log('Fetching event with ID:', eventId);
+
       const { data, error } = await supabase
         .from('fashion_events')
         .select(`
