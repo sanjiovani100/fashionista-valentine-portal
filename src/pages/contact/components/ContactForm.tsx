@@ -49,14 +49,12 @@ export const ContactForm = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      // Insert into Supabase
       const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert([data]);
 
       if (dbError) throw dbError;
 
-      // Send emails
       const response = await fetch(
         'https://dssddsgypklubzkshkxo.supabase.co/functions/v1/send-contact-email',
         {
