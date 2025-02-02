@@ -1,3 +1,4 @@
+import type { Json } from './supabase/base/json.types';
 import type { EventName, EventSubtype } from './supabase/base/enums.types';
 import type {
   VenueFeatures,
@@ -8,10 +9,10 @@ import type {
   EventTicket,
   EventSponsor,
   SwimwearEventDetails,
-  FashionCollection
+  FashionEvent
 } from './event.types';
 
-export interface EventDetails {
+export interface EventDetails extends FashionEvent {
   id: string;
   name: EventName;
   subtype: EventSubtype;
@@ -35,7 +36,6 @@ export interface EventDetails {
   event_content?: EventContent[];
   event_tickets?: EventTicket[];
   event_sponsors?: EventSponsor[];
-  fashion_collections?: FashionCollection[];
 }
 
 export type {
@@ -47,5 +47,5 @@ export type {
   EventTicket,
   EventSponsor,
   SwimwearEventDetails,
-  FashionCollection
+  FashionEvent
 };

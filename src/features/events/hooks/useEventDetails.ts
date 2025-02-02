@@ -56,13 +56,6 @@ export const useEventDetails = (eventId?: string) => {
         throw new Error('Event not found');
       }
 
-      console.log('[EventQuery] Successfully loaded event data:', {
-        title: data.title,
-        imageCount: data.fashion_images?.length,
-        ticketCount: data.event_tickets?.length,
-        sponsorCount: data.event_sponsors?.length
-      });
-
       // Transform the data to match EventDetails type
       const eventDetails: EventDetails = {
         ...data,
@@ -73,6 +66,13 @@ export const useEventDetails = (eventId?: string) => {
           beach_party_details: data.swimwear_event_details.beach_party_details as BeachPartyDetails
         } : null
       };
+
+      console.log('[EventQuery] Successfully loaded event data:', {
+        title: eventDetails.title,
+        imageCount: eventDetails.fashion_images?.length,
+        ticketCount: eventDetails.event_tickets?.length,
+        sponsorCount: eventDetails.event_sponsors?.length
+      });
 
       return eventDetails;
     },
