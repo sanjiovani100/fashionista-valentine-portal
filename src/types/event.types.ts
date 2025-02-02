@@ -43,11 +43,11 @@ export interface FashionEvent {
   theme?: string;
   meta_description?: string;
   meta_keywords?: string[];
-  created_at?: string;
-  updated_at?: string;
+  created_at: string;
+  updated_at: string;
   swimwear_specific_requirements?: string;
-  venue_features?: Record<string, unknown>;
-  event_highlights?: Record<string, unknown>;
+  venue_features: Record<string, unknown>;
+  event_highlights: Record<string, unknown>;
   swimwear_event_details?: SwimwearEventDetails;
   fashion_images?: FashionImage[];
   event_tickets?: EventTicket[];
@@ -63,7 +63,7 @@ export interface EventContent {
   content: string;
   media_urls?: string[];
   publish_date?: string;
-  engagement_metrics?: Record<string, unknown>;
+  engagement_metrics: Record<string, unknown>;
   created_at: string;
   updated_at: string;
 }

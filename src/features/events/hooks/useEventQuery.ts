@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { EventSubtype } from '@/types/supabase/enums.types';
+import type { FashionEvent } from '@/types/event.types';
 import { toast } from 'sonner';
 
 interface EventFilters {
@@ -68,7 +69,7 @@ export const useEventQuery = (
         }
 
         // Apply price range filter and sorting
-        let filteredData = data;
+        let filteredData = data as FashionEvent[];
         
         if (filters.priceRange) {
           const [minPrice, maxPrice] = filters.priceRange;
