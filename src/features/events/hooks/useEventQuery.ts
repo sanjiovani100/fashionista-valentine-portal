@@ -29,7 +29,11 @@ export const useEventQuery = (
             fashion_collections (*),
             fashion_images (*),
             event_tickets (*),
-            swimwear_event_details (*)
+            swimwear_event_details (*),
+            event_sponsors (
+              *,
+              sponsor_profiles (*)
+            )
           `);
 
         // Apply filters
@@ -70,7 +74,7 @@ export const useEventQuery = (
         }
 
         // Apply price range filter and sorting
-        let filteredData = data as FashionEvent[];
+        let filteredData = data as unknown as FashionEvent[];
         
         if (filters.priceRange) {
           const [minPrice, maxPrice] = filters.priceRange;

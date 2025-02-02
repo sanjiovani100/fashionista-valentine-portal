@@ -20,7 +20,7 @@ export interface EventContent {
   content: string;
   media_urls?: string[] | null;
   publish_date?: string | null;
-  engagement_metrics?: Json | null;
+  engagement_metrics?: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
 }
@@ -98,7 +98,7 @@ export interface FashionEvent {
   swimwear_specific_requirements?: string | null;
   venue_features: Json;
   event_highlights: Json;
-  swimwear_event_details?: SwimwearEventDetails;
+  swimwear_event_details?: SwimwearEventDetails | null;
   fashion_images?: FashionImage[];
   event_tickets?: EventTicket[];
   event_sponsors?: EventSponsor[];
