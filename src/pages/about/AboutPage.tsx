@@ -34,7 +34,23 @@ const AboutPage = () => {
         return null;
       }
       
-      return data as AboutPageContent;
+      // Transform the data to match our expected types
+      const transformedData: AboutPageContent = {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        content: typeof data.content === 'string' ? JSON.parse(data.content) : data.content,
+        mission_vision: typeof data.mission_vision === 'string' ? JSON.parse(data.mission_vision) : data.mission_vision,
+        core_values: typeof data.core_values === 'string' ? JSON.parse(data.core_values) : data.core_values,
+        team_members: typeof data.team_members === 'string' ? JSON.parse(data.team_members) : data.team_members,
+        contact_info: typeof data.contact_info === 'string' ? JSON.parse(data.contact_info) : data.contact_info,
+        meta_description: data.meta_description,
+        meta_keywords: data.meta_keywords,
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      };
+
+      return transformedData;
     }
   });
 

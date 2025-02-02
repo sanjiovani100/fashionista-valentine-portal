@@ -1,17 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-
-interface ContactInfo {
-  email: string;
-  phone: string;
-  address: string;
-  social_media: {
-    instagram: string;
-    facebook: string;
-    twitter: string;
-  };
-}
+import { ContactInfo } from '../types/about.types';
 
 interface ContactSectionProps {
   contactInfo: ContactInfo;
@@ -62,30 +52,36 @@ export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
             viewport={{ once: true }}
             className="flex justify-center space-x-6"
           >
-            <a
-              href={`https://instagram.com/${contactInfo.social_media.instagram}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-200 hover:text-fashion-pink transition-colors"
-            >
-              <Instagram className="w-8 h-8" />
-            </a>
-            <a
-              href={`https://facebook.com/${contactInfo.social_media.facebook}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-200 hover:text-fashion-pink transition-colors"
-            >
-              <Facebook className="w-8 h-8" />
-            </a>
-            <a
-              href={`https://twitter.com/${contactInfo.social_media.twitter}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-200 hover:text-fashion-pink transition-colors"
-            >
-              <Twitter className="w-8 h-8" />
-            </a>
+            {contactInfo.social_media.instagram && (
+              <a
+                href={`https://instagram.com/${contactInfo.social_media.instagram}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-fashion-pink transition-colors"
+              >
+                <Instagram className="w-8 h-8" />
+              </a>
+            )}
+            {contactInfo.social_media.facebook && (
+              <a
+                href={`https://facebook.com/${contactInfo.social_media.facebook}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-fashion-pink transition-colors"
+              >
+                <Facebook className="w-8 h-8" />
+              </a>
+            )}
+            {contactInfo.social_media.twitter && (
+              <a
+                href={`https://twitter.com/${contactInfo.social_media.twitter}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-fashion-pink transition-colors"
+              >
+                <Twitter className="w-8 h-8" />
+              </a>
+            )}
           </motion.div>
         </div>
       </div>
