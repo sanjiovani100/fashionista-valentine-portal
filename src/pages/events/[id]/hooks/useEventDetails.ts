@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { FashionEvent } from '@/types/event.types';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 // UUID validation regex
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -12,21 +12,21 @@ export const useEventDetails = (eventId?: string) => {
     queryFn: async () => {
       // Validate event ID
       if (!eventId) {
-        console.error('Event ID is required');
+        console.error('[EventQuery] Event ID is required');
         throw new Error('Event ID is required');
       }
 
       if (eventId === ':id') {
-        console.error('Invalid event ID format');
+        console.error('[EventQuery] Invalid event ID format');
         throw new Error('Invalid event ID format');
       }
 
       if (!UUID_REGEX.test(eventId)) {
-        console.error('Invalid UUID format:', eventId);
+        console.error('[EventQuery] Invalid UUID format:', eventId);
         throw new Error('Invalid UUID format');
       }
 
-      console.log('Fetching event with ID:', eventId);
+      console.log('[EventQuery] Fetching event with ID:', eventId);
 
       const { data, error } = await supabase
         .from('fashion_events')
@@ -41,22 +41,26 @@ export const useEventDetails = (eventId?: string) => {
             sponsor_profiles (*)
           )
         `)
-        .match({ id: eventId })
+        .eq('id', eventId)
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching event:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load event details"
-        });
+        console.error('[EventQuery] Error fetching event:', error);
+        toast.error('Failed to load event details');
         throw error;
       }
 
       if (!data) {
+        console.error('[EventQuery] Event not found');
         throw new Error('Event not found');
       }
+
+      console.log('[EventQuery] Successfully loaded event data:', {
+        title: data.title,
+        imageCount: data.fashion_images?.length,
+        ticketCount: data.event_tickets?.length,
+        sponsorCount: data.event_sponsors?.length
+      });
 
       return data as FashionEvent;
     },

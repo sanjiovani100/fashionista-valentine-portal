@@ -8,30 +8,66 @@ import { useEventDetails } from './hooks/useEventDetails';
 import { LoadingState } from '@/pages/index/components/LoadingState';
 import { ErrorState } from '@/pages/index/components/ErrorState';
 import { ImageErrorBoundary } from '@/components/cloudinary';
+import { toast } from 'sonner';
 
 export const EventDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: event, isLoading, error } = useEventDetails(id);
 
+  // Log the current state for testing
+  React.useEffect(() => {
+    console.log('[EventDetails] Current state:', {
+      id,
+      isLoading,
+      hasError: !!error,
+      eventLoaded: !!event,
+      imageCount: event?.fashion_images?.length,
+      ticketCount: event?.event_tickets?.length,
+      sponsorCount: event?.event_sponsors?.length
+    });
+
+    if (event) {
+      toast.success('Event details loaded successfully');
+    }
+  }, [id, event, isLoading, error]);
+
   // Early return for missing ID
   if (!id) {
+    console.error('[EventDetails] No event ID provided');
     return <ErrorState error={new Error('No event ID provided')} />;
   }
 
   // Loading state
   if (isLoading) {
+    console.log('[EventDetails] Loading event data...');
     return <LoadingState />;
   }
 
   // Error state
   if (error) {
+    console.error('[EventDetails] Error loading event:', error);
     return <ErrorState error={error} />;
   }
 
   // Not found state
   if (!event) {
+    console.error('[EventDetails] Event not found for ID:', id);
     return <ErrorState error={new Error('Event not found')} />;
   }
+
+  // Verify data relationships
+  const hasImages = event.fashion_images && event.fashion_images.length > 0;
+  const hasTickets = event.event_tickets && event.event_tickets.length > 0;
+  const hasSponsors = event.event_sponsors && event.event_sponsors.length > 0;
+
+  console.log('[EventDetails] Data relationships:', {
+    hasImages,
+    imageCount: event.fashion_images?.length,
+    hasTickets,
+    ticketCount: event.event_tickets?.length,
+    hasSponsors,
+    sponsorCount: event.event_sponsors?.length
+  });
 
   return (
     <PageLayout>
