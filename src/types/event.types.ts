@@ -49,11 +49,44 @@ export type EventTicket = {
 
 export type DesignerProfile = Database["public"]["Tables"]["designer_profiles"]["Row"];
 
+// Add the FashionEvent type
+export type FashionEvent = {
+  id: string;
+  name: string;
+  subtype: string;
+  title: string;
+  description: string;
+  venue: string;
+  capacity: number;
+  start_time: string;
+  end_time: string;
+  registration_deadline: string;
+  theme?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string[] | null;
+  created_at?: string;
+  updated_at?: string;
+  fashion_images?: FashionImage[];
+  fashion_collections?: FashionCollection[];
+  event_content?: EventContent[];
+  event_tickets?: EventTicket[];
+  event_sponsors?: {
+    id: string;
+    sponsor_profiles: {
+      id: string;
+      company_name: string;
+      logo_url?: string;
+      website?: string;
+      description: string;
+    };
+  }[];
+};
+
 // Feature types for the EventDetails component
 export interface EventFeature {
   icon: LucideIcon;
   title: string;
-  content: string;
+  description: string;
 }
 
 export interface EventDetails {
