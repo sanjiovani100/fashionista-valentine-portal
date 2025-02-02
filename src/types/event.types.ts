@@ -1,3 +1,4 @@
+import type { Json } from '@/types/database';
 import type { EventName, EventSubtype, ImageCategory } from '@/types/supabase/enums.types';
 
 export type SwimwearEventDetails = {
@@ -9,7 +10,7 @@ export type SwimwearEventDetails = {
     features: string[];
     dress_code: string;
   };
-  pool_access_info: Record<string, unknown>;
+  pool_access_info: Json;
   fitting_sessions: Array<{
     date: string;
     slots: Array<{
@@ -40,14 +41,14 @@ export interface FashionEvent {
   start_time: string;
   end_time: string;
   registration_deadline: string;
-  theme?: string;
-  meta_description?: string;
-  meta_keywords?: string[];
+  theme?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string[] | null;
   created_at: string;
   updated_at: string;
-  swimwear_specific_requirements?: string;
-  venue_features: Record<string, unknown>;
-  event_highlights: Record<string, unknown>;
+  swimwear_specific_requirements?: string | null;
+  venue_features: Json;
+  event_highlights: Json;
   swimwear_event_details?: SwimwearEventDetails;
   fashion_images?: FashionImage[];
   event_tickets?: EventTicket[];
@@ -61,9 +62,9 @@ export interface EventContent {
   content_type: string;
   title: string;
   content: string;
-  media_urls?: string[];
-  publish_date?: string;
-  engagement_metrics: Record<string, unknown>;
+  media_urls?: string[] | null;
+  publish_date?: string | null;
+  engagement_metrics: Json;
   created_at: string;
   updated_at: string;
 }
@@ -78,7 +79,7 @@ export interface FashionCollection {
   technical_requirements?: string;
   sustainability_info?: string;
   collection_type?: string;
-  size_range?: Record<string, unknown>;
+  size_range?: Json;
   materials?: string[];
   created_at?: string;
   updated_at?: string;
@@ -89,27 +90,28 @@ export interface FashionImage {
   url: string;
   category: ImageCategory;
   alt_text: string;
-  thumbnail_url?: string;
-  metadata?: Record<string, unknown>;
-  credits?: string;
-  event_id?: string;
-  dimensions?: Record<string, unknown>;
-  formats?: Record<string, unknown>;
-  description?: string;
+  thumbnail_url?: string | null;
+  metadata?: Json;
+  credits?: string | null;
+  event_id: string;
+  dimensions?: Json;
+  formats?: Json;
+  description?: string | null;
   created_at?: string;
   updated_at?: string;
 }
 
 export interface EventTicket {
   id: string;
+  event_id: string;
   ticket_type: string;
   price: number;
-  benefits?: string[];
-  quantity_available?: number;
-  early_bird_deadline?: string;
-  early_bird_price?: number;
-  group_discount_threshold?: number;
-  group_discount_percentage?: number;
+  quantity_available: number;
+  benefits?: string[] | null;
+  early_bird_deadline?: string | null;
+  early_bird_price?: number | null;
+  group_discount_threshold?: number | null;
+  group_discount_percentage?: number | null;
   created_at?: string;
   updated_at?: string;
 }

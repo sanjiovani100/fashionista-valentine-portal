@@ -45,7 +45,7 @@ export const useEventQuery = (
         }
 
         if (filters.categories?.length) {
-          query = query.in('subtype', filters.categories);
+          query = query.in('subtype', filters.categories as string[]);
         }
 
         // Apply sorting
