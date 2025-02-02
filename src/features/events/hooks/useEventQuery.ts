@@ -28,7 +28,8 @@ export const useEventQuery = (
             event_content (*),
             fashion_collections (*),
             fashion_images (*),
-            event_tickets (*)
+            event_tickets (*),
+            swimwear_event_details (*)
           `);
 
         // Apply filters

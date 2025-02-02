@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Wine, Music, Sun, Flame, Users, MapPin, Clock } from "lucide-react";
-import type { SwimwearEventDetails } from '@/types/event.types';
+import type { Json } from '@/types/database';
 
 interface BeachPartyProps {
-  details: SwimwearEventDetails['beach_party_details'];
+  details: Json | null;
 }
 
 export const BeachParty = ({ details }: BeachPartyProps) => {
@@ -16,6 +16,18 @@ export const BeachParty = ({ details }: BeachPartyProps) => {
     "Fire Dancer Performances": Flame,
     "Beach Lounge Areas": Users,
     "Sunset Photography Sessions": Sun,
+  };
+
+  const {
+    location,
+    time,
+    dress_code,
+    features = []
+  } = details as {
+    location: string;
+    time: string;
+    dress_code?: string;
+    features: string[];
   };
 
   return (
@@ -31,16 +43,16 @@ export const BeachParty = ({ details }: BeachPartyProps) => {
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-lg">
                 <MapPin className="h-5 w-5 text-red-primary" />
-                <span>{details.location}</span>
+                <span>{location}</span>
               </div>
               <div className="flex items-center gap-3 text-lg">
                 <Clock className="h-5 w-5 text-red-primary" />
-                <span>{details.time}</span>
+                <span>{time}</span>
               </div>
-              {details.dress_code && (
+              {dress_code && (
                 <div className="mt-4 p-4 bg-white/5 rounded-lg">
                   <p className="text-sm uppercase tracking-wider text-gray-300">Dress Code</p>
-                  <p className="text-lg font-semibold">{details.dress_code}</p>
+                  <p className="text-lg font-semibold">{dress_code}</p>
                 </div>
               )}
             </div>
@@ -49,7 +61,7 @@ export const BeachParty = ({ details }: BeachPartyProps) => {
             <div className="space-y-4">
               <h3 className="text-xl font-semibold mb-4">Highlights</h3>
               <div className="grid gap-4">
-                {details.features.map((feature, index) => {
+                {features.map((feature, index) => {
                   const Icon = featureIcons[feature as keyof typeof featureIcons] || Sun;
                   return (
                     <div 
