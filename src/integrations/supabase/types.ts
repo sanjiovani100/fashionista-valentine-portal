@@ -881,6 +881,12 @@ export type Database = {
       }
     }
     Functions: {
+      exec_sql: {
+        Args: {
+          sql: string
+        }
+        Returns: undefined
+      }
       track_uploaded_image: {
         Args: {
           p_bucket_id: string
