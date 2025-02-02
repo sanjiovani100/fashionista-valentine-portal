@@ -9,11 +9,13 @@ import { EventSidebar } from './components/EventSidebar';
 import { LoadingState, ErrorState } from '@/features/events/components/EventListStates';
 
 const EventDetailsPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   const { data: event, isLoading, error } = useQuery({
     queryKey: ['event', id],
     queryFn: async () => {
+      if (!id) throw new Error('Event ID is required');
+      
       const { data, error } = await supabase
         .from('fashion_events')
         .select(`
@@ -34,8 +36,10 @@ const EventDetailsPage = () => {
         .single();
 
       if (error) throw error;
+      if (!data) throw new Error('Event not found');
       return data;
     },
+    enabled: !!id, // Only run query if we have an ID
   });
 
   if (isLoading) return <LoadingState viewMode="grid" />;
