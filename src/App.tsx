@@ -14,7 +14,14 @@ import SponsorRegistration from './pages/register/sponsor/SponsorRegistration';
 import Confirmation from './pages/confirmation/Confirmation';
 import EventDetailsPage from './pages/events/[id]/EventDetailsPage';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {

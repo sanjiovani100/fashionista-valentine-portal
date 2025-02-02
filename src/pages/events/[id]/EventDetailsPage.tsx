@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { EventHero } from './components/EventHero';
 import { EventContent } from './components/EventContent';
@@ -15,27 +15,27 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9
 
 export const EventDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { data: event, isLoading, error } = useEventDetails(id);
 
   // Validate ID format and existence
   React.useEffect(() => {
     if (!id) {
       console.error('[EventDetails] No event ID provided');
-      return;
-    }
-
-    if (id === ':id') {
-      console.error('[EventQuery] Invalid event ID format');
+      toast.error('Please provide an event ID to view event details.');
+      navigate('/events');
       return;
     }
 
     if (!UUID_REGEX.test(id)) {
       console.error('[EventQuery] Invalid UUID format:', id);
+      toast.error('The event ID is not properly formatted. Please check the URL.');
+      navigate('/events');
       return;
     }
 
     console.log('[EventDetails] Validating event ID:', id);
-  }, [id]);
+  }, [id, navigate]);
 
   // Log data relationships
   React.useEffect(() => {
@@ -50,64 +50,26 @@ export const EventDetailsPage = () => {
         sponsorCount: event.event_sponsors?.length
       });
 
-      console.log('[EventDetails] Data relationships:', {
-        images: event.fashion_images?.map(img => ({
-          id: img.id,
-          category: img.category,
-          url: img.url
-        })),
-        tickets: event.event_tickets?.map(ticket => ({
-          id: ticket.id,
-          type: ticket.ticket_type,
-          price: ticket.price
-        })),
-        sponsors: event.event_sponsors?.map(sponsor => ({
-          id: sponsor.id,
-          name: sponsor.sponsor_profiles?.company_name
-        }))
-      });
-
       toast.success('Event details loaded successfully');
     }
   }, [event]);
-
-  // Handle different error scenarios with specific messages
-  const getErrorMessage = () => {
-    if (!id) {
-      return new Error('Please provide an event ID to view event details.');
-    }
-
-    if (id === ':id') {
-      return new Error('The event ID is not properly formatted. Please check the URL.');
-    }
-
-    if (!UUID_REGEX.test(id)) {
-      return new Error('The provided event ID is not valid. Please check the URL and try again.');
-    }
-
-    if (error) {
-      return error;
-    }
-
-    if (!event) {
-      return new Error('Event not found. Please check if the event ID is correct.');
-    }
-
-    return null;
-  };
-
-  const errorMessage = getErrorMessage();
-
-  // Early return for error states with specific messages
-  if (errorMessage) {
-    console.error('[EventDetails] Error:', errorMessage.message);
-    return <ErrorState error={errorMessage} />;
-  }
 
   // Loading state
   if (isLoading) {
     console.log('[EventDetails] Loading event data...');
     return <LoadingState />;
+  }
+
+  // Error state
+  if (error) {
+    console.error('[EventDetails] Error:', error.message);
+    return <ErrorState error={error} />;
+  }
+
+  // No event found
+  if (!event) {
+    console.error('[EventDetails] Event not found');
+    return <ErrorState error={new Error('Event not found. Please check if the event ID is correct.')} />;
   }
 
   // Determine if this is a swimwear event
