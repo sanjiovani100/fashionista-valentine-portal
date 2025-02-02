@@ -70,15 +70,23 @@ export const useEventDetails = (eventId?: string) => {
         throw new Error('Invalid event highlights format');
       }
 
+      // Transform swimwear event details if present
+      const swimwear_event_details = data.swimwear_event_details ? {
+        ...data.swimwear_event_details,
+        beach_party_details: data.swimwear_event_details.beach_party_details as unknown
+      } : null;
+
+      if (swimwear_event_details?.beach_party_details && !isBeachPartyDetails(swimwear_event_details.beach_party_details)) {
+        console.error('[EventQuery] Invalid beach party details format');
+        throw new Error('Invalid beach party details format');
+      }
+
       // Transform the data to match EventDetails type
       const eventDetails: EventDetails = {
         ...data,
         venue_features,
         event_highlights,
-        swimwear_event_details: data.swimwear_event_details ? {
-          ...data.swimwear_event_details,
-          beach_party_details: data.swimwear_event_details.beach_party_details as BeachPartyDetails
-        } : null
+        swimwear_event_details
       };
 
       console.log('[EventQuery] Successfully loaded event data:', {

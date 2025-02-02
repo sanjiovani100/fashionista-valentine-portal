@@ -73,12 +73,17 @@ export const useEventQuery = (
           throw error;
         }
 
+        // Transform the data to match FashionEvent type
+        let events = (data as unknown[]).map(event => ({
+          ...event,
+          venue_features: event.venue_features || { amenities: [], accessibility: [] },
+          event_highlights: event.event_highlights || []
+        })) as FashionEvent[];
+
         // Apply price range filter and sorting
-        let filteredData = data as unknown as FashionEvent[];
-        
         if (filters.priceRange) {
           const [minPrice, maxPrice] = filters.priceRange;
-          filteredData = filteredData.filter(event => {
+          events = events.filter(event => {
             const eventMinPrice = Math.min(...(event.event_tickets?.map(t => t.price) || [0]));
             return eventMinPrice >= minPrice && eventMinPrice <= maxPrice;
           });
@@ -86,15 +91,15 @@ export const useEventQuery = (
 
         // Sort by price if needed
         if (sortBy.includes('price')) {
-          filteredData.sort((a, b) => {
+          events.sort((a, b) => {
             const aMinPrice = Math.min(...(a.event_tickets?.map(t => t.price) || [0]));
             const bMinPrice = Math.min(...(b.event_tickets?.map(t => t.price) || [0]));
             return sortBy === 'price-asc' ? aMinPrice - bMinPrice : bMinPrice - aMinPrice;
           });
         }
 
-        console.log(`Found ${filteredData.length} events after filtering`);
-        return filteredData;
+        console.log(`Found ${events.length} events after filtering`);
+        return events;
       } catch (err) {
         console.error('Unexpected error:', err);
         toast.error('An unexpected error occurred. Please try again later.');

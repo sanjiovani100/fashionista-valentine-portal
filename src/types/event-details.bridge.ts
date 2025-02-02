@@ -85,3 +85,16 @@ export function isBeachPartyDetails(value: unknown): value is BeachPartyDetails 
     Array.isArray(details.features)
   );
 }
+
+// Type guard for SwimwearEventDetails
+export function isSwimwearEventDetails(value: unknown): value is SwimwearEventDetails {
+  if (typeof value !== 'object' || value === null) return false;
+  const details = value as Partial<SwimwearEventDetails>;
+  return (
+    typeof details.id === 'string' &&
+    (details.event_id === null || typeof details.event_id === 'string') &&
+    isBeachPartyDetails(details.beach_party_details) &&
+    Array.isArray(details.fitting_sessions) &&
+    Array.isArray(details.beauty_workshops)
+  );
+}
