@@ -8,10 +8,10 @@ export type Json =
 
 export interface Database {
   public: {
-    Tables: DatabaseTables;
-    Views: DatabaseViews;
-    Functions: DatabaseFunctions;
-    Enums: DatabaseEnums;
+    Tables: Record<string, any>;
+    Views: Record<string, any>;
+    Functions: Record<string, any>;
+    Enums: Record<string, any>;
     CompositeTypes: {
       [_ in never]: never;
     }
