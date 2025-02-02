@@ -36,7 +36,7 @@ export const AboutOverview = ({ title, description, imageUrl }: AboutOverviewPro
   };
 
   return (
-    <section className="relative min-h-[60vh] flex items-center py-16 bg-gradient-to-b from-black/40 to-black/20">
+    <section className="relative min-h-[50vh] md:min-h-[60vh] flex items-center py-8 md:py-16 bg-gradient-to-b from-black/40 to-black/20">
       <div className="absolute inset-0 z-0">
         <OptimizedImage
           publicId={imageUrl}
@@ -58,13 +58,13 @@ export const AboutOverview = ({ title, description, imageUrl }: AboutOverviewPro
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1 
             variants={shouldAnimate ? itemVariants : {}}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gradient"
+            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 text-gradient"
           >
             {title}
           </motion.h1>
           <motion.p
             variants={shouldAnimate ? itemVariants : {}}
-            className="text-lg md:text-xl text-gray-200 leading-relaxed"
+            className="text-base md:text-lg lg:text-xl text-gray-200 leading-relaxed px-4 md:px-0"
           >
             {description}
           </motion.p>

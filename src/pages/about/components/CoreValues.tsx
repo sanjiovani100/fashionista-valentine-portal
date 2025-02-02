@@ -46,13 +46,13 @@ export const CoreValues = ({ values }: CoreValuesProps) => {
   };
 
   return (
-    <section className="py-16 bg-black/20">
+    <section className="py-8 md:py-16 bg-black/20">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={shouldAnimate ? { opacity: 0, y: 20 } : {}}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-3xl md:text-4xl font-bold text-center mb-12 text-gradient"
+          className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12 text-gradient"
         >
           Our Core Values
         </motion.h2>
@@ -61,7 +61,7 @@ export const CoreValues = ({ values }: CoreValuesProps) => {
           variants={shouldAnimate ? containerVariants : {}}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
         >
           {values.map((value, index) => {
             const IconComponent = iconMap[value.title as keyof typeof iconMap] || Star;
@@ -70,15 +70,15 @@ export const CoreValues = ({ values }: CoreValuesProps) => {
               <motion.div
                 key={value.title}
                 variants={shouldAnimate ? itemVariants : {}}
-                whileHover={shouldAnimate ? { scale: 1.05, transition: { duration: 0.2 } } : {}}
-                className="bg-black/30 backdrop-blur-sm rounded-lg p-6 hover:bg-black/40 transition-colors border border-white/10 hover:border-white/20"
+                whileHover={shouldAnimate ? { scale: 1.03, transition: { duration: 0.2 } } : {}}
+                className="bg-black/30 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-black/40 transition-colors border border-white/10 hover:border-white/20 touch-none"
               >
                 <div className="flex flex-col items-center text-center">
-                  <div className="mb-4 text-red-primary">
-                    <IconComponent size={32} className="animate-glow" />
+                  <div className="mb-3 md:mb-4 text-red-primary">
+                    <IconComponent size={28} className="animate-glow" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-red-primary">{value.title}</h3>
-                  <p className="text-gray-200">{value.description}</p>
+                  <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 text-red-primary">{value.title}</h3>
+                  <p className="text-sm md:text-base text-gray-200">{value.description}</p>
                 </div>
               </motion.div>
             );

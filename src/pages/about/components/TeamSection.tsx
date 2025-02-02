@@ -42,13 +42,13 @@ export const TeamSection = ({ members }: TeamSectionProps) => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-black/20 to-black/40">
+    <section className="py-8 md:py-16 bg-gradient-to-b from-black/20 to-black/40">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={shouldAnimate ? { opacity: 0, y: 20 } : {}}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-3xl md:text-4xl font-bold text-center mb-12 text-gradient"
+          className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12 text-gradient"
         >
           Meet Our Team
         </motion.h2>
@@ -57,7 +57,7 @@ export const TeamSection = ({ members }: TeamSectionProps) => {
           variants={shouldAnimate ? containerVariants : {}}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {members.map((member, index) => (
             <motion.div
@@ -67,7 +67,7 @@ export const TeamSection = ({ members }: TeamSectionProps) => {
                 scale: 1.02,
                 transition: { duration: 0.2 }
               } : {}}
-              className="group relative bg-black/30 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 hover:border-white/20"
+              className="group relative bg-black/30 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 hover:border-white/20 touch-none"
             >
               <div className="aspect-w-16 aspect-h-9 relative overflow-hidden">
                 {member.image ? (
@@ -85,10 +85,10 @@ export const TeamSection = ({ members }: TeamSectionProps) => {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <div className="p-6 transform group-hover:-translate-y-2 transition-transform duration-300">
-                <h3 className="text-xl font-semibold text-red-primary mb-1">{member.name}</h3>
-                <p className="text-gray-300 mb-3">{member.role}</p>
-                <p className="text-gray-200 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+              <div className="p-4 md:p-6 transform group-hover:-translate-y-2 transition-transform duration-300">
+                <h3 className="text-lg md:text-xl font-semibold text-red-primary mb-1">{member.name}</h3>
+                <p className="text-sm md:text-base text-gray-300 mb-2 md:mb-3">{member.role}</p>
+                <p className="text-sm md:text-base text-gray-200 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
                   {member.bio}
                 </p>
               </div>
