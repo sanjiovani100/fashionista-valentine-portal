@@ -4,12 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Calendar, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
 import type { FashionEvent } from '@/types/event.types';
+import { SwimwearHero } from './swimwear/SwimwearHero';
 
 interface EventHeroProps {
   event: FashionEvent;
 }
 
 export const EventHero = ({ event }: EventHeroProps) => {
+  // Check if this is a swimwear event
+  if (event.subtype === 'swimwear') {
+    return <SwimwearHero event={event} />;
+  }
+
   const heroImage = event.fashion_images?.find(img => img.category === 'event_hero')?.url;
 
   return (
