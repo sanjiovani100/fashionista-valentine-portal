@@ -66,6 +66,32 @@ export interface EventTicket {
   updated_at: string;
 }
 
+export interface EventSponsor {
+  id: string;
+  event_id: string;
+  sponsor_id: string;
+  sponsorship_tier: 'platinum' | 'gold' | 'silver' | 'bronze';
+  is_featured?: boolean;
+  ad_placement?: string[];
+  display_priority?: number;
+  created_at: string;
+  updated_at: string;
+  sponsor_profile?: SponsorProfile;
+}
+
+export interface SponsorProfile {
+  id: string;
+  company_name: string;
+  description: string;
+  logo_url?: string | null;
+  website?: string | null;
+  sponsorship_level: string;
+  contact_email: string;
+  contact_phone?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface SwimwearEventDetails {
   id: string;
   event_id: string | null;
@@ -73,6 +99,22 @@ export interface SwimwearEventDetails {
   pool_access_info: Record<string, unknown>;
   fitting_sessions: Record<string, unknown>[];
   beauty_workshops: Record<string, unknown>[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FashionCollection {
+  id: string;
+  designer_id?: string | null;
+  event_id?: string | null;
+  collection_name: string;
+  description: string;
+  piece_count: number;
+  technical_requirements?: string | null;
+  sustainability_info?: string | null;
+  collection_type?: string | null;
+  size_range?: Record<string, string>;
+  materials?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -100,6 +142,8 @@ export interface FashionEvent {
   fashion_images?: FashionImage[];
   event_content?: EventContent[];
   event_tickets?: EventTicket[];
+  event_sponsors?: EventSponsor[];
+  fashion_collections?: FashionCollection[];
 }
 
 // Type guards with improved validation
@@ -149,22 +193,43 @@ export function isBeachPartyDetails(value: unknown): value is BeachPartyDetails 
 }
 
 export function transformVenueFeatures(json: Json): VenueFeatures {
-  if (!isVenueFeatures(json)) {
-    throw new Error('Invalid venue features format');
+  if (typeof json !== 'object' || !json) {
+    return { amenities: [], accessibility: [] };
   }
+  
+  const defaultFeatures: VenueFeatures = {
+    amenities: [],
+    accessibility: []
+  };
+
+  if (!isVenueFeatures(json)) {
+    console.warn('Invalid venue features format, using default');
+    return defaultFeatures;
+  }
+
   return json;
 }
 
 export function transformEventHighlights(json: Json[]): EventHighlight[] {
-  if (!Array.isArray(json) || !json.every(isEventHighlight)) {
-    throw new Error('Invalid event highlights format');
+  if (!Array.isArray(json)) {
+    console.warn('Invalid event highlights format, using empty array');
+    return [];
   }
-  return json;
+
+  return json.filter(isEventHighlight);
 }
 
 export function transformBeachPartyDetails(json: Json): BeachPartyDetails {
+  const defaultDetails: BeachPartyDetails = {
+    location: '',
+    time: '',
+    features: []
+  };
+
   if (!isBeachPartyDetails(json)) {
-    throw new Error('Invalid beach party details format');
+    console.warn('Invalid beach party details format, using default');
+    return defaultDetails;
   }
+
   return json;
 }

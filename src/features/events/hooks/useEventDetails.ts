@@ -58,28 +58,22 @@ export const useEventDetails = (eventId?: string) => {
       }
 
       // Transform and validate the data
-      const venue_features = data.venue_features as unknown;
-      if (!isVenueFeatures(venue_features)) {
-        console.error('[EventQuery] Invalid venue features format');
-        throw new Error('Invalid venue features format');
-      }
+      const venue_features = isVenueFeatures(data.venue_features) 
+        ? data.venue_features 
+        : { amenities: [], accessibility: [] };
 
-      const event_highlights = data.event_highlights as unknown[];
-      if (!Array.isArray(event_highlights) || !event_highlights.every(isEventHighlight)) {
-        console.error('[EventQuery] Invalid event highlights format');
-        throw new Error('Invalid event highlights format');
-      }
+      const event_highlights = Array.isArray(data.event_highlights) && 
+        data.event_highlights.every(isEventHighlight)
+        ? data.event_highlights
+        : [];
 
       // Transform swimwear event details if present
       const swimwear_event_details = data.swimwear_event_details ? {
         ...data.swimwear_event_details,
-        beach_party_details: data.swimwear_event_details.beach_party_details as unknown
+        beach_party_details: isBeachPartyDetails(data.swimwear_event_details.beach_party_details)
+          ? data.swimwear_event_details.beach_party_details
+          : { location: '', time: '', features: [] }
       } : null;
-
-      if (swimwear_event_details?.beach_party_details && !isBeachPartyDetails(swimwear_event_details.beach_party_details)) {
-        console.error('[EventQuery] Invalid beach party details format');
-        throw new Error('Invalid beach party details format');
-      }
 
       // Transform the data to match EventDetails type
       const eventDetails: EventDetails = {
