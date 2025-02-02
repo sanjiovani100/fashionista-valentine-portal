@@ -3,6 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { AboutOverview } from './components/AboutOverview';
+import { MissionVision } from './components/MissionVision';
+import { CoreValues } from './components/CoreValues';
+import { TeamSection } from './components/TeamSection';
+import { ContactSection } from './components/ContactSection';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 
@@ -81,6 +85,13 @@ const AboutPage = () => {
         description={content.overview.description}
         imageUrl={content.overview.image_url}
       />
+      <MissionVision
+        mission={aboutContent.mission_vision.mission}
+        vision={aboutContent.mission_vision.vision}
+      />
+      <CoreValues values={aboutContent.core_values} />
+      <TeamSection members={aboutContent.team_members} />
+      <ContactSection contactInfo={aboutContent.contact_info} />
     </PageLayout>
   );
 };

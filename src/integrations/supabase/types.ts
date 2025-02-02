@@ -11,32 +11,44 @@ export type Database = {
     Tables: {
       about_page_content: {
         Row: {
+          contact_info: Json | null
           content: Json
+          core_values: Json | null
           created_at: string | null
           description: string
           id: string
           meta_description: string | null
           meta_keywords: string[] | null
+          mission_vision: Json | null
+          team_members: Json | null
           title: string
           updated_at: string | null
         }
         Insert: {
+          contact_info?: Json | null
           content?: Json
+          core_values?: Json | null
           created_at?: string | null
           description: string
           id?: string
           meta_description?: string | null
           meta_keywords?: string[] | null
+          mission_vision?: Json | null
+          team_members?: Json | null
           title: string
           updated_at?: string | null
         }
         Update: {
+          contact_info?: Json | null
           content?: Json
+          core_values?: Json | null
           created_at?: string | null
           description?: string
           id?: string
           meta_description?: string | null
           meta_keywords?: string[] | null
+          mission_vision?: Json | null
+          team_members?: Json | null
           title?: string
           updated_at?: string | null
         }
