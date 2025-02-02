@@ -1,16 +1,36 @@
 import { LucideIcon } from "lucide-react";
-import type { Database } from "@/integrations/supabase/types";
 import type { Json } from "@/types/database";
 
-// Base Supabase types
-export type EventContent = Database["public"]["Tables"]["event_content"]["Row"] & {
-  event_id: string;
-  media_urls: string[];
-  publish_date: string;
-  engagement_metrics: Json;
-};
+export interface EventFeature {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
 
-export type FashionImage = {
+export interface EventDetails {
+  title: string;
+  date: string;
+  description: string;
+  features: EventFeature[];
+}
+
+export interface FashionCollection {
+  id: string;
+  designer_id: string;
+  event_id: string;
+  collection_name: string;
+  description: string;
+  piece_count: number;
+  technical_requirements: string;
+  sustainability_info: string;
+  created_at: string;
+  updated_at: string;
+  collection_type: string;
+  materials: string[];
+  size_range: Json;
+}
+
+export interface FashionImage {
   id: string;
   category: "event_hero" | "event_gallery" | "backstage" | "designer_profile" | "model_profile" | "promotional" | "press_kit";
   url: string;
@@ -23,16 +43,22 @@ export type FashionImage = {
   updated_at: string;
   dimensions?: Json | null;
   formats?: Json | null;
-};
+}
 
-export type FashionCollection = Database["public"]["Tables"]["fashion_collections"]["Row"] & {
-  designer_id: string;
+export interface EventContent {
+  id: string;
   event_id: string;
-  technical_requirements: string;
-  sustainability_info: string;
-};
+  content_type: string;
+  title: string;
+  content: string;
+  media_urls?: string[];
+  publish_date: string;
+  engagement_metrics: Json;
+  created_at: string;
+  updated_at: string;
+}
 
-export type EventTicket = {
+export interface EventTicket {
   id: string;
   event_id: string | null;
   ticket_type: string;
@@ -45,12 +71,22 @@ export type EventTicket = {
   group_discount_percentage?: number | null;
   created_at: string;
   updated_at: string;
-};
+}
 
-export type DesignerProfile = Database["public"]["Tables"]["designer_profiles"]["Row"];
+export interface SponsorProfile {
+  id: string;
+  company_name: string;
+  logo_url?: string;
+  website?: string;
+  description: string;
+}
 
-// Add the FashionEvent type
-export type FashionEvent = {
+export interface EventSponsor {
+  id: string;
+  sponsor_profiles: SponsorProfile;
+}
+
+export interface FashionEvent {
   id: string;
   name: string;
   subtype: string;
@@ -70,94 +106,5 @@ export type FashionEvent = {
   fashion_collections?: FashionCollection[];
   event_content?: EventContent[];
   event_tickets?: EventTicket[];
-  event_sponsors?: {
-    id: string;
-    sponsor_profiles: {
-      id: string;
-      company_name: string;
-      logo_url?: string;
-      website?: string;
-      description: string;
-    };
-  }[];
-};
-
-// Feature types for the EventDetails component
-export interface EventFeature {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}
-
-export interface EventDetails {
-  title: string;
-  date: string;
-  description: string;
-  features: EventFeature[];
-}
-
-// Extended types for components
-export type Highlight = {
-  id: string;
-  event_id?: string | null;
-  content_type: string;
-  title: string;
-  content: string;
-  media_urls?: string[] | null;
-  publish_date?: string | null;
-  engagement_metrics?: Json | null;
-  created_at: string;
-  updated_at: string;
-  image: string;
-};
-
-export type CollectionDisplay = {
-  id: string;
-  designer_id?: string | null;
-  event_id?: string | null;
-  collection_name: string;
-  description: string;
-  piece_count: number;
-  technical_requirements?: string | null;
-  sustainability_info?: string | null;
-  created_at: string;
-  updated_at: string;
-  image?: string;
-  designer_profiles?: DesignerProfile;
-};
-
-export type TicketDisplay = {
-  id: string;
-  event_id: string | null;
-  ticket_type: string;
-  price: number;
-  quantity_available: number;
-  benefits?: string[] | null;
-  early_bird_deadline?: string | null;
-  early_bird_price?: number | null;
-  group_discount_threshold?: number | null;
-  group_discount_percentage?: number | null;
-  created_at: string;
-  updated_at: string;
-  subtitle?: string;
-  perks?: string[];
-};
-
-// Component Props Types
-export interface EventDetailsProps {
-  features: EventFeature[];
-}
-
-export interface EventHighlightsProps {
-  highlights: (EventContent & { image: string })[];
-  images: FashionImage[];
-}
-
-export interface LingerieShowcaseProps {
-  collections: (FashionCollection & { image?: string })[];
-}
-
-export interface TicketSelectionProps {
-  tickets: TicketDisplay[];
-  eventDate: string;
+  event_sponsors?: EventSponsor[];
 }
