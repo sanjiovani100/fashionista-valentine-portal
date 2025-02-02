@@ -78,10 +78,7 @@ export interface FashionCollection {
   technical_requirements?: string;
   sustainability_info?: string;
   collection_type?: string;
-  size_range?: {
-    min: string;
-    max: string;
-  };
+  size_range?: Record<string, unknown>;
   materials?: string[];
   created_at?: string;
   updated_at?: string;
