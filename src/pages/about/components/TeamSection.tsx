@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { OptimizedImage } from '@/components/cloudinary';
 import { UserRound } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface TeamMember {
   name: string;
@@ -15,26 +16,57 @@ interface TeamSectionProps {
 }
 
 export const TeamSection = ({ members }: TeamSectionProps) => {
+  const { ref, inView, shouldAnimate } = useScrollAnimation(0.1);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
   return (
     <section className="py-16 bg-gradient-to-b from-black/20 to-black/40">
       <div className="container mx-auto px-4">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldAnimate ? { opacity: 0, y: 20 } : {}}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center mb-12 text-gradient"
         >
           Meet Our Team
         </motion.h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          ref={ref}
+          variants={shouldAnimate ? containerVariants : {}}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {members.map((member, index) => (
             <motion.div
               key={member.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
+              variants={shouldAnimate ? itemVariants : {}}
+              whileHover={shouldAnimate ? { 
+                scale: 1.02,
+                transition: { duration: 0.2 }
+              } : {}}
               className="group relative bg-black/30 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 hover:border-white/20"
             >
               <div className="aspect-w-16 aspect-h-9 relative overflow-hidden">
@@ -62,7 +94,7 @@ export const TeamSection = ({ members }: TeamSectionProps) => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,37 +1,75 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { ContactInfo } from '../types/about.types';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface ContactSectionProps {
   contactInfo: ContactInfo;
 }
 
 export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
+  const { ref, inView, shouldAnimate } = useScrollAnimation(0.1);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+  };
+
+  const socialVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      },
+    },
+  };
+
   return (
     <section className="py-16 bg-gradient-to-b from-black/40 to-black/20">
       <div className="container mx-auto px-4">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={shouldAnimate ? { opacity: 0, y: 20 } : {}}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center mb-12 text-gradient"
         >
           Get in Touch
         </motion.h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            ref={ref}
+            variants={shouldAnimate ? containerVariants : {}}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
             className="space-y-6"
           >
             <motion.div 
+              variants={shouldAnimate ? itemVariants : {}}
               className="flex items-center space-x-4 group"
-              whileHover={{ x: 10 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <Mail className="w-6 h-6 text-red-primary group-hover:scale-110 transition-transform" />
               <a 
@@ -42,9 +80,8 @@ export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
               </a>
             </motion.div>
             <motion.div 
+              variants={shouldAnimate ? itemVariants : {}}
               className="flex items-center space-x-4 group"
-              whileHover={{ x: 10 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <Phone className="w-6 h-6 text-red-primary group-hover:scale-110 transition-transform" />
               <a 
@@ -55,19 +92,17 @@ export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
               </a>
             </motion.div>
             <motion.div 
+              variants={shouldAnimate ? itemVariants : {}}
               className="flex items-center space-x-4 group"
-              whileHover={{ x: 10 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <MapPin className="w-6 h-6 text-red-primary group-hover:scale-110 transition-transform" />
               <span className="text-gray-200">{contactInfo.address}</span>
             </motion.div>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            variants={shouldAnimate ? containerVariants : {}}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
             className="flex justify-center items-center space-x-8"
           >
             {contactInfo.social_media.instagram && (
@@ -76,8 +111,8 @@ export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-200 hover:text-red-primary transition-colors"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                variants={shouldAnimate ? socialVariants : {}}
+                whileHover={shouldAnimate ? { scale: 1.2, rotate: 5 } : {}}
               >
                 <Instagram className="w-8 h-8" />
               </motion.a>
@@ -88,8 +123,8 @@ export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-200 hover:text-red-primary transition-colors"
-                whileHover={{ scale: 1.2, rotate: -5 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                variants={shouldAnimate ? socialVariants : {}}
+                whileHover={shouldAnimate ? { scale: 1.2, rotate: -5 } : {}}
               >
                 <Facebook className="w-8 h-8" />
               </motion.a>
@@ -100,8 +135,8 @@ export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-200 hover:text-red-primary transition-colors"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                variants={shouldAnimate ? socialVariants : {}}
+                whileHover={shouldAnimate ? { scale: 1.2, rotate: 5 } : {}}
               >
                 <Twitter className="w-8 h-8" />
               </motion.a>
