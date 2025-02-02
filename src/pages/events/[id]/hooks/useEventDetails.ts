@@ -7,7 +7,9 @@ export const useEventDetails = (eventId?: string) => {
   return useQuery({
     queryKey: ['event', eventId],
     queryFn: async () => {
-      if (!eventId) throw new Error('Event ID is required');
+      if (!eventId) {
+        throw new Error('Event ID is required');
+      }
 
       console.log('Fetching event with ID:', eventId);
 
