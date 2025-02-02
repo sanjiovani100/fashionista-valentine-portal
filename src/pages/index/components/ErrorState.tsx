@@ -1,55 +1,47 @@
-import React from 'react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface ErrorStateProps {
   error: Error;
-  resetErrorBoundary?: () => void;
+  showBackButton?: boolean;
 }
 
-export const ErrorState = ({ error, resetErrorBoundary }: ErrorStateProps) => {
+export const ErrorState = ({ error, showBackButton = true }: ErrorStateProps) => {
   const navigate = useNavigate();
 
-  const getErrorMessage = (error: Error) => {
-    switch (error.message) {
-      case 'Event not found':
-        return 'The event you are looking for could not be found.';
-      case 'Invalid UUID format':
-        return 'The event ID provided is not valid.';
-      case 'No event ID provided':
-        return 'No event ID was provided in the URL.';
-      default:
-        return 'An unexpected error occurred while loading the event.';
-    }
+  const handleBack = () => {
+    navigate("/events");
+    toast.info("Redirected to events page");
   };
 
   return (
     <div className="min-h-[50vh] flex items-center justify-center p-4">
-      <Alert variant="destructive" className="max-w-lg">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription className="mt-2">
-          {getErrorMessage(error)}
-        </AlertDescription>
-        <div className="mt-4 flex gap-4">
-          <Button
-            variant="outline"
-            onClick={() => navigate('/events')}
-          >
-            Back to Events
-          </Button>
-          {resetErrorBoundary && (
+      <div className="w-full max-w-2xl space-y-4">
+        <Alert variant="destructive" className="border-red-600/50 bg-red-500/10">
+          <AlertCircle className="h-5 w-5" />
+          <AlertTitle className="text-lg font-semibold text-red-500">
+            Error Loading Event
+          </AlertTitle>
+          <AlertDescription className="mt-2 text-base text-red-100/90">
+            {error.message}
+          </AlertDescription>
+        </Alert>
+        
+        {showBackButton && (
+          <div className="flex justify-center mt-6">
             <Button
-              variant="default"
-              onClick={resetErrorBoundary}
+              onClick={handleBack}
+              variant="outline"
+              className="bg-white/10 hover:bg-white/20 text-white border-white/20"
             >
-              Try Again
+              Back to Events
             </Button>
-          )}
-        </div>
-      </Alert>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
