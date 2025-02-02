@@ -51,7 +51,14 @@ export const ContactForm = () => {
     try {
       const { error: dbError } = await supabase
         .from('contact_submissions')
-        .insert([data]);
+        .insert({
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: data.email,
+          phone: data.phone,
+          subject: data.subject,
+          message: data.message,
+        });
 
       if (dbError) throw dbError;
 
