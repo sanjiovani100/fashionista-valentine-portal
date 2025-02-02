@@ -1,5 +1,5 @@
-import type { Json, JsonObject } from './supabase/base/json.types';
-import type { EventName, EventSubtype, ImageCategory } from './supabase/base/enums.types';
+import { Json, JsonObject } from './supabase/base/json.types';
+import { EventName, EventSubtype, ImageCategory } from './supabase/base/enums.types';
 
 export interface VenueFeatures {
   amenities: string[];
@@ -28,11 +28,11 @@ export interface FashionImage {
   category: ImageCategory;
   alt_text: string;
   thumbnail_url?: string | null;
-  metadata?: JsonObject | null;
+  metadata?: JsonObject;
   credits?: string | null;
   event_id: string | null;
-  dimensions?: JsonObject | null;
-  formats?: JsonObject | null;
+  dimensions?: JsonObject;
+  formats?: JsonObject;
   description?: string | null;
   created_at: string;
   updated_at: string;
@@ -46,25 +46,36 @@ export interface EventContent {
   content: string;
   media_urls?: string[] | null;
   publish_date?: string | null;
-  engagement_metrics?: JsonObject | null;
+  engagement_metrics?: JsonObject;
   created_at: string;
   updated_at: string;
 }
 
-export interface FashionCollection {
+export interface EventTicket {
   id: string;
-  designer_id?: string | null;
   event_id: string | null;
-  collection_name: string;
-  description: string;
-  piece_count: number;
-  technical_requirements?: string | null;
-  sustainability_info?: string | null;
+  ticket_type: string;
+  price: number;
+  quantity_available: number;
+  benefits?: string[] | null;
+  early_bird_deadline?: string | null;
+  early_bird_price?: number | null;
+  group_discount_threshold?: number | null;
+  group_discount_percentage?: number | null;
   created_at: string;
   updated_at: string;
-  collection_type?: string | null;
-  size_range?: JsonObject | null;
-  materials?: string[] | null;
+}
+
+export interface EventSponsor {
+  id: string;
+  event_id: string;
+  sponsor_id: string;
+  sponsorship_tier: string;
+  is_featured?: boolean;
+  ad_placement?: string[];
+  display_priority?: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface SwimwearEventDetails {
@@ -100,5 +111,6 @@ export interface FashionEvent {
   swimwear_event_details?: SwimwearEventDetails | null;
   fashion_images?: FashionImage[];
   event_content?: EventContent[];
-  fashion_collections?: FashionCollection[];
+  event_tickets?: EventTicket[];
+  event_sponsors?: EventSponsor[];
 }

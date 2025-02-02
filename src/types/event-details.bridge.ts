@@ -1,4 +1,4 @@
-import type { EventName, EventSubtype } from './supabase/enums.types';
+import type { EventName, EventSubtype } from './supabase/base/enums.types';
 import type {
   VenueFeatures,
   EventHighlight,
