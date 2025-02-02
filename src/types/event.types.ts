@@ -1,25 +1,41 @@
-import type { Json, JsonObject } from './supabase/common.types';
-import type { EventName, EventSubtype, ImageCategory } from './supabase/enums.types';
+import type { Json, JsonObject } from './supabase/base/json.types';
+import type { EventName, EventSubtype, ImageCategory } from './supabase/base/enums.types';
 
-export interface VenueFeatures extends JsonObject {
+export interface VenueFeatures {
   amenities: string[];
   accessibility: string[];
   technical_equipment?: string[];
   special_requirements?: string[];
 }
 
-export interface EventHighlight extends JsonObject {
+export interface EventHighlight {
   title: string;
   description: string;
   icon?: string;
   order?: number;
 }
 
-export interface BeachPartyDetails extends JsonObject {
+export interface BeachPartyDetails {
   location: string;
   time: string;
   dress_code?: string;
   features: string[];
+}
+
+export interface FashionImage {
+  id: string;
+  url: string;
+  category: ImageCategory;
+  alt_text: string;
+  thumbnail_url?: string | null;
+  metadata?: JsonObject | null;
+  credits?: string | null;
+  event_id: string | null;
+  dimensions?: JsonObject | null;
+  formats?: JsonObject | null;
+  description?: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface EventContent {
@@ -35,20 +51,20 @@ export interface EventContent {
   updated_at: string;
 }
 
-export interface FashionImage {
+export interface FashionCollection {
   id: string;
-  url: string;
-  category: ImageCategory;
-  alt_text: string;
-  thumbnail_url?: string | null;
-  metadata?: JsonObject | null;
-  credits?: string | null;
+  designer_id?: string | null;
   event_id: string | null;
-  dimensions?: JsonObject | null;
-  formats?: JsonObject | null;
-  description?: string | null;
-  created_at?: string;
-  updated_at?: string;
+  collection_name: string;
+  description: string;
+  piece_count: number;
+  technical_requirements?: string | null;
+  sustainability_info?: string | null;
+  created_at: string;
+  updated_at: string;
+  collection_type?: string | null;
+  size_range?: JsonObject | null;
+  materials?: string[] | null;
 }
 
 export interface SwimwearEventDetails {
@@ -83,29 +99,6 @@ export interface FashionEvent {
   event_highlights: EventHighlight[];
   swimwear_event_details?: SwimwearEventDetails | null;
   fashion_images?: FashionImage[];
-  event_tickets?: EventTicket[];
-  event_sponsors?: EventSponsor[];
   event_content?: EventContent[];
-}
-
-export interface EventTicket {
-  id: string;
-  event_id: string | null;
-  ticket_type: string;
-  price: number;
-  quantity_available: number;
-  benefits?: string[] | null;
-  early_bird_deadline?: string | null;
-  early_bird_price?: number | null;
-  group_discount_threshold?: number | null;
-  group_discount_percentage?: number | null;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface EventSponsor {
-  id: string;
-  sponsor_profiles?: {
-    company_name: string;
-  };
+  fashion_collections?: FashionCollection[];
 }

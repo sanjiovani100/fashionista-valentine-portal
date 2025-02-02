@@ -1,54 +1,54 @@
-import type { Json } from "../common.types";
+import type { Json } from '../base/json.types';
 
 export interface ApplicationRow {
+  id: string;
   created_at: string | null;
-  email: string;
-  experience: string;
-  first_name: string;
-  id: string;
-  last_name: string;
-  phone: string;
-  reference_info: string | null;
-  role: string;
-  status: string | null;
   updated_at: string | null;
-}
-
-export interface DesignerApplicationRow {
-  application_id: string;
-  brand_name: string;
-  collection_description: string;
-  collection_files: Json | null;
-  id: string;
-  max_collection_files: number | null;
-  max_file_size_mb: number | null;
-  number_of_pieces: number;
-  space_requirements: string;
-  website: string | null;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  experience: string;
+  reference_info?: string | null;
+  status?: string | null;
+  role: string;
 }
 
 export interface ModelApplicationRow {
-  application_id: string;
-  bust: number;
-  height: number;
   id: string;
-  instagram_handle: string | null;
-  max_file_size_mb: number | null;
-  max_portfolio_files: number | null;
-  portfolio_files: Json | null;
-  portfolio_link: string | null;
+  application_id: string;
+  height: number;
+  bust: number;
   waist: number;
+  portfolio_link?: string | null;
+  instagram_handle?: string | null;
+  portfolio_files?: Json | null;
+  max_portfolio_files?: number | null;
+  max_file_size_mb?: number | null;
+}
+
+export interface DesignerApplicationRow {
+  id: string;
+  application_id: string;
+  brand_name: string;
+  website?: string | null;
+  collection_description: string;
+  number_of_pieces: number;
+  space_requirements: string;
+  collection_files?: Json | null;
+  max_collection_files?: number | null;
+  max_file_size_mb?: number | null;
 }
 
 export interface SponsorApplicationRow {
-  application_id: string;
-  company_description: string;
-  company_files: Json | null;
-  company_name: string;
   id: string;
+  application_id: string;
+  company_name: string;
   industry: string;
+  company_description: string;
   marketing_goals: string;
-  max_company_files: number | null;
-  max_file_size_mb: number | null;
   partnership_preferences: string;
+  company_files?: Json | null;
+  max_company_files?: number | null;
+  max_file_size_mb?: number | null;
 }
