@@ -1,4 +1,5 @@
 import type { Database } from '@/integrations/supabase/types';
+import type { Json } from './database';
 
 // Base database types
 type DbFashionEvent = Database['public']['Tables']['fashion_events']['Row'];
