@@ -1,61 +1,6 @@
 import type { Json } from '@/types/database';
 import type { EventName, EventSubtype, ImageCategory } from '@/types/supabase/enums.types';
 
-export type SwimwearEventDetails = {
-  id: string;
-  event_id: string;
-  beach_party_details: {
-    time: string;
-    location: string;
-    features: string[];
-    dress_code: string;
-  };
-  pool_access_info: Json;
-  fitting_sessions: Array<{
-    date: string;
-    slots: Array<{
-      time: string;
-      designer: string;
-    }>;
-    location: string;
-  }>;
-  beauty_workshops: Array<{
-    time: string;
-    title: string;
-    location: string;
-    instructor: string;
-    description: string;
-  }>;
-  created_at: string;
-  updated_at: string;
-};
-
-export interface FashionEvent {
-  id: string;
-  name: EventName;
-  subtype: EventSubtype;
-  title: string;
-  description: string;
-  venue: string;
-  capacity: number;
-  start_time: string;
-  end_time: string;
-  registration_deadline: string;
-  theme?: string | null;
-  meta_description?: string | null;
-  meta_keywords?: string[] | null;
-  created_at: string;
-  updated_at: string;
-  swimwear_specific_requirements?: string | null;
-  venue_features: Json;
-  event_highlights: Json;
-  swimwear_event_details?: SwimwearEventDetails;
-  fashion_images?: FashionImage[];
-  event_tickets?: EventTicket[];
-  event_sponsors?: EventSponsor[];
-  event_content?: EventContent[];
-}
-
 export interface EventContent {
   id: string;
   event_id: string;
@@ -64,7 +9,7 @@ export interface EventContent {
   content: string;
   media_urls?: string[] | null;
   publish_date?: string | null;
-  engagement_metrics: Json;
+  engagement_metrics?: Json;
   created_at: string;
   updated_at: string;
 }
@@ -121,4 +66,29 @@ export interface EventSponsor {
   sponsor_profiles?: {
     company_name: string;
   };
+}
+
+export interface FashionEvent {
+  id: string;
+  name: EventName;
+  subtype: EventSubtype;
+  title: string;
+  description: string;
+  venue: string;
+  capacity: number;
+  start_time: string;
+  end_time: string;
+  registration_deadline: string;
+  theme?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string[] | null;
+  created_at: string;
+  updated_at: string;
+  swimwear_specific_requirements?: string | null;
+  venue_features: Json;
+  event_highlights: Json;
+  fashion_images?: FashionImage[];
+  event_tickets?: EventTicket[];
+  event_sponsors?: EventSponsor[];
+  event_content?: EventContent[];
 }
