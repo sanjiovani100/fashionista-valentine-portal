@@ -9,6 +9,7 @@ import { TeamSection } from './components/TeamSection';
 import { ContactSection } from './components/ContactSection';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
+import { AboutPageContent } from './types/about.types';
 
 const AboutPage = () => {
   const { data: aboutContent, isLoading, error } = useQuery({
@@ -33,7 +34,7 @@ const AboutPage = () => {
         return null;
       }
       
-      return data;
+      return data as AboutPageContent;
     }
   });
 
@@ -70,20 +71,12 @@ const AboutPage = () => {
     );
   }
 
-  const content = aboutContent.content as {
-    overview: {
-      title: string;
-      description: string;
-      image_url: string;
-    };
-  };
-
   return (
     <PageLayout>
       <AboutOverview
-        title={content.overview.title}
-        description={content.overview.description}
-        imageUrl={content.overview.image_url}
+        title={aboutContent.content.overview.title}
+        description={aboutContent.content.overview.description}
+        imageUrl={aboutContent.content.overview.image_url}
       />
       <MissionVision
         mission={aboutContent.mission_vision.mission}
