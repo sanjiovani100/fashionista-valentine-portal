@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from "@/components/ui/card";
-import { Cocktail, Music, Sun, Flame, Users, MapPin, Clock } from "lucide-react";
+import { Wine, Music, Sun, Flame, Users, MapPin, Clock } from "lucide-react";
 import type { SwimwearEventDetails } from '@/types/event.types';
 
 interface BeachPartyProps {
@@ -11,7 +11,7 @@ export const BeachParty = ({ details }: BeachPartyProps) => {
   if (!details) return null;
 
   const featureIcons = {
-    "Tropical Welcome Drinks": Cocktail,
+    "Tropical Welcome Drinks": Wine,
     "Live DJ Sets": Music,
     "Fire Dancer Performances": Flame,
     "Beach Lounge Areas": Users,
