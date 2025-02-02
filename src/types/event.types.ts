@@ -75,7 +75,7 @@ export interface FashionCollection {
   description: string;
   designer_id?: string;
   event_id?: string;
-  piece_count?: number;
+  piece_count: number;
   technical_requirements?: string;
   sustainability_info?: string;
   collection_type?: string;
