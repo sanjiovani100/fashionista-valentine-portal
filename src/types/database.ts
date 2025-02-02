@@ -1,4 +1,4 @@
-import type { EventName, EventSubtype, ImageCategory } from './event.types';
+import type { EventName, EventSubtype, ImageCategory } from './supabase/enums.types';
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
