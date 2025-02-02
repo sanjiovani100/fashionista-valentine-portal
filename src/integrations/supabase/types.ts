@@ -317,6 +317,58 @@ export type Database = {
         }
         Relationships: []
       }
+      event_sponsors: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          id: string
+          is_featured: boolean | null
+          sponsor_id: string
+          sponsorship_tier: Database["public"]["Enums"]["sponsor_tier"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          id?: string
+          is_featured?: boolean | null
+          sponsor_id: string
+          sponsorship_tier: Database["public"]["Enums"]["sponsor_tier"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          is_featured?: boolean | null
+          sponsor_id?: string
+          sponsorship_tier?: Database["public"]["Enums"]["sponsor_tier"]
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_sponsors_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "active_fashion_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_sponsors_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "fashion_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_sponsors_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_tickets: {
         Row: {
           benefits: string[] | null
@@ -799,6 +851,7 @@ export type Database = {
         | "model_profile"
         | "promotional"
         | "press_kit"
+      sponsor_tier: "platinum" | "gold" | "silver" | "bronze"
     }
     CompositeTypes: {
       [_ in never]: never
