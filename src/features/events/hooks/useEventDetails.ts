@@ -39,7 +39,8 @@ export const useEventDetails = (eventId?: string) => {
           event_sponsors (
             *,
             sponsor_profiles (*)
-          )
+          ),
+          swimwear_event_details (*)
         `)
         .eq('id', eventId)
         .maybeSingle();
@@ -65,11 +66,11 @@ export const useEventDetails = (eventId?: string) => {
       // Transform the data to match EventDetails type
       const eventDetails: EventDetails = {
         ...data,
-        venue_features: data.venue_features as unknown as VenueFeatures,
-        event_highlights: data.event_highlights as unknown as EventHighlight[],
+        venue_features: data.venue_features as VenueFeatures,
+        event_highlights: data.event_highlights as EventHighlight[],
         swimwear_event_details: data.swimwear_event_details ? {
           ...data.swimwear_event_details,
-          beach_party_details: data.swimwear_event_details.beach_party_details as unknown as BeachPartyDetails
+          beach_party_details: data.swimwear_event_details.beach_party_details as BeachPartyDetails
         } : null
       };
 
