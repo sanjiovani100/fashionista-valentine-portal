@@ -81,7 +81,7 @@ export interface EventSponsor {
 export interface FashionCollection {
   id: string;
   designer_id?: string | null;
-  event_id?: string | null;
+  event_id: string;
   collection_name: string;
   description: string;
   piece_count: number;
