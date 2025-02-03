@@ -759,6 +759,63 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          achievements: Json[] | null
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          email: string
+          expertise_level: string | null
+          first_name: string
+          id: string
+          last_name: string
+          phone: string | null
+          portfolio_url: string | null
+          profession: string | null
+          social_media: Json | null
+          specialties: string[] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          achievements?: Json[] | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          email: string
+          expertise_level?: string | null
+          first_name: string
+          id?: string
+          last_name: string
+          phone?: string | null
+          portfolio_url?: string | null
+          profession?: string | null
+          social_media?: Json | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          achievements?: Json[] | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          email?: string
+          expertise_level?: string | null
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string | null
+          portfolio_url?: string | null
+          profession?: string | null
+          social_media?: Json | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       sponsor_applications: {
         Row: {
           application_id: string
