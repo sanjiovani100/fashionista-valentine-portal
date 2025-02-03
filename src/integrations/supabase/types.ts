@@ -96,6 +96,54 @@ export type Database = {
         }
         Relationships: []
       }
+      collections: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          featured_image_url: string | null
+          id: string
+          images: Json[] | null
+          season: string | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          user_id: string | null
+          year: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          featured_image_url?: string | null
+          id?: string
+          images?: Json[] | null
+          season?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+          year?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          featured_image_url?: string | null
+          id?: string
+          images?: Json[] | null
+          season?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string | null
@@ -816,6 +864,56 @@ export type Database = {
         }
         Relationships: []
       }
+      registrations: {
+        Row: {
+          check_in_status: boolean | null
+          created_at: string | null
+          event_id: string | null
+          id: string
+          payment_amount: number | null
+          payment_status: string | null
+          registration_type: string
+          special_requirements: string | null
+          ticket_number: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          check_in_status?: boolean | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          payment_amount?: number | null
+          payment_status?: string | null
+          registration_type: string
+          special_requirements?: string | null
+          ticket_number?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          check_in_status?: boolean | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          payment_amount?: number | null
+          payment_status?: string | null
+          registration_type?: string
+          special_requirements?: string | null
+          ticket_number?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sponsor_applications: {
         Row: {
           application_id: string
@@ -863,6 +961,53 @@ export type Database = {
           },
         ]
       }
+      sponsor_contacts: {
+        Row: {
+          created_at: string | null
+          email: string
+          first_name: string
+          id: string
+          is_primary: boolean | null
+          last_name: string
+          phone: string | null
+          position: string | null
+          sponsor_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          first_name: string
+          id?: string
+          is_primary?: boolean | null
+          last_name: string
+          phone?: string | null
+          position?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          first_name?: string
+          id?: string
+          is_primary?: boolean | null
+          last_name?: string
+          phone?: string | null
+          position?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_contacts_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sponsor_profiles: {
         Row: {
           company_name: string
@@ -902,6 +1047,144 @@ export type Database = {
           sponsorship_level?: string
           updated_at?: string | null
           website?: string | null
+        }
+        Relationships: []
+      }
+      sponsors: {
+        Row: {
+          company_name: string
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          industry: string
+          logo_url: string | null
+          sponsorship_amount: number | null
+          sponsorship_level: string | null
+          status: string | null
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          company_name: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          industry: string
+          logo_url?: string | null
+          sponsorship_amount?: number | null
+          sponsorship_level?: string | null
+          status?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          company_name?: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          industry?: string
+          logo_url?: string | null
+          sponsorship_amount?: number | null
+          sponsorship_level?: string | null
+          status?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      sponsorship_benefits: {
+        Row: {
+          benefit_description: string | null
+          benefit_name: string
+          created_at: string | null
+          fulfillment_date: string | null
+          id: string
+          notes: string | null
+          package_id: string | null
+          sponsor_id: string | null
+          status: Database["public"]["Enums"]["benefit_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          benefit_description?: string | null
+          benefit_name: string
+          created_at?: string | null
+          fulfillment_date?: string | null
+          id?: string
+          notes?: string | null
+          package_id?: string | null
+          sponsor_id?: string | null
+          status?: Database["public"]["Enums"]["benefit_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          benefit_description?: string | null
+          benefit_name?: string
+          created_at?: string | null
+          fulfillment_date?: string | null
+          id?: string
+          notes?: string | null
+          package_id?: string | null
+          sponsor_id?: string | null
+          status?: Database["public"]["Enums"]["benefit_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsorship_benefits_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "sponsorship_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sponsorship_benefits_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsorship_packages: {
+        Row: {
+          benefits: Json[] | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          level: string
+          max_sponsors: number | null
+          name: string
+          price: number
+          updated_at: string | null
+        }
+        Insert: {
+          benefits?: Json[] | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          level: string
+          max_sponsors?: number | null
+          name: string
+          price: number
+          updated_at?: string | null
+        }
+        Update: {
+          benefits?: Json[] | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          level?: string
+          max_sponsors?: number | null
+          name?: string
+          price?: number
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -1035,6 +1318,7 @@ export type Database = {
       }
     }
     Enums: {
+      benefit_status: "pending" | "fulfilled" | "cancelled"
       event_image_category:
         | "event_hero"
         | "event_gallery"
@@ -1075,6 +1359,7 @@ export type Database = {
         | "press_kit"
         | "venue_features"
         | "swimwear_details"
+      sponsor_status: "pending" | "approved" | "rejected"
       sponsor_tier: "platinum" | "gold" | "silver" | "bronze"
     }
     CompositeTypes: {
