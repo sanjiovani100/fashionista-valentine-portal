@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import type { Json } from '@/types/supabase/base/json.types';
+import type { EventName, EventSubtype } from '@/types/supabase/enums.types';
 
 export interface VenueFeatures {
   amenities: string[];
@@ -20,6 +21,27 @@ export interface BeachPartyDetails {
   time: string;
   dress_code?: string;
   features: string[];
+}
+
+export interface FashionEvent {
+  id: string;
+  name: EventName;
+  subtype: EventSubtype;
+  title: string;
+  description: string;
+  venue: string;
+  capacity: number;
+  start_time: string;
+  end_time: string;
+  registration_deadline: string;
+  theme?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string[] | null;
+  created_at: string;
+  updated_at: string;
+  swimwear_specific_requirements?: string | null;
+  venue_features: VenueFeatures;
+  event_highlights: EventHighlight[];
 }
 
 // Type guards with improved validation

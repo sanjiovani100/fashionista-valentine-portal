@@ -914,6 +914,50 @@ export type Database = {
           },
         ]
       }
+      sponsor_activities: {
+        Row: {
+          activity_type: string
+          created_at: string | null
+          description: string | null
+          id: string
+          metadata: Json | null
+          performed_at: string | null
+          performed_by: string | null
+          sponsor_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          performed_at?: string | null
+          performed_by?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          performed_at?: string | null
+          performed_by?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_activities_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sponsor_applications: {
         Row: {
           application_id: string
@@ -1001,6 +1045,116 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "sponsor_contacts_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsor_documents: {
+        Row: {
+          created_at: string | null
+          document_type: string
+          document_url: string
+          file_name: string
+          file_size: number | null
+          id: string
+          is_verified: boolean | null
+          mime_type: string | null
+          notes: string | null
+          sponsor_id: string | null
+          updated_at: string | null
+          verification_date: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_type: string
+          document_url: string
+          file_name: string
+          file_size?: number | null
+          id?: string
+          is_verified?: boolean | null
+          mime_type?: string | null
+          notes?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+          verification_date?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_type?: string
+          document_url?: string
+          file_name?: string
+          file_size?: number | null
+          id?: string
+          is_verified?: boolean | null
+          mime_type?: string | null
+          notes?: string | null
+          sponsor_id?: string | null
+          updated_at?: string | null
+          verification_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_documents_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsor_payments: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          notes: string | null
+          package_id: string | null
+          payment_date: string | null
+          payment_method: string | null
+          sponsor_id: string | null
+          status: Database["public"]["Enums"]["payment_status"] | null
+          transaction_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          package_id?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          sponsor_id?: string | null
+          status?: Database["public"]["Enums"]["payment_status"] | null
+          transaction_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          package_id?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          sponsor_id?: string | null
+          status?: Database["public"]["Enums"]["payment_status"] | null
+          transaction_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_payments_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "sponsorship_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sponsor_payments_sponsor_id_fkey"
             columns: ["sponsor_id"]
             isOneToOne: false
             referencedRelation: "sponsors"
@@ -1392,6 +1546,12 @@ export type Database = {
         | "press_kit"
         | "venue_features"
         | "swimwear_details"
+      payment_status:
+        | "pending"
+        | "processing"
+        | "completed"
+        | "failed"
+        | "refunded"
       sponsor_status: "pending" | "approved" | "rejected"
       sponsor_tier: "platinum" | "gold" | "silver" | "bronze"
     }
