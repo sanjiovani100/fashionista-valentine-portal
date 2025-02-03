@@ -29,7 +29,9 @@ export default {
           card: 'rgba(255, 255, 255, 0.05)',
         },
         // Text Colors
+        foreground: 'hsl(var(--foreground))',
         text: {
+          DEFAULT: 'hsl(var(--foreground))',
           primary: 'hsl(var(--foreground))',
           secondary: 'rgba(255, 255, 255, 0.7)',
           muted: 'rgba(255, 255, 255, 0.5)',
