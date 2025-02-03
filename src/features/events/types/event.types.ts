@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import type { Json } from '@/types/supabase/base/json.types';
-import type { EventName, EventSubtype } from '@/types/supabase/enums.types';
+import type { EventName, EventSubtype, ImageCategory } from '@/types/supabase/enums.types';
 
 export interface VenueFeatures {
   amenities: string[];
@@ -34,6 +34,64 @@ export interface EventContent {
   engagement_metrics?: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface FashionImage {
+  id: string;
+  category: ImageCategory;
+  url: string;
+  thumbnail_url?: string | null;
+  alt_text: string;
+  metadata?: Record<string, unknown> | null;
+  credits?: string | null;
+  event_id: string | null;
+  created_at: string;
+  updated_at: string;
+  dimensions?: Record<string, unknown> | null;
+  formats?: Record<string, unknown> | null;
+}
+
+export interface EventTicket {
+  id: string;
+  event_id: string | null;
+  ticket_type: string;
+  price: number;
+  quantity_available: number;
+  benefits?: string[] | null;
+  early_bird_deadline?: string | null;
+  early_bird_price?: number | null;
+  group_discount_threshold?: number | null;
+  group_discount_percentage?: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EventSponsor {
+  id: string;
+  event_id: string;
+  sponsor_id: string;
+  sponsorship_tier: string;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
+  ad_placement?: string[];
+  display_priority?: number;
+}
+
+export interface FashionCollection {
+  id: string;
+  designer_id?: string | null;
+  event_id: string;
+  collection_name: string;
+  description: string;
+  piece_count: number;
+  technical_requirements?: string | null;
+  sustainability_info?: string | null;
+  created_at: string;
+  updated_at: string;
+  collection_type?: string | null;
+  size_range?: Record<string, string>;
+  materials?: string[];
 }
 
 export interface SwimwearEventDetails {
@@ -75,7 +133,9 @@ export interface FashionEvent {
   fashion_images?: FashionImage[] | null;
 }
 
-export interface EventDetails extends FashionEvent {}
+export interface EventDetails extends FashionEvent {
+  start_date?: string; // Added for event-content.ts compatibility
+}
 
 // Type guards with improved validation
 export function isVenueFeatures(value: unknown): value is VenueFeatures {

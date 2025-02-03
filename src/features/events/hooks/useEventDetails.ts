@@ -87,11 +87,11 @@ export const useEventDetails = (eventId?: string) => {
         venue_features,
         event_highlights,
         swimwear_event_details,
-        fashion_collections: data.fashion_collections || null,
-        event_content: data.event_content || null,
-        event_tickets: data.event_tickets || null,
-        event_sponsors: data.event_sponsors || null,
-        fashion_images: data.fashion_images || null
+        fashion_collections: data.fashion_collections || [],
+        event_content: data.event_content || [],
+        event_tickets: data.event_tickets || [],
+        event_sponsors: data.event_sponsors || [],
+        fashion_images: data.fashion_images || []
       } as EventDetails;
     },
     enabled: Boolean(eventId) && eventId !== ':id',
