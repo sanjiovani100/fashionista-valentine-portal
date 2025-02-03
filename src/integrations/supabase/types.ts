@@ -1188,6 +1188,39 @@ export type Database = {
         }
         Relationships: []
       }
+      sponsorship_tiers: {
+        Row: {
+          benefits: string[] | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          price_range: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          benefits?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          price_range?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          benefits?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          price_range?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       swimwear_event_details: {
         Row: {
           beach_party_details: Json | null

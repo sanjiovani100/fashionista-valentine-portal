@@ -1,14 +1,84 @@
 import { LucideIcon } from "lucide-react";
+import type { Json } from '@/types/supabase/base/json.types';
 
-export interface EventFeature {
-  icon: LucideIcon;
-  title: string;
-  description: string;
+export interface VenueFeatures {
+  amenities: string[];
+  accessibility: string[];
+  technical_equipment?: string[];
+  special_requirements?: string[];
 }
 
-export interface EventDetails {
+export interface EventHighlight {
   title: string;
-  date: string;
   description: string;
-  features: EventFeature[];
+  icon?: string;
+  order?: number;
+}
+
+export interface BeachPartyDetails {
+  location: string;
+  time: string;
+  dress_code?: string;
+  features: string[];
+}
+
+// Type guards with improved validation
+export function isVenueFeatures(value: unknown): value is VenueFeatures {
+  if (!value || typeof value !== 'object') return false;
+  const features = value as Record<string, unknown>;
+  
+  return (
+    Array.isArray(features.amenities) &&
+    features.amenities.every(item => typeof item === 'string') &&
+    Array.isArray(features.accessibility) &&
+    features.accessibility.every(item => typeof item === 'string')
+  );
+}
+
+export function isEventHighlight(value: unknown): value is EventHighlight {
+  if (!value || typeof value !== 'object') return false;
+  const highlight = value as Record<string, unknown>;
+  
+  return (
+    typeof highlight.title === 'string' &&
+    typeof highlight.description === 'string'
+  );
+}
+
+export function isBeachPartyDetails(value: unknown): value is BeachPartyDetails {
+  if (!value || typeof value !== 'object') return false;
+  const details = value as Record<string, unknown>;
+  
+  return (
+    typeof details.location === 'string' &&
+    typeof details.time === 'string' &&
+    (!details.dress_code || typeof details.dress_code === 'string') &&
+    Array.isArray(details.features) &&
+    details.features.every(item => typeof item === 'string')
+  );
+}
+
+// Transform functions with improved error handling
+export function transformVenueFeatures(json: Json): VenueFeatures {
+  if (typeof json !== 'object' || !json) {
+    console.warn('Invalid venue features data:', json);
+    return { amenities: [], accessibility: [] };
+  }
+  
+  const features = json as Record<string, unknown>;
+  return {
+    amenities: Array.isArray(features.amenities) ? features.amenities.filter(item => typeof item === 'string') : [],
+    accessibility: Array.isArray(features.accessibility) ? features.accessibility.filter(item => typeof item === 'string') : [],
+    technical_equipment: Array.isArray(features.technical_equipment) ? features.technical_equipment.filter(item => typeof item === 'string') : undefined,
+    special_requirements: Array.isArray(features.special_requirements) ? features.special_requirements.filter(item => typeof item === 'string') : undefined
+  };
+}
+
+export function transformEventHighlights(json: Json): EventHighlight[] {
+  if (!Array.isArray(json)) {
+    console.warn('Invalid event highlights data:', json);
+    return [];
+  }
+
+  return json.filter(isEventHighlight);
 }
