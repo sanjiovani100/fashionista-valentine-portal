@@ -95,8 +95,14 @@ export const useEventDetails = (eventId?: string) => {
         dimensions: image.dimensions as Record<string, unknown>
       })) || null;
 
-      // Transform the data to match EventDetails type
-      const eventDetails: EventDetails = {
+      console.log('[EventQuery] Successfully loaded event data:', {
+        title: data.title,
+        imageCount: fashion_images?.length,
+        ticketCount: data.event_tickets?.length,
+        sponsorCount: data.event_sponsors?.length
+      });
+
+      return {
         ...data,
         venue_features,
         event_highlights,
@@ -106,16 +112,7 @@ export const useEventDetails = (eventId?: string) => {
         event_tickets: data.event_tickets || null,
         event_sponsors: data.event_sponsors || null,
         fashion_images
-      };
-
-      console.log('[EventQuery] Successfully loaded event data:', {
-        title: eventDetails.title,
-        imageCount: eventDetails.fashion_images?.length,
-        ticketCount: eventDetails.event_tickets?.length,
-        sponsorCount: eventDetails.event_sponsors?.length
-      });
-
-      return eventDetails;
+      } as EventDetails;
     },
     enabled: Boolean(eventId) && eventId !== ':id',
     retry: 1,
