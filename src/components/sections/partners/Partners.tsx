@@ -10,12 +10,6 @@ export const Partners = () => {
     threshold: 0.1,
   });
 
-  const springConfig = {
-    type: "spring",
-    stiffness: 300,
-    damping: 30
-  };
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -59,7 +53,7 @@ export const Partners = () => {
         animate={inView ? "visible" : "hidden"}
       >
         <motion.div
-          className="text-center mb-12 space-y-4"
+          className="text-center mb-8 space-y-4"
           variants={itemVariants}
         >
           <h2
@@ -68,7 +62,7 @@ export const Partners = () => {
           >
             Join Our Fashion Community
           </h2>
-          <p className="text-white-secondary font-montserrat max-w-2xl mx-auto text-lg">
+          <p className="text-white font-montserrat max-w-2xl mx-auto text-lg">
             Be part of an exclusive network of fashion industry professionals and enthusiasts
           </p>
         </motion.div>
@@ -79,29 +73,27 @@ export const Partners = () => {
             <motion.div
               key={role}
               variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-              transition={springConfig}
-              className="card-base card-hover rounded-xl p-8 flex flex-col bg-black/30 backdrop-blur-sm border border-white/10 hover:border-white/20 hover:bg-white/5"
+              className="card-base card-hover rounded-xl p-8 flex flex-col"
             >
-              <h3 className="text-2xl md:text-[24px] font-poppins font-bold mb-4 text-white">
+              <h3 className="text-2xl font-poppins font-bold mb-4 text-white">
                 {content.hero.title}
               </h3>
-              <p className="text-white-secondary font-montserrat text-base mb-6">
+              <p className="text-white font-montserrat mb-6">
                 {content.hero.subtitle}
               </p>
               
               {/* Benefits List */}
-              <ul className="space-y-4 mb-8 flex-grow">
+              <ul className="space-y-4 mb-8 flex-grow font-montserrat">
                 {content.benefits.map((benefit, index) => {
                   const Icon = benefit.icon;
                   return (
                     <li key={index} className="flex items-start space-x-3">
                       <Icon className="w-6 h-6 text-white flex-shrink-0 mt-1" />
                       <div>
-                        <h4 className="font-montserrat font-semibold text-white mb-1">
+                        <h4 className="font-semibold text-white mb-1">
                           {benefit.title}
                         </h4>
-                        <p className="font-montserrat text-sm text-white-secondary">
+                        <p className="text-sm text-white">
                           {benefit.description}
                         </p>
                       </div>
@@ -115,7 +107,7 @@ export const Partners = () => {
                 to={`/register/${role}`}
                 className="bg-white text-black hover:bg-white/90 transition-all duration-300 
                          w-full text-center py-3 px-6 rounded-lg font-montserrat font-semibold
-                         hover:scale-[1.02] active:scale-[0.98] hover:shadow-glow"
+                         hover:scale-[1.02] active:scale-[0.98]"
                 aria-label={`Register as ${role}`}
               >
                 Register Now
@@ -126,18 +118,17 @@ export const Partners = () => {
 
         {/* Additional Information */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-16 text-center font-montserrat"
           variants={itemVariants}
         >
-          <p className="text-white-secondary font-montserrat mb-4">
+          <p className="text-white mb-4">
             Want to learn more about partnership opportunities?
           </p>
           <Link
             to="/sponsors"
             className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-white 
                      text-white hover:bg-white hover:text-black transition-all duration-300
-                     rounded-lg font-montserrat font-semibold hover:scale-[1.02] active:scale-[0.98]
-                     hover:shadow-glow"
+                     rounded-lg font-semibold hover:scale-[1.02] active:scale-[0.98]"
           >
             View Partnership Details
           </Link>

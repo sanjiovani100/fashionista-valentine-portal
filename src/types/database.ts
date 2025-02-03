@@ -15,7 +15,7 @@ export interface FashionEvent {
   created_at: string;
   updated_at: string;
   name: "valentines_fashion_show" | "spring_fling_fashion_show" | "summer_splash_fashion_show" | "fall_fantasy_fashion_show" | "swim_paradise_show";
-  subtype: "main_show" | "vip_session" | "workshop" | "networking" | "photo_session" | "after_party" | "swimwear";
+  subtype: "main_show" | "vip_session" | "workshop" | "networking" | "photo_session" | "after_party";
   event_content?: Array<{
     id: string;
     event_id: string | null;

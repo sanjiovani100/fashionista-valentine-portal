@@ -21,4 +21,3 @@ export type EventSubtype =
   | "networking"
   | "photo_session"
   | "after_party"
-  | "swimwear"

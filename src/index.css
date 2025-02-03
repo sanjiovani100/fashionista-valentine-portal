@@ -6,13 +6,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 100%;
-    
-    /* Brand Colors */
-    --red-primary: 348 100% 60%;
-    --red-bright: 348 100% 54%;
-    --red-soft: 348 100% 71%;
+    /* ... keep existing code (color variables) */
   }
 
   html {

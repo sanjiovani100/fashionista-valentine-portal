@@ -4,10 +4,9 @@ import { EventCard } from './EventCard';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
 import { CardSkeleton } from '@/components/ui/loading-skeleton/CardSkeleton';
 import type { EventSubtype } from '@/types/supabase/enums.types';
-import type { FashionEvent } from '@/types/database';
 
 interface EventFilters {
   search: string;
@@ -114,7 +113,16 @@ export const EventsGrid = ({ viewMode, filters, sortBy }: EventsGridProps) => {
       
       if (error) throw error;
 
-      return data as FashionEvent[];
+      // Sort by price if needed (since we can't do it in the query due to the relationship)
+      if (sortBy.includes('price')) {
+        return data.sort((a, b) => {
+          const aMinPrice = Math.min(...(a.event_tickets?.map(t => t.price) || [0]));
+          const bMinPrice = Math.min(...(b.event_tickets?.map(t => t.price) || [0]));
+          return sortBy === 'price-asc' ? aMinPrice - bMinPrice : bMinPrice - aMinPrice;
+        });
+      }
+
+      return data;
     }
   });
 
