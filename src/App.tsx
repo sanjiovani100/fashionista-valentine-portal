@@ -12,16 +12,8 @@ import ModelRegistration from './pages/register/model/ModelRegistration';
 import DesignerRegistration from './pages/register/designer/DesignerRegistration';
 import SponsorRegistration from './pages/register/sponsor/SponsorRegistration';
 import Confirmation from './pages/confirmation/Confirmation';
-import EventDetailsPage from './pages/events/[id]/EventDetailsPage';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      staleTime: 1000 * 60 * 5, // 5 minutes
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -47,10 +39,6 @@ const router = createBrowserRouter([
   {
     path: "/events",
     element: <EventsPage />,
-  },
-  {
-    path: "/events/:id",
-    element: <EventDetailsPage />,
   },
   {
     path: "/sponsors",

@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { EventSubtype } from '@/types/supabase/enums.types';
-import type { FashionEvent } from '@/types/event.types';
-import { transformVenueFeatures, transformEventHighlights } from '@/types/event.types';
 import { toast } from 'sonner';
 
 interface EventFilters {
@@ -29,12 +27,7 @@ export const useEventQuery = (
             event_content (*),
             fashion_collections (*),
             fashion_images (*),
-            event_tickets (*),
-            swimwear_event_details (*),
-            event_sponsors (
-              *,
-              sponsor_profiles (*)
-            )
+            event_tickets (*)
           `);
 
         // Apply filters
@@ -61,6 +54,7 @@ export const useEventQuery = (
             break;
           case 'price-asc':
           case 'price-desc':
+            // We'll sort by price after fetching the data
             query = query.order('start_time', { ascending: true });
             break;
         }
@@ -73,19 +67,12 @@ export const useEventQuery = (
           throw error;
         }
 
-        // Transform and validate the data
-        let events = (data as any[]).map(event => {
-          return {
-            ...event,
-            venue_features: transformVenueFeatures(event.venue_features),
-            event_highlights: transformEventHighlights(event.event_highlights)
-          };
-        }) as FashionEvent[];
-
-        // Apply price range filter
+        // Apply price range filter and sorting
+        let filteredData = data;
+        
         if (filters.priceRange) {
           const [minPrice, maxPrice] = filters.priceRange;
-          events = events.filter(event => {
+          filteredData = filteredData.filter(event => {
             const eventMinPrice = Math.min(...(event.event_tickets?.map(t => t.price) || [0]));
             return eventMinPrice >= minPrice && eventMinPrice <= maxPrice;
           });
@@ -93,15 +80,15 @@ export const useEventQuery = (
 
         // Sort by price if needed
         if (sortBy.includes('price')) {
-          events.sort((a, b) => {
+          filteredData.sort((a, b) => {
             const aMinPrice = Math.min(...(a.event_tickets?.map(t => t.price) || [0]));
             const bMinPrice = Math.min(...(b.event_tickets?.map(t => t.price) || [0]));
             return sortBy === 'price-asc' ? aMinPrice - bMinPrice : bMinPrice - aMinPrice;
           });
         }
 
-        console.log(`Found ${events.length} events after filtering`);
-        return events;
+        console.log(`Found ${filteredData.length} events after filtering`);
+        return filteredData;
       } catch (err) {
         console.error('Unexpected error:', err);
         toast.error('An unexpected error occurred. Please try again later.');

@@ -1,58 +1,38 @@
 import { LucideIcon } from "lucide-react";
-import type { Json } from './supabase/base/json.types';
-import type { EventName, EventSubtype, ImageCategory } from './supabase/base/enums.types';
+import type { Database } from "@/integrations/supabase/types";
+import type { Json } from "@/types/database";
 
-export interface VenueFeatures {
-  amenities: string[];
-  accessibility: string[];
-  technical_equipment?: string[];
-  special_requirements?: string[];
-}
+// Base Supabase types
+export type EventContent = Database["public"]["Tables"]["event_content"]["Row"] & {
+  event_id: string;
+  media_urls: string[];
+  publish_date: string;
+  engagement_metrics: Json;
+};
 
-export interface EventHighlight {
-  title: string;
-  description: string;
-  icon?: string;
-  order?: number;
-}
-
-export interface BeachPartyDetails {
-  location: string;
-  time: string;
-  dress_code?: string;
-  features: string[];
-}
-
-export interface EventContent {
+export type FashionImage = {
   id: string;
-  event_id: string | null;
-  content_type: string;
-  title: string;
-  content: string;
-  media_urls?: string[] | null;
-  publish_date?: string | null;
-  engagement_metrics?: Record<string, unknown> | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface FashionImage {
-  id: string;
-  category: ImageCategory;
+  category: "event_hero" | "event_gallery" | "backstage" | "designer_profile" | "model_profile" | "promotional" | "press_kit";
   url: string;
   thumbnail_url?: string | null;
   alt_text: string;
-  metadata?: Record<string, unknown> | null;
+  metadata?: Json | null;
   credits?: string | null;
-  event_id: string | null;
+  event_id?: string | null;
   created_at: string;
   updated_at: string;
-  dimensions?: Record<string, unknown> | null;
-  formats?: Record<string, unknown> | null;
-  description?: string | null;
-}
+  dimensions?: Json | null;
+  formats?: Json | null;
+};
 
-export interface EventTicket {
+export type FashionCollection = Database["public"]["Tables"]["fashion_collections"]["Row"] & {
+  designer_id: string;
+  event_id: string;
+  technical_requirements: string;
+  sustainability_info: string;
+};
+
+export type EventTicket = {
   id: string;
   event_id: string | null;
   ticket_type: string;
@@ -65,24 +45,43 @@ export interface EventTicket {
   group_discount_percentage?: number | null;
   created_at: string;
   updated_at: string;
+};
+
+export type DesignerProfile = Database["public"]["Tables"]["designer_profiles"]["Row"];
+
+// Feature types for the EventDetails component
+export interface EventFeature {
+  icon: LucideIcon;
+  title: string;
+  content: string;
 }
 
-export interface EventSponsor {
+export interface EventDetails {
+  title: string;
+  date: string;
+  description: string;
+  features: EventFeature[];
+}
+
+// Extended types for components
+export type Highlight = {
   id: string;
-  event_id: string;
-  sponsor_id: string;
-  sponsorship_tier: string;
-  is_featured: boolean;
+  event_id?: string | null;
+  content_type: string;
+  title: string;
+  content: string;
+  media_urls?: string[] | null;
+  publish_date?: string | null;
+  engagement_metrics?: Json | null;
   created_at: string;
   updated_at: string;
-  ad_placement?: string[];
-  display_priority?: number;
-}
+  image: string;
+};
 
-export interface FashionCollection {
+export type CollectionDisplay = {
   id: string;
   designer_id?: string | null;
-  event_id: string;
+  event_id?: string | null;
   collection_name: string;
   description: string;
   piece_count: number;
@@ -90,107 +89,42 @@ export interface FashionCollection {
   sustainability_info?: string | null;
   created_at: string;
   updated_at: string;
-  collection_type?: string | null;
-  size_range?: Record<string, string>;
-  materials?: string[];
-}
+  image?: string;
+  designer_profiles?: DesignerProfile;
+};
 
-export interface SwimwearEventDetails {
+export type TicketDisplay = {
   id: string;
-  event_id: string;
-  beach_party_details: BeachPartyDetails;
-  pool_access_info: Record<string, unknown>;
-  fitting_sessions: Record<string, unknown>[];
-  beauty_workshops: Record<string, unknown>[];
+  event_id: string | null;
+  ticket_type: string;
+  price: number;
+  quantity_available: number;
+  benefits?: string[] | null;
+  early_bird_deadline?: string | null;
+  early_bird_price?: number | null;
+  group_discount_threshold?: number | null;
+  group_discount_percentage?: number | null;
   created_at: string;
   updated_at: string;
+  subtitle?: string;
+  perks?: string[];
+};
+
+// Component Props Types
+export interface EventDetailsProps {
+  features: EventFeature[];
 }
 
-export interface FashionEvent {
-  id: string;
-  name: EventName;
-  subtype: EventSubtype;
-  title: string;
-  description: string;
-  venue: string;
-  capacity: number;
-  start_time: string;
-  end_time: string;
-  registration_deadline: string;
-  theme?: string | null;
-  meta_description?: string | null;
-  meta_keywords?: string[] | null;
-  created_at: string;
-  updated_at: string;
-  swimwear_specific_requirements?: string | null;
-  venue_features: VenueFeatures;
-  event_highlights: EventHighlight[];
-  // Related entities
-  swimwear_event_details?: SwimwearEventDetails | null;
-  fashion_collections?: FashionCollection[] | null;
-  event_content?: EventContent[] | null;
-  event_tickets?: EventTicket[] | null;
-  event_sponsors?: EventSponsor[] | null;
-  fashion_images?: FashionImage[] | null;
+export interface EventHighlightsProps {
+  highlights: (EventContent & { image: string })[];
+  images: FashionImage[];
 }
 
-// Type guards with improved validation
-export function isVenueFeatures(value: unknown): value is VenueFeatures {
-  if (!value || typeof value !== 'object') return false;
-  const features = value as Record<string, unknown>;
-  
-  return (
-    Array.isArray(features.amenities) &&
-    features.amenities.every(item => typeof item === 'string') &&
-    Array.isArray(features.accessibility) &&
-    features.accessibility.every(item => typeof item === 'string')
-  );
+export interface LingerieShowcaseProps {
+  collections: (FashionCollection & { image?: string })[];
 }
 
-export function isEventHighlight(value: unknown): value is EventHighlight {
-  if (!value || typeof value !== 'object') return false;
-  const highlight = value as Record<string, unknown>;
-  
-  return (
-    typeof highlight.title === 'string' &&
-    typeof highlight.description === 'string'
-  );
-}
-
-export function isBeachPartyDetails(value: unknown): value is BeachPartyDetails {
-  if (!value || typeof value !== 'object') return false;
-  const details = value as Record<string, unknown>;
-  
-  return (
-    typeof details.location === 'string' &&
-    typeof details.time === 'string' &&
-    (!details.dress_code || typeof details.dress_code === 'string') &&
-    Array.isArray(details.features) &&
-    details.features.every(item => typeof item === 'string')
-  );
-}
-
-// Transform functions with improved error handling
-export function transformVenueFeatures(json: Json): VenueFeatures {
-  if (typeof json !== 'object' || !json) {
-    console.warn('Invalid venue features data:', json);
-    return { amenities: [], accessibility: [] };
-  }
-  
-  const features = json as Record<string, unknown>;
-  return {
-    amenities: Array.isArray(features.amenities) ? features.amenities.filter(item => typeof item === 'string') : [],
-    accessibility: Array.isArray(features.accessibility) ? features.accessibility.filter(item => typeof item === 'string') : [],
-    technical_equipment: Array.isArray(features.technical_equipment) ? features.technical_equipment.filter(item => typeof item === 'string') : undefined,
-    special_requirements: Array.isArray(features.special_requirements) ? features.special_requirements.filter(item => typeof item === 'string') : undefined
-  };
-}
-
-export function transformEventHighlights(json: Json): EventHighlight[] {
-  if (!Array.isArray(json)) {
-    console.warn('Invalid event highlights data:', json);
-    return [];
-  }
-
-  return json.filter(isEventHighlight);
+export interface TicketSelectionProps {
+  tickets: TicketDisplay[];
+  eventDate: string;
 }

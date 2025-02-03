@@ -1,5 +1,3 @@
-import type { EventName, EventSubtype, ImageCategory } from './supabase/enums.types';
-
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export interface FashionEvent {
@@ -16,8 +14,8 @@ export interface FashionEvent {
   meta_keywords?: string[] | null;
   created_at: string;
   updated_at: string;
-  name: EventName;
-  subtype: EventSubtype;
+  name: "valentines_fashion_show" | "spring_fling_fashion_show" | "summer_splash_fashion_show" | "fall_fantasy_fashion_show" | "swim_paradise_show";
+  subtype: "main_show" | "vip_session" | "workshop" | "networking" | "photo_session" | "after_party";
   event_content?: Array<{
     id: string;
     event_id: string | null;
@@ -26,7 +24,7 @@ export interface FashionEvent {
     content: string;
     media_urls?: string[] | null;
     publish_date?: string | null;
-    engagement_metrics?: Record<string, unknown> | null;
+    engagement_metrics?: Json | null;
     created_at: string;
     updated_at: string;
   }> | null;
@@ -44,17 +42,17 @@ export interface FashionEvent {
   }> | null;
   fashion_images?: Array<{
     id: string;
-    category: ImageCategory;
+    category: "event_hero" | "event_gallery" | "backstage" | "designer_profile" | "model_profile" | "promotional" | "press_kit";
     url: string;
     thumbnail_url?: string | null;
     alt_text: string;
-    metadata?: Record<string, unknown> | null;
+    metadata?: Json | null;
     credits?: string | null;
     event_id: string | null;
     created_at: string;
     updated_at: string;
-    dimensions?: Record<string, unknown> | null;
-    formats?: Record<string, unknown> | null;
+    dimensions?: Json | null;
+    formats?: Json | null;
   }> | null;
   event_tickets?: Array<{
     id: string;
