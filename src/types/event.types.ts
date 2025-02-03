@@ -1,6 +1,6 @@
+import { LucideIcon } from "lucide-react";
 import type { Json } from './supabase/base/json.types';
 import type { EventName, EventSubtype, ImageCategory } from './supabase/base/enums.types';
-import { LucideIcon } from "lucide-react";
 
 export interface VenueFeatures {
   amenities: string[];
@@ -170,9 +170,10 @@ export function isBeachPartyDetails(value: unknown): value is BeachPartyDetails 
   );
 }
 
-// Transform functions
+// Transform functions with improved error handling
 export function transformVenueFeatures(json: Json): VenueFeatures {
   if (typeof json !== 'object' || !json) {
+    console.warn('Invalid venue features data:', json);
     return { amenities: [], accessibility: [] };
   }
   
@@ -187,6 +188,7 @@ export function transformVenueFeatures(json: Json): VenueFeatures {
 
 export function transformEventHighlights(json: Json): EventHighlight[] {
   if (!Array.isArray(json)) {
+    console.warn('Invalid event highlights data:', json);
     return [];
   }
 

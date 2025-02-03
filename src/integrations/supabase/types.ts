@@ -435,6 +435,57 @@ export type Database = {
           },
         ]
       }
+      events: {
+        Row: {
+          category: string
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          event_date: string
+          featured_image_url: string | null
+          id: string
+          location: string
+          max_participants: number
+          registration_deadline: string
+          status: string | null
+          ticket_price: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          event_date: string
+          featured_image_url?: string | null
+          id?: string
+          location: string
+          max_participants: number
+          registration_deadline: string
+          status?: string | null
+          ticket_price?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          event_date?: string
+          featured_image_url?: string | null
+          id?: string
+          location?: string
+          max_participants?: number
+          registration_deadline?: string
+          status?: string | null
+          ticket_price?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       faq_items: {
         Row: {
           answer: string
