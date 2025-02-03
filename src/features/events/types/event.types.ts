@@ -23,6 +23,30 @@ export interface BeachPartyDetails {
   features: string[];
 }
 
+export interface EventContent {
+  id: string;
+  event_id: string | null;
+  content_type: string;
+  title: string;
+  content: string;
+  media_urls?: string[] | null;
+  publish_date?: string | null;
+  engagement_metrics?: Record<string, unknown> | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SwimwearEventDetails {
+  id: string;
+  event_id: string;
+  beach_party_details: BeachPartyDetails;
+  pool_access_info: Record<string, unknown>;
+  fitting_sessions: Record<string, unknown>[];
+  beauty_workshops: Record<string, unknown>[];
+  created_at: string;
+  updated_at: string;
+}
+
 export interface FashionEvent {
   id: string;
   name: EventName;
@@ -42,7 +66,16 @@ export interface FashionEvent {
   swimwear_specific_requirements?: string | null;
   venue_features: VenueFeatures;
   event_highlights: EventHighlight[];
+  // Related entities
+  swimwear_event_details?: SwimwearEventDetails | null;
+  fashion_collections?: FashionCollection[] | null;
+  event_content?: EventContent[] | null;
+  event_tickets?: EventTicket[] | null;
+  event_sponsors?: EventSponsor[] | null;
+  fashion_images?: FashionImage[] | null;
 }
+
+export interface EventDetails extends FashionEvent {}
 
 // Type guards with improved validation
 export function isVenueFeatures(value: unknown): value is VenueFeatures {
