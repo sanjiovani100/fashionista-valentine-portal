@@ -15,7 +15,7 @@ const SwimwearEventPage = () => {
         .from('fashion_events')
         .select(`
           *,
-          swimwear_event_details (*)
+          swimwear_event_details!inner (*)
         `)
         .eq('subtype', 'swimwear')
         .single();
@@ -23,6 +23,9 @@ const SwimwearEventPage = () => {
       if (eventError) throw eventError;
       
       if (!eventData) throw new Error('No swimwear event found');
+
+      // Get the first swimwear event details record
+      const eventDetails = eventData.swimwear_event_details;
 
       // Transform the data to match SwimwearEvent interface
       const swimwearEvent: SwimwearEvent = {
@@ -36,14 +39,14 @@ const SwimwearEventPage = () => {
         capacity: eventData.capacity,
         theme: eventData.theme,
         details: {
-          id: eventData.swimwear_event_details.id,
-          event_id: eventData.swimwear_event_details.event_id,
-          beach_party_details: eventData.swimwear_event_details.beach_party_details,
-          pool_access_info: eventData.swimwear_event_details.pool_access_info,
-          fitting_sessions: eventData.swimwear_event_details.fitting_sessions,
-          beauty_workshops: eventData.swimwear_event_details.beauty_workshops,
-          created_at: eventData.swimwear_event_details.created_at,
-          updated_at: eventData.swimwear_event_details.updated_at
+          id: eventDetails.id,
+          event_id: eventDetails.event_id,
+          beach_party_details: eventDetails.beach_party_details,
+          pool_access_info: eventDetails.pool_access_info,
+          fitting_sessions: eventDetails.fitting_sessions,
+          beauty_workshops: eventDetails.beauty_workshops,
+          created_at: eventDetails.created_at,
+          updated_at: eventDetails.updated_at
         }
       };
 
