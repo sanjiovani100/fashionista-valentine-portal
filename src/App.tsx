@@ -12,6 +12,8 @@ import SponsorsPage from "./pages/sponsors/SponsorsPage";
 import EventsPage from "./pages/events/EventsPage";
 import AboutPage from "./pages/about/AboutPage";
 import Confirmation from "./pages/confirmation/Confirmation";
+import ContactPage from "./pages/contact/ContactPage";
+import EventDetailsPage from "./pages/events/EventDetailsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,10 +36,12 @@ const App: React.FC = () => {
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/events" element={<EventsPage />} />
+              <Route path="/events/:eventId" element={<EventDetailsPage />} />
               <Route path="/models" element={<ModelsPage />} />
               <Route path="/designers" element={<DesignersPage />} />
               <Route path="/sponsors" element={<SponsorsPage />} />
               <Route path="/confirmation" element={<Confirmation />} />
+              <Route path="/contact" element={<ContactPage />} />
               {/* Redirect old registration routes to new paths */}
               <Route path="/register/model" element={<Navigate to="/models" replace />} />
               <Route path="/register/designer" element={<Navigate to="/designers" replace />} />

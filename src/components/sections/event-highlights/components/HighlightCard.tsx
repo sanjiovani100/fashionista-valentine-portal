@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { EventContent } from "@/types/event.types";
+import { OptimizedImage } from "@/components/cloudinary/components/CloudinaryImage";
 
 interface HighlightCardProps {
   highlight: EventContent & { image: string };
@@ -10,33 +11,18 @@ interface HighlightCardProps {
 }
 
 const extractPublicId = (url: string) => {
-  console.log('[HighlightCard] Extracting public ID from URL:', url);
-
-  if (!url) {
-    console.warn('[HighlightCard] Empty URL provided');
-    return '';
-  }
-
-  // Handle full Cloudinary URLs
+  if (!url) return '';
+  
   if (url.includes('cloudinary.com')) {
     const matches = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
-    if (matches) {
-      console.log('[HighlightCard] Extracted Cloudinary ID:', matches[1]);
-      return matches[1];
-    }
+    return matches ? matches[1] : url;
   }
-
-  // Handle Supabase storage URLs
+  
   if (url.includes('supabase.co')) {
     const id = url.split('/').pop()?.split('?')[0];
-    if (id) {
-      console.log('[HighlightCard] Extracted Supabase ID:', id);
-      return id;
-    }
+    return id || url;
   }
-
-  // If it's already a public ID or we can't parse it, return as is
-  console.log('[HighlightCard] Using URL as is:', url);
+  
   return url;
 };
 
@@ -44,42 +30,81 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
   const springConfig = {
     type: "spring",
     stiffness: 300,
-    damping: 30
+    damping: 30,
+    mass: 0.8
   };
+
+  // Convert content string to array of features
+  const features = highlight.content
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ ...springConfig, delay: index * 0.1 }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      whileTap={{ scale: 0.98 }}
+      transition={springConfig}
       className="h-full"
     >
-      <Card className="relative h-full bg-black/50 border-red-800/20 backdrop-blur-sm overflow-hidden group">
-        <CardHeader className="relative z-10">
-          <CardTitle className="text-xl font-semibold text-white">
+      <Card
+        className="relative h-full bg-black/30 backdrop-blur-lg border transition-all duration-300 
+                 will-change-transform border-white/10 hover:border-white/20 hover:bg-white/5
+                 shadow-lg hover:shadow-xl"
+        role="article"
+        tabIndex={0}
+      >
+        <CardHeader className="space-y-3 p-6">
+          <CardTitle className="text-2xl md:text-3xl font-playfair text-white">
             {highlight.title}
           </CardTitle>
         </CardHeader>
-        <CardContent className="relative z-10">
-          <ul className="space-y-2">
-            {highlight.features.map((feature, idx) => (
-              <li key={idx} className="flex items-start space-x-2">
-                <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-300">{feature}</span>
-              </li>
+        <CardContent className="p-6 pt-0">
+          <motion.div 
+            className="mb-8 overflow-hidden rounded-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <OptimizedImage 
+              publicId={extractPublicId(highlight.image)}
+              alt={`${highlight.title} preview`}
+              className="w-full h-48 object-cover transform transition-transform duration-700 
+                       hover:scale-110"
+              aspectRatio="landscape"
+              priority={index === 0}
+            />
+          </motion.div>
+          <ul className="space-y-4 mb-8" role="list">
+            {features.map((feature, idx) => (
+              <motion.li
+                key={`${highlight.id}-feature-${idx}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * (idx + 1) }}
+                className="flex items-start gap-3 text-white/80 font-montserrat text-base leading-relaxed"
+              >
+                <Check 
+                  className="w-5 h-5 text-red-500 shrink-0 mt-1" 
+                  aria-hidden="true"
+                />
+                <span>{feature}</span>
+              </motion.li>
             ))}
           </ul>
           <Button
-            variant="outline"
-            className="mt-4 w-full border-red-500/50 text-red-500 hover:bg-red-500/10"
+            className="w-full h-12 bg-white text-black hover:bg-white/90 
+                     transition-all hover:scale-[1.02] active:scale-[0.98] 
+                     rounded-lg font-poppins text-base font-medium
+                     focus-visible:ring-2 focus-visible:ring-white 
+                     focus-visible:ring-offset-2 focus-visible:ring-offset-black
+                     shadow-md hover:shadow-lg"
+            size="lg"
+            aria-label={`Learn more about ${highlight.title}`}
           >
             Learn More
           </Button>
         </CardContent>
-        <div 
-          className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"
-          aria-hidden="true"
-        />
       </Card>
     </motion.div>
   );

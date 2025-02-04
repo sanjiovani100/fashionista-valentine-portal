@@ -24,6 +24,29 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
     }
   }, [inView]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  };
+
   return (
     <section 
       ref={ref}
@@ -41,27 +64,40 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
 
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center space-y-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="text-center space-y-4 mb-12"
         >
-          <h2 
+          <motion.h2 
             id="highlights-title"
-            className="text-4xl md:text-5xl font-bold text-white mb-4"
+            variants={itemVariants}
+            className="text-4xl md:text-5xl font-playfair text-white mb-4 font-bold"
           >
             {t('eventHighlights')}
-          </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          </motion.h2>
+          <motion.p 
+            variants={itemVariants}
+            className="text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-inter"
+          >
             {t('discoverMoments')}
-          </p>
+          </motion.p>
         </motion.div>
 
-        <div className="mt-12">
-          <HighlightGrid highlights={highlights} />
-          <div className="mt-8 md:hidden">
-            <HighlightCarousel highlights={highlights} />
-          </div>
+        <div className="hidden md:block">
+          <HighlightGrid 
+            highlights={highlights} 
+            variants={containerVariants}
+            inView={inView}
+          />
+        </div>
+
+        <div className="md:hidden">
+          <HighlightCarousel 
+            highlights={highlights}
+            variants={containerVariants}
+            inView={inView}
+          />
         </div>
       </div>
     </section>

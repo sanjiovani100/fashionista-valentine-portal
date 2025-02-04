@@ -21,7 +21,7 @@ const defaultItems: NavItem[] = [
   { name: 'About', url: '/about', type: 'route' },
   { name: 'Events', url: '/events', type: 'route' },
   { name: 'Tickets', url: '#tickets', type: 'hash' },
-  { name: 'Contact', url: '#contact', type: 'hash', disabled: true }
+  { name: 'Contact', url: '/contact', type: 'route' }
 ]
 
 export function NavBar() {

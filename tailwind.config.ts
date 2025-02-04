@@ -8,14 +8,32 @@ export default {
   theme: {
     ...theme,
     extend: {
+      // Animation System
       animation: {
-        marquee: 'marquee var(--duration, 30s) linear infinite'
+        marquee: 'marquee var(--duration, 30s) linear infinite',
+        'fade-in': 'fadeIn var(--duration-normal) var(--ease-out)',
+        'slide-up': 'slideUp var(--duration-normal) var(--ease-out)',
+        'scale-in': 'scaleIn var(--duration-normal) var(--ease-out)',
+        'stagger-fade': 'fadeIn var(--duration-normal) var(--ease-out) forwards',
       },
       keyframes: {
         marquee: {
           to: { transform: 'translateX(-50%)' }
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' }
         }
       },
+      // Typography System
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
@@ -33,6 +51,7 @@ export default {
         'h3-desktop': ['2.5rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
         'h4-desktop': ['2rem', { lineHeight: '1.5' }],
       },
+      // Color System
       colors: {
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',
@@ -75,22 +94,30 @@ export default {
           500: 'hsl(var(--gray-500))',
         }
       },
+      // Spacing System
       spacing: {
         section: '6rem',      // 96px
         'section-inner': '4rem', // 64px
         component: '2rem',    // 32px
         element: '1rem',      // 16px
       },
+      // Component Sizes
       minHeight: {
         'btn-lg': '48px',
         'btn-md': '40px',
         'btn-sm': '32px',
+        'touch-target': '44px',
       },
+      // Transition System
       transitionDuration: {
         normal: 'var(--duration-normal)',
         fast: 'var(--duration-fast)',
         slow: 'var(--duration-slow)',
       },
+      transitionTimingFunction: {
+        'ease-out-custom': 'var(--ease-out)',
+      },
+      // Shadow System
       boxShadow: {
         'card': '0 4px 6px rgba(0, 0, 0, 0.1)',
         'card-hover': '0 8px 12px rgba(0, 0, 0, 0.15)',

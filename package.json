@@ -9,7 +9,23 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "test": "node test-database.js",
+    "db": "ts-node src/utils/database/cli.ts",
+    "test:db": "ts-node src/scripts/test-database.ts",
+    "db:generate": "ts-node src/scripts/generate-migration.ts",
+    "db:rollback": "ts-node src/scripts/rollback-migration.ts",
+    "db:verify": "ts-node src/scripts/verify-database.ts",
+    "db:cleanup": "ts-node src/scripts/cleanup-database.ts",
+    "db:monitor": "ts-node src/scripts/monitor-database.ts",
+    "db:maintain": "ts-node src/scripts/maintain-database.ts",
+    "db:backup": "ts-node src/scripts/backup-restore-database.ts",
+    "db:docs": "ts-node src/scripts/document-schema.ts",
+    "db:validate": "ts-node src/scripts/validate-schema.ts",
+    "db:sync": "ts-node src/scripts/sync-schema.ts",
+    "setup:about": "node setup_about_page.js",
+    "setup:contact": "node setup_contact_table.js",
+    "setup:swimwear": "node setup_swimwear_images.js"
   },
   "dependencies": {
     "@cloudinary/react": "^1.13.1",
@@ -44,11 +60,15 @@
     "@radix-ui/react-tooltip": "^1.1.7",
     "@supabase/supabase-js": "^2.48.1",
     "@tanstack/react-query": "^5.56.2",
+    "@types/uuid": "^10.0.0",
     "axe-core": "^4.10.2",
+    "chalk": "^5.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "commander": "^13.1.0",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.7",
     "embla-carousel-react": "^8.3.0",
     "framer-motion": "^12.0.6",
     "i18next": "^24.2.2",
@@ -56,10 +76,14 @@
     "input-otp": "^1.2.4",
     "lucide-react": "^0.474.0",
     "next-themes": "^0.3.0",
+    "node-fetch": "^3.3.2",
+    "path-browserify": "^1.0.1",
+    "pg": "^8.13.1",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.3.5",
+    "react-error-boundary": "^5.0.0",
     "react-hook-form": "^7.53.0",
     "react-i18next": "^15.4.0",
     "react-intersection-observer": "^9.15.1",
@@ -69,13 +93,14 @@
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.5",
     "vaul": "^0.9.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^22.5.5",
+    "@types/node": "^22.13.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
@@ -87,8 +112,25 @@
     "lovable-tagger": "^1.0.19",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
-    "typescript": "^5.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
-  }
+  },
+  "description": "**URL**: https://lovable.dev/projects/9b442949-8e5f-4be2-9d05-a4a4a64bc1ee",
+  "main": "eslint.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanjiovani100/fashionista-valentine-portal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanjiovani100/fashionista-valentine-portal/issues"
+  },
+  "homepage": "https://github.com/sanjiovani100/fashionista-valentine-portal#readme"
 }

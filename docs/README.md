@@ -28,6 +28,8 @@
 - [Page Components](./components/pages/README.md)
 - [Form Components](./components/forms/README.md)
 - [UI Components](./components/ui/README.md)
+- [Style Guide](./style-guide.md)
+- [About Page Specification](./about-page-spec.md)
 
 ### 5. API Documentation
 - [API Overview](./api/overview.md)
