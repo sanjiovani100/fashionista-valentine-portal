@@ -35,7 +35,16 @@ const SwimwearEventPage = () => {
         registration_deadline: eventData.registration_deadline,
         capacity: eventData.capacity,
         theme: eventData.theme,
-        details: eventData.swimwear_event_details
+        details: {
+          id: eventData.swimwear_event_details.id,
+          event_id: eventData.swimwear_event_details.event_id,
+          beach_party_details: eventData.swimwear_event_details.beach_party_details,
+          pool_access_info: eventData.swimwear_event_details.pool_access_info,
+          fitting_sessions: eventData.swimwear_event_details.fitting_sessions,
+          beauty_workshops: eventData.swimwear_event_details.beauty_workshops,
+          created_at: eventData.swimwear_event_details.created_at,
+          updated_at: eventData.swimwear_event_details.updated_at
+        }
       };
 
       return swimwearEvent;
