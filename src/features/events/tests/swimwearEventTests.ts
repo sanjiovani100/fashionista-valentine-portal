@@ -103,7 +103,8 @@ export const testRelatedDataFetch = async () => {
 export const testImageUrl = (publicId: string) => {
   console.log('Testing image URL construction...');
   try {
-    const imageUrl = `${cloudinaryConfig.baseURL}/image/upload/w_800,h_600,q_auto/${publicId}`;
+    // Construct Cloudinary URL using the cloud name
+    const imageUrl = `https://res.cloudinary.com/${cloudinaryConfig.cloud.cloudName}/image/upload/w_800,h_600,q_auto/${publicId}`;
     console.log('Image URL constructed successfully:', imageUrl);
     return imageUrl;
   } catch (error) {
