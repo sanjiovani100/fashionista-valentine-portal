@@ -21,7 +21,24 @@ const SwimwearEventPage = () => {
         .single();
 
       if (eventError) throw eventError;
-      return eventData as SwimwearEvent;
+      
+      if (!eventData) throw new Error('No swimwear event found');
+
+      // Transform the data to match SwimwearEvent interface
+      const swimwearEvent: SwimwearEvent = {
+        id: eventData.id,
+        title: eventData.title,
+        description: eventData.description,
+        venue: eventData.venue,
+        start_time: eventData.start_time,
+        end_time: eventData.end_time,
+        registration_deadline: eventData.registration_deadline,
+        capacity: eventData.capacity,
+        theme: eventData.theme,
+        details: eventData.swimwear_event_details
+      };
+
+      return swimwearEvent;
     }
   });
 
