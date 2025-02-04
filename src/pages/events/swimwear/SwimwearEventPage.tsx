@@ -24,8 +24,14 @@ const SwimwearEventPage = () => {
       
       if (!eventData) throw new Error('No swimwear event found');
 
-      // Get the first swimwear event details record
-      const eventDetails = eventData.swimwear_event_details;
+      // Get the swimwear event details
+      const eventDetails = Array.isArray(eventData.swimwear_event_details) 
+        ? eventData.swimwear_event_details[0] 
+        : eventData.swimwear_event_details;
+
+      if (!eventDetails) {
+        throw new Error('No swimwear event details found');
+      }
 
       // Transform the data to match SwimwearEvent interface
       const swimwearEvent: SwimwearEvent = {
