@@ -47,10 +47,30 @@ const SwimwearEventPage = () => {
         details: {
           id: eventDetails.id,
           event_id: eventDetails.event_id,
-          beach_party_details: eventDetails.beach_party_details,
-          pool_access_info: eventDetails.pool_access_info,
-          fitting_sessions: eventDetails.fitting_sessions,
-          beauty_workshops: eventDetails.beauty_workshops,
+          beach_party_details: eventDetails.beach_party_details as {
+            location: string;
+            time: string;
+            activities: string[];
+            amenities: string[];
+          },
+          pool_access_info: eventDetails.pool_access_info as {
+            hours: string;
+            restrictions: string[];
+            facilities: string[];
+          },
+          fitting_sessions: eventDetails.fitting_sessions as Array<{
+            date: string;
+            time: string;
+            location: string;
+            designer: string;
+          }>,
+          beauty_workshops: eventDetails.beauty_workshops as Array<{
+            title: string;
+            instructor: string;
+            description: string;
+            time: string;
+            location: string;
+          }>,
           created_at: eventDetails.created_at,
           updated_at: eventDetails.updated_at
         }
