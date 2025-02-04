@@ -1,3 +1,4 @@
+```lov-code
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -96,7 +97,7 @@
 }
 
 @layer components {
-  /* Button Base Styles */
+  /* Button Base Styles Without Glow */
   .btn-base {
     @apply inline-flex items-center justify-center rounded-lg px-6 py-3
            font-medium transition-all duration-normal ease-out
@@ -130,7 +131,7 @@
     @apply space-y-4;
   }
 
-  /* Card Styles */
+  /* Card Styles Without Glow */
   .card-base {
     @apply bg-black/30 backdrop-blur-sm border border-white/10 
            rounded-2xl p-6 transition-all duration-normal;
@@ -138,26 +139,17 @@
 
   .card-hover {
     @apply hover:border-white/20 hover:bg-white/5
-           hover:scale-105 hover:shadow-xl hover:shadow-black/30;
+           hover:scale-105 hover:shadow-md hover:shadow-black/20;
   }
 }
 
 @layer utilities {
-  /* Enhanced Text Shadow */
-  .text-shadow-xl {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
+  /* Clean Text Shadow */
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 
-  /* Glow Effects */
-  .shadow-glow {
-    box-shadow: 0 0 20px rgba(255,51,102,0.3);
-  }
-
-  .shadow-glow-intense {
-    box-shadow: 0 0 30px rgba(255,51,102,0.5);
-  }
-
-  /* Focus Management */
+  /* Focus Management Without Glow */
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 
            focus-visible:ring-maroon focus-visible:ring-offset-2 
@@ -176,3 +168,4 @@
     transform: translateY(0);
   }
 }
+```

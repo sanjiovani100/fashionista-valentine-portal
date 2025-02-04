@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -26,7 +27,7 @@
 }
 
 @layer components {
-  /* Button Styles with Enhanced Touch States */
+  /* Button Styles with Enhanced Touch States but No Glow */
   .btn-primary {
     @apply bg-red-primary text-white 
            hover:bg-red-bright
@@ -45,7 +46,7 @@
            touch-none;
   }
 
-  /* Card Styles with Enhanced Hover & Touch States */
+  /* Card Styles with Clean Hover States */
   .card-base {
     @apply bg-gray-500 border border-white/10 text-white
            backdrop-blur-sm
@@ -56,12 +57,12 @@
   .card-hover {
     @apply hover:border-white/20 hover:scale-[1.02]
            hover:bg-gradient-to-b hover:from-white/5 hover:to-transparent
-           hover:shadow-xl hover:shadow-black/30
+           hover:shadow-md hover:shadow-black/20
            active:scale-[0.98]
            sm:hover:scale-105;
   }
 
-  /* Text Gradient Effects */
+  /* Text Gradient Effects Without Glow */
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-red-bright to-red-soft;
   }
@@ -98,12 +99,12 @@
 }
 
 @layer utilities {
-  /* Enhanced Text Shadow */
-  .text-shadow-xl {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
+  /* Clean Text Shadow */
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 
-  /* Border Effects */
+  /* Border Effects Without Glow */
   .border-gradient {
     border-image: linear-gradient(to right, hsl(var(--red-primary)), hsl(var(--red-bright))) 1;
   }
