@@ -12,6 +12,7 @@ import ModelRegistration from './pages/register/model/ModelRegistration';
 import DesignerRegistration from './pages/register/designer/DesignerRegistration';
 import SponsorRegistration from './pages/register/sponsor/SponsorRegistration';
 import Confirmation from './pages/confirmation/Confirmation';
+import SwimwearEventPage from './pages/events/swimwear/SwimwearEventPage';
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/events",
     element: <EventsPage />,
+  },
+  {
+    path: "/events/swimwear",
+    element: <SwimwearEventPage />,
   },
   {
     path: "/sponsors",
