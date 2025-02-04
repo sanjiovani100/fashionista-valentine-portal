@@ -2,7 +2,11 @@ import { LingerieShowcase } from "@/components/sections/lingerie-showcase/Linger
 import type { FashionCollection } from "@/types/event.types";
 
 interface LingerieShowcaseSectionProps {
-  collections: (FashionCollection & { image?: string })[];
+  collections: (FashionCollection & { 
+    image: string;
+    isLoading?: boolean;
+    error?: Error;
+  })[];
 }
 
 export const LingerieShowcaseSection = ({ collections }: LingerieShowcaseSectionProps) => {

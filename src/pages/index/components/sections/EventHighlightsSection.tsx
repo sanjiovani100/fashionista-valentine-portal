@@ -1,6 +1,5 @@
 import { EventHighlights } from "@/components/sections/event-highlights/EventHighlights";
-import type { FashionImage } from "@/types/event.types";
-import type { EventContent } from "@/types/database";
+import type { FashionImage, EventContent } from "@/types/event.types";
 
 interface EventHighlightsSectionProps {
   highlights: (EventContent & { image: string })[];
