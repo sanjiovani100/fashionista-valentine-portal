@@ -12,6 +12,7 @@ import { LoadingState } from "./components/LoadingState";
 import { ErrorState } from "./components/ErrorState";
 import { useEventData } from "./hooks/useEventData";
 import { transformEventData } from "./utils/highlights/transform";
+import { SwimwearTestRunner } from "@/features/events/components/SwimwearTestRunner";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -47,6 +48,14 @@ const Index = () => {
               subheading={eventData?.description || "Join us for an exclusive celebration of fashion, creativity, and empowerment"}
               backgroundImage={heroImage}
             />
+          </section>
+
+          {/* Test Runner Section */}
+          <section className="bg-black py-12">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl font-bold text-white mb-8">Event Tests</h2>
+              <SwimwearTestRunner />
+            </div>
           </section>
 
           {/* Event Highlights Section */}
