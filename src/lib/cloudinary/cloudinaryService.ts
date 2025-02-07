@@ -12,13 +12,17 @@ interface ImageOptions {
   width?: number;
   height?: number;
   aspectRatio?: 'square' | 'video' | 'portrait' | 'landscape' | 'auto';
-  quality?: number;
+  quality?: string;
+  format?: string;
+  fetchFormat?: string;
+  loading?: 'lazy' | 'eager';
 }
 
 class CloudinaryService {
   private cld: Cloudinary;
   private defaultFolder: string;
   private cache: Map<string, string>;
+  private imageLoadingPromises: Map<string, Promise<string>>;
 
   constructor(config: CloudinaryConfig) {
     this.cld = new Cloudinary({
@@ -28,6 +32,7 @@ class CloudinaryService {
     });
     this.defaultFolder = config.defaultFolder || 'fashion-events';
     this.cache = new Map();
+    this.imageLoadingPromises = new Map();
   }
 
   private standardizePublicId(publicId: string): string {
@@ -72,6 +77,12 @@ class CloudinaryService {
         return cachedUrl;
       }
 
+      // Check if there's already a promise loading this image
+      let loadingPromise = this.imageLoadingPromises.get(cacheKey);
+      if (loadingPromise) {
+        return loadingPromise;
+      }
+
       // If it's already a full URL and not a Cloudinary URL, validate and return
       if (publicId.startsWith('http') && !publicId.includes('cloudinary.com')) {
         if (this.validateUrl(publicId)) {
@@ -81,27 +92,38 @@ class CloudinaryService {
         throw new Error('Invalid URL format');
       }
 
-      const standardizedId = this.standardizePublicId(publicId);
-      console.log('[Cloudinary] Processing image:', { publicId, standardizedId });
+      loadingPromise = (async () => {
+        const standardizedId = this.standardizePublicId(publicId);
+        console.log('[Cloudinary] Processing image:', { publicId, standardizedId });
 
-      let transformation = this.cld.image(standardizedId)
-        .format('auto')
-        .quality('auto');
+        let transformation = this.cld.image(standardizedId);
 
-      if (options.width || options.height) {
-        transformation = transformation.resize(
-          fill()
-            .width(options.width || 800)
-            .height(options.height || 600)
-        );
-      }
+        // Apply format and quality transformations
+        transformation = transformation
+          .delivery(format('auto'))
+          .delivery(quality('auto'));
 
-      const url = transformation.toURL();
-      console.log('[Cloudinary] Generated URL:', url);
-      
-      // Cache the result
-      this.cache.set(cacheKey, url);
-      return url;
+        // Apply resize transformation if width or height is specified
+        if (options.width || options.height) {
+          transformation = transformation.resize(
+            fill()
+              .width(options.width || 800)
+              .height(options.height || 600)
+          );
+        }
+
+        const url = transformation.toURL();
+        console.log('[Cloudinary] Generated URL:', url);
+        
+        // Cache the result
+        this.cache.set(cacheKey, url);
+        this.imageLoadingPromises.delete(cacheKey);
+        
+        return url;
+      })();
+
+      this.imageLoadingPromises.set(cacheKey, loadingPromise);
+      return loadingPromise;
     } catch (error) {
       console.error('[Cloudinary] Error generating URL:', error);
       throw error;
@@ -132,6 +154,7 @@ class CloudinaryService {
 
   public clearCache(): void {
     this.cache.clear();
+    this.imageLoadingPromises.clear();
   }
 }
 

@@ -6,65 +6,55 @@
 
 @layer base {
   :root {
-    /* Base Colors */
-    --background: 0 0% 4%;
-    --foreground: 0 0% 100%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
     
-    /* Maroon Scale */
-    --maroon: 0 100% 27%;
-    --maroon-light: 0 68% 41%;
-    --maroon-dark: 0 91% 15%;
-    
-    /* Red Scale */
-    --red-bright: 348 100% 54%;
-    --red-primary: 348 100% 60%;
-    --red-soft: 348 100% 71%;
+    /* Custom Colors */
+    --red-primary: 0 100% 50%;
+    --red-bright: 0 100% 60%;
+    --red-soft: 0 80% 70%;
     
     /* Gray Scale */
     --gray-100: 0 0% 95%;
-    --gray-200: 0 0% 87%;
-    --gray-300: 0 0% 53%;
-    --gray-400: 0 0% 33%;
-    --gray-500: 0 0% 13%;
-    
-    /* System Colors */
-    --card: var(--gray-500);
-    --card-foreground: var(--foreground);
-    --popover: var(--background);
-    --popover-foreground: var(--foreground);
-    --primary: var(--maroon);
-    --primary-foreground: var(--foreground);
-    --secondary: var(--gray-200);
-    --secondary-foreground: var(--background);
-    --muted: var(--gray-300);
-    --muted-foreground: var(--foreground);
-    --accent: var(--red-primary);
-    --accent-foreground: var(--foreground);
-    --destructive: 0 84% 60%;
-    --destructive-foreground: var(--foreground);
-    --border: var(--gray-200);
-    --input: var(--gray-200);
-    --ring: var(--red-primary);
+    --gray-200: 0 0% 85%;
+    --gray-300: 0 0% 75%;
+    --gray-400: 0 0% 65%;
+    --gray-500: 0 0% 55%;
     
     /* Animation Durations */
-    --duration-fast: 150ms;
     --duration-normal: 300ms;
+    --duration-fast: 150ms;
     --duration-slow: 500ms;
-    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     
-    /* Border Radius */
-    --radius: 0.5rem;
+    /* Easing Functions */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   }
-}
 
-@layer base {
-  * {
-    @apply border-gray-200;
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
   
   body {
     @apply bg-background text-foreground font-montserrat;
     font-feature-settings: "rlig" 1, "calt" 1;
+    touch-action: manipulation;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -73,13 +63,14 @@
 }
 
 @layer components {
-  /* Button Styles with Enhanced Hover Effects */
+  /* Button Styles with Enhanced Touch States but No Glow */
   .btn-primary {
     @apply bg-red-primary text-white 
-           hover:bg-red-bright hover:shadow-glow
+           hover:bg-red-bright
            focus:ring-2 focus:ring-red-primary focus:ring-offset-2 focus:ring-offset-background
            active:scale-95
-           transition-all duration-normal ease-out;
+           transition-all duration-normal ease-out
+           touch-none;
   }
 
   .btn-secondary {
@@ -87,29 +78,47 @@
            hover:bg-red-primary/10 hover:border-red-bright hover:text-red-bright
            focus:ring-2 focus:ring-red-primary focus:ring-offset-2 focus:ring-offset-background
            active:scale-95
-           transition-all duration-normal ease-out;
+           transition-all duration-normal ease-out
+           touch-none;
   }
 
-  /* Card Styles with Hover States */
+  /* Card Styles with Clean Hover States */
   .card-base {
     @apply bg-gray-500 border border-white/10 text-white
            backdrop-blur-sm
-           transition-all duration-normal ease-out;
+           transition-all duration-normal ease-out
+           touch-none;
   }
 
   .card-hover {
-    @apply hover:border-white/20 hover:scale-105
+    @apply hover:border-white/20 hover:scale-[1.02]
            hover:bg-gradient-to-b hover:from-white/5 hover:to-transparent
-           hover:shadow-xl hover:shadow-black/30;
+           hover:shadow-md hover:shadow-black/20
+           active:scale-[0.98]
+           sm:hover:scale-105;
   }
 
-  /* Text Gradient Effects */
+  /* Text Gradient Effects Without Glow */
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-red-bright to-red-soft;
   }
 
   .text-gradient-alt {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-maroon via-maroon-light to-red-primary;
+  }
+
+  /* Interactive Link Styles */
+  .link-hover {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+           after:w-0 after:bg-red-primary after:transition-all after:duration-300
+           hover:after:w-full focus-visible:after:w-full;
+  }
+
+  /* Touch-optimized Interactive Areas */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px] p-2 sm:p-0
+           cursor-pointer select-none touch-none
+           active:scale-95 transition-transform duration-200;
   }
 
   /* Stagger Animation Items */
@@ -126,25 +135,12 @@
 }
 
 @layer utilities {
-  /* Enhanced Text Shadow */
-  .text-shadow-xl {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
+  /* Clean Text Shadow */
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 
-  /* Glow Effects */
-  .shadow-glow {
-    box-shadow: 0 0 20px rgba(255,51,102,0.3);
-  }
-
-  .shadow-glow-intense {
-    box-shadow: 0 0 30px rgba(255,51,102,0.5);
-  }
-
-  .drop-shadow-glow {
-    filter: drop-shadow(0 0 20px rgba(255,51,102,0.3));
-  }
-
-  /* Border Effects */
+  /* Border Effects Without Glow */
   .border-gradient {
     border-image: linear-gradient(to right, hsl(var(--red-primary)), hsl(var(--red-bright))) 1;
   }

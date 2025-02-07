@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the comprehensive design specification for the Fashionistas Valentine's Event About Page, ensuring alignment with our established design system and brand guidelines.
+This document outlines the comprehensive design specification for the Fashionistas Event About Page, ensuring alignment with our established design system and brand guidelines.
 
 ## Table of Contents
 1. [Purpose and Target Audience](#purpose-and-target-audience)

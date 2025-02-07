@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -55,6 +56,11 @@
     
     /* Border Radius */
     --radius: 0.5rem;
+
+    /* Spacing Scale */
+    --section-spacing: 6rem;
+    --content-spacing: 2rem;
+    --element-spacing: 1rem;
   }
 }
 
@@ -70,97 +76,80 @@
 
   /* Typography Scale */
   h1 {
-    @apply font-montserrat font-bold text-h1 md:text-h1-desktop tracking-tight;
+    @apply font-poppins font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight;
   }
 
   h2 {
-    @apply font-montserrat font-bold text-h2 md:text-h2-desktop tracking-tight;
+    @apply font-poppins font-bold text-3xl md:text-4xl lg:text-5xl;
   }
 
   h3 {
-    @apply font-montserrat font-bold text-h3 md:text-h3-desktop;
+    @apply font-poppins font-semibold text-2xl md:text-3xl;
   }
 
   h4 {
-    @apply font-montserrat font-semibold text-h4 md:text-h4-desktop;
+    @apply font-poppins font-semibold text-xl md:text-2xl;
   }
 
   p {
-    @apply font-inter text-base leading-relaxed;
+    @apply font-inter text-base md:text-lg leading-relaxed;
   }
 }
 
 @layer components {
-  /* Button Base Styles */
+  /* Button Base Styles Without Glow */
   .btn-base {
-    @apply transition-all duration-normal ease-out focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3
+           font-medium transition-all duration-normal ease-out
+           focus:outline-none focus:ring-2 focus:ring-offset-2;
   }
 
   .btn-primary {
-    @apply btn-base bg-maroon text-white min-h-btn-lg px-6
-           hover:bg-maroon-light hover:shadow-btn-hover
+    @apply btn-base bg-maroon text-white
+           hover:bg-maroon-light
            focus:ring-maroon focus:ring-offset-background
            active:scale-95;
   }
 
   .btn-secondary {
-    @apply btn-base border border-maroon text-maroon min-h-btn-md px-4
+    @apply btn-base border-2 border-maroon text-maroon
            hover:bg-maroon/10 hover:border-maroon-light hover:text-maroon-light
            focus:ring-maroon focus:ring-offset-background
            active:scale-95;
   }
 
-  .btn-tertiary {
-    @apply btn-base text-maroon min-h-btn-sm px-3
-           hover:text-maroon-light hover:underline
-           focus:ring-maroon focus:ring-offset-background;
-  }
-
-  /* Card Styles */
-  .card-base {
-    @apply bg-black/30 backdrop-blur-sm border border-white/10 
-           rounded-2xl shadow-card p-6 transition-all duration-normal;
-  }
-
-  .card-hover {
-    @apply hover:border-white/20 hover:shadow-card-hover
-           hover:bg-gradient-to-b hover:from-white/5 hover:to-transparent;
-  }
-
   /* Section Spacing */
   .section-spacing {
-    @apply py-section;
+    @apply py-24;
   }
 
-  .section-inner-spacing {
-    @apply py-section-inner;
-  }
-
-  .component-spacing {
-    @apply space-y-component;
+  .content-spacing {
+    @apply space-y-8;
   }
 
   .element-spacing {
-    @apply space-y-element;
+    @apply space-y-4;
+  }
+
+  /* Card Styles Without Glow */
+  .card-base {
+    @apply bg-black/30 backdrop-blur-sm border border-white/10 
+           rounded-2xl p-6 transition-all duration-normal;
+  }
+
+  .card-hover {
+    @apply hover:border-white/20 hover:bg-white/5
+           hover:scale-105 hover:shadow-md hover:shadow-black/20;
   }
 }
 
 @layer utilities {
-  /* Enhanced Text Shadow */
-  .text-shadow-xl {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.1);
+  /* Clean Text Shadow */
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 
-  /* Glow Effects */
-  .shadow-glow {
-    box-shadow: 0 0 20px rgba(255,51,102,0.3);
-  }
-
-  .shadow-glow-intense {
-    box-shadow: 0 0 30px rgba(255,51,102,0.5);
-  }
-
-  /* Focus Management */
+  /* Focus Management Without Glow */
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 
            focus-visible:ring-maroon focus-visible:ring-offset-2 

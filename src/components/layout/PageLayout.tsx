@@ -1,7 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { Footerdemo } from "@/components/ui/footer-section";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { useReducedMotion } from "framer-motion";
@@ -121,7 +120,6 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         </nav>
 
         <NavBar />
-        <ScrollProgress />
         
         <div 
           id="main-content" 

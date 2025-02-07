@@ -19,7 +19,13 @@ if (!supabaseUrl || !supabaseKey) {
   process.exit(1);
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+console.log('Initializing Supabase client...');
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+});
 
 const SWIMWEAR_EVENT_ID = 'd333d298-12fa-4538-a7eb-e3af30506eec';
 
@@ -80,7 +86,26 @@ async function setupSwimwearImages() {
   try {
     console.log('Setting up swimwear event images...');
     
-    // First, delete any existing images for this event
+    // First, verify the connection
+    const { data: testData, error: testError } = await supabase
+      .from('fashion_events')
+      .select('id')
+      .eq('id', SWIMWEAR_EVENT_ID)
+      .single();
+      
+    if (testError) {
+      console.error('Error verifying connection:', testError);
+      return;
+    }
+    
+    if (!testData) {
+      console.error('Swimwear event not found in database');
+      return;
+    }
+    
+    console.log('Connection verified, proceeding with image setup...');
+    
+    // Delete any existing images for this event
     const { error: deleteError } = await supabase
       .from('fashion_images')
       .delete()

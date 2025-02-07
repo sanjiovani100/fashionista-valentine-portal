@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, MapPin } from 'lucide-react';
 import type { FashionEvent } from '@/types/database';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 interface EventCardProps {
   event: FashionEvent;
@@ -15,6 +16,8 @@ interface EventCardProps {
 export const EventCard = ({ event, viewMode }: EventCardProps) => {
   const heroImage = event.fashion_images?.find(img => img.category === 'event_hero');
   const isUpcoming = new Date(event.start_time) > new Date();
+  // Clean up the event ID by removing any trailing periods
+  const cleanEventId = event.id.replace(/\.$/, '');
 
   return (
     <motion.div 
@@ -58,13 +61,15 @@ export const EventCard = ({ event, viewMode }: EventCardProps) => {
           </div>
         </div>
 
-        <Button 
-          className="w-full bg-gradient-to-r from-pink-magenta to-purple-vivid hover:opacity-90 transition-opacity"
-          disabled={!isUpcoming}
-          aria-label={!isUpcoming ? 'Event has ended' : `Get tickets for ${event.title}`}
-        >
-          Get Tickets
-        </Button>
+        <Link to={`/events/${cleanEventId}`}>
+          <Button 
+            className="w-full bg-gradient-to-r from-pink-magenta to-purple-vivid hover:opacity-90 transition-opacity"
+            disabled={!isUpcoming}
+            aria-label={!isUpcoming ? 'Event has ended' : `Get tickets for ${event.title}`}
+          >
+            Get Tickets
+          </Button>
+        </Link>
       </div>
     </motion.div>
   );

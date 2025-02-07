@@ -43,8 +43,8 @@ function Footerdemo() {
   }
 
   return (
-    <footer className="relative border-t border-white/10 bg-gradient-to-b from-background to-background/80 text-foreground transition-colors duration-300">
-      <div className="absolute inset-0 bg-gradient-to-b from-maroon/5 to-purple-vivid/5 backdrop-blur-xl" />
+    <footer className="relative border-t border-white/10 bg-black text-foreground transition-colors duration-300">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/95 backdrop-blur-xl" />
       
       <motion.div 
         variants={container}

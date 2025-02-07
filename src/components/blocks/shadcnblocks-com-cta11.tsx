@@ -8,10 +8,12 @@ interface Cta11Props {
     primary?: {
       text: string;
       url: string;
+      className?: string;
     };
     secondary?: {
       text: string;
       url: string;
+      className?: string;
     };
   };
 }
@@ -72,7 +74,7 @@ const Cta11 = ({
             {buttons.secondary && (
               <Button 
                 variant="outline" 
-                className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300"
+                className={`w-full sm:w-auto border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 ${buttons.secondary.className || ''}`}
                 asChild
               >
                 <a href={buttons.secondary.url}>{buttons.secondary.text}</a>
@@ -80,7 +82,7 @@ const Cta11 = ({
             )}
             {buttons.primary && (
               <Button 
-                className="w-full sm:w-auto bg-white text-maroon hover:bg-white/90 transition-all duration-300"
+                className={`w-full sm:w-auto bg-white text-maroon hover:bg-white/90 transition-all duration-300 ${buttons.primary.className || ''}`}
                 asChild
               >
                 <a href={buttons.primary.url}>{buttons.primary.text}</a>

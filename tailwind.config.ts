@@ -40,12 +40,10 @@ export default {
         inter: ['Inter', 'sans-serif']
       },
       fontSize: {
-        // Mobile first approach
         'h1': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
         'h2': ['2.5rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
         'h3': ['2rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
         'h4': ['1.5rem', { lineHeight: '1.5' }],
-        // Desktop sizes
         'h1-desktop': ['4rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
         'h2-desktop': ['3rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
         'h3-desktop': ['2.5rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
@@ -53,6 +51,9 @@ export default {
       },
       // Color System
       colors: {
+        white: '#FFFFFF',
+        black: '#000000',
+        transparent: 'transparent',
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -96,10 +97,28 @@ export default {
       },
       // Spacing System
       spacing: {
-        section: '6rem',      // 96px
-        'section-inner': '4rem', // 64px
-        component: '2rem',    // 32px
-        element: '1rem',      // 16px
+        '0': '0',
+        '1': '0.25rem',
+        '2': '0.5rem',
+        '3': '0.75rem',
+        '4': '1rem',
+        '5': '1.25rem',
+        '6': '1.5rem',
+        '8': '2rem',
+        '10': '2.5rem',
+        '12': '3rem',
+        '16': '4rem',
+        '20': '5rem',
+        '24': '6rem',
+        '32': '8rem',
+        '40': '10rem',
+        '48': '12rem',
+        '56': '14rem',
+        '64': '16rem',
+        section: '6rem',
+        'section-inner': '4rem',
+        component: '2rem',
+        element: '1rem',
       },
       // Component Sizes
       minHeight: {

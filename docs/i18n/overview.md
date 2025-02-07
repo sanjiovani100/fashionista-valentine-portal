@@ -12,7 +12,7 @@
 
 ## Introduction
 
-The Fashionista Valentine Portal uses a comprehensive internationalization system built on react-i18next. This system enables seamless translation of content across multiple languages while maintaining a consistent user experience.
+The Fashionista  Portal uses a comprehensive internationalization system built on react-i18next. This system enables seamless translation of content across multiple languages while maintaining a consistent user experience.
 
 ### Goals
 - Support multiple languages (currently English and Spanish)

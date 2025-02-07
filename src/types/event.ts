@@ -1,7 +1,17 @@
+export type ImageCategory = 
+  | 'event_hero'
+  | 'event_gallery'
+  | 'backstage'
+  | 'designer_profile'
+  | 'model_profile'
+  | 'promotional'
+  | 'press_kit'
+  | 'collection';
+
 export interface EventImage {
   id: string;
   event_id: string;
-  category: 'event_hero' | 'event_gallery' | 'backstage' | 'designer_profile' | 'model_profile' | 'promotional' | 'press_kit';
+  category: ImageCategory;
   url: string;
   alt_text: string;
   metadata: Record<string, any>;
@@ -12,7 +22,11 @@ export interface EventScheduleItem {
   title: string;
   description: string;
   location: string;
+  category?: string;
   speakers?: string[];
+  duration?: string;
+  capacity?: number;
+  isHighlight?: boolean;
 }
 
 export interface TicketTier {
@@ -31,21 +45,42 @@ export interface TicketTier {
 export interface Sponsor {
   id: string;
   company_name: string;
-  description: string;
   logo_url: string;
-  sponsorship_level: string;
-  marketing_materials: Record<string, any>;
+  description: string;
+  marketing_materials?: {
+    website?: string;
+    brochure?: string;
+    special_offer?: string;
+    discount_code?: string;
+    [key: string]: string | undefined;
+  };
 }
 
 export interface EventSponsor {
   id: string;
   event_id: string;
-  sponsor_id: string;
-  sponsorship_tier: string;
-  is_featured: boolean;
-  ad_placement: string[];
-  display_priority: number;
   sponsor: Sponsor;
+  sponsorship_tier: 'Platinum' | 'Gold' | 'Silver' | 'Bronze';
+  is_featured: boolean;
+  display_priority: number;
+  contribution_amount?: number;
+  benefits?: string[];
+}
+
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+  category: 'general' | 'tickets' | 'venue' | 'schedule' | 'guidelines';
+}
+
+export interface SupportContact {
+  email: string;
+  phone: string;
+  hours: string;
+  response_time: string;
+  live_chat_available: boolean;
+  support_ticket_url?: string;
 }
 
 export interface EventDetails {
@@ -86,4 +121,6 @@ export interface EventDetails {
   schedule: EventScheduleItem[];
   tickets: TicketTier[];
   sponsors: EventSponsor[];
+  faqs: FAQItem[];
+  support: SupportContact;
 } 

@@ -6,12 +6,17 @@ interface ScrollIndicatorProps {
 }
 
 export const ScrollIndicator = ({ onClick }: ScrollIndicatorProps) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onClick();
+  };
+
   return (
     <motion.button
-      onClick={onClick}
+      onClick={handleClick}
       className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer
                 flex flex-col items-center text-white-secondary hover:text-white
-                transition-colors duration-300 group
+                transition-colors duration-300 group touch-target
                 focus:outline-none focus:ring-2 focus:ring-red-accent focus:ring-offset-2 focus:ring-offset-black"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

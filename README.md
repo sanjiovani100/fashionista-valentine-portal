@@ -155,401 +155,136 @@ We don't support custom domains (yet). If you want to deploy your project under 
     - Verify data restoration
     - Plan contingencies
 
-# Fashionista Valentine Portal
+# Fashionista Portal
 
-A modern web application for managing fashion events and model registrations.
+A modern event management platform specifically designed for fashion events, showcasing designers, collections, and managing ticket sales.
 
-## Database Management Scripts
+## Features
 
-The project includes several scripts for managing the database:
+- **Event Management**: Create and manage fashion events with detailed venue information and scheduling
+- **Designer Profiles**: Showcase designers and their collections
+- **Ticket Sales**: Flexible ticketing system with early bird discounts and special pricing
+- **Registration System**: Streamlined registration process for attendees
+- **Sponsorship Management**: Track and manage event sponsors and their contributions
+- **Image Gallery**: Organize and display event-related images
+- **Location Services**: Built-in geospatial features for venue mapping
 
-### Database Setup and Migration
+## Tech Stack
 
+- **Backend**: Node.js with Express
+- **Database**: PostgreSQL with PostGIS (via Supabase)
+- **Authentication**: Supabase Auth
+- **Language**: TypeScript
+- **Testing**: Jest
+- **Code Quality**: ESLint, Prettier
+- **API Documentation**: OpenAPI/Swagger
+
+## Prerequisites
+
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+- PostgreSQL (v14 or higher)
+- Supabase account and project
+
+## Environment Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/fashionista-portal.git
+   cd fashionista-portal
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create environment files:
+   ```bash
+   cp .env.example .env
+   cp .env.example .env.test
+   ```
+
+4. Update environment variables in `.env` and `.env.test` with your Supabase credentials and other configurations.
+
+## Database Setup
+
+1. Create a new Supabase project and get your credentials
+
+2. Run database migrations:
+   ```bash
+   npm run migrate
+   ```
+
+## Development
+
+Start the development server:
 ```bash
-# Initialize the database with schema and initial setup
-npm run db:init
-
-# Run pending migrations
-npm run db:migrate
-
-# Generate a new migration file
-npm run db:generate
-
-# Roll back the last batch of migrations
-npm run db:rollback
-
-# Verify database setup and migrations
-npm run db:verify
-
-# Clean up the database (removes all tables, functions, triggers, and policies)
-npm run db:cleanup
-
-# Monitor database performance and health
-npm run db:monitor
-
-# Perform database maintenance tasks
-npm run db:maintain
-
-# Backup and restore database
-npm run db:backup
-
-# Generate database schema documentation
-npm run db:docs
-
-# Validate database schema against definitions
-npm run db:validate
-
-# Synchronize database schema with definitions
-npm run db:sync
+npm run dev
 ```
 
-### Script Details
+The server will start on `http://localhost:3000`
 
-1. `db:init`
-   - Initializes the database with the base schema
-   - Creates tables with proper constraints
-   - Sets up indexes for performance
-   - Enables Row Level Security (RLS)
-   - Creates triggers for automated updates
+## Testing
 
-2. `db:migrate`
-   - Runs all pending migrations
-   - Handles dependencies between migrations
-   - Maintains migration history
-   - Provides detailed execution logs
+Run the test suite:
+```bash
+npm test
+```
 
-3. `db:generate`
-   - Interactive migration file generator
-   - Creates timestamped migration files
-   - Supports migration dependencies
-   - Includes rollback SQL templates
+Run tests with coverage:
+```bash
+npm test -- --coverage
+```
 
-4. `db:rollback`
-   - Rolls back the last batch of migrations
-   - Shows affected migrations before execution
-   - Requires confirmation for safety
-   - Maintains migration history
+## Code Quality
 
-5. `db:verify`
-   - Verifies database schema integrity
-   - Checks table structures
-   - Validates constraints and indexes
-   - Confirms RLS policies
-   - Reviews migration status
+Run linting:
+```bash
+npm run lint
+```
 
-6. `db:cleanup`
-   - Removes all database objects
-   - Drops tables, functions, triggers
-   - Cleans up RLS policies
-   - Requires explicit confirmation
-   - Provides rebuild instructions
+Format code:
+```bash
+npm run format
+```
 
-7. `db:monitor`
-   - Monitors database performance
-   - Tracks table and index sizes
-   - Analyzes index usage statistics
-   - Checks active sessions
-   - Detects table bloat
-   - Provides maintenance recommendations
+## API Documentation
 
-8. `db:maintain`
-   - Interactive maintenance interface
-   - VACUUM tables to reclaim space
-   - ANALYZE tables to update statistics
-   - VACUUM FULL for complete compaction
-   - REINDEX tables and indexes
-   - Shows table statistics after maintenance
+API documentation is available at `http://localhost:3000/api-docs` when running the server.
 
-9. `db:backup`
-   - Interactive backup and restore interface
-   - Full database backups
-   - Schema-only backups
-   - Data-only backups
-   - Restore from backup files
-   - Backup file management
-   - Verification after restore
+## Database Schema
 
-10. `db:docs`
-    - Generates comprehensive schema documentation
-    - Creates detailed table documentation
-    - Generates entity relationship diagrams
-    - Documents constraints and indexes
-    - Documents RLS policies and triggers
-    - Provides markdown-formatted output
-    - Includes usage recommendations
+### Core Tables
 
-11. `db:validate`
-    - Validates schema against definitions
-    - Checks table structures and columns
-    - Verifies constraints and indexes
-    - Validates RLS policies
-    - Detects schema drift
-    - Reports validation issues
-    - Provides fix recommendations
+- **events**: Fashion event details and venue information
+- **designers**: Designer profiles and contact information
+- **collections**: Fashion collections linked to designers and events
+- **tickets**: Ticket types and pricing for events
+- **registrations**: Event registrations and payment tracking
+- **sponsors**: Sponsor information and contribution details
+- **fashion_images**: Image management for events and collections
 
-12. `db:sync`
-    - Synchronizes database with schema definitions
-    - Detects schema differences
-    - Generates synchronization plan
-    - Shows SQL operations before execution
-    - Requires confirmation for changes
-    - Handles table creation and updates
-    - Manages column modifications
-    - Applies missing constraints
-    - Creates required indexes
-    - Sets up RLS policies
-    - Verifies changes after sync
-    - Provides detailed execution logs
+### Key Features
 
-### Usage Examples
+- PostGIS integration for location-based features
+- Comprehensive indexing strategy
+- Automated timestamp management
+- Referential integrity with cascading deletes
+- Custom enum types for consistent data
 
-1. Creating a New Migration:
-   ```bash
-   npm run db:generate
-   # Follow the prompts to specify:
-   # - Migration name
-   # - Description
-   # - Dependencies (if any)
-   ```
+## Contributing
 
-2. Running Migrations:
-   ```bash
-   # First, initialize the database
-   npm run db:init
-
-   # Then run migrations
-   npm run db:migrate
-
-   # Verify the setup
-   npm run db:verify
-   ```
-
-3. Rolling Back Changes:
-   ```bash
-   # View current migration status
-   npm run db:verify
-
-   # Roll back last batch
-   npm run db:rollback
-   ```
-
-4. Database Cleanup:
-   ```bash
-   # Clean up database (use with caution)
-   npm run db:cleanup
-
-   # Rebuild after cleanup
-   npm run db:init
-   npm run db:migrate
-   npm run db:verify
-   ```
-
-5. Database Monitoring:
-   ```bash
-   # Monitor database performance
-   npm run db:monitor
-
-   # Review the output for:
-   # - Table sizes and row counts
-   # - Index usage statistics
-   # - Active sessions
-   # - Table bloat analysis
-   # - Performance recommendations
-   ```
-
-6. Database Maintenance:
-   ```bash
-   # Start maintenance interface
-   npm run db:maintain
-
-   # Available operations:
-   # - VACUUM (reclaim storage)
-   # - ANALYZE (update statistics)
-   # - VACUUM FULL (compact tables)
-   # - REINDEX (rebuild indexes)
-   ```
-
-7. Database Backup and Restore:
-   ```bash
-   # Start backup/restore interface
-   npm run db:backup
-
-   # Available operations:
-   # - Create full backup
-   # - Create schema-only backup
-   # - Create data-only backup
-   # - Restore from backup
-   # - List available backups
-   ```
-
-8. Schema Documentation:
-   ```bash
-   # Generate schema documentation
-   npm run db:docs
-
-   # Generated files:
-   # - README.md (Overview)
-   # - schema-diagram.md (ER Diagram)
-   # - tables/*.md (Table details)
-   ```
-
-9. Schema Validation:
-   ```bash
-   # Validate database schema
-   npm run db:validate
-
-   # Validation checks:
-   # - Table structures
-   # - Column definitions
-   # - Constraints and indexes
-   # - RLS policies
-   # - Schema drift detection
-   ```
-
-10. Schema Synchronization:
-    ```bash
-    # Synchronize database schema
-    npm run db:sync
-
-    # Synchronization steps:
-    # 1. Analyze current schema
-    # 2. Generate sync plan
-    # 3. Show proposed changes
-    # 4. Confirm execution
-    # 5. Apply changes
-    # 6. Verify results
-    ```
-
-### Best Practices
-
-1. Migration Files
-   - Use descriptive names
-   - Include clear descriptions
-   - Specify dependencies
-   - Always include rollback SQL
-   - Test migrations locally
-
-2. Database Management
-   - Regularly verify database state
-   - Back up before major changes
-   - Use cleanup with caution
-   - Follow migration order
-   - Monitor migration logs
-
-3. Security
-   - Keep credentials secure
-   - Review RLS policies
-   - Validate constraints
-   - Monitor access logs
-   - Regular security audits
-
-4. Performance Monitoring
-   - Regular health checks
-   - Review index usage
-   - Analyze query patterns
-   - Monitor table growth
-   - Schedule maintenance
-
-5. Database Maintenance
-   - Regular VACUUM operations
-   - Update statistics with ANALYZE
-   - Careful use of VACUUM FULL
-   - Monitor table bloat
-   - Schedule maintenance windows
-
-6. Backup and Recovery
-   - Regular automated backups
-   - Multiple backup types
-   - Secure backup storage
-   - Test restore procedures
-   - Backup retention policy
-
-7. Documentation
-   - Keep docs in sync with schema
-   - Include diagrams and examples
-   - Document security policies
-   - Maintain version history
-   - Review and update regularly
-
-8. Schema Validation
-   - Regular validation checks
-   - Monitor schema drift
-   - Fix validation issues promptly
-   - Test after schema changes
-   - Document deviations
-
-9. Schema Synchronization
-   - Review sync plan carefully
-   - Back up before syncing
-   - Test in development first
-   - Monitor sync performance
-   - Document manual changes
-
-### Troubleshooting
-
-1. Migration Failures
-   - Check migration logs
-   - Verify dependencies
-   - Review SQL syntax
-   - Check constraints
-   - Use rollback if needed
-
-2. Database Verification
-   - Run verify command
-   - Check table structures
-   - Validate indexes
-   - Review RLS policies
-   - Monitor performance
-
-3. Cleanup Issues
-   - Ensure no connections
-   - Check permissions
-   - Review error logs
-   - Follow rebuild steps
-   - Backup before cleanup
-
-4. Performance Issues
-   - Run monitoring script
-   - Review table bloat
-   - Check index usage
-   - Analyze active sessions
-   - Follow recommendations
-
-5. Maintenance Issues
-   - Check lock conflicts
-   - Monitor operation progress
-   - Review error messages
-   - Verify space requirements
-   - Schedule during low usage
-
-6. Backup/Restore Issues
-   - Verify backup integrity
-   - Check disk space
-   - Monitor restore progress
-   - Validate after restore
-   - Test recovery procedures
-
-7. Documentation Issues
-   - Verify schema accuracy
-   - Check diagram generation
-   - Update after changes
-   - Review formatting
-   - Track documentation versions
-
-8. Validation Issues
-   - Review validation errors
-   - Check schema definitions
-   - Fix schema drift
-   - Test after fixes
-   - Document exceptions
-
-9. Synchronization Issues
-   - Review error messages
-   - Check dependencies
-   - Verify permissions
-   - Monitor locks
-   - Handle data conflicts
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-MIT License - see LICENSE file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the development team.

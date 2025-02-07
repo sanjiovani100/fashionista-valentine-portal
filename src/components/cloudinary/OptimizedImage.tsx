@@ -5,6 +5,7 @@ import { ImageErrorBoundary } from './components/ImageErrorBoundary';
 import { CloudinaryImageError } from './components/CloudinaryImageError';
 import { cloudinaryConfig } from './config';
 import type { CloudinaryImageProps } from './types/cloudinary.types';
+import { useInView } from 'react-intersection-observer';
 
 export const OptimizedImage = ({
   publicId,
@@ -23,9 +24,19 @@ export const OptimizedImage = ({
   const [retryCount, setRetryCount] = useState(0);
   const maxRetries = 2;
 
+  // Use intersection observer for lazy loading
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: '50px 0px', // Start loading 50px before the image enters viewport
+    skip: priority // Skip if priority is true
+  });
+
   useEffect(() => {
     const loadImage = async () => {
       try {
+        // Only load if priority is true or element is in view
+        if (!priority && !inView) return;
+        
         console.log('[Cloudinary] Setting up image with publicId:', publicId);
         
         if (!publicId) {
@@ -34,11 +45,15 @@ export const OptimizedImage = ({
           return;
         }
 
-        // Generate Cloudinary URL with error handling
+        // Generate Cloudinary URL with optimizations
         const url = await cloudinaryService.getImageUrl(publicId, {
           width,
           height,
-          aspectRatio
+          aspectRatio,
+          quality: 'auto', // Auto quality optimization
+          format: 'auto', // Auto format selection
+          fetchFormat: 'auto', // Enable automatic format selection
+          loading: priority ? 'eager' : 'lazy'
         });
 
         console.log('[Cloudinary] Generated URL:', url);
@@ -65,7 +80,7 @@ export const OptimizedImage = ({
     };
 
     loadImage();
-  }, [publicId, width, height, aspectRatio, priority, retryCount, onError]);
+  }, [publicId, width, height, aspectRatio, priority, retryCount, onError, inView]);
 
   const handleImageError = () => {
     console.error('[Cloudinary] Image load error for:', publicId);
@@ -87,18 +102,29 @@ export const OptimizedImage = ({
 
   return (
     <ImageErrorBoundary fallback={<CloudinaryImageError />}>
-      <div className="relative">
+      <div className="relative" ref={ref}>
         {isLoading && (
-          <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-md" />
+          <div 
+            className="absolute inset-0 bg-gray-200 animate-pulse rounded-md"
+            style={{ 
+              animationDuration: '2s',
+              willChange: 'opacity'
+            }} 
+          />
         )}
         <img
           src={imageUrl}
           alt={alt}
+          width={width}
+          height={height}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
           className={cn(
             'transition-opacity duration-300',
             isLoading ? 'opacity-0' : 'opacity-100',
             className
           )}
+          style={{ willChange: 'opacity' }}
           onLoad={() => {
             setIsLoading(false);
             onLoadingComplete?.();

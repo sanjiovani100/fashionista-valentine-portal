@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { HeroBackground } from "./components/HeroBackground";
 import { HeroContent } from "./components/HeroContent";
 import { ScrollIndicator } from "./components/ScrollIndicator";
-import { ScrollProgress } from "./components/ScrollProgress";
 import { ImageErrorBoundary } from "@/components/cloudinary/components/ImageErrorBoundary";
 import { CloudinaryImageError } from "@/components/cloudinary/components/CloudinaryImageError";
 
@@ -22,6 +21,17 @@ export const Hero = ({
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.98]);
   const y = useTransform(scrollYProgress, [0, 0.2], [0, 20]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.15
+      }
+    }
+  };
+
   const scrollToContent = () => {
     const contentSection = document.getElementById("event-highlights");
     if (contentSection) {
@@ -32,7 +42,7 @@ export const Hero = ({
   return (
     <section 
       id="home"
-      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-maroon to-black"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-black"
       aria-labelledby="hero-title"
       role="banner"
     >
@@ -41,7 +51,10 @@ export const Hero = ({
       </ImageErrorBoundary>
       
       <motion.div 
-        className="container relative z-20 mx-auto px-4 py-16 md:py-24 lg:py-32"
+        className="container relative z-10 mx-auto px-4 py-16 md:py-24 lg:py-32"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
         style={{ opacity, scale, y }}
       >
         <HeroContent 
@@ -51,7 +64,6 @@ export const Hero = ({
       </motion.div>
 
       <ScrollIndicator onClick={scrollToContent} />
-      <ScrollProgress />
     </section>
   );
 };
