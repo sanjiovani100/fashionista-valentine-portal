@@ -3,7 +3,7 @@
     "target": "ES2020",
     "module": "commonjs",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "outDir": "./dist",
     "rootDir": ".",
     "strict": true,
@@ -21,8 +21,17 @@
       "@components/*": ["src/components/*"],
       "@utils/*": ["src/utils/*"]
     },
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    "types": ["node", "jest", "@testing-library/jest-dom", "react", "react-dom"],
+    "allowJs": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }

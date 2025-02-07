@@ -7,81 +7,115 @@ node_modules/
 .env
 .env.local
 .env.*.local
-.env.test
+!.env.example
 .env.production
+.env.development
+.env.test
 
 # Build output
 dist/
 build/
 .next/
 out/
-
-# Testing
 coverage/
 .nyc_output/
 
 # IDE and editor files
 .idea/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 *.swp
 *.swo
 .DS_Store
 Thumbs.db
 
-# Logs
+# Logs and debugging
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+debug.log
+.pnpm-debug.log*
 
-# Runtime data
+# Runtime data and caches
 pids/
 *.pid
 *.seed
 *.pid.lock
-
-# Temporary files
-tmp/
-temp/
-
-# Cache directories
 .cache/
 .npm/
 .eslintcache
 .stylelintcache
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# TypeScript cache
 *.tsbuildinfo
 
-# Debug log from npm
-npm-debug.log*
+# Testing
+/coverage
+/cypress/videos/
+/cypress/screenshots/
+/playwright-report/
+/test-results/
 
-# Local development SSL certificates
+# Production build files
+/build
+/dist
+/.next/
+/out/
+
+# Misc
+.DS_Store
+*.pem
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local SSL certificates
 *.pem
 *.key
 *.crt
 
-# Database backups
+# Database
+*.sqlite
+*.db
 *.backup
 *.dump
 *.sql
 
-# System Files
-.DS_Store
-Thumbs.db
+# Temporary files
+tmp/
+temp/
+.temp/
+
+# Generated files
+.generated
+generated/
+*.generated.*
+
+# Package manager
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# Cloudinary
+.cloudinary/
+cloudinary.config.js
+
+# Supabase
+/supabase/.branches/
+/supabase/.temp/
+.supabase/
+
+# Docker
+.docker/
+docker-compose.override.yml
