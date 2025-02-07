@@ -1,16 +1,16 @@
 export class AppError extends Error {
-  public readonly statusCode: number;
-  public readonly status: string;
-  public readonly isOperational: boolean;
-
-  constructor(message: string, statusCode: number) {
+  constructor(
+    message: string,
+    public statusCode: number,
+    public code?: string,
+    public details?: unknown
+  ) {
     super(message);
-    this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
-    this.isOperational = true;
-
-    Error.captureStackTrace(this, this.constructor);
+    this.name = 'AppError';
+    this.status = statusCode >= 500 ? 'error' : 'fail';
   }
+
+  public status: string;
 }
 
 export class ValidationError extends AppError {

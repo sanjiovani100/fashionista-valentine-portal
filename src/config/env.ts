@@ -11,6 +11,9 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url().optional(),
   SUPABASE_KEY: z.string().optional(),
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
+  RATE_LIMIT_WINDOW_MS: z.string().transform(Number).default('900000'),
+  RATE_LIMIT_MAX_REQUESTS: z.string().transform(Number).default('100'),
+  PERFORMANCE_THRESHOLD: z.string().transform(Number).default('1000'),
 }).transform((env) => ({
   ...env,
   // Make Supabase required only in production

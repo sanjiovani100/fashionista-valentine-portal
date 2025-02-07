@@ -1,17 +1,23 @@
 import express, { ErrorRequestHandler } from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
 import compression from 'compression';
 import http from 'http';
 import { apiRouter } from './api';
 import { errorHandler } from './middleware/error-handler';
+import { configureSecurityMiddleware } from './middleware/security';
+import { requestLogger, errorLogger } from './middleware/logging';
 import { env } from './config/env';
 import { logger } from './config/logger';
 
 const app = express();
 
-// Middleware
-app.use(helmet()); // Security headers
+// Configure security middleware
+configureSecurityMiddleware(app);
+
+// Logging middleware
+app.use(requestLogger);
+
+// Additional middleware
 app.use(cors({
   origin: env.CORS_ORIGIN,
   credentials: true
@@ -23,7 +29,10 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 // API Routes
 app.use('/api', apiRouter);
 
-// Error Handler - must be after routes
+// Error logging - must be before error handler
+app.use(errorLogger);
+
+// Error Handler - must be after routes and error logging
 app.use(errorHandler as ErrorRequestHandler);
 
 const startServer = async () => {
