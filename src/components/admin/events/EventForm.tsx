@@ -48,43 +48,36 @@ const eventSchema = z.object({
 type EventFormData = z.infer<typeof eventSchema>;
 
 interface EventFormProps {
-  event?: EventDetails;
+  event?: Partial<EventDetails>;
   onSubmit: (data: EventFormData) => void;
   onCancel: () => void;
 }
 
-export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
-  const defaultValues: EventFormData = event
-    ? {
-        ...event,
-        start_time: new Date(event.start_time),
-        end_time: new Date(event.end_time),
-        registration_deadline: new Date(event.registration_deadline)
-      }
-    : {
-        title: '',
-        description: '',
-        venue: '',
-        capacity: 100,
-        start_time: new Date(),
-        end_time: new Date(),
-        registration_deadline: new Date(),
-        theme: '',
-        meta_description: '',
-        meta_keywords: [],
-        venue_features: {
-          pool_specs: {
-            dimensions: '',
-            depth: '',
-            temperature: ''
-          },
-          changing_facilities: {
-            capacity: 0,
-            amenities: []
-          },
-          photography_zones: []
-        }
-      };
+export const EventForm: React.FC<EventFormProps> = ({ event, onSubmit, onCancel }) => {
+  const defaultValues: EventFormData = {
+    title: event?.title ?? '',
+    description: event?.description ?? '',
+    venue: event?.venue ?? '',
+    capacity: event?.capacity ?? 100,
+    start_time: event?.start_time ? new Date(event.start_time) : new Date(),
+    end_time: event?.end_time ? new Date(event.end_time) : new Date(),
+    registration_deadline: event?.registration_deadline ? new Date(event.registration_deadline) : new Date(),
+    theme: event?.theme ?? '',
+    meta_description: event?.meta_description ?? '',
+    meta_keywords: event?.meta_keywords ?? [],
+    venue_features: {
+      pool_specs: event?.venue_features?.pool_specs ?? {
+        dimensions: '',
+        depth: '',
+        temperature: ''
+      },
+      changing_facilities: event?.venue_features?.changing_facilities ?? {
+        capacity: 0,
+        amenities: []
+      },
+      photography_zones: event?.venue_features?.photography_zones ?? []
+    }
+  };
 
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventSchema),
@@ -165,7 +158,8 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
                       type="number"
                       placeholder="Enter capacity"
                       className="bg-black/20 border-white/10 text-white"
-                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+                      value={field.value}
                     />
                   </FormControl>
                   <FormMessage />
@@ -183,13 +177,14 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
             <FormField
               control={form.control}
               name="start_time"
-              render={({ field }) => (
+              render={({ field: { value, onChange, ...field } }) => (
                 <FormItem>
                   <FormLabel>Start Time</FormLabel>
                   <FormControl>
                     <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
+                      value={value}
+                      onChange={onChange}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -200,13 +195,14 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
             <FormField
               control={form.control}
               name="end_time"
-              render={({ field }) => (
+              render={({ field: { value, onChange, ...field } }) => (
                 <FormItem>
                   <FormLabel>End Time</FormLabel>
                   <FormControl>
                     <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
+                      value={value}
+                      onChange={onChange}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -218,13 +214,14 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
           <FormField
             control={form.control}
             name="registration_deadline"
-            render={({ field }) => (
+            render={({ field: { value, onChange, ...field } }) => (
               <FormItem>
                 <FormLabel>Registration Deadline</FormLabel>
                 <FormControl>
                   <DateTimePicker
-                    value={field.value}
-                    onChange={field.onChange}
+                    value={value}
+                    onChange={onChange}
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
@@ -274,19 +271,18 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
           />
         </div>
 
-        {/* Form Actions */}
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end space-x-4">
           <Button
             type="button"
             variant="outline"
             onClick={onCancel}
-            className="border-fashion-pink text-fashion-pink hover:bg-fashion-pink hover:text-white"
+            className="bg-transparent border-white/10 text-white hover:bg-white/5"
           >
             Cancel
           </Button>
           <Button
             type="submit"
-            className="bg-fashion-pink hover:bg-fashion-pink/90"
+            className="bg-primary text-white hover:bg-primary/90"
           >
             {event ? 'Update Event' : 'Create Event'}
           </Button>
