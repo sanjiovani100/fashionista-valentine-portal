@@ -548,3 +548,5 @@ export const RegistrationCheckout = ({ event }: RegistrationCheckoutProps) => {
     </Section>
   );
 }; 
+
+

@@ -11,7 +11,8 @@ import { RoleSelector } from './RoleSelector';
 import { Loader2 } from 'lucide-react';
 import { CommonFields } from './components/CommonFields';
 import { useFormSubmission } from './hooks/useFormSubmission';
-import { commonSchema, modelSchema, designerSchema, sponsorSchema, type FormSchema } from './schemas/formSchemas';
+import createValidationSchema, { type FormSchema, type FormSchemas } from './schemas/formSchemas';
+import type { FormRole } from '@/types/forms';
 
 export const RegistrationForm = () => {
   const [searchParams] = useSearchParams();
@@ -78,3 +79,5 @@ export const RegistrationForm = () => {
     </div>
   );
 };
+
+

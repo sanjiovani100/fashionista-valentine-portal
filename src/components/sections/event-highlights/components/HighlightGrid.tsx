@@ -28,3 +28,5 @@ export const HighlightGrid = ({ highlights, variants, inView }: HighlightGridPro
     </motion.div>
   );
 };
+
+

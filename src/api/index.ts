@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { eventRoutes } from './events/routes';
-import { ticketRoutes } from './tickets/routes';
-import { registrationRoutes } from './registrations/routes';
-import { healthRoutes } from './health/routes';
+import { eventRoutes } from './events/routes.js';
+import { ticketRoutes } from './tickets/routes.js';
+import { registrationRoutes } from './registrations/routes.js';
+import { healthRoutes } from './health/routes.js';
 
 const router = Router();
 
@@ -23,3 +23,5 @@ router.use('*', (req, res) => {
 });
 
 export { router as apiRouter }; 
+
+

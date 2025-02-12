@@ -66,3 +66,5 @@ export const FooterQuickLinks = ({ variants, scrollToSection }: FooterQuickLinks
     </motion.div>
   );
 };
+
+

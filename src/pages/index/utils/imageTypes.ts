@@ -12,3 +12,5 @@ export interface ProcessedImage {
   url: string;
   alt: string;
 }
+
+

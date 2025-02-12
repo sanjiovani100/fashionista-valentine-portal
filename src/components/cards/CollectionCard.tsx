@@ -64,3 +64,5 @@ export const CollectionCard = ({
     </motion.div>
   );
 }; 
+
+

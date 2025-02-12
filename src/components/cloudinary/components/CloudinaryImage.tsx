@@ -97,3 +97,5 @@ export const OptimizedImage = ({
     return <CloudinaryImageError error={error instanceof Error ? error : new Error('Failed to load image')} />;
   }
 };
+
+

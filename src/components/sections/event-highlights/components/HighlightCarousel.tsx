@@ -48,3 +48,5 @@ export const HighlightCarousel = ({ highlights, variants, inView }: HighlightCar
     </motion.div>
   );
 };
+
+

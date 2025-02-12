@@ -178,3 +178,5 @@ export const ContactSection = ({ contactInfo }: ContactSectionProps) => {
     </section>
   );
 };
+
+

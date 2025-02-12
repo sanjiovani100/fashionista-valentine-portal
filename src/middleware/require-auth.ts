@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase/config';
+import { supabase } from '../config/supabase.js';
 
 // Extend Express Request type
 declare module 'express' {
@@ -43,3 +43,5 @@ export const requireAuth = async (
     });
   }
 }; 
+
+

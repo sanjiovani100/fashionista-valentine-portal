@@ -3,7 +3,8 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { SponsorForm } from "@/components/forms/registration/SponsorForm";
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { commonSchema, sponsorSchema, type FormSchema } from '@/components/forms/registration/schemas/formSchemas';
+import createValidationSchema, { type FormSchema } from '@/components/forms/registration/schemas/formSchemas';
+import type { FormRole } from '@/types/forms';
 import { useFormSubmission } from '@/components/forms/registration/hooks/useFormSubmission';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -14,19 +15,24 @@ import { motion } from 'framer-motion';
 
 const SponsorRegistration = () => {
   const { submitForm, isSubmitting } = useFormSubmission();
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(commonSchema.merge(sponsorSchema)),
+  const validationSchema = createValidationSchema('en').sponsor;
+  const form = useForm<FormSchema<'sponsor'>>({
+    resolver: zodResolver(validationSchema),
     defaultValues: {
       firstName: '',
       lastName: '',
       email: '',
       phone: '',
       experience: '',
-      references: ''
+      companyName: '',
+      industry: '',
+      companyDescription: '',
+      marketingGoals: '',
+      partnershipPreferences: ''
     }
   });
 
-  const onSubmit = async (data: FormSchema) => {
+  const onSubmit = async (data: FormSchema<'sponsor'>) => {
     await submitForm(data, 'sponsor');
   };
 
@@ -83,3 +89,5 @@ const SponsorRegistration = () => {
 };
 
 export default SponsorRegistration;
+
+

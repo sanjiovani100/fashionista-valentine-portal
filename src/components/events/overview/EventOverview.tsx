@@ -146,3 +146,5 @@ export const EventOverview = ({ event }: EventOverviewProps) => {
     </Section>
   );
 }; 
+
+

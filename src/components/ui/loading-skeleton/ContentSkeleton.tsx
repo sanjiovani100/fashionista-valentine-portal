@@ -17,3 +17,5 @@ export const ContentSkeleton = ({ rows = 3, className }: ContentSkeletonProps) =
     </div>
   );
 };
+
+

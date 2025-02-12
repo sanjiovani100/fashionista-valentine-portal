@@ -69,3 +69,5 @@ export interface FashionEvent {
     updated_at: string;
   }> | null;
 }
+
+

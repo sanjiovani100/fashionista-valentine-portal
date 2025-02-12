@@ -105,3 +105,5 @@ export const CoreValues = ({ values }: CoreValuesProps) => {
     </section>
   );
 };
+
+

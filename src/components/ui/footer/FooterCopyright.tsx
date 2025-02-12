@@ -27,3 +27,5 @@ export const FooterCopyright = ({ variants }: FooterCopyrightProps) => {
     </motion.div>
   );
 };
+
+

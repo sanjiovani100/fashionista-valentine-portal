@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cx } from '@/lib/utils';
 import { theme } from '@/styles/theme';
 
 export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
@@ -18,7 +18,7 @@ export const Section = ({
 }: SectionProps) => {
   return (
     <section
-      className={cn(
+      className={cx(
         'w-full relative',
         {
           'bg-black/20': variant === 'alternate',
@@ -32,7 +32,7 @@ export const Section = ({
       {...props}
     >
       <div
-        className={cn(
+        className={cx(
           'mx-auto px-5 md:px-10',
           {
             'max-w-[1440px]': containerWidth === 'full',
@@ -45,3 +45,5 @@ export const Section = ({
     </section>
   );
 }; 
+
+

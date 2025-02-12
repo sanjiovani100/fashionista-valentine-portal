@@ -5,3 +5,5 @@ export const typography = {
     inter: ["Inter", "sans-serif"],
   },
 } as const;
+
+

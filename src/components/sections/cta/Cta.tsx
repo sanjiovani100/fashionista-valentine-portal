@@ -49,3 +49,5 @@ export const Cta = ({ title, description, eventDate }: CtaProps) => {
     </section>
   );
 };
+
+

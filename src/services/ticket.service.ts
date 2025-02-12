@@ -1,27 +1,69 @@
-import { ApiService } from './api.service';
-import { supabase } from '@/lib/supabase/config';
-import type { Database } from '@/types/database.types';
-import { ValidationError } from '@/middleware/error-handler';
+import { ApiService } from './api.service.js';
+import { supabase } from '../lib/supabase/config';
+import type { Database } from '../types/database.types.js';
+import { ValidationError, NotFoundError, ConflictError } from '../middleware/error-handler.js';
+import { EventService } from './event.service.js';
 
 type Ticket = Database['public']['Tables']['tickets']['Row'];
 type TicketInsert = Database['public']['Tables']['tickets']['Insert'];
 type SponsorTicketAllocation = Database['public']['Tables']['sponsor_ticket_allocations']['Row'];
 type SponsorTicketRedemption = Database['public']['Tables']['sponsor_ticket_redemptions']['Row'];
 
-export class TicketService extends ApiService {
+export class TicketService extends ApiService<'tickets'> {
+  private eventService: EventService;
+
+  constructor() {
+    super('tickets', {
+      searchFields: ['type'],
+      defaultSort: { field: 'price', direction: 'asc' }
+    });
+    this.eventService = new EventService();
+  }
+
   /**
    * Create a new ticket
    */
   async createTicket(data: TicketInsert): Promise<Ticket> {
-    await this.validateExists('events', data.event_id, 'Event not found');
-    
-    return this.query('createTicket', () =>
-      supabase
-        .from('tickets')
-        .insert([data])
-        .select()
-        .single()
-    );
+    // Validate event exists and is in the future
+    const event = await this.eventService.get(data.event_id);
+    const now = new Date();
+    const eventStart = new Date(event.start_time);
+
+    if (eventStart <= now) {
+      throw new ValidationError('Cannot create tickets for past or ongoing events');
+    }
+
+    // Validate ticket data
+    if (data.price < 0) {
+      throw new ValidationError('Ticket price cannot be negative');
+    }
+
+    if (data.quantity_available < 1) {
+      throw new ValidationError('Ticket quantity must be at least 1');
+    }
+
+    // Validate early bird settings if provided
+    if (data.early_bird_deadline) {
+      const earlyBirdDeadline = new Date(data.early_bird_deadline);
+      if (earlyBirdDeadline >= eventStart) {
+        throw new ValidationError('Early bird deadline must be before event start time');
+      }
+      if (data.early_bird_price && data.early_bird_price >= data.price) {
+        throw new ValidationError('Early bird price must be less than regular price');
+      }
+    }
+
+    // Validate group discount if provided
+    if (data.group_discount_threshold) {
+      if (data.group_discount_threshold < 2) {
+        throw new ValidationError('Group discount threshold must be at least 2');
+      }
+      if (!data.group_discount_percentage || data.group_discount_percentage <= 0 || data.group_discount_percentage >= 100) {
+        throw new ValidationError('Group discount percentage must be between 0 and 100');
+      }
+    }
+
+    return this.create(data);
   }
 
   /**
@@ -41,19 +83,48 @@ export class TicketService extends ApiService {
    * Get tickets for an event
    */
   async getTicketsByEvent(eventId: string): Promise<Ticket[]> {
-    return this.query('getTicketsByEvent', () =>
-      supabase
-        .from('tickets')
-        .select('*')
-        .eq('event_id', eventId)
-    );
+    const { data } = await this.list({
+      filters: { event_id: eventId },
+      sort: { field: 'price', direction: 'asc' }
+    });
+    return data;
   }
 
   /**
    * Update ticket
    */
   async updateTicket(id: string, data: Partial<TicketInsert>): Promise<Ticket> {
-    return this.atomicUpdate<Ticket>('tickets', id, () => data);
+    const ticket = await this.get(id);
+    const event = await this.eventService.get(ticket.event_id);
+    const now = new Date();
+    const eventStart = new Date(event.start_time);
+
+    if (eventStart <= now) {
+      throw new ValidationError('Cannot update tickets for past or ongoing events');
+    }
+
+    // Validate price update
+    if (data.price !== undefined && data.price < 0) {
+      throw new ValidationError('Ticket price cannot be negative');
+    }
+
+    // Validate quantity update
+    if (data.quantity_available !== undefined && data.quantity_available < 1) {
+      throw new ValidationError('Ticket quantity must be at least 1');
+    }
+
+    // Validate early bird updates
+    if (data.early_bird_deadline) {
+      const earlyBirdDeadline = new Date(data.early_bird_deadline);
+      if (earlyBirdDeadline >= eventStart) {
+        throw new ValidationError('Early bird deadline must be before event start time');
+      }
+      if (data.early_bird_price && data.early_bird_price >= (data.price || ticket.price)) {
+        throw new ValidationError('Early bird price must be less than regular price');
+      }
+    }
+
+    return this.update(id, data);
   }
 
   /**
@@ -154,4 +225,39 @@ export class TicketService extends ApiService {
       return redemption;
     });
   }
+
+  async getAvailableTickets(eventId: string): Promise<Ticket[]> {
+    const { data } = await this.list({
+      filters: { 
+        event_id: eventId,
+        quantity_available: { gt: 0 }
+      }
+    });
+    return data;
+  }
+
+  async checkTicketAvailability(ticketId: string): Promise<{
+    available: number;
+    isEarlyBird: boolean;
+    isGroupDiscountEligible: boolean;
+    currentPrice: number;
+  }> {
+    const ticket = await this.get(ticketId);
+    const now = new Date();
+
+    const isEarlyBird = ticket.early_bird_deadline 
+      ? new Date(ticket.early_bird_deadline) > now 
+      : false;
+
+    return {
+      available: ticket.quantity_available,
+      isEarlyBird,
+      isGroupDiscountEligible: !!ticket.group_discount_threshold,
+      currentPrice: isEarlyBird && ticket.early_bird_price 
+        ? ticket.early_bird_price 
+        : ticket.price
+    };
+  }
 } 
+
+

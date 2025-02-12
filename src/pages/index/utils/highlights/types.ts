@@ -16,3 +16,5 @@ export interface TransformedEventData {
   collectionsWithImages: TransformedCollection[];
   heroImage: string;
 }
+
+

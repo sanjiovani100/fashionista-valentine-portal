@@ -70,3 +70,5 @@ export const EventList = ({ filters, sortBy, viewMode, translations }: EventList
     </div>
   );
 }; 
+
+

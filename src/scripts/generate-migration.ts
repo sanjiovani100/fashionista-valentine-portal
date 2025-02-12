@@ -61,3 +61,5 @@ async function generateMigration() {
 
 // Run generator
 generateMigration(); 
+
+

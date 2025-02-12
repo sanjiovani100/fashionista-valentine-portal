@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -121,3 +121,5 @@ export const SponsorBenefits = () => {
     </section>
   );
 };
+
+

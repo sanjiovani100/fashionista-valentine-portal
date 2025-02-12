@@ -1,84 +1,123 @@
-import express, { ErrorRequestHandler } from 'express';
+import express from 'express';
 import cors from 'cors';
-import compression from 'compression';
-import http from 'http';
-import { apiRouter } from './api';
-import { errorHandler } from './middleware/error-handler';
-import { configureSecurityMiddleware } from './middleware/security';
-import { requestLogger, errorLogger } from './middleware/logging';
-import { env } from './config/env';
-import { logger } from './config/logger';
+import { GlobalErrorHandler } from './middleware/global-error-handler.js';
+import { HealthService } from './services/health.service.js';
+import { ErrorReportingService } from './services/error-reporting.service.js';
+import { RecoveryService } from './services/recovery.service.js';
+import { logger } from './config/logger.js';
 
-const app = express();
+export class Server {
+  private app: express.Application;
+  private healthService: HealthService;
+  private errorHandler: GlobalErrorHandler;
+  private recoveryService: RecoveryService;
+  private port: number;
 
-// Configure security middleware
-configureSecurityMiddleware(app);
+  constructor() {
+    this.app = express();
+    this.healthService = new HealthService();
+    this.errorHandler = new GlobalErrorHandler();
+    this.recoveryService = new RecoveryService();
+    this.port = 0; // Will be set in start()
+    this.setupMiddleware();
+    this.setupRoutes();
+    this.setupErrorHandling();
+  }
 
-// Logging middleware
-app.use(requestLogger);
+  private setupMiddleware(): void {
+    this.app.use(cors());
+    this.app.use(express.json());
+    
+    // Add request start time to all requests
+    this.app.use((req, res, next) => {
+      req.startTime = Date.now();
+      next();
+    });
+  }
 
-// Additional middleware
-app.use(cors({
-  origin: env.CORS_ORIGIN,
-  credentials: true
-}));
-app.use(compression()); // Compress responses
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-
-// API Routes
-app.use('/api', apiRouter);
-
-// Error logging - must be before error handler
-app.use(errorLogger);
-
-// Error Handler - must be after routes and error logging
-app.use(errorHandler as ErrorRequestHandler);
-
-const startServer = async () => {
-  const server = http.createServer(app);
-
-  // Graceful shutdown handler
-  const shutdown = () => {
-    logger.info('Shutting down server gracefully...');
-    server.close(() => {
-      logger.info('Server closed');
-      process.exit(0);
+  private setupRoutes(): void {
+    // Root route
+    this.app.get('/', (req, res) => {
+      res.json({ message: 'Server is running' });
     });
 
-    // Force shutdown after 10 seconds
-    setTimeout(() => {
-      logger.error('Force closing server');
-      process.exit(1);
-    }, 10000);
-  };
-
-  // Handle shutdown signals
-  process.on('SIGTERM', shutdown);
-  process.on('SIGINT', shutdown);
-
-  return new Promise((resolve, reject) => {
-    server.listen(env.PORT, () => {
-      logger.info(`✨ Server running on port ${env.PORT}`);
-      logger.info(`Environment: ${env.NODE_ENV}`);
-      logger.info(`CORS Origin: ${env.CORS_ORIGIN}`);
-      resolve(server);
+    // Health check endpoint
+    this.app.get('/health', async (req, res) => {
+      try {
+        const health = await this.healthService.getStatus(this.port);
+        res.json(health);
+      } catch (error) {
+        this.errorHandler.handleError(error as Error, req, res, () => {});
+      }
     });
 
-    server.on('error', (error: NodeJS.ErrnoException) => {
-      if (error.code === 'EADDRINUSE') {
-        logger.error(`⚠️ Port ${env.PORT} is already in use`);
-        reject(error);
-      } else {
-        logger.error('Server error:', error);
+    // Error metrics endpoint
+    this.app.get('/metrics/errors', async (req, res) => {
+      try {
+        const errorReportingService = new ErrorReportingService();
+        const timeframe = req.query.timeframe ? parseInt(req.query.timeframe as string) : undefined;
+        const metrics = errorReportingService.getMetrics(timeframe);
+        res.json(metrics);
+      } catch (error) {
+        this.errorHandler.handleError(error as Error, req, res, () => {});
+      }
+    });
+
+    // Recent errors endpoint (protected, admin only)
+    this.app.get('/admin/errors', async (req, res) => {
+      try {
+        const errorReportingService = new ErrorReportingService();
+        const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+        const errors = errorReportingService.getRecentErrors(limit);
+        res.json(errors);
+      } catch (error) {
+        this.errorHandler.handleError(error as Error, req, res, () => {});
+      }
+    });
+  }
+
+  private setupErrorHandling(): void {
+    // Register error handler middleware
+    this.app.use(this.errorHandler.handleError);
+
+    // Register global handlers
+    process.on('uncaughtException', this.errorHandler.handleUncaughtException);
+    process.on('unhandledRejection', this.errorHandler.handleUnhandledRejection);
+  }
+
+  public async start(port: number): Promise<void> {
+    this.port = port;
+    return new Promise((resolve, reject) => {
+      try {
+        const server = this.app.listen(port, () => {
+          logger.info(`Server started on port ${port}`);
+          resolve();
+        });
+
+        // Graceful shutdown
+        process.on('SIGTERM', () => {
+          logger.info('SIGTERM signal received. Closing server...');
+          server.close(() => {
+            logger.info('Server closed');
+            process.exit(0);
+          });
+        });
+      } catch (error) {
         reject(error);
       }
     });
-  });
-};
+  }
 
-// Start server with error handling
-startServer().catch((error) => {
-  logger.error('Failed to start server:', error);
-  process.exit(1);
-}); 
+  public getApp(): express.Application {
+    return this.app;
+  }
+}
+
+// Create and export the server instance
+export async function startServer(port: number): Promise<express.Application> {
+  const server = new Server();
+  await server.start(port);
+  return server.getApp();
+} 
+
+

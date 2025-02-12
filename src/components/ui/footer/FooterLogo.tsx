@@ -33,3 +33,5 @@ export const FooterLogo = ({ variants }: FooterLogoProps) => {
     </motion.div>
   );
 };
+
+

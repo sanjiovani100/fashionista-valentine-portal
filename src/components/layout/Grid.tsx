@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cx } from '@/lib/utils';
 
 export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   columns?: {
@@ -29,7 +29,7 @@ export const Grid = ({
 
   return (
     <div
-      className={cn(
+      className={cx(
         'grid',
         `grid-cols-${mobileColumns}`,
         `md:grid-cols-${tabletColumns}`,
@@ -66,7 +66,7 @@ export const GridItem = ({
 
   return (
     <div
-      className={cn(
+      className={cx(
         `col-span-${mobileSpan}`,
         `md:col-span-${tabletSpan}`,
         `lg:col-span-${span.desktop}`,
@@ -78,3 +78,5 @@ export const GridItem = ({
     </div>
   );
 }; 
+
+

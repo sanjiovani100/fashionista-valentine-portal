@@ -66,3 +66,5 @@ export const testAboutSection = (sectionId: string) => {
   checkAnimationPerformance(section);
   console.groupEnd();
 };
+
+

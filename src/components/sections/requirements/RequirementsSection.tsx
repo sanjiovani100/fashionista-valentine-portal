@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 
 interface Requirement {
@@ -23,7 +23,7 @@ export const RequirementsSection = ({
   className 
 }: RequirementsSectionProps) => {
   return (
-    <section className={cn("py-20 bg-pure-white text-pure-black", className)}>
+    <section className={cx("py-20 bg-pure-white text-pure-black", className)}>
       <div className="container">
         <div className="text-center mb-16">
           <motion.h2 
@@ -66,3 +66,5 @@ export const RequirementsSection = ({
     </section>
   );
 };
+
+

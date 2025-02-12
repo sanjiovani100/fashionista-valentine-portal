@@ -94,3 +94,5 @@ export const FooterSocial = ({ variants, isDarkMode, setIsDarkMode }: FooterSoci
     </motion.div>
   );
 };
+
+

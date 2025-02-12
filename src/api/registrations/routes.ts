@@ -3,67 +3,81 @@ import { z } from 'zod';
 import { validateRequest } from '@/middleware/validate-request';
 import { requireAuth } from '@/middleware/require-auth';
 import {
-  listRegistrations,
-  getRegistrationById,
   createRegistration,
-  updateRegistration,
+  confirmRegistration,
   cancelRegistration,
-  getRegistrationsByEvent,
-  getRegistrationsByUser
+  getUserRegistrations,
+  getEventRegistrations,
+  getRegistrationDetails,
+  updateAttendeeDetails
 } from './controllers';
 
 const router = Router();
 
 // Validation schemas
-const registrationSchema = z.object({
-  event_id: z.string().uuid(),
-  ticket_id: z.string().uuid(),
-  attendee_details: z.object({
-    first_name: z.string().min(1, 'First name is required'),
-    last_name: z.string().min(1, 'Last name is required'),
-    email: z.string().email('Invalid email address'),
-    phone: z.string().optional(),
-    dietary_requirements: z.string().optional(),
-    accessibility_needs: z.string().optional()
-  }),
-  payment_status: z.enum(['pending', 'completed', 'failed']),
-  payment_method: z.enum(['credit_card', 'bank_transfer', 'paypal']),
-  special_requests: z.string().optional()
+const attendeeSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
+  dietaryRequirements: z.array(z.string()).optional(),
+  specialRequirements: z.string().optional()
 });
 
-const updateRegistrationSchema = z.object({
-  attendee_details: z.object({
-    first_name: z.string().min(1, 'First name is required'),
-    last_name: z.string().min(1, 'Last name is required'),
-    email: z.string().email('Invalid email address'),
-    phone: z.string().optional(),
-    dietary_requirements: z.string().optional(),
-    accessibility_needs: z.string().optional()
-  }).optional(),
-  special_requests: z.string().optional()
+const registrationSchema = z.object({
+  eventId: z.string().uuid('Invalid event ID'),
+  ticketId: z.string().uuid('Invalid ticket ID'),
+  attendeeDetails: z.array(attendeeSchema).min(1, 'At least one attendee is required'),
+  paymentIntentId: z.string().optional()
+});
+
+const confirmationSchema = z.object({
+  paymentIntentId: z.string()
+});
+
+const attendeeUpdateSchema = z.object({
+  attendeeDetails: z.array(attendeeSchema).min(1, 'At least one attendee is required')
 });
 
 // Routes
-router.get('/', requireAuth, listRegistrations);
-router.get('/:id', requireAuth, getRegistrationById);
-router.get('/event/:eventId', requireAuth, getRegistrationsByEvent);
-router.get('/user/:userId', requireAuth, getRegistrationsByUser);
-
 router.post('/',
   requireAuth,
   validateRequest({ body: registrationSchema }),
   createRegistration
 );
 
-router.put('/:id',
+router.post('/:id/confirm',
   requireAuth,
-  validateRequest({ body: updateRegistrationSchema }),
-  updateRegistration
+  validateRequest({ body: confirmationSchema }),
+  confirmRegistration
 );
 
-router.delete('/:id',
+router.post('/:id/cancel',
   requireAuth,
   cancelRegistration
 );
 
+router.get('/user',
+  requireAuth,
+  getUserRegistrations
+);
+
+router.get('/event/:eventId',
+  requireAuth,
+  getEventRegistrations
+);
+
+router.get('/:id',
+  requireAuth,
+  getRegistrationDetails
+);
+
+router.patch('/:id/attendees',
+  requireAuth,
+  validateRequest({ body: attendeeUpdateSchema }),
+  updateAttendeeDetails
+);
+
 export { router as registrationRoutes }; 
+
+

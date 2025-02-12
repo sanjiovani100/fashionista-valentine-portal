@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cx } from "@/lib/utils"
 
 interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
@@ -18,7 +18,7 @@ export function Marquee({
 }: MarqueeProps) {
   return (
     <div 
-      className={cn(
+      className={cx(
         "w-full overflow-hidden",
         className
       )} 
@@ -26,7 +26,7 @@ export function Marquee({
     >
       <div className="relative flex overflow-hidden">
         <div 
-          className={cn(
+          className={cx(
             "flex min-w-full shrink-0 items-center justify-around gap-4 animate-marquee",
             pauseOnHover && "hover:[animation-play-state:paused]",
             direction === "right" && "animate-marquee-reverse"
@@ -36,7 +36,7 @@ export function Marquee({
           {children}
         </div>
         <div 
-          className={cn(
+          className={cx(
             "flex min-w-full shrink-0 items-center justify-around gap-4 animate-marquee",
             pauseOnHover && "hover:[animation-play-state:paused]",
             direction === "right" && "animate-marquee-reverse"
@@ -50,3 +50,5 @@ export function Marquee({
     </div>
   )
 }
+
+

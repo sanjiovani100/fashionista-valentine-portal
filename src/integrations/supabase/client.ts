@@ -37,3 +37,5 @@ export const testSupabaseConnection = async () => {
 if (process.env.NODE_ENV === 'development') {
   testSupabaseConnection();
 }
+
+

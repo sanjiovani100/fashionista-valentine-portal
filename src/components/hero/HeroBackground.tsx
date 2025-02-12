@@ -9,3 +9,5 @@ export const HeroBackground: FC<HeroBackgroundProps> = ({ className = '' }) => {
     <div className={`absolute inset-0 bg-black/40 z-10 ${className}`} />
   );
 }; 
+
+

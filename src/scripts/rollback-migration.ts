@@ -80,3 +80,5 @@ async function rollbackMigration() {
 
 // Run rollback
 rollbackMigration(); 
+
+

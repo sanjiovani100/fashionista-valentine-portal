@@ -16,3 +16,5 @@ export const validateImageMetadata = (metadata: unknown): ImageValidationResult 
     message: 'Valid metadata'
   };
 };
+
+

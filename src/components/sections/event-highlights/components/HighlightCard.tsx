@@ -109,3 +109,5 @@ export const HighlightCard = ({ highlight, index }: HighlightCardProps) => {
     </motion.div>
   );
 };
+
+

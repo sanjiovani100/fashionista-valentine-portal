@@ -180,3 +180,5 @@ export const EventsGrid = ({ viewMode, filters, sortBy }: EventsGridProps) => {
     </AnimatePresence>
   );
 };
+
+

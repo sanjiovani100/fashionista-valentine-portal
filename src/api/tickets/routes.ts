@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { validateRequest } from '@/middleware/validate-request';
-import { requireAuth } from '@/middleware/require-auth';
+import { validateRequest } from '../../middleware/validate-request.js';
+import { requireAuth } from '../../middleware/require-auth.js';
 import {
   listTickets,
   getTicketById,
@@ -9,8 +9,8 @@ import {
   updateTicket,
   purchaseTicket,
   getTicketsByEvent
-} from './controllers';
-import { sponsorTicketRoutes } from './sponsor-routes';
+} from './controllers.js';
+import { sponsorTicketRoutes } from './sponsor-routes.js';
 
 const router = Router();
 
@@ -60,3 +60,5 @@ router.post('/purchase',
 router.use('/sponsor', sponsorTicketRoutes);
 
 export { router as ticketRoutes }; 
+
+

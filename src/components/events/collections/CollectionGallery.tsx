@@ -115,3 +115,5 @@ export const CollectionGallery = ({ images }: CollectionGalleryProps) => {
     </>
   );
 }; 
+
+

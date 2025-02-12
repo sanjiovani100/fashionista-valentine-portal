@@ -13,6 +13,7 @@ import { ErrorState } from "./components/ErrorState";
 import { useEventData } from "./hooks/useEventData";
 import { transformEventData } from "./utils/highlights/transform";
 import { toast } from "sonner";
+import { EventsSection } from '@/components/sections/events/EventsSection';
 
 const Index = () => {
   const { data: eventData, isLoading, error } = useEventData();
@@ -43,9 +44,10 @@ const Index = () => {
           {/* Hero Section */}
           <section className="relative">
             <Hero 
-              headline={eventData?.title || "Fashionistas Valentine's Event"}
-              subheading={eventData?.description || "Join us for an exclusive celebration of fashion, creativity, and empowerment"}
+              headline={eventData?.title}
+              subheading={eventData?.description}
               backgroundImage={heroImage}
+              eventDate={eventData?.start_time}
             />
           </section>
 
@@ -59,6 +61,9 @@ const Index = () => {
             </div>
           </section>
 
+          {/* Events Section */}
+          <EventsSection />
+
           {/* Lingerie Showcase Section */}
           <section className="bg-gradient-to-b from-maroon/10 to-black py-24">
             <div className="container mx-auto px-4 md:px-8">
@@ -67,7 +72,7 @@ const Index = () => {
           </section>
 
           {/* Ticket Selection Section */}
-          <section className="bg-gradient-to-b from-black to-maroon/5 py-24" id="tickets">
+          <section className="bg-gradient-to-b from-black to-maroon/10 py-24" id="tickets">
             <div className="container mx-auto px-4 md:px-8">
               <TicketSelection 
                 tickets={eventData.event_tickets?.slice(0, 3) || []}
@@ -94,7 +99,7 @@ const Index = () => {
           <section className="bg-gradient-to-b from-black to-maroon/10 py-24">
             <div className="container mx-auto px-4 md:px-8">
               <Cta11
-                heading="Join Our Valentine's Fashion Event"
+                heading={`Join Our ${eventData.title}`}
                 description="Be part of an unforgettable evening celebrating fashion, creativity, and empowerment"
                 buttons={{
                   primary: {
@@ -116,3 +121,5 @@ const Index = () => {
 };
 
 export default Index;
+
+

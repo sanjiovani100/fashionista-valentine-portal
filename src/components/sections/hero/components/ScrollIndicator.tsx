@@ -36,3 +36,5 @@ export const ScrollIndicator = ({ onClick }: ScrollIndicatorProps) => {
     </motion.button>
   );
 };
+
+

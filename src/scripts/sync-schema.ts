@@ -42,3 +42,5 @@ async function syncSchema() {
 }
 
 syncSchema(); 
+
+

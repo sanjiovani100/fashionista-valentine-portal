@@ -242,3 +242,5 @@ export const PhotoGallery = ({ event }: PhotoGalleryProps) => {
     </Section>
   );
 }; 
+
+

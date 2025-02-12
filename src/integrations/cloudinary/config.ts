@@ -49,3 +49,5 @@ console.log('Cloudinary Configuration:', {
   isConfigured: !!cloudName,
   environment: import.meta.env.MODE
 });
+
+

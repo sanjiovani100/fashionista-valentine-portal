@@ -21,3 +21,5 @@ export const CloudinaryImageError = ({ error }: CloudinaryImageErrorProps) => {
     </Alert>
   );
 };
+
+

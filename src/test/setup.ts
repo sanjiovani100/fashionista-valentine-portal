@@ -1,141 +1,106 @@
-// Add TextEncoder polyfill for tests
-const util = require('util');
-global.TextEncoder = util.TextEncoder;
-global.TextDecoder = util.TextDecoder;
+import '@testing-library/jest-dom';
+import { TextEncoder, TextDecoder } from 'util';
 
-import dotenv from 'dotenv';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { syncSchema } from '@/lib/database/sync-schema';
-import type { Database } from '@/lib/database.types';
-import { jest, beforeAll, afterAll } from '@jest/globals';
+// Mock TextEncoder/TextDecoder
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
 
-// Load test environment variables first
-dotenv.config({ path: '.env.test' });
-
-declare global {
-  // eslint-disable-next-line no-var
-  var testEventId: string;
-  // eslint-disable-next-line no-var
-  var mockSupabaseClient: SupabaseClient<Database>;
-}
-
-// Create Supabase client for tests
-const supabase = createClient<Database>(
-  'http://localhost:54321',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU',
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-      detectSessionInUrl: false
-    }
+// Mock Supabase
+jest.mock('@/lib/supabase/config', () => ({
+  supabase: {
+    from: jest.fn(() => ({
+      select: jest.fn().mockReturnThis(),
+      insert: jest.fn().mockReturnThis(),
+      update: jest.fn().mockReturnThis(),
+      delete: jest.fn().mockReturnThis(),
+      eq: jest.fn().mockReturnThis(),
+      single: jest.fn().mockReturnThis(),
+      throwOnError: jest.fn().mockReturnThis(),
+      then: jest.fn().mockImplementation(cb => Promise.resolve(cb({ data: null, error: null })))
+    }))
   }
-);
+}));
 
-// Test user constants
-const TEST_USER_ID = '00000000-0000-0000-0000-000000000000';
-const TEST_USER_EMAIL = 'test@example.com';
-const TEST_USER_PASSWORD = 'testpassword123';
+// Mock environment variables
+process.env.SUPABASE_URL = 'http://localhost:54321';
+process.env.SUPABASE_ANON_KEY = 'dummy-key';
+process.env.NODE_ENV = 'test';
 
-async function initializeTestDatabase() {
-  try {
-    // Sync database schema
-    await syncSchema();
-
-    // Wait for schema cache to update
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // Create test user
-    const { data: user, error: userError } = await supabase.auth.admin.createUser({
-      email: TEST_USER_EMAIL,
-      password: TEST_USER_PASSWORD,
-      email_confirm: true,
-      user_metadata: {
-        name: 'Test User'
-      },
-      id: TEST_USER_ID
-    });
-
-    if (userError) {
-      console.error('Failed to create test user:', userError);
-      throw userError;
-    }
-
-    // Create test event
-    const { data: event, error: eventError } = await supabase
-      .from('events')
-      .insert({
-        title: 'Test Event',
-        description: 'Test Description',
-        venue: 'Test Venue',
-        capacity: 100,
-        start_time: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
-        end_time: new Date(Date.now() + 172800000).toISOString(), // Day after tomorrow
-        registration_deadline: new Date(Date.now() + 43200000).toISOString(), // 12 hours from now
-        theme: 'Test Theme',
-        created_by: TEST_USER_ID
-      })
-      .select()
-      .single();
-
-    if (eventError) {
-      console.error('Failed to create test event:', eventError);
-      throw eventError;
-    }
-
-    return { user, event };
-  } catch (error) {
-    console.error('Test database initialization failed:', error);
-    throw error;
-  }
-}
-
-async function cleanupTestData() {
-  try {
-    // Delete test event
-    await supabase
-      .from('events')
-      .delete()
-      .eq('created_by', TEST_USER_ID);
-
-    // Delete test user
-    await supabase.auth.admin.deleteUser(TEST_USER_ID);
-
-  } catch (error) {
-    console.error('Test data cleanup failed:', error);
-    throw error;
-  }
-}
-
-// Jest hooks
-beforeAll(async () => {
-  await initializeTestDatabase();
+// Mock window.matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
 });
 
-afterAll(async () => {
-  await cleanupTestData();
+// Mock IntersectionObserver
+class MockIntersectionObserver {
+  constructor(callback: any) {
+    this.observe = jest.fn();
+    this.unobserve = jest.fn();
+    this.disconnect = jest.fn();
+  }
+  observe = jest.fn();
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  value: MockIntersectionObserver,
 });
 
-// Export for use in tests
-export {
-  supabase,
-  TEST_USER_ID,
-  TEST_USER_EMAIL,
-  TEST_USER_PASSWORD
+// Mock ResizeObserver
+class MockResizeObserver {
+  constructor(callback: any) {
+    this.observe = jest.fn();
+    this.unobserve = jest.fn();
+    this.disconnect = jest.fn();
+  }
+  observe = jest.fn();
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+}
+
+Object.defineProperty(window, 'ResizeObserver', {
+  writable: true,
+  value: MockResizeObserver,
+});
+
+// Mock Supabase client
+jest.mock('@/config/supabase', () => ({
+  supabase: jest.requireActual('./mocks/supabase').supabase,
+}));
+
+// Reset mock data before each test
+beforeEach(() => {
+  resetMockData();
+  // Seed initial test data
+  seedMockData('events', []);
+  seedMockData('tickets', []);
+});
+
+// Clean up after each test
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+// Global test timeout
+jest.setTimeout(10000);
+
+// Mock console.error to avoid noisy logs during tests
+const originalError = console.error;
+console.error = (...args) => {
+  if (args[0]?.includes?.('Warning:')) return;
+  originalError.call(console, ...args);
 };
 
-// Mock Supabase client for unit tests
-const mockClient = {
-  from: jest.fn(),
-  rpc: jest.fn(),
-  auth: {
-    signIn: jest.fn(),
-    signOut: jest.fn(),
-    getUser: jest.fn(),
-    admin: {
-      deleteUser: jest.fn()
-    }
-  }
-} as unknown as SupabaseClient<Database>;
 
-global.mockSupabaseClient = mockClient; 

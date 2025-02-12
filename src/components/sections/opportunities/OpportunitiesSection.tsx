@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 
 interface Opportunity {
@@ -25,7 +25,7 @@ export const OpportunitiesSection = ({
   className
 }: OpportunitiesSectionProps) => {
   return (
-    <section className={cn(
+    <section className={cx(
       "py-20 bg-gradient-to-b from-pure-black to-deep-purple text-pure-white",
       className
     )}>
@@ -84,3 +84,5 @@ export const OpportunitiesSection = ({
     </section>
   );
 };
+
+

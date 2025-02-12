@@ -77,3 +77,5 @@ export const EventsContent = () => {
     </section>
   );
 };
+
+

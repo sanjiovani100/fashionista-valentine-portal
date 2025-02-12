@@ -76,3 +76,5 @@ export function Feature({ role = "sponsor" }: FeatureProps) {
     </section>
   );
 }
+
+

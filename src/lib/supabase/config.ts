@@ -144,3 +144,5 @@ export interface InsertSponsor {
   benefits: string[];
   contact_email: string;
 } 
+
+

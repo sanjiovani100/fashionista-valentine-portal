@@ -113,3 +113,5 @@ export const MODEL_MEASUREMENT_CONSTRAINTS = {
   hips: { min: 70, max: 130 },    // cm
   shoe_size: { min: 35, max: 45 } // EU size
 } as const; 
+
+

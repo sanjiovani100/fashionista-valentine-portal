@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
-import type { FormSchema } from '../schemas/formSchemas';
+import type { FormRole, FormData, ModelFormFields, DesignerFormFields, SponsorFormFields } from '@/types/forms';
 
 type Tables = Database['public']['Tables'];
 type ApplicationInsert = Tables['applications']['Insert'];
@@ -16,9 +16,10 @@ export const useFormSubmission = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const submitForm = async (data: FormSchema, selectedRole: string) => {
+  const submitForm = async (data: FormData, selectedRole: FormRole) => {
     setIsSubmitting(true);
     try {
+      // Common application data
       const applicationData: ApplicationInsert = {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -38,54 +39,60 @@ export const useFormSubmission = () => {
 
       if (applicationError) throw applicationError;
 
+      // Role-specific data
       switch (selectedRole) {
         case 'model': {
-          const modelData: ModelApplicationInsert = {
+          const modelData = data as ModelFormFields;
+          const roleData: ModelApplicationInsert = {
             application_id: application.id,
-            height: data.height!,
-            bust: data.bust!,
-            waist: data.waist!,
-            portfolio_link: data.portfolioLink,
-            instagram_handle: data.instagramHandle
+            height: parseFloat(modelData.height),
+            bust: parseFloat(modelData.bust),
+            waist: parseFloat(modelData.waist),
+            portfolio_link: modelData.portfolioLink,
+            instagram_handle: modelData.instagramHandle,
+            portfolio_files: modelData.portfolioFiles
           };
           
           const { error: roleError } = await supabase
             .from('model_applications')
-            .insert(modelData);
+            .insert(roleData);
             
           if (roleError) throw roleError;
           break;
         }
         case 'designer': {
-          const designerData: DesignerApplicationInsert = {
+          const designerData = data as DesignerFormFields;
+          const roleData: DesignerApplicationInsert = {
             application_id: application.id,
-            brand_name: data.brandName!,
-            website: data.website,
-            collection_description: data.collectionDescription!,
-            number_of_pieces: data.numberOfPieces!,
-            space_requirements: data.spaceRequirements!
+            brand_name: designerData.brandName,
+            website: designerData.website,
+            collection_description: designerData.collectionDescription,
+            number_of_pieces: designerData.numberOfPieces,
+            space_requirements: designerData.spaceRequirements,
+            collection_files: designerData.collectionFiles
           };
           
           const { error: roleError } = await supabase
             .from('designer_applications')
-            .insert(designerData);
+            .insert(roleData);
             
           if (roleError) throw roleError;
           break;
         }
         case 'sponsor': {
-          const sponsorData: SponsorApplicationInsert = {
+          const sponsorData = data as SponsorFormFields;
+          const roleData: SponsorApplicationInsert = {
             application_id: application.id,
-            company_name: data.companyName!,
-            industry: data.industry!,
-            company_description: data.companyDescription!,
-            marketing_goals: data.marketingGoals!,
-            partnership_preferences: data.partnershipPreferences!
+            company_name: sponsorData.companyName,
+            industry: sponsorData.industry,
+            company_description: sponsorData.companyDescription,
+            marketing_goals: sponsorData.marketingGoals,
+            partnership_preferences: sponsorData.partnershipPreferences
           };
           
           const { error: roleError } = await supabase
             .from('sponsor_applications')
-            .insert(sponsorData);
+            .insert(roleData);
             
           if (roleError) throw roleError;
           break;
@@ -112,3 +119,5 @@ export const useFormSubmission = () => {
 
   return { submitForm, isSubmitting };
 };
+
+

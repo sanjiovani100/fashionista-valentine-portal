@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 
 interface NavItem {
   name: string;
@@ -23,7 +23,7 @@ export const DesktopNav = ({ items, activeTab, onNavigate }: DesktopNavProps) =>
           key={item.name}
           onClick={() => onNavigate(item)}
           disabled={item.disabled}
-          className={cn(
+          className={cx(
             "relative px-3 py-1.5 rounded-full transition-colors text-sm font-montserrat",
             "text-white/80 hover:text-fashion-pink",
             activeTab === item.name && "text-fashion-pink",
@@ -47,3 +47,5 @@ export const DesktopNav = ({ items, activeTab, onNavigate }: DesktopNavProps) =>
     </div>
   );
 };
+
+

@@ -1,149 +1,62 @@
 import type { Config } from "tailwindcss";
-import { theme } from "./src/styles/theme";
 
-export default {
+const config: Config = {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
-  prefix: "",
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
-    ...theme,
     extend: {
-      // Animation System
-      animation: {
-        marquee: 'marquee var(--duration, 30s) linear infinite',
-        'fade-in': 'fadeIn var(--duration-normal) var(--ease-out)',
-        'slide-up': 'slideUp var(--duration-normal) var(--ease-out)',
-        'scale-in': 'scaleIn var(--duration-normal) var(--ease-out)',
-        'stagger-fade': 'fadeIn var(--duration-normal) var(--ease-out) forwards',
-      },
-      keyframes: {
-        marquee: {
-          to: { transform: 'translateX(-50%)' }
-        },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' }
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' }
-        },
-        scaleIn: {
-          '0%': { transform: 'scale(0.95)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' }
-        }
-      },
-      // Typography System
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
-        inter: ['Inter', 'sans-serif']
+        inter: ['Inter', 'sans-serif'],
       },
-      fontSize: {
-        'h1': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
-        'h2': ['2.5rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
-        'h3': ['2rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
-        'h4': ['1.5rem', { lineHeight: '1.5' }],
-        'h1-desktop': ['4rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
-        'h2-desktop': ['3rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
-        'h3-desktop': ['2.5rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
-        'h4-desktop': ['2rem', { lineHeight: '1.5' }],
+      borderRadius: {
+        lg: "0.5rem",
+        md: "0.375rem",
+        sm: "0.25rem",
       },
-      // Color System
-      colors: {
-        white: '#FFFFFF',
-        black: '#000000',
-        transparent: 'transparent',
-        border: 'hsl(var(--border))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+      keyframes: {
+        hide: {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
         },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+        slideDownAndFade: {
+          from: { opacity: "0", transform: "translateY(-6px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+        slideLeftAndFade: {
+          from: { opacity: "0", transform: "translateX(6px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
         },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+        slideUpAndFade: {
+          from: { opacity: "0", transform: "translateY(6px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+        slideRightAndFade: {
+          from: { opacity: "0", transform: "translateX(-6px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
         },
-        maroon: {
-          DEFAULT: '#800000',
-          light: '#A52A2A',
-          dark: '#4D0000',
-        },
-        red: {
-          primary: 'hsl(var(--red-primary))',
-          bright: 'hsl(var(--red-bright))',
-          soft: 'hsl(var(--red-soft))',
-        },
-        gray: {
-          100: 'hsl(var(--gray-100))',
-          200: 'hsl(var(--gray-200))',
-          300: 'hsl(var(--gray-300))',
-          400: 'hsl(var(--gray-400))',
-          500: 'hsl(var(--gray-500))',
-        }
       },
-      // Spacing System
-      spacing: {
-        '0': '0',
-        '1': '0.25rem',
-        '2': '0.5rem',
-        '3': '0.75rem',
-        '4': '1rem',
-        '5': '1.25rem',
-        '6': '1.5rem',
-        '8': '2rem',
-        '10': '2.5rem',
-        '12': '3rem',
-        '16': '4rem',
-        '20': '5rem',
-        '24': '6rem',
-        '32': '8rem',
-        '40': '10rem',
-        '48': '12rem',
-        '56': '14rem',
-        '64': '16rem',
-        section: '6rem',
-        'section-inner': '4rem',
-        component: '2rem',
-        element: '1rem',
+      animation: {
+        hide: "hide 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideDownAndFade: "slideDownAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideLeftAndFade: "slideLeftAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideUpAndFade: "slideUpAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideRightAndFade: "slideRightAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)",
       },
-      // Component Sizes
-      minHeight: {
-        'btn-lg': '48px',
-        'btn-md': '40px',
-        'btn-sm': '32px',
-        'touch-target': '44px',
-      },
-      // Transition System
-      transitionDuration: {
-        normal: 'var(--duration-normal)',
-        fast: 'var(--duration-fast)',
-        slow: 'var(--duration-slow)',
-      },
-      transitionTimingFunction: {
-        'ease-out-custom': 'var(--ease-out)',
-      },
-      // Shadow System
-      boxShadow: {
-        'card': '0 4px 6px rgba(0, 0, 0, 0.1)',
-        'card-hover': '0 8px 12px rgba(0, 0, 0, 0.15)',
-        'btn': '0 2px 4px rgba(0, 0, 0, 0.1)',
-        'btn-hover': '0 4px 8px rgba(0, 0, 0, 0.2)',
-      }
-    }
+    },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography")
+  ],
+};
+
+export default config;
+
+

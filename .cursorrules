@@ -1,0 +1,853 @@
+# Cursor Rules for Fashionista Portal
+
+## Communication Guidelines
+
+### 1. Assistant Communication Style
+```
+ALWAYS:
+- Start with a clear summary of what I'm about to do
+- Explain WHY before HOW
+- Break down complex tasks into simple steps
+- Use consistent formatting for different types of information
+- Indicate progress and next steps
+```
+
+### 2. Action Communication
+```
+When Making Changes:
+- "I will now [action] because [reason]"
+- "This change will [benefit/impact]"
+- "Here's what I'm checking: [list]"
+- "I found [x] and plan to [action]"
+
+When Reviewing:
+- "I see [observation]"
+- "This suggests [interpretation]"
+- "We should consider [suggestion]"
+```
+
+### 3. Problem-Solving Communication
+```
+When Encountering Issues:
+1. State the problem clearly
+2. Explain the impact
+3. Present options
+4. Recommend solution
+5. Explain why it's the best approach
+```
+
+### 4. Technical Explanations
+```
+INSTEAD OF:
+"Implementing a polymorphic database relation with foreign key constraints"
+
+SAY:
+"Creating a flexible way to connect different types of data while keeping everything organized"
+
+INSTEAD OF:
+"Utilizing recursive tree traversal for nested comment rendering"
+
+SAY:
+"Creating a system to show comments and their replies in an organized way"
+```
+
+### 5. Progress Updates
+```
+Format:
+1. What was just completed
+2. What's happening now
+3. What's coming next
+4. Any decisions needed
+```
+
+### 6. Code Change Explanations
+```
+For Each Change:
+1. What: "I'm updating [file/component]"
+2. Why: "This change helps [benefit]"
+3. How: "I'll do this by [steps]"
+4. Impact: "This will affect [areas]"
+```
+
+### 7. Question Handling
+```
+When Asked Questions:
+1. Confirm understanding
+2. Provide direct answer
+3. Offer context if helpful
+4. Suggest related considerations
+```
+
+### 8. Error Communication
+```
+When Reporting Issues:
+1. Error description in plain language
+2. Actual vs. expected behavior
+3. Potential causes
+4. Suggested solutions
+5. Prevention tips
+```
+
+### 9. Documentation Style
+```
+Structure:
+1. Overview (What & Why)
+2. Prerequisites (if any)
+3. Step-by-step instructions
+4. Expected results
+5. Troubleshooting tips
+```
+
+### 10. Status Updates
+```
+Regular Format:
+✓ Completed: [tasks]
+🟡 In Progress: [current task]
+⭕ Next Up: [upcoming tasks]
+❌ Blocked: [issues if any]
+```
+
+### 11. Decision Making
+```
+When Suggesting Options:
+1. Simple option: [basic solution]
+2. Balanced option: [moderate solution]
+3. Advanced option: [complex solution]
+
+Include for each:
+- Pros and cons
+- Implementation effort
+- Impact on project
+```
+
+### 12. Technical vs. Non-Technical Communication
+```
+Technical Context:
+- Use precise terminology
+- Include code examples
+- Reference documentation
+
+Non-Technical Context:
+- Use analogies
+- Provide visual examples
+- Focus on outcomes
+```
+
+## Implementation Strategy
+
+### Phase 1: Build Configuration
+- Configure TypeScript with separate configs:
+  ```
+  - tsconfig.json (frontend)
+  - tsconfig.node.json (Vite/build)
+  - tsconfig.server.json (backend)
+  ```
+- Set up module resolution and path aliases
+- Configure port management (3001 for frontend, 8081 for backend)
+- Implement proper ESM imports
+
+### Phase 2: Environment Setup
+- Configure development servers and proxy
+- Set up environment variables and validation
+- Install and configure required dependencies:
+  ```
+  - @hookform/resolvers
+  - react-error-boundary
+  - @radix-ui/react-* components
+  - postcss-nesting
+  - date-fns
+  - next-themes
+  ```
+- Clean up package.json and resolve dependency conflicts
+
+## Feature Development Strategy
+
+### 1. Core Foundation First
+- Build and stabilize core features before expansion
+- Ensure core features are production-ready
+- Document core functionality thoroughly
+- Create comprehensive core feature tests
+- Get user validation on core features
+
+### 2. Strategic Feature Progression
+```
+Core → Test → Validate → Intermediate → Test → Validate → Advanced → Test → Validate
+```
+- Never skip stages
+- Each stage builds on stable previous stage
+- Document progression clearly
+- Maintain feature dependency map
+
+### 3. Testing Gates
+Core Features: 100% test coverage required
+Intermediate: 90% test coverage minimum
+Advanced: 80% test coverage minimum
+All stages require:
+- Unit tests
+- Integration tests
+- End-to-end tests for critical paths
+- Performance benchmarks
+- Security testing
+
+### 4. Feature Classification
+```
+Core Features:
+- Essential for basic operation
+- Required for MVP
+- Fundamental user needs
+
+Intermediate Features:
+- Quality-of-life improvements
+- Enhanced user experience
+- Performance optimizations
+- Additional user value
+
+Advanced Features:
+- Premium functionality
+- Complex integrations
+- Specialized use cases
+- Innovation areas
+```
+
+### 5. Development Phases
+```
+Phase 1: Core Foundation
+├── Implement core features
+├── Comprehensive testing
+├── Performance baseline
+├── Security baseline
+└── User validation
+
+Phase 2: Intermediate Enhancement
+├── Add user experience improvements
+├── Optimize performance
+├── Enhance security
+├── Add monitoring
+└── Gather user feedback
+
+Phase 3: Advanced Capabilities
+├── Implement premium features
+├── Complex integrations
+├── Advanced optimizations
+├── Innovation features
+└── Market differentiation
+```
+
+### 6. Quality Gates
+Before Moving to Next Stage:
+- All tests passing
+- Performance metrics met
+- Security requirements met
+- User feedback incorporated
+- Documentation updated
+- Technical debt addressed
+
+### 7. Monitoring and Metrics
+- Track usage of core features
+- Measure performance impact
+- Monitor error rates
+- Collect user feedback
+- Analyze feature adoption
+
+### 8. Documentation Requirements
+```
+Core Features:
+- Complete technical documentation
+- User guides
+- API documentation
+- Test coverage reports
+
+Intermediate Features:
+- Integration guides
+- Performance impact
+- Configuration options
+
+Advanced Features:
+- Advanced usage scenarios
+- Optimization guides
+- Integration examples
+```
+
+### 9. Review and Validation Process
+```
+Core Features:
+- Thorough code review
+- Security review
+- Performance testing
+- User acceptance testing
+
+Intermediate Features:
+- Feature impact review
+- Integration testing
+- User experience testing
+
+Advanced Features:
+- Innovation review
+- Scalability testing
+- Market validation
+```
+
+### 10. Rollback Strategy
+Each Stage Requires:
+- Clear rollback procedures
+- Feature flags
+- Data migration plans
+- Recovery documentation
+- Monitoring alerts
+
+### 11. User Communication
+```
+Core Features:
+- Essential documentation
+- Basic tutorials
+- Support channels
+
+Intermediate Features:
+- Advanced guides
+- Best practices
+- Use case examples
+
+Advanced Features:
+- Expert documentation
+- Integration examples
+- Custom solutions
+```
+
+### 12. Development Principles
+At All Stages:
+- Maintain code quality
+- Keep documentation current
+- Consider scalability
+- Follow security best practices
+- Get user feedback
+- Monitor performance
+
+## Code Quality Standards
+
+### TypeScript Best Practices
+- Use strict type checking
+- Avoid any type
+- Implement proper interfaces
+- Use type guards appropriately
+
+### Testing Standards
+- Write tests before implementation
+- Maintain high test coverage
+- Use meaningful test descriptions
+- Implement proper mocking
+
+### Security Guidelines
+- Implement proper authentication
+- Use secure communication
+- Validate all inputs
+- Follow OWASP guidelines
+
+### Performance Standards
+- Optimize database queries
+- Implement proper caching
+- Use lazy loading
+- Monitor performance metrics
+
+## Review Process
+- Code review required for all changes
+- Security review for sensitive features
+- Performance review for critical paths
+- Documentation review for accuracy
+
+## Code Organization and Structure
+
+### TypeScript Type Definitions
+- Keep database types in sync with Supabase schema
+- Use separate type files for different domains (forms, API, database)
+- Maintain consistent type naming conventions (e.g., `Row`, `Insert` suffixes)
+- Place types in `src/types` directory with domain-specific subdirectories
+- Follow step-by-step type implementation:
+  1. Define base types and interfaces
+  2. Implement database types
+  3. Add API request/response types
+  4. Create form-specific types
+
+### Component Architecture
+- Follow atomic design principles (atoms, molecules, organisms)
+- Implement form components with proper validation and error handling
+- Use consistent prop interfaces and type definitions
+- Keep components focused and single-responsibility
+- Implement components in following order:
+  1. UI components (atoms)
+  2. Form components (molecules)
+  3. Feature components (organisms)
+  4. Page layouts and templates
+
+### API and Service Layer
+- Implement service classes extending base ApiService
+- Use proper error handling and type-safe database operations
+- Follow RESTful API design patterns
+- Maintain service-specific error types
+- Follow service implementation order:
+  1. Base API service
+  2. Authentication service
+  3. Event services
+  4. Form submission services
+  5. Image upload services
+
+## Testing Standards
+
+### Test Organization
+- Place tests in `__tests__` directories adjacent to source files
+- Use consistent test file naming (`*.test.ts`, `*.spec.ts`)
+- Implement E2E tests with Cypress for critical flows
+- Maintain test utilities in `src/test` directory
+
+### Test Coverage
+- Maintain minimum 80% test coverage across all metrics
+- Include unit tests for utilities and services
+- Add integration tests for form submissions and API endpoints
+- Use Jest for unit and integration testing
+
+## Security and Error Handling
+
+### Security Practices
+- Implement proper authentication with Supabase
+- Use environment variables for sensitive configuration
+- Follow OWASP security guidelines
+- Implement proper CORS and CSP policies
+
+### Error Handling
+- Use custom error classes for different error types
+- Implement consistent error responses
+- Add proper logging and monitoring
+- Use error boundaries for React components
+
+## Performance and Optimization
+
+### Build and Bundle
+- Configure proper Vite optimization settings
+- Implement code splitting and lazy loading
+- Use proper cache strategies
+- Optimize asset delivery and loading
+
+### State Management
+- Implement proper form state management
+- Use React Query for server state
+- Follow proper data fetching patterns
+- Implement optimistic updates where appropriate
+
+## Development Workflow
+
+### Project Setup
+- Follow environment setup checklist:
+  1. Install dependencies
+  2. Configure TypeScript
+  3. Set up development servers
+  4. Configure environment variables
+  5. Set up testing environment
+
+### Deployment Strategy
+- Implement deployment in stages:
+  1. Development environment
+  2. Staging environment
+  3. Production environment
+- Use environment-specific configurations
+- Implement proper CI/CD pipelines
+
+### Git and CI/CD
+- Follow conventional commit messages
+- Implement proper GitHub Actions workflows
+- Use environment-specific deployments
+- Include "[Cursor] " in commit messages and PR titles
+
+### Documentation
+- Add JSDoc comments for functions and components
+- Maintain up-to-date README and API documentation
+- Document environment setup and configuration
+- Use TypeDoc for API documentation generation
+
+## Project-Specific Rules
+
+### Form Handling
+- Use Zod for form validation
+- Implement proper form submission handling
+- Follow consistent form component structure
+- Use React Hook Form for form state management
+
+### Styling and UI
+- Use Tailwind CSS with proper configuration
+- Follow design system guidelines
+- Implement responsive design patterns
+- Maintain consistent color schemes and typography
+
+### Internationalization
+- Use proper i18n setup with type safety
+- Follow translation key structure
+- Implement proper form validation messages
+- Support multiple languages
+
+## Lessons Learned
+
+### Environment Setup
+- Use Python venv in ./venv
+- Include debugging information in program output
+- Read files before editing
+- Handle multiline git commits properly
+
+### Best Practices
+- For search results, ensure proper UTF-8 encoding
+- Add debug information to stderr
+- Use 'seaborn-v0_8' for seaborn styles
+- Use 'gpt-4o' for OpenAI's GPT-4 with vision
+
+## Tools and Utilities
+
+### Screenshot Verification
+- Use screenshot_utils.py for capturing screenshots
+- Implement LLM verification with images
+- Support multiple providers (OpenAI, Anthropic)
+- Handle different viewport sizes
+
+### Web Scraping and Search
+- Use web_scraper.py for concurrent scraping
+- Implement proper error handling for failed requests
+- Use search_engine.py for web searches
+- Handle rate limiting and timeouts
+
+### LLM Integration
+- Support multiple LLM providers
+- Use appropriate models for different tasks
+- Handle API errors gracefully
+- Implement proper prompt engineering
+
+## Code Quality and Architecture Rules
+
+### Database Management
+1. Schema Validation:
+   - Validate database schema before any code changes
+   - Ensure all migrations are reversible
+   - Test migrations in isolation before integration
+   - Maintain schema version control
+   - Document database relationships
+
+2. Connection Management:
+   - Implement connection pooling
+   - Handle connection timeouts gracefully
+   - Monitor connection limits
+   - Implement retry mechanisms
+   - Log connection states
+
+### Error Prevention
+1. Type Safety:
+   - Enforce strict TypeScript checks
+   - Maintain comprehensive type definitions
+   - Use branded types for domain-specific values
+   - Implement runtime type checking
+   - Validate API responses
+
+2. Error Handling:
+   - Implement global error boundaries
+   - Use custom error classes
+   - Log errors with context
+   - Handle async errors consistently
+   - Provide user-friendly error messages
+
+### Development Workflow Enhancement
+1. Pre-Implementation:
+   - Create technical design documents
+   - Review existing implementations
+   - Identify potential conflicts
+   - Document assumptions
+   - Create test plans
+
+2. Implementation:
+   - Follow feature flag driven development
+   - Implement changes incrementally
+   - Add logging checkpoints
+   - Document configuration changes
+   - Maintain backwards compatibility
+
+### Testing Strategy Enhancement
+1. Test Coverage:
+   - Write tests before implementation
+   - Maintain test data fixtures
+   - Test error conditions
+   - Test boundary cases
+   - Implement integration tests
+
+2. Performance Testing:
+   - Benchmark critical operations
+   - Test with realistic data volumes
+   - Monitor memory usage
+   - Test concurrent operations
+   - Validate query performance
+
+### Monitoring and Debugging
+1. Logging:
+   - Implement structured logging
+   - Use correlation IDs
+   - Log state transitions
+   - Monitor error rates
+   - Track performance metrics
+
+2. Debugging:
+   - Maintain debugging configurations
+   - Use diagnostic endpoints
+   - Implement health checks
+   - Monitor resource usage
+   - Track system state
+
+### Security Practices Enhancement
+1. Input Validation:
+   - Validate all external input
+   - Implement rate limiting
+   - Use parameterized queries
+   - Sanitize user input
+   - Validate file uploads
+
+2. Authentication/Authorization:
+   - Implement role-based access
+   - Use secure session management
+   - Validate tokens properly
+   - Implement audit logging
+   - Monitor auth failures
+
+### Code Organization Enhancement
+1. Project Structure:
+   - Maintain consistent folder structure
+   - Use feature-based organization
+   - Separate concerns properly
+   - Document architecture decisions
+   - Maintain dependency graph
+
+2. Code Style:
+   - Use consistent naming conventions
+   - Implement code formatting
+   - Maintain documentation standards
+   - Use meaningful comments
+   - Follow DRY principles
+
+### Configuration Management
+1. Environment Setup:
+   - Use environment-specific configs
+   - Validate config values
+   - Document config changes
+   - Use secret management
+   - Maintain config versioning
+
+2. Dependency Management:
+   - Lock dependency versions
+   - Audit dependencies regularly
+   - Document breaking changes
+   - Maintain compatibility matrix
+   - Test dependency updates
+
+### Performance Optimization
+1. Resource Management:
+   - Implement caching strategies
+   - Optimize database queries
+   - Manage memory usage
+   - Handle concurrent requests
+   - Monitor resource limits
+
+2. Code Optimization:
+   - Profile critical paths
+   - Optimize hot code paths
+   - Implement lazy loading
+   - Use appropriate data structures
+   - Optimize network calls
+
+### Deployment Strategy Enhancement
+1. Pre-Deployment:
+   - Validate environment configs
+   - Run integration tests
+   - Check dependencies
+   - Verify database migrations
+   - Test rollback procedures
+
+2. Post-Deployment:
+   - Monitor system health
+   - Verify feature flags
+   - Check error rates
+   - Monitor performance
+   - Validate integrations
+
+## Modern Development Practices
+
+### AI-Assisted Development
+1. Code Generation:
+   - Use AI tools responsibly for boilerplate code
+   - Validate AI-generated code against standards
+   - Document AI-assisted implementations
+   - Maintain human oversight for critical logic
+   - Use AI for code review assistance
+
+2. Documentation Enhancement:
+   - Leverage AI for documentation drafts
+   - Use AI for comment generation
+   - Maintain documentation accuracy
+   - Generate API documentation templates
+   - Update documentation automatically
+
+### Modern Architecture Patterns
+1. Micro-Frontend Architecture:
+   - Implement module federation
+   - Use dynamic imports effectively
+   - Maintain independent deployments
+   - Share common dependencies
+   - Implement cross-team coordination
+
+2. API Design:
+   - Use GraphQL where appropriate
+   - Implement API versioning
+   - Design for backward compatibility
+   - Use proper status codes
+   - Implement proper caching headers
+
+### Developer Experience
+1. Local Development:
+   - Use Docker for development
+   - Implement hot reload
+   - Automate environment setup
+   - Use development proxies
+   - Maintain parity with production
+
+2. Code Quality Tools:
+   - Implement pre-commit hooks
+   - Use automated code formatting
+   - Run automated tests locally
+   - Implement git hooks
+   - Use trunk-based development
+
+## Project Efficiency Rules
+
+### Resource Management
+1. Asset Optimization:
+   - Use modern image formats (WebP, AVIF)
+   - Implement lazy loading
+   - Optimize bundle sizes
+   - Use CDN effectively
+   - Implement proper caching
+
+2. Performance Budgets:
+   - Set bundle size limits
+   - Monitor page load times
+   - Track API response times
+   - Measure Time to Interactive
+   - Monitor Core Web Vitals
+
+### Development Process
+1. Code Review:
+   - Use automated code review tools
+   - Implement pair programming sessions
+   - Follow review checklists
+   - Use merge request templates
+   - Track review metrics
+
+2. Knowledge Sharing:
+   - Maintain development wiki
+   - Document architectural decisions
+   - Create onboarding guides
+   - Share learning resources
+   - Regular tech talks
+
+### Quality Assurance
+1. Automated Testing:
+   - Implement visual regression testing
+   - Use snapshot testing
+   - Automated accessibility testing
+   - Performance regression testing
+   - Security scanning
+
+2. Manual Testing:
+   - Create test scenarios
+   - Maintain test documentation
+   - Track bug patterns
+   - Use testing checklists
+   - Regular QA reviews
+
+### Monitoring and Analytics
+1. Application Monitoring:
+   - Implement error tracking
+   - Monitor user journeys
+   - Track performance metrics
+   - Monitor API usage
+   - Track resource utilization
+
+2. User Analytics:
+   - Track user behavior
+   - Monitor conversion rates
+   - Analyze user feedback
+   - Track feature usage
+   - Monitor accessibility
+
+### Continuous Improvement
+1. Code Maintenance:
+   - Regular dependency updates
+   - Code cleanup sprints
+   - Technical debt tracking
+   - Regular security audits
+   - Performance optimization
+
+2. Process Improvement:
+   - Regular retrospectives
+   - Process documentation
+   - Workflow optimization
+   - Tool evaluation
+   - Team feedback
+
+### Version Control
+1. Branch Management:
+   - Use feature flags
+   - Implement trunk-based development
+   - Automated branch cleanup
+   - Protected branches
+   - Regular merges
+
+2. Release Management:
+   - Semantic versioning
+   - Automated changelogs
+   - Release notes
+   - Version tagging
+   - Rollback procedures
+
+### Infrastructure as Code
+1. Configuration:
+   - Use infrastructure as code
+   - Implement GitOps
+   - Version control configs
+   - Environment templates
+   - Automated provisioning
+
+2. Cloud Resources:
+   - Use cloud-native services
+   - Implement auto-scaling
+   - Resource monitoring
+   - Cost optimization
+   - Disaster recovery
+
+### Development Standards
+1. Code Organization:
+   - Feature-based structure
+   - Consistent file naming
+   - Module boundaries
+   - Clear dependencies
+   - Clean architecture
+
+2. Documentation:
+   - Living documentation
+   - API specifications
+   - Architecture diagrams
+   - Decision records
+   - Change logs
+
+### Team Collaboration
+1. Communication:
+   - Clear coding standards
+   - Regular sync meetings
+   - Knowledge sharing sessions
+   - Cross-team collaboration
+   - Documentation reviews
+
+2. Project Management:
+   - Agile ceremonies
+   - Sprint planning
+   - Task estimation
+   - Progress tracking
+   - Risk management

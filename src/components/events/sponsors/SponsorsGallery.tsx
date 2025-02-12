@@ -247,3 +247,5 @@ export const SponsorsGallery = ({ event }: SponsorsGalleryProps) => {
     </Section>
   );
 }; 
+
+

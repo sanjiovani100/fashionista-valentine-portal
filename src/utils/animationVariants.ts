@@ -79,3 +79,5 @@ export const reducedMotionVariants: Variants = {
     transition: { duration: 0.3 }
   }
 };
+
+

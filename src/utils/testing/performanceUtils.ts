@@ -114,3 +114,5 @@ export const getPerformanceSummary = () => {
     userAgent: navigator.userAgent
   });
 };
+
+

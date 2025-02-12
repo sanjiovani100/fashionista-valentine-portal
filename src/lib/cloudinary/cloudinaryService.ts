@@ -162,3 +162,5 @@ export const cloudinaryService = new CloudinaryService({
   cloudName: cloudinaryConfig.cloud.cloudName,
   defaultFolder: 'fashion-events'
 });
+
+

@@ -65,3 +65,5 @@ export const MissionVision = ({ mission, vision }: MissionVisionProps) => {
     </section>
   );
 };
+
+

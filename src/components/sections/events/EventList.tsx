@@ -57,3 +57,5 @@ export const EventList = ({ filters, sortBy, viewMode }: EventListProps) => {
     </motion.div>
   );
 };
+
+

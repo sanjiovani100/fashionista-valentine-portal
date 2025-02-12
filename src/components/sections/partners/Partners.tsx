@@ -137,3 +137,5 @@ export const Partners = () => {
     </section>
   );
 };
+
+

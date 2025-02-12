@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { HeroBackground } from "./components/HeroBackground";
 import { HeroContent } from "./components/HeroContent";
 import { AnimatedBackground } from "./components/AnimatedBackground";
@@ -16,7 +16,7 @@ export const PageHero = ({ role, className }: PageHeroProps) => {
 
   return (
     <section 
-      className={cn(
+      className={cx(
         "relative min-h-screen flex items-center justify-center overflow-hidden",
         "bg-gradient-to-b from-pure-black to-deep-purple",
         className
@@ -30,3 +30,5 @@ export const PageHero = ({ role, className }: PageHeroProps) => {
     </section>
   );
 };
+
+

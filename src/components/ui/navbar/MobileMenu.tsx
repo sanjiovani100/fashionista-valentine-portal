@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 
 interface NavItem {
   name: string;
@@ -32,7 +32,7 @@ export const MobileMenu = ({ isOpen, items, activeTab, onNavigate }: MobileMenuP
                 key={item.name}
                 onClick={() => onNavigate(item)}
                 disabled={item.disabled}
-                className={cn(
+                className={cx(
                   "w-full text-left px-4 py-3 rounded-lg transition-colors",
                   "text-white/80 hover:text-fashion-pink hover:bg-white/5",
                   activeTab === item.name && "text-fashion-pink bg-white/5",
@@ -48,3 +48,5 @@ export const MobileMenu = ({ isOpen, items, activeTab, onNavigate }: MobileMenuP
     </AnimatePresence>
   );
 };
+
+

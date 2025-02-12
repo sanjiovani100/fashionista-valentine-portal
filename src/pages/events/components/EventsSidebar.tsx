@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Calendar as CalendarIcon, Filter, X } from 'lucide-react';
 import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
+import { cx } from '@/lib/utils';
 import type { EventSubtype } from '@/types/supabase/enums.types';
 import { useTranslation } from 'react-i18next';
 
@@ -111,7 +111,7 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className={cn(
+              className={cx(
                 "w-full justify-start text-left font-normal",
                 !filters.dateRange && "text-muted-foreground"
               )}
@@ -179,3 +179,5 @@ export const EventsSidebar = ({ filters, onFilterChange }: EventsSidebarProps) =
     </Card>
   );
 };
+
+

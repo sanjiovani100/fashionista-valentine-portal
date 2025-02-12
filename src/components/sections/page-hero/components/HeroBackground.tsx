@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 
 interface HeroBackgroundProps {
   backgroundImage: string;
@@ -9,7 +9,7 @@ export const HeroBackground = ({ backgroundImage, className }: HeroBackgroundPro
   return (
     <>
       <div 
-        className={cn(
+        className={cx(
           "absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[20000ms] hover:scale-110",
           className
         )}
@@ -22,3 +22,5 @@ export const HeroBackground = ({ backgroundImage, className }: HeroBackgroundPro
     </>
   );
 };
+
+

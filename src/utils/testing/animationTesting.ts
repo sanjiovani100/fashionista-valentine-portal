@@ -50,3 +50,5 @@ export const verifyReducedMotion = () => {
 
   return prefersReducedMotion;
 };
+
+

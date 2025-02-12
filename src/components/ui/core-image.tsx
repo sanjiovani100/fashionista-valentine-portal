@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -48,7 +48,7 @@ export const CoreImage = ({
   };
 
   return (
-    <div className={cn("relative", aspectRatioClasses[aspectRatio], className)}>
+    <div className={cx("relative", aspectRatioClasses[aspectRatio], className)}>
       {showLoadingState && isLoading && (
         <Skeleton className="absolute inset-0 bg-gray-200 animate-pulse" />
       )}
@@ -67,7 +67,7 @@ export const CoreImage = ({
         alt={alt}
         onLoad={handleLoad}
         onError={handleError}
-        className={cn(
+        className={cx(
           "w-full h-full object-cover",
           isLoading && "opacity-0",
           hasError && "opacity-0"
@@ -77,3 +77,5 @@ export const CoreImage = ({
     </div>
   );
 };
+
+

@@ -79,3 +79,5 @@ export const HeroContent = ({ headline, subheading }: HeroContentProps) => {
     </motion.div>
   );
 };
+
+

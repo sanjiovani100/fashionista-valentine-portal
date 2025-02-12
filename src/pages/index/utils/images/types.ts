@@ -15,3 +15,5 @@ export interface ImageValidationResult {
   isValid: boolean;
   message: string;
 }
+
+

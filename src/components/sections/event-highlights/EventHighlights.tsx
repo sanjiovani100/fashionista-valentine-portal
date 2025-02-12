@@ -103,3 +103,5 @@ export const EventHighlights = ({ highlights, images }: EventHighlightsProps) =>
     </section>
   );
 };
+
+

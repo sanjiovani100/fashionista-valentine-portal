@@ -52,3 +52,5 @@ export interface SponsorApplicationRow {
   max_file_size_mb: number | null;
   partnership_preferences: string;
 }
+
+

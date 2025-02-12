@@ -137,3 +137,5 @@ export const CollectionsShowcase = ({ event }: CollectionsShowcaseProps) => {
     </Section>
   );
 }; 
+
+

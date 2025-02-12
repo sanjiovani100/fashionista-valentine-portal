@@ -97,3 +97,5 @@ export const EventCard = ({
     </motion.div>
   );
 }; 
+
+

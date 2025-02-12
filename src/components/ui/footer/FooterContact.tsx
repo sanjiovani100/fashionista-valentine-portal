@@ -17,3 +17,5 @@ export const FooterContact = ({ variants }: FooterContactProps) => {
     </motion.div>
   );
 };
+
+

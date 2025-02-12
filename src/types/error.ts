@@ -84,3 +84,5 @@ export interface ErrorResponse {
   details?: string | ValidationError[];
   code?: string;
 } 
+
+

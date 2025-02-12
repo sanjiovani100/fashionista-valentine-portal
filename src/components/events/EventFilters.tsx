@@ -112,3 +112,5 @@ export const EventFilters = ({ onSearch, onFilterChange }: EventFiltersProps) =>
     </div>
   );
 }; 
+
+

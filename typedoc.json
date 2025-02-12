@@ -1,0 +1,25 @@
+{
+  "entryPoints": ["src/"],
+  "out": "docs/api",
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/test/**"],
+  "theme": "default",
+  "name": "Fashionista Portal API Documentation",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "includeVersion": true,
+  "hideGenerator": true,
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "API",
+    "Models",
+    "Services",
+    "Utilities",
+    "*"
+  ],
+  "readme": "README.md",
+  "plugin": [
+    "typedoc-plugin-markdown",
+    "@mxssfd/typedoc-theme"
+  ]
+} 

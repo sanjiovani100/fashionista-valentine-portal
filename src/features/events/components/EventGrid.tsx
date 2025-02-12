@@ -35,3 +35,5 @@ export const EventGrid = ({ events, viewMode }: EventGridProps) => {
     </AnimatePresence>
   );
 };
+
+

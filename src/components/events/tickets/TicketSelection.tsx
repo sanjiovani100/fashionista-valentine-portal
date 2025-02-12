@@ -279,3 +279,5 @@ export const TicketSelection = ({ event }: TicketSelectionProps) => {
     </Section>
   );
 }; 
+
+

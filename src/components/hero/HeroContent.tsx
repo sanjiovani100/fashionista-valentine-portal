@@ -1,6 +1,7 @@
-import { type FC } from 'react';
+import { FC } from 'react';
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatDate } from '@/utils/date';
 
 interface HeroContentProps {
   title: string;
@@ -30,9 +31,11 @@ export const HeroContent: FC<HeroContentProps> = ({
         </Button>
         <Button variant="outline" size="lg" className="btn-secondary">
           <Calendar className="mr-2 h-5 w-5" />
-          {eventDate}
+          {formatDate(eventDate)}
         </Button>
       </div>
     </div>
   );
 }; 
+
+

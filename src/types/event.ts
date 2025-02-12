@@ -123,4 +123,26 @@ export interface EventDetails {
   sponsors: EventSponsor[];
   faqs: FAQItem[];
   support: SupportContact;
+}
+
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  capacity: number;
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventFormData {
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  capacity: number;
 } 
+
+

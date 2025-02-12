@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -55,7 +55,7 @@ export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
         <PopoverTrigger asChild>
           <Button
             variant={"outline"}
-            className={cn(
+            className={cx(
               "w-[240px] justify-start text-left font-normal",
               "bg-black/20 border-white/10 text-white hover:bg-black/30"
             )}
@@ -82,3 +82,5 @@ export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
     </div>
   );
 } 
+
+

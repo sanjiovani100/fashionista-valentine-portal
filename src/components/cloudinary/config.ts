@@ -26,3 +26,5 @@ export const cloudinaryConfig = {
     promotional: 'promotional'
   }
 };
+
+

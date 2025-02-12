@@ -61,3 +61,5 @@ export interface FashionImageRow {
   updated_at: string | null;
   url: string;
 }
+
+

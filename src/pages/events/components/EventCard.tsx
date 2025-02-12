@@ -74,3 +74,5 @@ export const EventCard = ({ event, viewMode }: EventCardProps) => {
     </motion.div>
   );
 };
+
+

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +21,7 @@ export const BenefitsGrid = ({ benefits, className, role, section = 'benefits' }
   const { t } = useTranslation(role);
 
   return (
-    <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8", className)}>
+    <div className={cx("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8", className)}>
       {benefits.map((benefit, index) => (
         <motion.div
           key={benefit.title}
@@ -53,3 +53,5 @@ export const BenefitsGrid = ({ benefits, className, role, section = 'benefits' }
     </div>
   );
 };
+
+

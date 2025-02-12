@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { validateRequest } from '../../middleware/validate-request';
-import { requireAuth } from '../../middleware/require-auth';
+import { validateRequest } from '../../middleware/validate-request.js';
+import { requireAuth } from '../../middleware/require-auth.js';
 import { 
   listEvents, 
-  getEventById, 
+  getEvent, 
   createEvent, 
   updateEvent, 
   deleteEvent 
-} from './controllers';
+} from './controllers.js';
 
 const router = Router();
 
@@ -44,7 +44,7 @@ const eventSchema = z.object({
 
 // Routes
 router.get('/', listEvents);
-router.get('/:id', getEventById);
+router.get('/:id', getEvent);
 
 router.post('/',
   requireAuth,
@@ -64,3 +64,5 @@ router.delete('/:id',
 );
 
 export { router as eventRoutes }; 
+
+

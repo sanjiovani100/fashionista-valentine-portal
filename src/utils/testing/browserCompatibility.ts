@@ -39,3 +39,5 @@ export const detectBrowser = () => {
   console.info('[Browser Detection]:', browsers);
   return browsers;
 };
+
+

@@ -45,3 +45,5 @@ export const validateImageData = (imageData: FashionImage | null): boolean => {
 
   return true;
 };
+
+

@@ -155,9 +155,12 @@ We don't support custom domains (yet). If you want to deploy your project under 
     - Verify data restoration
     - Plan contingencies
 
-# Fashionista Portal
+# Fashionista Valentine Portal
 
-A modern event management platform specifically designed for fashion events, showcasing designers, collections, and managing ticket sales.
+[![CI/CD Pipeline](https://github.com/sanji/fashionista-valentine-portal/actions/workflows/ci.yml/badge.svg)](https://github.com/sanji/fashionista-valentine-portal/actions/workflows/ci.yml)
+
+## Overview
+Fashion event management portal for Fashionistas
 
 ## Features
 

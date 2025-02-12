@@ -122,3 +122,5 @@ export const TeamSection = ({ members }: TeamSectionProps) => {
     </section>
   );
 };
+
+

@@ -12,3 +12,5 @@ export interface EventDetails {
   description: string;
   features: EventFeature[];
 }
+
+

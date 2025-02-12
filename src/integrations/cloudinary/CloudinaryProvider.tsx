@@ -49,3 +49,5 @@ export const useCloudinary = () => {
 
 // Export the Cloudinary instance for direct usage
 export { cld };
+
+

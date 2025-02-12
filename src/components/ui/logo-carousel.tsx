@@ -98,3 +98,5 @@ export function LogoCarousel({ columns = 2, logos }) {
     </div>
   )
 }
+
+

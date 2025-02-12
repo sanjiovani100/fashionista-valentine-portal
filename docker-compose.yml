@@ -1,79 +1,31 @@
-version: '3.8'
+version: "3.8"
 name: fashionista-valentine-portal
 
 services:
   db:
-    image: postgres:15
+    image: supabase/postgres:15.1.0.117
     ports:
       - "54322:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: fashionista_dev
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./supabase/migrations:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
-  api:
-    image: postgrest/postgrest:v11.1.0
+  supabase:
+    image: supabase/supabase-local:latest
     ports:
-      - "54321:3000"
+      - "54321:8000"
     environment:
-      PGRST_DB_URI: postgres://postgres:postgres@db:5432/postgres
-      PGRST_DB_SCHEMA: public,storage
-      PGRST_DB_ANON_ROLE: anon
-      PGRST_JWT_SECRET: ${JWT_SECRET}
-      PGRST_DB_USE_LEGACY_GUCS: "false"
-    depends_on:
-      db:
-        condition: service_healthy
-
-  auth:
-    image: supabase/gotrue:v2.82.4
-    ports:
-      - "54323:9999"
-    environment:
-      GOTRUE_API_HOST: 0.0.0.0
-      GOTRUE_API_PORT: 9999
+      POSTGRES_PASSWORD: postgres
+      JWT_SECRET: local-development-secret
+      STUDIO_PORT: 3000
       API_EXTERNAL_URL: http://localhost:54321
-      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
-      GOTRUE_JWT_SECRET: ${JWT_SECRET}
-      GOTRUE_JWT_EXP: 3600
-      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
-      GOTRUE_DB_DRIVER: postgres
-      GOTRUE_SITE_URL: http://localhost:54321
-      GOTRUE_MAILER_AUTOCONFIRM: "true"
-      GOTRUE_SMS_AUTOCONFIRM: "true"
+      KONG_URL: http://kong:8000
+      SUPABASE_URL: http://localhost:54321
+      SUPABASE_ANON_KEY: dummy-key-for-development
+      SUPABASE_SERVICE_ROLE_KEY: dummy-service-key-for-development
     depends_on:
-      db:
-        condition: service_healthy
-
-  storage:
-    image: supabase/storage-api:v0.40.4
-    ports:
-      - "54324:5000"
-    environment:
-      ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
-      SERVICE_KEY: ${SUPABASE_SERVICE_KEY}
-      PROJECT_REF: ${SUPABASE_PROJECT_ID}
-      REGION: local
-      GLOBAL_S3_BUCKET: storage
-      POSTGREST_URL: http://api:3000
-      PGRST_JWT_SECRET: ${JWT_SECRET}
-      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
-      FILE_SIZE_LIMIT: 52428800
-      STORAGE_BACKEND: file
-      FILE_STORAGE_BACKEND_PATH: /storage
-    volumes:
-      - storage_data:/storage
-    depends_on:
-      db:
-        condition: service_healthy
+      - db
 
 volumes:
   postgres_data:

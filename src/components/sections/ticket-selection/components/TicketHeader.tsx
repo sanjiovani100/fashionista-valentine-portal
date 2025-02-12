@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 
 interface TicketHeaderProps {
   controls: any;
+  eventTitle?: string;
 }
 
-export const TicketHeader = ({ controls }: TicketHeaderProps) => {
+export const TicketHeader = ({ controls, eventTitle = "Fashion Event" }: TicketHeaderProps) => {
   return (
     <div className="text-center mb-12 space-y-4">
       <motion.h2
@@ -24,8 +25,10 @@ export const TicketHeader = ({ controls }: TicketHeaderProps) => {
           visible: { opacity: 1, y: 0 }
         }}
       >
-        Select from our carefully curated ticket options and be part of this exclusive Valentine's fashion celebration
+        Select from our carefully curated ticket options and be part of this exclusive {eventTitle} celebration
       </motion.p>
     </div>
   );
 };
+
+

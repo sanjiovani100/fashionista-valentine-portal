@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import { Button } from "./button";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function BackToTop() {
@@ -37,7 +37,7 @@ export function BackToTop() {
             variant="outline"
             size="icon"
             onClick={scrollToTop}
-            className={cn(
+            className={cx(
               "bg-red-accent hover:bg-red-accent/90 text-white",
               "shadow-lg rounded-full p-3 backdrop-blur-sm",
               "transition-all duration-300 hover:scale-110",
@@ -53,3 +53,5 @@ export function BackToTop() {
     </AnimatePresence>
   );
 }
+
+

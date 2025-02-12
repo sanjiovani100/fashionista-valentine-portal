@@ -31,3 +31,5 @@ export const Hero: FC<HeroProps> = ({
 // Re-export components for convenience
 export * from './HeroBackground';
 export * from './HeroContent'; 
+
+

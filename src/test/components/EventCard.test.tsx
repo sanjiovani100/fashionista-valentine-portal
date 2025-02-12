@@ -56,3 +56,5 @@ describe('EventCard', () => {
     expect(link).toHaveAttribute('href', `/events/${mockEvent.id}`);
   });
 }); 
+
+

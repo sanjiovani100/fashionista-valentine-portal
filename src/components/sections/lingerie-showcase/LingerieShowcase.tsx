@@ -155,3 +155,5 @@ export const LingerieShowcase = ({ collections }: LingerieShowcaseProps) => {
     </section>
   );
 };
+
+

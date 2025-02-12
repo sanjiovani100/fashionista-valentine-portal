@@ -18,3 +18,5 @@ export const initScrollReveal = () => {
   
   return () => window.removeEventListener('scroll', handleScrollReveal);
 };
+
+

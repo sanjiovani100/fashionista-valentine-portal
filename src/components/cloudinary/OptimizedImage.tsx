@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import { cx } from '@/lib/utils';
 import { cloudinaryService } from '@/lib/cloudinary/cloudinaryService';
 import { ImageErrorBoundary } from './components/ImageErrorBoundary';
 import { CloudinaryImageError } from './components/CloudinaryImageError';
@@ -119,7 +119,7 @@ export const OptimizedImage = ({
           height={height}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"
-          className={cn(
+          className={cx(
             'transition-opacity duration-300',
             isLoading ? 'opacity-0' : 'opacity-100',
             className
@@ -135,3 +135,5 @@ export const OptimizedImage = ({
     </ImageErrorBoundary>
   );
 };
+
+

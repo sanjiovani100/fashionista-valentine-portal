@@ -239,3 +239,5 @@ export const EventSchedule = ({ event }: EventScheduleProps) => {
     </Section>
   );
 }; 
+
+

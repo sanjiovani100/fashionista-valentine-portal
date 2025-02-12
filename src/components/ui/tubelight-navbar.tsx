@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { cn } from "@/lib/utils"
+import { cx } from "@/lib/utils"
 import { Logo } from "./navbar/Logo"
 import { DesktopNav } from "./navbar/DesktopNav"
 import { RightActions } from "./navbar/RightActions"
@@ -88,7 +88,7 @@ export function NavBar() {
 
   return (
     <nav
-      className={cn(
+      className={cx(
         "fixed top-0 left-0 right-0 z-50",
         isScrolled ? "h-16 bg-black" : "h-20 bg-transparent"
       )}
@@ -115,3 +115,5 @@ export function NavBar() {
     </nav>
   )
 }
+
+

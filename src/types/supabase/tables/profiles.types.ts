@@ -27,3 +27,5 @@ export interface SponsorProfileRow {
   updated_at: string | null;
   website: string | null;
 }
+
+

@@ -34,3 +34,5 @@ export const EmptyState = () => (
     <AlertDescription>No events found matching your criteria.</AlertDescription>
   </Alert>
 );
+
+

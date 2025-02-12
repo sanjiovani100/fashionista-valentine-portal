@@ -3,7 +3,8 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DesignerForm } from "@/components/forms/registration/DesignerForm";
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { commonSchema, designerSchema, type FormSchema } from '@/components/forms/registration/schemas/formSchemas';
+import createValidationSchema, { type FormSchema } from '@/components/forms/registration/schemas/formSchemas';
+import type { FormRole } from '@/types/forms';
 import { useFormSubmission } from '@/components/forms/registration/hooks/useFormSubmission';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -14,19 +15,25 @@ import { motion } from 'framer-motion';
 
 const DesignerRegistration = () => {
   const { submitForm, isSubmitting } = useFormSubmission();
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(commonSchema.merge(designerSchema)),
+  const validationSchema = createValidationSchema('en').designer;
+  const form = useForm<FormSchema<'designer'>>({
+    resolver: zodResolver(validationSchema),
     defaultValues: {
       firstName: '',
       lastName: '',
       email: '',
       phone: '',
       experience: '',
-      references: ''
+      brandName: '',
+      website: '',
+      collectionDescription: '',
+      numberOfPieces: 0,
+      spaceRequirements: '',
+      collectionFiles: []
     }
   });
 
-  const onSubmit = async (data: FormSchema) => {
+  const onSubmit = async (data: FormSchema<'designer'>) => {
     await submitForm(data, 'designer');
   };
 
@@ -83,3 +90,5 @@ const DesignerRegistration = () => {
 };
 
 export default DesignerRegistration;
+
+

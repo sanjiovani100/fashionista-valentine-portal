@@ -76,3 +76,5 @@ export const ScheduleCard = ({ item, isActive = false, onClick }: ScheduleCardPr
     </motion.div>
   );
 }; 
+
+

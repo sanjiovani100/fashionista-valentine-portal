@@ -119,3 +119,9 @@ cloudinary.config.js
 # Docker
 .docker/
 docker-compose.override.yml
+
+# Add to .env.example
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+REDIS_PREFIX=registration:

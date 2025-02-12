@@ -601,3 +601,5 @@ export default function EventDetailsPage() {
     </ErrorBoundary>
   );
 } 
+
+

@@ -53,3 +53,5 @@ export const verifyAriaLabels = (element: HTMLElement) => {
 
   return issues.length === 0;
 };
+
+
