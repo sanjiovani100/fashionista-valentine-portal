@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { GlobalErrorHandler } from './middleware/global-error-handler.js';
 import { HealthService } from './services/health.service.js';
-import { ErrorReportingService } from './services/error-reporting.service.ts';
+import { ErrorReportingService } from './services/error-reporting.service.js';
 import { RecoveryService } from './services/recovery.service.js';
 import { logger } from './config/logger.js';
 

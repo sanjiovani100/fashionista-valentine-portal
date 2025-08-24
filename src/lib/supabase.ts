@@ -1,42 +1,14 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase as supabaseClient } from '@/integrations/supabase/client';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://wnjudgmhabzhcttgyxou.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduanVkZ21oYWJ6aGN0dGd5eG91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwOTIzODIsImV4cCI6MjA2ODY2ODM4Mn0.0Qmbqqq2h4-WzoknUdcdL6WPyKaaAF6HSgxJkggRwGA';
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-// Create main Supabase client for public operations
-const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true
-  },
-  db: {
-    schema: 'public' // Explicitly use public schema
-  },
-  global: {
-    headers: {
-      'x-application-name': 'fashionos'
-    }
-  }
-});
+// Use the preconfigured Supabase client (anon key) with public schema
+const supabase = supabaseClient;
 
 // Legacy alias for compatibility
-const supabasePublic = supabase;
+const supabasePublic = supabaseClient;
 
-// Helper function to execute SQL with proper error handling
-export async function execSQL(sql: string, values?: any[]): Promise<any> {
-  try {
-    const { data, error } = await supabase.rpc('exec_sql', { sql, values });
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error('SQL execution error:', error);
-    throw error;
-  }
+// Helper function to execute SQL with proper error handling (disabled for client)
+export async function execSQL(_sql: string, _values?: any[]): Promise<any> {
+  throw new Error('execSQL is restricted and unavailable in the client. Use a secure Edge Function instead.');
 }
 
 // Helper function to get a single row by ID

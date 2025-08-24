@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { logger } from '../config/logger.js';
 import { AppError, ValidationError, NotFoundError, DatabaseError } from './error-handler.js';
-import { ErrorReportingService } from '../services/error-reporting.service.ts';
+import { ErrorReportingService } from '../services/error-reporting.service.js';
 
 // Extend Express Request to include startTime and user
 declare global {

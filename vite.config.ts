@@ -6,9 +6,25 @@ import path from "path";
 export default defineConfig({
   server: {
     port: 8080,
+    strictPort: false, // Allow fallback to next available port
     host: true,
     open: true,
     cors: true,
+    hmr: {
+      overlay: true,
+      clientPort: 8080
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    },
+    watch: {
+      usePolling: true
+    }
   },
   preview: {
     port: 8080
