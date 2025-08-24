@@ -1,21 +1,31 @@
 import { createClient } from '@supabase/supabase-js';
-import config from '@/config';
 
-// Create a single instance of the Supabase client
-const supabase = createClient(config.supabase.url, config.supabase.serviceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-  },
-});
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://wnjudgmhabzhcttgyxou.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduanVkZ21oYWJ6aGN0dGd5eG91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwOTIzODIsImV4cCI6MjA2ODY2ODM4Mn0.0Qmbqqq2h4-WzoknUdcdL6WPyKaaAF6HSgxJkggRwGA';
 
-// Create a client with anonymous key for public operations
-const supabasePublic = createClient(config.supabase.url, config.supabase.anonKey, {
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables');
+}
+
+// Create main Supabase client for public operations
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    autoRefreshToken: true,
     persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
   },
+  db: {
+    schema: 'public' // Explicitly use public schema
+  },
+  global: {
+    headers: {
+      'x-application-name': 'fashionos'
+    }
+  }
 });
+
+// Legacy alias for compatibility
+const supabasePublic = supabase;
 
 // Helper function to execute SQL with proper error handling
 export async function execSQL(sql: string, values?: any[]): Promise<any> {

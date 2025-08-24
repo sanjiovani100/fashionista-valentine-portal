@@ -5,26 +5,13 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 3001,
-    strictPort: false, // Allow fallback to next available port
+    port: 8080,
     host: true,
     open: true,
     cors: true,
-    hmr: {
-      overlay: true,
-      clientPort: 3001
-    },
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8081',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    },
-    watch: {
-      usePolling: true
-    }
+  },
+  preview: {
+    port: 8080
   },
   plugins: [react()],
   css: {
