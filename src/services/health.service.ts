@@ -1,6 +1,6 @@
 import { logger } from '../config/logger.js';
 import { PortManager } from '../utils/port-manager.js';
-import { supabase } from '../lib/supabase/config';
+import { supabase } from '../config/supabase.js';
 import os from 'os';
 
 export interface SystemMetrics {
