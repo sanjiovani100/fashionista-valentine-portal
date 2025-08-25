@@ -1,10 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   server: {
+    host: "::",
     port: 8080,
     strictPort: false, // Allow fallback to next available port
     host: true,
@@ -29,7 +31,10 @@ export default defineConfig({
   preview: {
     port: 8080
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    mode === 'development' && componentTagger(),
+  ].filter(Boolean),
   css: {
     postcss: './postcss.config.cjs',
     modules: {
@@ -87,6 +92,6 @@ export default defineConfig({
       }
     }
   }
-});
+}));
 
 
